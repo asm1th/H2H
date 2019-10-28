@@ -1,0 +1,139 @@
+context RaiffeisenBank {
+    type t_uuid : String(34);
+    type t_str : String(255);
+    type t_str_1 : String(1);
+    type t_str_2 : String(2);
+    type t_str_5 : String(5);
+    type t_str_6 : String(6);
+    type t_str_15 : String(15);
+    type t_str_210 : String(210);
+    type t_date : LocalDate;
+    type t_sum : Decimal(13, 2);
+    type t_int : Integer;
+    type t_bank {
+        @Comment : 'БИК'
+        bic            : String(9);
+
+        @Comment : 'Номер корр. счёта банка'
+        correspAcc     : String(20);
+
+        @Comment : 'Наименование банка'
+        Name           : String(80);
+
+        @Comment : 'Название населённого пункта банка'
+        BankCity       : String(30);
+
+        @Comment : 'Тип населённого пункта банка'
+        SettlementType : String(20);
+    }
+
+    /*@@layout{"layoutInfo":{"x":228.9365234375,"y":97}}*/
+    entity Request {
+            xmlns     : t_str;
+        key requestId : t_uuid;
+            version   : t_str;
+        //PayDocRu	: association[1, 0..1] to RaiffeisenBank.PayDocRu { requestId };
+    };
+
+    @Comment : 'Платёжное поручение рублёвое'
+    /*@@layout{"layoutInfo":{"x":29.033203125,"y":-270}}*/
+
+    entity PayDocRu {
+            @Comment : 'Request.requestId'
+        key requestId : t_uuid;
+
+            @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
+        key docExtId  : t_uuid;
+            AccDoc    : association[1, 1..*] to RaiffeisenBank.AccDoc { docExtId };
+            Payer     : association[1, 1..1] to RaiffeisenBank.Payer { docExtId };
+            Payee     : association[1, 1..1] to RaiffeisenBank.Payee { docExtId };
+/*AccDoc  	: association[1, 0..*] to RaiffeisenBank.AccDoc { docExtId };
+Payer		: association[1, 0..*] to RaiffeisenBank.Payer { docExtId };
+Payee		: association[1, 0..*] to RaiffeisenBank.Payee { docExtId };*/
+    };
+
+    @Comment : 'Реквизиты платёжного документа'
+    /*@@layout{"layoutInfo":{"x":273.06640625,"y":-270}}*/
+
+    entity AccDoc {
+            @Comment : 'PayDocRu.docExtId'
+        key docExtId  : t_uuid;
+
+            @Comment : 'Назначение платежа'
+            purpose   : t_str_210;
+
+            @Comment : 'Дата составления документа'
+            docDate   : t_date;
+
+            @Comment : 'Номер документа'
+        key docNum    : t_str_6;
+
+            @Comment : 'Сумма платежа'
+            docSum    : t_sum;
+
+            @Comment : 'Сумма НДС'
+            vatSum    : t_sum;
+
+            @Comment : '% НДС'
+            vatRate   : t_sum;
+
+            @Comment : 'Указывается способ расчета НДС согласно перечню: Vat1 «Расчет по % (1)»	Vat2 «Расчет по % (2)» VatAdd «Расчет по % (+)» VatZero «НДС не облаг.» VatManualRate «Ввод НДС» VatManualAll «Ручной ввод»'
+            vat       : t_str;
+
+            @Comment : 'Вид операции'
+            transKind : t_str_2;
+
+            @Comment : 'Вид платежа Возможные значения: «почтой», «электронно», «телеграфом» («срочно» временно недоступно). Если не указано, заполняется: «0»'
+            paytKind  : t_str_15;
+
+            @Comment : 'Код вида платежа Возможные значения: «0», «1», «2», «3», «4».'
+            paytCode  : t_str_1;
+
+            @Comment : 'Очерёдность платежа: число от 1 до 6'
+            priority  : t_int;
+
+            @Comment : 'Код вида валютной операции'
+            codeVO    : t_str_5;
+
+            @Comment : 'Документы не требуются'
+            nodocs    : t_int;
+    };
+
+    @Comment : 'Реквизиты плательщика'
+    entity Payer {
+            @Comment : 'PayDocRu.docExtId'
+        key docExtId    : t_uuid;
+
+            @Comment : 'ИНН (до 12)'
+            inn         : String(12);
+
+            @Comment : 'КПП (до 9)'
+            kpp         : String(9);
+
+            @Comment : 'Номер счёта'
+            personalAcc : String(20);
+
+            @Comment : 'Наименование плательщика'
+            Name        : String(160);
+            Bank        : t_bank; //Реквизиты банка плательщика
+    };
+
+    @Comment : 'Реквизиты получателя'
+    entity Payee {
+            @Comment : 'PayDocRu.docExtId'
+        key docExtId    : t_uuid;
+
+            @Comment : 'ИНН (до 12)'
+            inn         : String(12);
+
+            @Comment : 'КПП (до 9)'
+            kpp         : String(9);
+
+            @Comment : 'Номер счёта'
+            personalAcc : String(20);
+
+            @Comment : 'Наименование плательщика'
+            Name        : String(160);
+            Bank        : t_bank; //Реквизиты банка плательщика
+    }
+};
