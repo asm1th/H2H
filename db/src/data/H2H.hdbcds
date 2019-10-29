@@ -5,10 +5,10 @@ context H2H {
 	};
 	
 	entity Mapping{
-		bank				: String(255);
-		formatType			: String(255);
-		formatVersion		: String(255);
-		fildSource			: String(255);
-		fieldDestination	: String(255);
+		key bankType			: String(255);
+		key formatType			: String(255);
+		key formatVersion		: String(255);
+		key fildSource			: String(255);
+		key fieldDestination	: String(255);
 	};
 }

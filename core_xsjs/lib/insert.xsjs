@@ -1,7 +1,7 @@
 try {
     var bank = 'RAIF';
     var xmlns = 'http://bssys.com/upg/request';
-    var requestId = $.request.parameters.get("uuid");
+    var requestId = 'ae059298-e102-1ee9-a8ae-7595552d079a'//$.request.parameters.get("uuid");
     var version = '0.1';
     var fileName = $.request.parameters.get("filename");
 } catch (e) {
@@ -14,7 +14,8 @@ output.data = [];
 
 try {
     var conn = $.db.getConnection();
-    var pstmt = conn.prepareStatement("INSERT INTO \"RaiffeisenBank\".\"Request\" (bank, xmlns, requestId, version, file) VALUES (?, ?, ?, ?, ?)");
+    var sql = 'INSERT INTO "RaiffeisenBank.Request" (bank, xmlns, requestId, version, file) VALUES (?, ?, ?, ?, ?)';
+	var pstmt = conn.prepareStatement(sql);
     if ($.request.entities.length > 0) {
         //  Read in the posted image or binary data as an Array Buffer - you can use this to save as a BLOB
         var fileBody = $.request.entities[0].body.asArrayBuffer();
