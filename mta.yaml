@@ -8,6 +8,17 @@ modules:
     path: db
     requires:
       - name: hdi_db
+  - name: core_xsjs
+    type: nodejs
+    path: core_xsjs
+    provides:
+      - name: core_xsjs_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: hdi_db
+      - name: db
+      - name: UAA-service
 resources:
   - name: hdi_db
     properties:
@@ -15,3 +26,7 @@ resources:
     type: com.sap.xs.hdi-container
     parameters:
       service-name: hana-hdi
+  - name: UAA-service
+    type: com.sap.xs.uaa-space
+    parameters:
+      config-path: ./xs-security.json

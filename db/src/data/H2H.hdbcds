@@ -1,0 +1,14 @@
+context H2H {
+
+	entity Bank{
+		name	: String(255);
+	};
+	
+	entity Mapping{
+		bank				: String(255);
+		formatType			: String(255);
+		formatVersion		: String(255);
+		fildSource			: String(255);
+		fieldDestination	: String(255);
+	};
+}

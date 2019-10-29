@@ -1,0 +1,11 @@
+service {
+    "RaiffeisenBank.Request"	as "Request"	navigates ("PDHead" as "PayDocRu");
+	"RaiffeisenBank.PayDocRu"	as "PayDocRu"	navigates ("PDItems" as "AccDoc");
+	"RaiffeisenBank.Payer"		as "Payer"	navigates ("PDPayer" as "Payer");
+	"RaiffeisenBank.Payee"		as "Payee"	navigates ("PDPayee" as "Payee");
+
+	association "PDHead"	principal  "Request"("requestId") multiplicity "1" dependent "PayDocRu"("Request.requestId") multiplicity "1";
+	association "PDItems"	principal  "PayDocRu"("docExtId") multiplicity "1" dependent "AccDoc"("AccDoc.docExtId") multiplicity "*";
+	association "PDPayer"	principal  "PayDocRu"("docExtId") multiplicity "1" dependent "Payer"("Payer.docExtId") multiplicity "1";
+	association "PDPayee"	principal  "PayDocRu"("docExtId") multiplicity "1" dependent "Payee"("Payee.docExtId") multiplicity "1";
+}

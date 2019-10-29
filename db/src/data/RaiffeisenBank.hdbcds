@@ -1,5 +1,5 @@
 context RaiffeisenBank {
-    type t_uuid : String(34);
+    type t_uuid : String(37);
     type t_str : String(255);
     type t_str_1 : String(1);
     type t_str_2 : String(2);
@@ -29,10 +29,12 @@ context RaiffeisenBank {
 
     /*@@layout{"layoutInfo":{"x":228.9365234375,"y":97}}*/
     entity Request {
+    		bank	  : t_str;
             xmlns     : t_str;
         key requestId : t_uuid;
             version   : t_str;
-        //PayDocRu	: association[1, 0..1] to RaiffeisenBank.PayDocRu { requestId };
+            file	  : LargeBinary;
+        //PayDocRu	: association[1,  1..1] to RaiffeisenBank.PayDocRu { requestId };
     };
 
     @Comment : 'Платёжное поручение рублёвое'
@@ -44,12 +46,9 @@ context RaiffeisenBank {
 
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
         key docExtId  : t_uuid;
-            AccDoc    : association[1, 1..*] to RaiffeisenBank.AccDoc { docExtId };
-            Payer     : association[1, 1..1] to RaiffeisenBank.Payer { docExtId };
-            Payee     : association[1, 1..1] to RaiffeisenBank.Payee { docExtId };
-/*AccDoc  	: association[1, 0..*] to RaiffeisenBank.AccDoc { docExtId };
-Payer		: association[1, 0..*] to RaiffeisenBank.Payer { docExtId };
-Payee		: association[1, 0..*] to RaiffeisenBank.Payee { docExtId };*/
+            //AccDoc    : association[1,0..*] to RaiffeisenBank.AccDoc { docExtId };
+            //Payer     : association[1, 1..1] to RaiffeisenBank.Payer { docExtId };
+            //Payee     : association[1, 1..1] to RaiffeisenBank.Payee { docExtId };
     };
 
     @Comment : 'Реквизиты платёжного документа'
@@ -136,4 +135,4 @@ Payee		: association[1, 0..*] to RaiffeisenBank.Payee { docExtId };*/
             Name        : String(160);
             Bank        : t_bank; //Реквизиты банка плательщика
     }
-};
+};  
