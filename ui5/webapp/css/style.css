@@ -1,0 +1,806 @@
+/* Enter your custom styles here */
+.sapMShellBrandingBar {
+    height: 1px;
+}
+.hostapp .bankbutton {
+    margin-left: 5.5rem;
+}
+.bank-logo{
+   /**/ 
+}
+.hostapp .sapUiSizeCompact .sapTntNavLIItem {
+    height: 3rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* old */
+
+.sapMText {
+    font-size: 0.75rem;
+    font-family: Tahoma,"72",Arial,Helvetica,sans-serif;
+    line-height: normal;
+    color: #5b607d;
+}
+.tablestyle.sapUiTable {
+    font-family: Tahoma,"72",Arial,Helvetica,sans-serif;
+    color: #5b607d;
+}
+html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox{
+    width: auto!important;
+    margin-left: inherit!important;
+    left: inherit!important;
+}
+
+.sapUiGlobalBackgroundColor, .sapMShellGlobalInnerBackground{
+    background: #F3F4F8!important;
+}
+
+
+.sapUiSizeCompact .tablestyle.sapUiTable {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 1px 1px 5px 1px #00000012;
+    border: 1px solid #e4e4e4;
+    /*height: auto!important;*/
+}
+.tablestyle .sapUiTableTbr,
+.sapUiCompSmartTable .sapMIBar{
+    background: #fff;
+    border-radius: 4px 4px 0 0!important;
+    border: 1px solid #e0e0e0;
+    border-bottom: 0;
+    height: 2.5rem!important;
+}
+.sapUiCompSmartTable .sapMIBar .sapMBarChild,
+.sapUiSizeCompact .tablestyle .sapMTB-Transparent-CTX>.sapMTitleTB.sapMTitleStyleAuto {
+    font-size: .825rem!important;
+}
+.sapUiSizeCompact .sapUiCompVarMngmt .sapMTitle.sapUICompVarMngmtTitle{
+    padding-top: 0.5rem;
+    font-size: .9rem;
+    padding-right: .4rem;
+}
+.sapUiSizeCompact .tablestyle .sapMTB {
+    height: 2.3rem;
+}
+.sapUiSizeCompact .tablestyle .sapMTB-Transparent-CTX.sapMTB {
+    padding-left: 0.35rem;
+}
+.sapUiSizeCompact .tablestyle .sapMLabel {
+    color: #5b607d;
+    font-size: 0.75rem;
+}
+.sapUiSizeCompact .tablestyle .sapUiTableCnt {
+    padding: 4px;
+    border-top: 1px solid #dddddd;
+    border-left: 0;
+    border-bottom: 0;
+    border-right: 0;
+    margin-top: -4px;
+}
+.sapUiSizeCompact .tablestyle .sapUiTableColHdrCnt {
+    border-radius: 4px 4px 0 0;
+    border: 1px solid #dddddd;
+    min-height: 1rem;
+}
+.sapUiSizeCompact .tablestyle .sapMTBStandard {
+    border-bottom: 0;
+}
+.tablestyle .sapUiTableCol {
+    min-height: 1.8rem;
+    padding-top: 8px;
+    padding-bottom: 4px;
+    background-color: #F9F9FC;
+}
+.sapUiSizeCompact .tablestyle .sapUiTableColRowHdrIco::before {
+    top: 9px;
+}
+.sapUiSizeCompact .tablestyle .sapUiTableCtrl tr.sapUiTableColHdrTr {
+    height: calc(1.8rem + 1px)!important;
+}
+.sapUiSizeCompact .tablestyle .sapUiTableColRowHdr {
+    min-height: 1.8rem;
+}
+/*.sapUiSizeCompact .sapMPageFooter {
+    bottom: 48px;
+}*/
+.btn{
+}
+html.sap-desktop .sapContrast .sapMIBar.sapMFooter-CTX, html.sap-desktop .sapContrast.sapMIBar.sapMFooter-CTX{
+    background-color: #2065b3;
+}
+
+/*.btn{
+    background-color: #2378d9;
+}
+.btn-success{
+    background-color: #36af47; 
+}
+.btn-delete{
+    background-color: #ed1c24; 
+}*/
+
+
+.sapContrast.sapMFooter-CTX .btn .sapMBtnInner, 
+.sapContrast .sapMFooter-CTX .btn .sapMBtnInner {
+    background: #2378d9;
+}
+.sapContrast.sapMBtnInner, 
+.sapContrast .sapMBtnInner{
+    color: #fff;
+}
+.sapMBtnInner {
+    font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
+    font-size: 0.75rem;
+}
+/*** btn-success ****/
+.sapContrast .btn-success span.sapMBtnInner.sapMBtnAccept{
+    background-color: #36af47; 
+}
+html.sap-desktop .sapContrast .sapMFooter-CTX .btn-success .sapMBtnInner.sapMBtnAccept, html.sap-desktop .sapContrast.sapMFooter-CTX .btn-success .sapMBtnInner.sapMBtnAccept {
+    border-color: transparent;
+}
+.sapContrast.sapMIBar-CTX .sapMBtn:hover>.sapMBtnHoverable.sapMBtnAccept:not(.sapMBtnActive), .sapContrast .sapMIBar-CTX .sapMBtn:hover>.sapMBtnHoverable.sapMBtnAccept:not(.sapMBtnActive) {
+    background-color: #009688;
+    border-color: transparent;
+    color: #e4fde5;
+}
+.sapContrast span.sapMBtnInner.sapMBtnAccept {
+    color: #e4fde5;
+}
+/*** .btn-success ****/
+
+/*** btn-delete ****/
+.sapContrast .btn-delete span.sapMBtnInner.sapMBtnReject{
+    background-color: #ed1c24; 
+}
+html.sap-desktop .sapContrast .sapMFooter-CTX .btn-delete .sapMBtnInner.sapMBtnReject, html.sap-desktop .sapContrast.sapMFooter-CTX .btn-success .sapMBtnInner.sapMBtnReject {
+    border-color: transparent;
+}
+.sapContrast.sapMIBar-CTX .sapMBtn:hover>.sapMBtnHoverable.sapMBtnReject:not(.sapMBtnActive), .sapContrast .sapMIBar-CTX .sapMBtn:hover>.sapMBtnHoverable.sapMBtnReject:not(.sapMBtnActive) {
+    background-color: #ed1c24;
+    border-color: transparent;
+    color: #fff;
+}
+.sapContrast span.sapMBtnInner.sapMBtnReject {
+    color: #fff;
+}
+/*** .btn-delete ****/
+/*** btn-default ****/
+.sapContrast .btn-default span.sapMBtnInner.sapMBtnReject{
+    background-color: #2378d9;
+    color: #fff;
+    border-color: #2378d9;
+}
+.btn-default span.sapMBtnInner{
+    background-color: #2378d9;
+    color: #fff;
+    border-color: #2378d9;
+}
+.btn-default .sapMBtnIcon {
+    color: #ffffff;
+}
+.btn-default.sapMBtn:hover>.sapMBtnHoverable {
+    background-image: none;
+    background-color: #5897e0;
+    border-color: #227fea;
+}
+/*** .btn-default ****/
+/*** btn-bordered ****/
+.btn-bordered .sapMBtnInner,
+.sapMTB-Transparent-CTX .btn-bordered .sapMBtnInner{
+    border-color: #e4e4e4;
+    background: transparent;
+    color: #2378d9;
+    font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
+    font-size: 0.75rem;
+}
+.btn-bordered.sapMBtn:hover>.sapMBtnHoverable,
+.sapMTB-Transparent-CTX .btn-bordered.sapMBtn:hover>.sapMBtnHoverable{
+    background-image: none;
+    background-color: #5897e0;
+    border-color: #227fea;
+    color: #fff;
+}
+
+.btn-bordered.sapMBtn:hover  .sapMBtnIcon {
+    color: #ffffff;
+}
+/*** .btn-bordered ****/
+
+.sapMInputBaseInner {
+    color: #000000;
+    background: #ffffff;
+    border-color: #e4e4e4;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
+}
+.sapMInputBaseState .sapMInputBaseInner.sapMInputBaseStateInner, .sapMInputBaseStateInner {
+    border-width: 1px;
+}
+.sapMComboBoxTextField {
+    background-color: #ffffff;
+    border: 1px solid #e4e4e4;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+.sapMInputBaseSuccessInner {
+    background: #ffffff;
+    border-color: #38a238;
+}
+.sapMInputBaseWarningInner {
+    background: #ffffff;
+    border-color: #f9a429;
+}
+.sapMInputBaseErrorInner {
+    background: #ffffff;
+    border-color: #ee0000;
+}
+.sapMComboBoxTextFieldError {
+    border-color: #ee0000!important;
+}
+
+.sapMMultiComboBoxInputContainer .sapMMultiComboBoxInputInner {
+    font-size: 0.75rem;
+    font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
+}
+.sapMMultiComboBoxInputContainer .sapMMultiComboBoxInputInner::placeholder,
+.sapMInputBaseInner::placeholder{
+    color: #606580;
+    font-style: inherit;
+    font-size: 13px;
+}
+.sapUiSizeCompact .sapMSLI {
+    height: 1.5rem;
+}
+.sapUiSizeCompact .sapMMultiComboBoxItem .sapMCb {
+    height: 1.5rem;
+    line-height: 1.5rem;
+}
+.sapMLIB {
+    align-items: center;
+    position: relative;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0 .4rem 0 .4rem;
+}
+.sapUiSizeCompact .sapMSelectListItem {
+    line-height: 1.5rem;
+    padding: 0 .4rem 0 .4rem;
+}
+
+.sapUiSizeCompact .sapMSelectListItemBase {
+    height: 1.5rem;
+}
+.sapMSlt>.sapMSltLabel {
+    color: #606580
+}
+.sapMSlt {
+    border: 1px solid #e5e5e5;
+    background: #ffffff;
+    border-radius: 3px;
+}
+
+.sapContrast .btn span.sapMBtnInner {
+    text-shadow: none;
+    font-size: .8rem;
+}
+.sapUiSizeCompact .btn .sapMBtnInner.sapMBtnText {
+    padding-left: 0.8rem;
+    padding-right: 1rem;
+}
+.sapUiSizeCompact .btn .sapMBtnInner.sapMBtnText.sapMBtnIconFirst, .sapUiSizeCompact .btn .sapMBtnInner.sapMBtnText.sapMBtnBack {
+    padding-left: 1.875rem;
+}
+.sapUiSizeCompact .btn .sapMBtnContent {
+    line-height: 1.600rem;
+}
+
+.filterstyle > div:first-child{
+    border: 1px solid #e4e4e4;
+    margin: -5px -15px -2px -15px !important;
+    background: #fff;
+    width: auto!important;
+    display: block;
+    float: none!important;
+    padding: 4px 10px;
+    border-radius: 3px 3px 0 0 !important;
+}
+
+.sapUiSizeCompact .filterstyle .tablestyle.sapUiTable{
+    box-shadow: none;
+}
+
+/*.sapUiTableRowHdr {
+    height: 20px!important;
+}
+.sapUiTableCtrlCnt tbody tr{
+    height: 20px!important;  
+}
+.sapUiSizeCompact .sapMCb {
+    height: 19px;
+}*/
+
+.sapUiSizeCompact .tableBalans .sapMCbBg {
+    left: 0.5rem;
+    top: 2px;
+}
+.sapUiTableCCnt {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e5e5e5;
+    margin-top: 4px;
+}
+.sapMPage .sapUiTableVSb, .sapMPage .sapUiTableVSbBg {
+    top: 40px!important;
+    right: 3px;
+    bottom: 0;
+    width: 16px;
+}
+.sapUiSizeCompact .sapUiTableCell {
+    padding: 0 0.2rem;
+}
+.sapUiSizeCompact .sapUiTableCell .sapMText {
+    vertical-align: baseline;
+}
+.sapUiSizeCompact .sapMInputBase.myinput {
+    height: 1.1rem;
+    padding: 1px 0;
+}
+.sapUiSizeCompact .myinput .sapMInputDivWrapper{
+    height: 1rem;
+}
+.myinput .sapMInputBaseInner {
+    color: #000000;
+    font-size: 0.75rem;
+    font-family: Tahoma,"72",Arial,Helvetica,sans-serif;
+    text-align: right;
+     width: -webkit-fill-available;
+}
+
+.panel{
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 1px 1px 2px 1px #00000008;
+    border: 1px solid #e4e4e4;
+}
+.panel-header{
+    padding: 8px 4px;
+    border-bottom: 1px solid #e4e4e4;
+    overflow: hidden;
+}
+.panel-title{
+    font-weight: normal;
+    color: #5e6079;
+    font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    padding: 5px 0 0;
+    background: #fff;
+}
+.panel-body{
+    padding: 4px;
+    background: #f9f9fc;
+    border-radius: 0 0 4px 4px;
+}
+.icon {}
+
+.icon-activity {
+    float: left;
+    padding: 5px 10px 2px;
+}
+.panel-title span {
+    padding-left: 4px;
+    font-size: 0.6rem;
+    color: #aeb1bf;
+}
+.bar-num {
+    font-size: 13px;
+    padding: 8px;
+    border: 1px solid #e4e4e4;
+    margin-bottom: 4px;
+    font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+.bar-num > span {
+    display: inline-block;
+    float: right;
+    position: relative;
+    margin-left: 20px;
+}
+.bar-num > span.positive:before,
+.bar-num > span.negative:before{
+    position: absolute;
+    top: 2px;
+    left: -16px;
+    font-family: 'SAP-icons';
+    content: '';
+    color: green;
+}
+.bar-num > span.negative:before{
+    content: '';
+    color: red;
+}
+.bar-num > span.positive u,
+.bar-title > span.positive u{
+    color: green;
+    text-decoration: none;
+}
+.bar-num > span.negative u,
+.bar-title > span.negative u{
+    color: red;
+}
+.bar-num > span s{
+    text-decoration: none;
+}
+.panel-body table{
+    width: 100%;
+}
+.panel-body table td {
+    padding: 0;
+}
+.panel-body table {
+    width: 100%;
+    border: 0;
+    border-collapse: collapse;
+}
+.bar-title{
+    color: #a0a3b3;
+    font-size: 12px;
+}
+.barchart{
+    width: 100%!important;
+    padding: 5px 0 10px;
+    margin: 0!important;
+}
+.bar-title > span u {
+    text-decoration: none;
+    vertical-align: super;
+    font-size: .6rem;
+}
+.bar-title > span b{
+    font-size: 16px;
+    color: #5e6079;
+    font-weight: normal;
+}
+.bar-title > span {
+    display: inline-block;
+    /*float: right;*/
+    position: relative;
+}
+.sapUiSizeCompact .panel-header .sapUiCompVarMngmt .sapMTitle.sapUICompVarMngmtTitle {
+    font-size: 14px;
+    padding: 2px 10px 0;
+    font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
+}
+.panel-header .sapUiCompVarMngmt .sapUICompVarMngmtTriggerBtn>span>span {
+    font-size: 14px;
+    max-height: inherit;
+    max-width: inherit;
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    border-radius: 50%;
+    line-height: 15px;
+    font-weight: bold;
+    margin: 0;
+}
+.sapUiSizeCompact .panel-header .sapUiCompVarMngmt .sapUICompVarMngmtTriggerBtn{
+    width: 19px;
+    height: 19px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 2px 2px 0;
+}
+.sapUiSizeCompact .panel-header .sapUiCompVarMngmt .sapMBtnInner{
+    width: 19px;
+    height: 19px;
+    padding: 0;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin: 0;
+    min-width: auto;
+}
+
+.TopTileBox{
+    margin-bottom: 10px;
+}
+.filterstyle .sapMLabel{
+    /*display: none;*/
+    font-size: 0.75rem;
+    color: #5e6079;
+}
+.panel-actions {
+    float: right;
+    margin: -4px 4px;
+}
+.filterstyle .sapUiSmallMarginBottom{
+    margin-bottom: 0rem!important
+}
+.filterstyle.sapUiCompFilterBarNonPhone.sapUiRespGrid.sapUiRespGridHSpace0 {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    border: 0;
+    background: transparent;
+}
+
+/* height */
+/*
+.tablestyle .sapUiTableRowAction {
+    height: 20px!important;
+}
+.tablestyle .sapUiTableAction, 
+.tablestyle .sapUiTableAction>div {
+    display: inline-block;
+    height: calc(20px + 1px);
+    line-height: calc(20px + 1px);
+}
+.tablestyle .sapUiTableActionIcon {
+    height: 1.2rem;
+    width: 1.625rem;
+    line-height: 1rem;
+}
+.tablestyle .sapUiTableCell {
+    line-height: 13px;
+}
+*/
+
+.sapMFocus.sapMInputBaseState .sapMInputDivWrapper:not(.sapMInputBaseDisabledInner)::before {
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0;
+    opacity: 0;
+}
+.filterstyle-small.filterstyle.sapUiCompFilterBarNonPhone.sapUiRespGrid.sapUiRespGridHSpace0 {
+    padding: 0 10px!important;
+}
+.sapUiCompFilterBarPaddingTop {
+    padding-top: 2px;
+}
+.table2{
+    margin-top: 10px;
+}
+
+.sapSuiteStackedMCBarLabel{
+    opacity: 0;
+}
+.panel .sapSuiteStackedMCBarSemanticColorNeutral {
+    background-color: #e5e7e8;
+}
+span.sapMBtnInner.sapMBtnEmphasized {
+    text-shadow: none;
+}
+:not(.sapMBtnDisabled)>span.sapMBtnInner.sapMBtnEmphasized>.sapMBtnIcon {
+    color: inherit;
+}
+
+.filterstyle-small .sapUiCompFilterBarBasicArea .sapuiVlt:nth-child(5) {
+    width: calc(100% - 834px) !important;
+    padding-right: 0;
+}
+.filterstyle-small .sapUiCompFilterBarFloatRight{
+    padding: 0;
+}
+.sapMToken {
+    border: 1px solid #2477d9;
+    background: #2477d9;
+    color: #fff;
+    border-radius: 3px;
+}
+.sapMTokenIcon {
+    color: #ffffff;
+}
+html.sap-desktop .sapMToken:hover{
+    border: 1px solid #2576d9;
+    color: #2576d9;
+}
+html.sap-desktop .sapMToken:hover .sapMTokenIcon{
+color: #2576d9;
+}
+
+.sapUiTfBrd {
+   /* height: auto !IMPORTANT;*/
+}
+
+.panel-body .sapUiCompSmartTable > div:first-child {
+    display: none;
+}
+.sapMMultiInputBorder {
+    border: 1px solid #e4e4e4;
+    border-radius: 3px;
+}
+.sapMValueStateMessage{
+  opacity: 0;
+  disaply: none!important;
+}
+
+.sapUiRespGridSpanInvisible.sapUiRespGridSpanL12.sapUiRespGridSpanM12.sapUiRespGridSpanS12.sapUiRespGridSpanXL12 {
+    display: none;
+}
+
+.sapUiRespGridSpanL12.sapUiRespGridSpanM12.sapUiRespGridSpanS12.sapUiRespGridSpanXL12 {
+    margin-bottom: 0!important;
+}
+
+div#__xmlview1--FilterBar {
+    margin-bottom: 0;
+    padding: .3rem 1rem 0rem;
+}
+
+.sapFDynamicPageHeader.sapFDynamicPageHeaderWithContent {
+    padding: 0 1rem 0 !important;
+    box-shadow: 0 0.125rem 0 0 #eff4f9, inset 0 -0.125rem 0 0 #d1e0ee;
+}
+.sapFDynamicPageContent, .sapFDynamicPageContentFitContainer {
+    padding: 0 !important;
+}
+/*
+.sapFDynamicPageContent>.sapFDynamicPageContentFitContainer.sapFDynamicPageContentFitContainerFooterVisible {
+    bottom: 4rem!important;
+}
+*/
+.sapFDynamicPageTitle {
+    min-height: 0rem!important;
+    padding: 0.5rem 1rem 0.2rem 1rem!important;
+}
+.sapFDynamicPageTitleWrapper.sapFDynamicPageTitleSnapped>.sapFDynamicPageTitle .sapFDynamicPageTitleMain .sapFDynamicPageTitleMainContent {
+    padding-bottom: 0rem;
+}
+
+
+@media screen (min-width: 80rem){
+  .sap-desktop.sapUiMedia-Std-Desktop .sapUShellApplicationContainer.sapUShellApplicationContainerLimitedWidth {
+      width: 100%!important;
+  }
+}
+
+.sapUiMedia-Std-Desktop .sapUshellViewPortCenter .sapUShellApplicationContainer.sapUShellApplicationContainerLimitedWidth {
+      width: 100%!important;
+}
+
+#shell-hdr.sapUshellShellHead>div{
+  box-shadow: 1px -1px 2px 2px #00000036;
+  background-color: #ffffff;
+}
+
+.ftitle {
+    padding: 0 1rem 0 .8rem;
+    display: inline-block;
+    font-size: .9rem;
+    position: relative;
+    top: 4px;
+    border-right: 1px solid #ccc;
+}
+
+.mySelectTable {
+    margin: 2px 0!important;
+}
+.sapUiSizeCompact .mySelectTable.sapMComboBoxTextField {
+    height: 1rem;
+    line-height: .95rem;
+}
+.sapUiSizeCompact .mySelectTable .sapMComboBoxTextFieldArrow {
+    width: 1rem;
+    line-height: 1rem;
+}
+
+.barRed,
+.barGray,
+.barBlue{
+    position: relative;
+    padding-left: 1rem;
+}
+.barRed:before,
+.barGray:before,
+.barBlue:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: .21rem;
+    width: .5rem;
+    height: .5rem;
+    background: #ccc;
+    border-radius: 15px;
+}
+.barBlue:before {
+    background: #5899da;
+}
+.barRed:before {
+    background: #dc0d0e;
+}
+.barGray:before {
+    background: #e5e7e8;
+}
+[data-class="Good"] .barRed:before {
+   /* background: #dc0d0e; */
+   background: green;
+}
+[data-class="Error"] .barRed:before {
+    background: red;
+}
+[data-class="Neutral"] .barRed:before {
+    background: #ccc;
+}
+
+.sapUiSizeCompact .myinput .sapMInputValHelp {
+    top: 0.2rem;
+    height: .9rem;
+    width: 2rem;
+}
+
+.sapUiSizeCompact .myinput .sapMInputValHelp>.sapMInputValHelpInner {
+    height: .9rem;
+    width: 2rem;
+    line-height: .8rem;
+    font-size: 13px;
+}
+
+.sapUiSizeCompact .sapMInputBase.mytextarea {
+    margin: 0;
+    width: 100%;
+}
+.sapUiSizeCompact .sapMInputBase.mytextarea {
+    margin: 2px 0;
+    width: 100%;
+}
+.sapUiSizeCompact .sapMInputBase.mytextarea textarea {
+    padding: 0 0.2rem!important;
+    text-align: left;
+}
+.sapUiSizeCompact .sapMInputBase.textleft .sapMInputBaseInner {
+    text-align: left;
+}
+
+.sapUiSizeCompact .mySelectTable .sapMComboBoxTextFieldInner:not(.sapMComboBoxTextFieldInnerReadonly) {
+    padding-right: 1.1rem;
+    padding-left: 4px;
+}
+
+.sapUiSizeCompact .myinput.sapMInputVH .sapMInputBaseInner {
+    padding-right: 1.1rem;
+    padding-left: 4px;
+}
+.sapUiSizeCompact .tablestyle .myinput .sapMInputValHelp {
+    top: 0.2rem;
+    height: .9rem;
+    width: 1rem;
+}
+.sapUiSizeCompact .tablestyle .myinput .sapMInputValHelp>.sapMInputValHelpInner {
+    height: .9rem;
+    width: 1rem;
+    line-height: .8rem;
+    font-size: 13px;
+}
+
+.sapUiSizeCompact .tablestyle .sapMInputVH .sapMInputBaseInner{
+    padding-right: 1.1rem;
+    padding-left: 4px;
+}
+.sapUiSizeCompact .tablestyle .sapMInputBaseInner {
+    padding: 0 0.2rem;
+}
+[data-class="Error"].sapMText {
+    color: red;
+}
+

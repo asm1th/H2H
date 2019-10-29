@@ -19,6 +19,16 @@ modules:
       - name: hdi_db
       - name: db
       - name: UAA-service
+  - name: ui5
+    type: html5
+    path: ui5
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    build-parameters:
+      builder: grunt
+    requires:
+      - name: UAA-service
 resources:
   - name: hdi_db
     properties:
@@ -30,3 +40,14 @@ resources:
     type: com.sap.xs.uaa-space
     parameters:
       config-path: ./xs-security.json
+  - name: uaa_H2H
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: dest_H2H
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service

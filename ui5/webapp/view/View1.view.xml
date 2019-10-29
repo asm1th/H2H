@@ -1,0 +1,208 @@
+<!--<mvc:View controllerName="h2h.ui5.controller.View1" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">-->
+<!--	<Shell id="shell">-->
+<!--		<App id="app">-->
+<!--			<pages>-->
+<!--				<Page id="page" title="!@@!@!@!@!@!@">-->
+<!--					<content></content>-->
+<!--				</Page>-->
+<!--			</pages>-->
+<!--		</App>-->
+<!--	</Shell>-->
+<!--</mvc:View>-->
+
+<mvc:View controllerName="h2h.ui5.controller.View1" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:fb="sap.ui.comp.filterbar" xmlns="sap.m" xmlns:t="sap.ui.table" displayBlock="true"
+	xmlns:variant="sap.ui.comp.variants" xmlns:f="sap.f" xmlns:u="sap.ui.unified" class="sapUiSizeCompact">
+    
+        
+	<tnt:ToolPage id="toolPage">
+		<tnt:header>
+			<tnt:ToolHeader class="itsk-tool" design="Info">
+				<Button id="sideNavigationToggleButton" icon="sap-icon://menu2" type="Transparent" press="onSideNavButtonPress">
+					<layoutData>
+						<OverflowToolbarLayoutData priority="NeverOverflow"/>
+					</layoutData>
+				</Button>
+				<HBox>
+					<Image press="onHomePress" src="./images/logo2.png" height="40px" class="itsk-logo-image"/>
+				</HBox>
+				<HBox class="bankbutton">
+					<Image press="onHomePress" src="./images/rai2.png" height="30px" class="bank-logo"/>
+					<MenuButton text="Райффайзенбанк">
+						<menu>
+							<Menu>
+								<items>
+									<MenuItem text="Газпромбанк" icon="sap-icon://loan" press="onPress">
+										<customData>
+											<core:CustomData key="target" value="p1"/>
+										</customData>
+									</MenuItem>
+									<MenuItem text="Сбербанк" icon="sap-icon://loan" press="onPress"/>
+									<MenuItem text="Райфайзен" icon="sap-icon://loan" press="onPress"/>
+									<MenuItem text="Белгазпромбанк" icon="sap-icon://loan" press="onPress"/>
+								</items>
+							</Menu>
+						</menu>
+					</MenuButton>
+				</HBox>
+				<!--<Button icon="sap-icon://home" type="Transparent" press="onHomePress"></Button>-->
+				<!--<Button icon="sap-icon://nav-back" type="Transparent" press="onNavBack"></Button>-->
+				<!--<Text class="tntHeadTxt" text="Настройки"/>-->
+				<ToolbarSpacer></ToolbarSpacer>
+				<Button icon="sap-icon://search" type="Transparent"></Button>
+				<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"></f:Avatar>
+				<!--src="./profile2.jpg"-->
+				<MenuButton type="Transparent">
+					<menu>
+						<Menu>
+							<items>
+								<MenuItem text="Действие" icon="sap-icon://action-settings"/>
+							</items>
+						</Menu>
+					</menu>
+				</MenuButton>
+			</tnt:ToolHeader>
+		</tnt:header>
+		<tnt:sideContent>
+			<tnt:SideNavigation expanded="true" selectedKey="{/dataPage/selectedKey}" itemSelect="onItemSelect">
+				<tnt:NavigationList>
+					<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"></tnt:NavigationListItem>
+					<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"></tnt:NavigationListItem>
+				</tnt:NavigationList>
+			</tnt:SideNavigation>
+		</tnt:sideContent>
+		<tnt:mainContents>
+			<NavContainer id="pageContainer" initialPage="page1">
+				<pages>
+					<ScrollContainer id="page1" horizontal="false" vertical="true" height="100%">
+						<fb:FilterBar id="FilterBar" class="filterstyle" reset="onReset" search="onSearch" showGoOnFB="true" showFilterConfiguration="true">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem name="fi_be" label="Балансовая единица" groupName="__$INTERNAL$" partOfCurrentVariant="true" visibleInFilterBar="true">
+									<fb:control>
+										<ComboBox id="slCompCode" showSecondaryValues="true" filterSecondaryValues="true" selectedKey="1000" change="onFilterChange"
+											class="mySelect">
+											<items>
+												<core:ListItem key="1000" text="ПАО Газпромнефть" additionalText="1000"/>
+											</items>
+										</ComboBox>
+										<!--<ComboBox id="slCompCode" required="true" showSecondaryValues="true" filterSecondaryValues="true" change="onFilterChange" selectedKey="1000"-->
+										<!--	class="mySelect" items="{ path: '/COMPANY_CODE_SH_SET', templateShareable:false, sorter: { path: 'Value' } }">-->
+										<!--	<core:ListItem key="{Key}" text="{Value}" additionalText="{Key}"/>-->
+										<!--</ComboBox>-->
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="__$INTERNAL$" name="DateRange" label="Диапазон дат" partOfCurrentVariant="true" visibleInFilterBar="true">
+									<fb:control>
+										<DateRangeSelection id="DRS1" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"
+											secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="handleChange"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="__$INTERNAL$" name="selfBank" label="Собственный Банк" partOfCurrentVariant="true" visibleInFilterBar="true">
+									<fb:control>
+										<Input type="Text" change="onChange"/>
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem groupName="__$INTERNAL$" name="system" label="Система учета" partOfCurrentVariant="true" visibleInFilterBar="true">
+									<fb:control>
+										<ComboBox id="slSystem" showSecondaryValues="true" filterSecondaryValues="true" selectedKey="1000" change="onFilterChange" class="mySelect">
+											<items>
+												<core:ListItem key="SAP" text="SAP"/>
+											</items>
+										</ComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+							</fb:filterGroupItems>
+						</fb:FilterBar>
+						<t:Table id="tableBalans" class="tablestyle" rows="{/table}" selectionMode="MultiToggle" ariaLabelledBy="title"
+							visibleRowCountMode="Auto" rowActionCount="2" enableCellFilter="true" showColumnVisibilityMenu="true"
+							rowSelectionChange="toggleEditableFields">
+							<t:extension>
+								<OverflowToolbar>
+									<core:Icon tooltip="Платежи" src="sap-icon://menu" class="size1" color="#cccccc">
+										<core:layoutData>
+											<FlexItemData growFactor="1"/>
+										</core:layoutData>
+									</core:Icon>
+									<Title id="title" text="Платежи (2)"/>
+									<ToolbarSeparator/>
+									<ToolbarSpacer/>
+									<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>
+									<Button icon="sap-icon://action-settings" tooltip="Настройки" press="onPersonalizationDialogPress" enabled="fasle"/>
+									<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>
+									<Button icon="sap-icon://excel-attachment" tooltip="Приложения" id="onAttach" press="onAttach" enabled="fasle"/>
+									<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>
+									<ToolbarSeparator/>
+									<Button icon="sap-icon://upload-to-cloud" text="Загрузить" class="btn btn-bordered" press="onUpload"/>
+									<Button icon="sap-icon://paper-plane" type="Default" text="Отправить" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>
+									<ToolbarSeparator/>
+									<Button icon="sap-icon://undo" text="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>
+									<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignCreate" enabled="true"/>
+									
+								<u:FileUploader
+                        			id="fileUploader"
+                        			name="myFileUpload"
+                        			change="OnFileSelected"
+                        			tooltip="Upload your file to the local server"
+                        			uploadComplete="handleUploadComplete"/>
+                        		<Button
+                        			text="Upload File"
+                        			press="OnUpload"/>
+                        			
+								</OverflowToolbar>
+							</t:extension>
+							<t:rowSettingsTemplate>
+								<t:RowSettings highlight="{Status}"/>
+							</t:rowSettingsTemplate>
+							<t:rowActionTemplate>
+								<t:RowAction>
+									<t:items>
+										<t:RowActionItem icon="sap-icon://signature" tooltip="Подписать" press="onSignatureRow"></t:RowActionItem>
+										<t:RowActionItem type="Navigation" press="fnPress"></t:RowActionItem>
+									</t:items>
+								</t:RowAction>
+							</t:rowActionTemplate>
+							<!--<t:customData>
+                                <core:CustomData key="mydata" value="{Status}" writeToDom="true"></core:CustomData>
+                              </t:customData>-->
+							<t:columns>
+								<t:Column id="col_docDate" visible="true" sortProperty="docDate" filterProperty="docDate" showFilterMenuEntry="true"
+									showSortMenuEntry="true">
+									<Label text="Дата платежа"/>
+									<t:template>
+										<Text text="{docDate}"/>
+									</t:template>
+								</t:Column>
+								<t:Column id="col_Sys" visible="true" sortProperty="purpose" filterProperty="purpose" showFilterMenuEntry="true"
+									showSortMenuEntry="true">
+									<Label text="Система"/>
+									<t:template>
+										<Text text="{purpose}"/>
+									</t:template>
+								</t:Column>
+								<t:Column id="col_nd" visible="true" sortProperty="docNum" filterProperty="docNum" showFilterMenuEntry="true"
+									showSortMenuEntry="true">
+									<Label text="№ документа"/>
+									<t:template>
+										<Text text="{docNum}"/>
+									</t:template>
+								</t:Column>
+								<t:Column id="col_Stat" visible="true" sortProperty="docNum" filterProperty="docNum" showFilterMenuEntry="true"
+									showSortMenuEntry="true">
+									<Label text="Статус"/>
+									<t:template>
+									    <Text text="Статус"/>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+					</ScrollContainer>
+					<ScrollContainer id="page2" horizontal="false" vertical="true" height="100%">
+						<Text text="This is the dsfsfsdfsdf page"></Text>
+					</ScrollContainer>
+				</pages>
+			</NavContainer>
+		</tnt:mainContents>
+	</tnt:ToolPage>
+	
+
+</mvc:View>
