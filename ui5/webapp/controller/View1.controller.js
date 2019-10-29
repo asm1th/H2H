@@ -9,7 +9,7 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("h2h.ui5.controller.View1", {
-	//return Controller.extend("h2h.ui5.controller.View1", {
+		//return Controller.extend("h2h.ui5.controller.View1", {
 		onInit: function () {
 
 			//var oModel = new JSONModel();
@@ -24,7 +24,7 @@ sap.ui.define([
 			console.log(oModel);*/
 			//.dev
 
-			var dateFrom = new Date(); 
+			var dateFrom = new Date();
 			dateFrom.setUTCDate(2);
 			dateFrom.setUTCMonth(1);
 			dateFrom.setUTCFullYear(2014);
@@ -36,7 +36,7 @@ sap.ui.define([
 
 			var oModel = new JSONModel();
 			oModel.setData({
-				delimiterDRS1: "@", 
+				delimiterDRS1: "@",
 				dateValueDRS1: dateFrom,
 				secondDateValueDRS1: dateTo,
 				dateFormatDRS1: "yyyy/MM/dd",
@@ -225,7 +225,49 @@ sap.ui.define([
         */
 
 		// file upload
-		OnUpload: function (e) {
+
+		OnUpload: function (oEvent) {
+			var fileLoader = this.getView().byId("fileUploader");
+			var fileName = fileLoader.getValue();
+			jQuery.sap.require("sap.ui.commons.MessageBox");
+			if (fileName === "") {
+				sap.ui.commons.MessageBox.show("Please choose File.", sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
+			} else {
+				var uploadUrl = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/insert.xsjs?filename=" + fileName;
+				var file = jQuery.sap.domById(fileLoader.getId() + "-fu").files[0];
+				$.ajax({
+					url: uploadUrl,
+					type: "GET",
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader("X-CSRF-Token", "Fetch");
+					},
+					success: function (data, textStatus, XMLHttpRequest) {
+						var token = XMLHttpRequest.getResponseHeader('X-CSRF-Token');
+						$.ajax({
+							url: uploadUrl,
+							type: "POST",
+							processData: false,
+							contentType: false,
+							data: file,
+							beforeSend: function (xhr) {
+								xhr.setRequestHeader("X-CSRF-Token", token);
+							},
+							success: function (data, textStatus, XMLHttpRequest) {
+								var resptext = XMLHttpRequest.responseText;
+								jQuery.sap.require("sap.ui.commons.MessageBox");
+								sap.ui.commons.MessageBox.show(resptext, sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
+
+							},
+							error: function (data, textStatus, XMLHttpRequest) {
+								sap.ui.commons.MessageBox.show("File could not be uploaded.", sap.ui.commons.MessageBox.Icon.ERROR, "Error");
+							}
+						});
+					}
+				});
+			}
+		},
+
+		/*OnUpload: function (e) {
 			var file = sap.ui.getCore()._file;
 			if (file && window.FileReader) {
 				var reader = new FileReader();
@@ -264,6 +306,7 @@ sap.ui.define([
 				reader.readAsText(file);
 			}
 		}
+        */
 
 		/* https://github.com/anpur/line-navigator Anton Purin MIT 2016 */
 		/*
