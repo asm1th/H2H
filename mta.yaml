@@ -28,13 +28,13 @@ modules:
     build-parameters:
       builder: grunt
     requires:
-      - name: UAA-service
       - name: core_xsjs_api
         group: destinations
         properties:
           name: core-xsjs-backend
           url: '~{url}'
           forwardAuthToken: true
+      - name: UAA-service
 resources:
   - name: hdi_db
     properties:

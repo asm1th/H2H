@@ -1,23 +1,22 @@
 {
-  "welcomeFile": "/webapp/index.html",
-  "routes": [
-    {
-      "path": "/resources",
-      "target": {
-        "type": "service",
-        "name": "sapui5",
-        "entryPath": "/resources"
-      },
-      "description": "SAPUI5 Resources"
-    },
-    {
-        "path": "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata",
-        "target": {
-            "type": "destination",
-            "name": "gateway",
-            "entryPath": "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata"},
-            "description": "<<someDescription>>"
-    }
-  ],
-  "sendWelcomeFileRedirect": true
+	"welcomeFile": "/webapp/index.html",
+	"routes": [{
+		"path": "/resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/resources"
+		},
+		"description": "SAPUI5 Resources"
+	}, {
+		"path": "/xsodata/h2h.xsodata",
+		"description": "xsodata",
+		"target": {
+			"type": "destination",
+			"name": "xsodata",
+			"entryPath": "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata"
+		}
+
+	}],
+	"sendWelcomeFileRedirect": true
 }

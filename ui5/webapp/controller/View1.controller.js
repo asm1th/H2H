@@ -254,15 +254,7 @@ sap.ui.define([
 
 				/// VAR2
 				//var oModel = new sap.ui.model.odata.ODataModel("/xsodata/h2h.xsodata", true);
-				var oModel = new sap.ui.model.odata.ODataModel(
-					"https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata", {
-						headers: {
-							"X-Requested-With": "XMLHttpRequest",
-							"Content-Type": "application/atom+xml",
-							"DataServiceVersion": "2.0",
-							"X-CSRF-Token": "Fetch"
-						}
-					});
+				var oModel = new sap.ui.model.odata.ODataModel("/xsodata/h2h.xsodata", true);
 				// oModel.setHeaders({
 				// 		"X-Requested-With": "XMLHttpRequest",
 				// 		"Content-Type": "application/atom+xml",
@@ -270,7 +262,7 @@ sap.ui.define([
 				// 		"X-CSRF-Token": "Fetch"
 				// });
 
-				oModel.create("/REQUEST_SET", oEntry, null,
+				oModel.create("/PayDocRu", oEntry, null,
 					function (oData, oResponse) {
 						var msg = "Файл загружен";
 						MessageToast.show(msg);
