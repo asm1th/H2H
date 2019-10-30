@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+        <Schema Namespace="default" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="RequestType">
+                <Key>
+                    <PropertyRef Name="requestId"/>
+                </Key>
+                <Property Name="bank" Type="Edm.String" MaxLength="255"/>
+                <Property Name="xmlns" Type="Edm.String" MaxLength="255"/>
+                <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+                <Property Name="version" Type="Edm.String" MaxLength="255"/>
+                <Property Name="file" Type="Edm.Binary"/>
+                <NavigationProperty Name="PayDocRu" Relationship="default.PDHeadType" FromRole="RequestPrincipal" ToRole="PayDocRuDependent"/>
+            </EntityType>
+            <EntityType Name="PayDocRuType">
+                <Key>
+                    <PropertyRef Name="requestId"/>
+                    <PropertyRef Name="docExtId"/>
+                </Key>
+                <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+                <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+                <NavigationProperty Name="AccDoc" Relationship="default.PDItemsType" FromRole="PayDocRuPrincipal" ToRole="AccDocDependent"/>
+            </EntityType>
+            <EntityType Name="PayerType">
+                <Key>
+                    <PropertyRef Name="docExtId"/>
+                </Key>
+                <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+                <Property Name="inn" Type="Edm.String" MaxLength="12"/>
+                <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
+                <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
+                <Property Name="Name" Type="Edm.String" MaxLength="160"/>
+                <Property Name="Bank.bic" Type="Edm.String" MaxLength="9"/>
+                <Property Name="Bank.correspAcc" Type="Edm.String" MaxLength="20"/>
+                <Property Name="Bank.Name" Type="Edm.String" MaxLength="80"/>
+                <Property Name="Bank.BankCity" Type="Edm.String" MaxLength="30"/>
+                <Property Name="Bank.SettlementType" Type="Edm.String" MaxLength="20"/>
+                <NavigationProperty Name="Payer" Relationship="default.PDPayerType" FromRole="PayerDependent" ToRole="PayDocRuPrincipal"/>
+            </EntityType>
+            <EntityType Name="PayeeType">
+                <Key>
+                    <PropertyRef Name="docExtId"/>
+                </Key>
+                <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+                <Property Name="inn" Type="Edm.String" MaxLength="12"/>
+                <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
+                <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
+                <Property Name="Name" Type="Edm.String" MaxLength="160"/>
+                <Property Name="Bank.bic" Type="Edm.String" MaxLength="9"/>
+                <Property Name="Bank.correspAcc" Type="Edm.String" MaxLength="20"/>
+                <Property Name="Bank.Name" Type="Edm.String" MaxLength="80"/>
+                <Property Name="Bank.BankCity" Type="Edm.String" MaxLength="30"/>
+                <Property Name="Bank.SettlementType" Type="Edm.String" MaxLength="20"/>
+                <NavigationProperty Name="Payee" Relationship="default.PDPayeeType" FromRole="PayeeDependent" ToRole="PayDocRuPrincipal"/>
+            </EntityType>
+            <Association Name="PDHeadType">
+                <End Type="default.RequestType" Role="RequestPrincipal" Multiplicity="1"/>
+                <End Type="default.PayDocRuType" Role="PayDocRuDependent" Multiplicity="1"/>
+            </Association>
+            <Association Name="PDItemsType">
+                <End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
+                <End Type="default.AccDocType" Role="AccDocDependent" Multiplicity="*"/>
+            </Association>
+            <Association Name="PDPayerType">
+                <End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
+                <End Type="default.PayerType" Role="PayerDependent" Multiplicity="1"/>
+            </Association>
+            <Association Name="PDPayeeType">
+                <End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
+                <End Type="default.PayeeType" Role="PayeeDependent" Multiplicity="1"/>
+            </Association>
+            <EntityContainer Name="v2" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="Request" EntityType="default.RequestType"/>
+                <EntitySet Name="PayDocRu" EntityType="default.PayDocRuType"/>
+                <EntitySet Name="Payer" EntityType="default.PayerType"/>
+                <EntitySet Name="Payee" EntityType="default.PayeeType"/>
+                <AssociationSet Name="PDHead" Association="default.PDHeadType">
+                    <End Role="RequestPrincipal" EntitySet="Request"/>
+                    <End Role="PayDocRuDependent" EntitySet="PayDocRu"/>
+                </AssociationSet>
+                <AssociationSet Name="PDItems" Association="default.PDItemsType">
+                    <End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
+                    <End Role="AccDocDependent" EntitySet="AccDoc"/>
+                </AssociationSet>
+                <AssociationSet Name="PDPayer" Association="default.PDPayerType">
+                    <End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
+                    <End Role="PayerDependent" EntitySet="Payer"/>
+                </AssociationSet>
+                <AssociationSet Name="PDPayee" Association="default.PDPayeeType">
+                    <End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
+                    <End Role="PayeeDependent" EntitySet="Payee"/>
+                </AssociationSet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

@@ -21,6 +21,7 @@ try {
 // configure UAA
 try {
 	options = Object.assign(options, xsenv.getServices({ uaa: {tag: "xsuaa"} }));
+	console.log("[auth service OK]");
 } catch (err) {
 	console.log("[WARN]", err.message);
 }

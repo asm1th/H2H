@@ -12,16 +12,6 @@
 		"sourceTemplate": {
 			"id": "html5moduletemplates.basicSAPUI5ApplicationProjectModule",
 			"version": "1.40.12"
-		},
-		"dataSources": {
-			"dataRemote": {
-				"uri": "/sap/opu/odata/SAP/HOST2HOST/",
-				"type": "OData",
-				"settings": {
-					"odataVersion": "2.0",
-					"localUri": "localService/metadata.xml"
-				}
-			}
 		}
 	},
 
@@ -67,9 +57,6 @@
 				"settings": {
 					"bundleName": "h2h.ui5.i18n.i18n"
 				}
-			},
-			"": {
-				"dataSource": "dataRemote"
 			}
 		},
 		"resources": {

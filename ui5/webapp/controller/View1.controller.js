@@ -12,12 +12,19 @@ sap.ui.define([
 		//return Controller.extend("h2h.ui5.controller.View1", {
 		onInit: function () {
 
+			//var oModel = new sap.ui.model.odata.ODataModel("/xsodata/h2h.xsodata", true);
+			//this.getView().setModel(oModel);
+			//debugger;
+			//this.csrfToken = this.getView().getModel().oHeaders['x-csrf-token'];
+			//var oModel = new sap.ui.model.odata.ODataModel("https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata");
+			//this.getView().setModel(oModel);
+			//console.log(oModel);
+
 			//var oModel = new JSONModel();
 			//this.oModel.loadData(jQuery.sap.getModulePath("host2host", "/localService/tablemodel.json"), null, false);
 			//oModel.loadData("/localService/tablemodel.json");
 			//this.getView().setModel(oModel);
 			//console.log(oModel);
-
 			//dev
 			/*var oModel = this.getOwnerComponent().getModel();
 			console.info("Full App Model: ");
@@ -127,46 +134,46 @@ sap.ui.define([
 				});
 		},
 
-		SignCreate: function (certSubjectName, dataToSign) {
-			var CADESCOM_CADES_BES = 1;
-			var CAPICOM_CURRENT_USER_STORE = 2;
-			var CAPICOM_MY_STORE = "My";
-			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
-			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
+		// 		SignCreate: function (certSubjectName, dataToSign) {
+		// 			var CADESCOM_CADES_BES = 1;
+		// 			var CAPICOM_CURRENT_USER_STORE = 2;
+		// 			var CAPICOM_MY_STORE = "My";
+		// 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
+		// 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
 
-			return new Promise(function (resolve, reject) {
-				window.cadesplugin.async_spawn(function* (args) {
-					try {
-						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
-						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,
-							CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+		// 			return new Promise(function (resolve, reject) {
+		// 				window.cadesplugin.async_spawn(function* (args) {
+		// 					try {
+		// 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
+		// 						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,
+		// 							CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
-						var CertificatesObj = yield oStore.Certificates;
-						var oCertificates = yield CertificatesObj.Find(
-							CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
+		// 						var CertificatesObj = yield oStore.Certificates;
+		// 						var oCertificates = yield CertificatesObj.Find(
+		// 							CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
 
-						var Count = yield oCertificates.Count;
-						if (Count == 0) {
-							throw ("Certificate not found: " + args[0]);
-						}
-						var oCertificate = yield oCertificates.Item(1);
-						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
-						yield oSigner.propset_Certificate(oCertificate);
+		// 						var Count = yield oCertificates.Count;
+		// 						if (Count == 0) {
+		// 							throw ("Certificate not found: " + args[0]);
+		// 						}
+		// 						var oCertificate = yield oCertificates.Item(1);
+		// 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
+		// 						yield oSigner.propset_Certificate(oCertificate);
 
-						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
-						yield oSignedData.propset_Content(dataToSign);
+		// 						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
+		// 						yield oSignedData.propset_Content(dataToSign);
 
-						var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_CADES_BES);
+		// 						var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_CADES_BES);
 
-						yield oStore.Close();
+		// 						yield oStore.Close();
 
-						args[2](sSignedMessage);
-					} catch (e) {
-						args[3]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
-					}
-				}, certSubjectName, dataToSign, resolve, reject);
-			});
-		},
+		// 						args[2](sSignedMessage);
+		// 					} catch (e) {
+		// 						args[3]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
+		// 					}
+		// 				}, certSubjectName, dataToSign, resolve, reject);
+		// 			});
+		// 		},
 
 		/*
 		onSignCreate: function (certSubjectName, dataToSign) {
@@ -225,7 +232,6 @@ sap.ui.define([
         */
 
 		// file upload
-
 		OnUpload: function (oEvent) {
 			var fileLoader = this.getView().byId("fileUploader");
 			var fileName = fileLoader.getValue();
@@ -233,39 +239,132 @@ sap.ui.define([
 			if (fileName === "") {
 				sap.ui.commons.MessageBox.show("Please choose File.", sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
 			} else {
-				var uploadUrl = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/insert.xsjs?filename=" + fileName;
 				var file = jQuery.sap.domById(fileLoader.getId() + "-fu").files[0];
+				var oEntry = {
+					"d": {
+						bank: "RAIF",
+						xmlns: "http://bssys.com/upg/request",
+						requestId: "ae059298-e102-1ee9-a8ae-7595552d079a",
+						version: "0.1",
+						file: file
+					}
+				};
+				console.log("Отправляем file:");
+				console.log(oEntry);
+
+				/// VAR2
+				//var oModel = new sap.ui.model.odata.ODataModel("/xsodata/h2h.xsodata", true);
+				var oModel = new sap.ui.model.odata.ODataModel(
+					"https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata", {
+						headers: {
+							"X-Requested-With": "XMLHttpRequest",
+							"Content-Type": "application/atom+xml",
+							"DataServiceVersion": "2.0",
+							"X-CSRF-Token": "Fetch"
+						}
+					});
+				// oModel.setHeaders({
+				// 		"X-Requested-With": "XMLHttpRequest",
+				// 		"Content-Type": "application/atom+xml",
+				// 		"DataServiceVersion": "2.0",
+				// 		"X-CSRF-Token": "Fetch"
+				// });
+
+				oModel.create("/REQUEST_SET", oEntry, null,
+					function (oData, oResponse) {
+						var msg = "Файл загружен";
+						MessageToast.show(msg);
+						console.log(oResponse);
+					},
+					function (oError, oResponse) {
+						var msg = "Данные не сохранены. Проблема в данных, либо в серввере";
+						// 		if (oResponse.error.message.value) {
+						// 			txt = oResponse.error.message.value;
+						// 		}
+						MessageToast.show(msg);
+						console.log(oError);
+						console.log(oResponse);
+					});
+
+				/// VAR1
+				/*var oModel= new sap.ui.model.odata.ODataModel('/xsodata/tsPlans.xsodataa', false);
+    			var inputData={};
+    				inputData.ID= '';
+    			oModel.create('/Items',inputData,null, function(odata,oResponse){
+    			  alert("Creation successful");
+    			});*/
+				/*
+				//var token = XMLHttpRequest.getResponseHeader('X-CSRF-Token');
+				var uploadUrl = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/insert.xsjs?filename=" + fileName;
 				$.ajax({
 					url: uploadUrl,
-					type: "GET",
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader("X-CSRF-Token", "Fetch");
-					},
+					type: "POST",
+					processData: false,
+					contentType: false,
+					data: file,
+				// 	beforeSend: function (xhr) {
+				// 		xhr.setRequestHeader("X-CSRF-Token", token);
+				// 	},
 					success: function (data, textStatus, XMLHttpRequest) {
-						var token = XMLHttpRequest.getResponseHeader('X-CSRF-Token');
-						$.ajax({
-							url: uploadUrl,
-							type: "POST",
-							processData: false,
-							contentType: false,
-							data: file,
-							beforeSend: function (xhr) {
-								xhr.setRequestHeader("X-CSRF-Token", token);
-							},
-							success: function (data, textStatus, XMLHttpRequest) {
-								var resptext = XMLHttpRequest.responseText;
-								jQuery.sap.require("sap.ui.commons.MessageBox");
-								sap.ui.commons.MessageBox.show(resptext, sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
+						var resptext = XMLHttpRequest.responseText;
+						jQuery.sap.require("sap.ui.commons.MessageBox");
+						MessageToast.show(resptext);
 
-							},
-							error: function (data, textStatus, XMLHttpRequest) {
-								sap.ui.commons.MessageBox.show("File could not be uploaded.", sap.ui.commons.MessageBox.Icon.ERROR, "Error");
-							}
-						});
+					},
+					error: function (data, textStatus, XMLHttpRequest) {
+					    MessageToast.show("File could not be uploaded.");
 					}
 				});
+				*/
 			}
-		},
+		}
+
+		// 		OnUpload: function (oEvent) {
+		// 			var fileLoader = this.getView().byId("fileUploader");
+		// 			var fileName = fileLoader.getValue();
+		// 			jQuery.sap.require("sap.ui.commons.MessageBox");
+		// 			if (fileName === "") {
+		// 				sap.ui.commons.MessageBox.show("Please choose File.", sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
+		// 			} else {
+		// 				var uploadUrl = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/insert.xsjs?filename=" + fileName;
+		// 				var file = jQuery.sap.domById(fileLoader.getId() + "-fu").files[0];
+		// 				$.ajax({
+		// 					url: uploadUrl,
+		// 					type: "GET",
+		// 					async: false,
+		// 					beforeSend: function (xhr) {
+		// 						xhr.setRequestHeader("X-CSRF-Token", "Fetch");
+		// 					},
+		// 					success: function (data, textStatus, XMLHttpRequest) {
+		// 					    console.warn("GET OK");
+		// 				// 		var token = XMLHttpRequest.getResponseHeader('X-CSRF-Token');
+		// 				// 		$.ajax({
+		// 				// 			url: uploadUrl,
+		// 				// 			type: "POST",
+		// 				// 			processData: false,
+		// 				// 			contentType: false,
+		// 				// 			data: file,
+		// 				// 			beforeSend: function (xhr) {
+		// 				// 				xhr.setRequestHeader("X-CSRF-Token", token);
+		// 				// 			},
+		// 				// 			success: function (data, textStatus, XMLHttpRequest) {
+		// 				// 				var resptext = XMLHttpRequest.responseText;
+		// 				// 				jQuery.sap.require("sap.ui.commons.MessageBox");
+		// 				// 				sap.ui.commons.MessageBox.show(resptext, sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
+
+		// 				// 			},
+		// 				// 			error: function (data, textStatus, XMLHttpRequest) {
+		// 				// 				sap.ui.commons.MessageBox.show("File could not be uploaded.", sap.ui.commons.MessageBox.Icon.ERROR, "Error");
+		// 				// 			}
+		// 				// 		});
+		// 					},
+		// 					error: function (data) {
+		// 						console.warn("GET ERROR");
+		// 						console.warn("GET ERROR data", data);
+		// 					}
+		// 				});
+		// 			}
+		// 		},
 
 		/*OnUpload: function (e) {
 			var file = sap.ui.getCore()._file;

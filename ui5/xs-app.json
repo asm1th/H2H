@@ -1,14 +1,17 @@
 {
-  "welcomeFile": "/ui5/index.html",
-  "authenticationMethod": "route",
-  "logout": {
-    "logoutEndpoint": "/do/logout"
-  },
-  "routes": [
-    {
-      "source": "^/ui5/(.*)$",
-      "target": "$1",
-      "localDir": "webapp"
-    }
-  ]
+	"welcomeFile": "/ui5/index.html",
+	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/do/logout"
+	},
+	"routes": [{
+		"source": "(.*)(.xsjs)",
+		"destination": "core-xsjs-backend",
+		"csrfProtection": false,
+		"authenticationType": "xsuaa"
+	}, {
+		"source": "(.*)(.xsodata)",
+		"destination": "core-xsjs-backend",
+		"authenticationType": "xsuaa"
+	}]
 }
