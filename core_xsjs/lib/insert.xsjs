@@ -2,7 +2,7 @@ try {
     var bank = 'RAIF';
     var xmlns = 'http://bssys.com/upg/request';
     var requestId = 'ae059298-e102-1ee9-a8ae-7595552d079a'//$.request.parameters.get("uuid");
-    var version = '0.1';
+    var version = '0.1';/H2H/core_xsjs (Run script start)/H2H/core_xsjs (Run script start)
     var fileName = $.request.parameters.get("filename");
 } catch (e) {
     $.response.status = $.net.http.INTERNAL_SERVER_ERROR;

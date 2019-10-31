@@ -62,7 +62,7 @@ context RaiffeisenBank {
             purpose   : t_str_210;
 
             @Comment : 'Дата составления документа'
-            docDate   : t_date;
+            docDate   : t_str;
 
             @Comment : 'Номер документа'
         key docNum    : t_str_6;
