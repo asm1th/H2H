@@ -138,19 +138,19 @@ sap.ui.define([
 			if (fileName === "") {
 				sap.ui.commons.MessageBox.show("Please choose File.", sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
 			} else {
-				var file = jQuery.sap.domById(fileLoader.getId() + "-fu").files[0];
-				var oEntry = {
-					"d": {
-						bank: "RAIF",
-						xmlns: "http://bssys.com/upg/request",
-						requestId: "ae059298-e102-1ee9-a8ae-7595552d079a",
-						version: "0.1",
-						filename: fileName,
-						file: file
-					}
-				};
-				console.log("Отправляем file:");
-				console.log(oEntry);
+				// var file = jQuery.sap.domById(fileLoader.getId() + "-fu").files[0];
+				// var oEntry = {
+				// 	"d": {
+				// 		bank: "RAIF",
+				// 		xmlns: "http://bssys.com/upg/request",
+				// 		requestId: "ae059298-e102-1ee9-a8ae-7595552d079a",
+				// 		version: "0.1",
+				// 		filename: fileName,
+				// 		file: file
+				// 	}
+				// };
+				// console.log("Отправляем file:");
+				// console.log(oEntry);
 
 				// VAR3
 				// var insertdata = JSON.stringify(oEntry);
@@ -176,39 +176,71 @@ sap.ui.define([
 					'https://cors-anywhere.herokuapp.com/https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata';
 				const oModel = new sap.ui.model.odata.v2.ODataModel(url);
 
-				var file = jQuery.sap.domById("__loader0-fu").files[0];
-				var oHeaders = {
-
-					"x-csrf-token": window.xcsrf,
-					"slug": filename + "|" + file.type + "whatever info you like to send",
-				};
+				//var file = jQuery.sap.domById("__loader0-fu").files[0];
+				
+				var ref = this;
+					ref.textId = Math.floor(Math.random() * 1000);
+					
 				$.ajax({
-					type: 'POST',
-					url: "/url...",
-
-					headers: oHeaders,
-
-					cache: false,
-
-					contentType: "application/json",
-
-					dataType: "json",
-
-					processData: false,
-
-					data: file,
-
-					success: function (data) {
-
-						alert("uploaded");
-					},
-
-					error: function () {
-
-						alert("failed");
-					}
-
-				});
+                    url: "/",
+                    type: "GET",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Content-Type": "application/json",
+                        "X-CSRF-Token": "Fetch"
+                    },
+                    dataType: "json",
+                    async: false,
+                    complete: function(data) {
+                        $.ajax({
+                            //"url": "/sample.svc/v1/ImageStorages",
+                            "url": url+ "Request",
+                            "data": JSON.stringify({
+                                "ImageId": ref.textId+"",
+                                "ImageMimeType": "text/plaing",
+                                "ImageBinary": btoa(ref.fileData)
+                            }),
+                            "processData": false,
+                            "headers": {
+                                "X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
+                                "Content-Type": "application/json"
+                            },
+                            "method": "post"
+                        })
+                    }
+                })
+					
+				
+				// $.ajax({
+    //                 url: "/",
+    //                 type: "GET",
+    //                 headers: {
+    //                     "X-Requested-With": "XMLHttpRequest",
+    //                     "Content-Type": "application/json",
+    //                     "X-CSRF-Token": "Fetch"
+    //                 },
+    //                 dataType: "json",
+    //                 async: false,
+    //                 complete: function(data) {
+    //                     $.ajax({
+    //                         //"url": "/sample.svc/v1/ImageStorages",
+    //                         "url": url+ "Request",
+    //                         "data": JSON.stringify({
+    //                             "ImageId": ref.textId+"",
+    //                             "ImageMimeType": "text/plaing",
+    //                             "ImageBinary": btoa(ref.fileData)
+    //                         }),
+    //                         "processData": false,
+    //                         "headers": {
+    //                             "X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
+    //                             "Content-Type": "application/json"
+    //                         },
+    //                         "method": "post"
+    //                     })
+    //                 }
+    //             })
+				
+				
 
 				// oModel.setHeaders({
 				// 		"X-Requested-With": "XMLHttpRequest",
