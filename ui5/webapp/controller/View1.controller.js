@@ -262,7 +262,7 @@ sap.ui.define([
 				// 		"X-CSRF-Token": "Fetch"
 				// });
 
-				oModel.create("/PayDocRu", oEntry, null,
+				oModel.create("/Request", oEntry, null,
 					function (oData, oResponse) {
 						var msg = "Файл загружен";
 						MessageToast.show(msg);
