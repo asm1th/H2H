@@ -8,14 +8,7 @@
 			"entryPath": "/resources"
 		},
 		"description": "SAPUI5 Resources"
-	}, {
-		"path": "/xsodata/h2h.xsodata",
-		"description": "xsodata",
-		"target": {
-			"type": "destination",
-			"name": "xsodata",
-			"entryPath": "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata"
-		}
+	
 
 	}],
 	"sendWelcomeFileRedirect": true

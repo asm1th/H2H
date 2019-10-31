@@ -9,6 +9,8 @@ try {
     $.response.setBody(e.message);
 }
 
+//$.response.setBody("файл пришел: " +  $.request.parameters.get("file"));
+
 var output = {};
 output.data = [];
 
