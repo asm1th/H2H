@@ -42,8 +42,8 @@ function paydocru_create(param) {
 		pStmt = param.connection.prepareStatement(sql);
 		pstmt.setString(1, param.requestId);
 		pstmt.setString(2, param.docExtId);
-	    //pStmt.execute();
-	    pStmt.executeUpdate();
+	    pStmt.execute();
+	    //pStmt.executeUpdate();
 		pStmt.close();
 	    
 	} catch (e) {
