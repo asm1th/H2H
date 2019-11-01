@@ -172,10 +172,11 @@ sap.ui.define([
 
 				/// VAR2
 				//var oModel = new sap.ui.model.odata.ODataModel("https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata", true);
-				const url =
-					'https://cors-anywhere.herokuapp.com/https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata';
-				const oModel = new sap.ui.model.odata.v2.ODataModel(url);
-
+				//const url = 'https://cors-anywhere.herokuapp.com/https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata';
+				var url = '/xsodata';
+				var oModel = new sap.ui.model.odata.ODataModel(url);
+                debugger;
+                
 				//var file = jQuery.sap.domById("__loader0-fu").files[0];
 
 				var ref = this;
@@ -201,19 +202,17 @@ sap.ui.define([
 					complete: function (data) {
 						$.ajax({
 							//"url": "/sample.svc/v1/ImageStorages",
-							"url": url + "/PayDoc",
-							"data": JSON.stringify({
-								test
-							}),
+							"url": url + "/PayDocRu",
+							"data": JSON.stringify(test),
 							"processData": false,
 							"headers": {
 								"X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
 								"Content-Type": "application/json"
 							},
 							"method": "post"
-						})
+						});
 					}
-				})
+				});
 
 				// $.ajax({
 				//                 url: "/",
