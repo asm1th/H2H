@@ -32,10 +32,20 @@ function paydocru_create(param) {
 			$.trace.error(e.toString());
 		throw e;
 	}*/
+
 	
 	try {
 	    var requestId = param.requestId;
 	    var docExtId = param.docExtId;
+	    
+	    var sql = 'INSERT INTO "RaiffeisenBank.PayDocRu" (requestId, docExtId) VALUES (?, ?)';
+		pStmt = param.connection.prepareStatement(sql);
+		pstmt.setString(1, param.requestId);
+		pstmt.setString(2, param.docExtId);
+	    //pStmt.execute();
+	    pStmt.executeUpdate();
+		pStmt.close();
+	    
 	} catch (e) {
 	    $.trace.error(e.toString());
 		throw e;
