@@ -8,7 +8,13 @@
 			"entryPath": "/resources"
 		},
 		"description": "SAPUI5 Resources"
-	
+	}, {
+		"path": "/xsodata",
+		"description": "xsodata description",
+		"target": {
+			"type": "destination",
+			"name": "xsodata"
+		}
 
 	}],
 	"sendWelcomeFileRedirect": true

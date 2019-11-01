@@ -177,70 +177,72 @@ sap.ui.define([
 				const oModel = new sap.ui.model.odata.v2.ODataModel(url);
 
 				//var file = jQuery.sap.domById("__loader0-fu").files[0];
-				
+
 				var ref = this;
-					ref.textId = Math.floor(Math.random() * 1000);
-					
+				ref.textId = Math.floor(Math.random() * 1000);
+
+				var test = {
+					d: {
+						requestId: "123213",
+						docExtId: "213213"
+					}
+				};
+
 				$.ajax({
-                    url: "/",
-                    type: "GET",
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest",
-                        "Content-Type": "application/json",
-                        "X-CSRF-Token": "Fetch"
-                    },
-                    dataType: "json",
-                    async: false,
-                    complete: function(data) {
-                        $.ajax({
-                            //"url": "/sample.svc/v1/ImageStorages",
-                            "url": url+ "Request",
-                            "data": JSON.stringify({
-                                "ImageId": ref.textId+"",
-                                "ImageMimeType": "text/plaing",
-                                "ImageBinary": btoa(ref.fileData)
-                            }),
-                            "processData": false,
-                            "headers": {
-                                "X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
-                                "Content-Type": "application/json"
-                            },
-                            "method": "post"
-                        })
-                    }
-                })
-					
-				
+					url: "/",
+					type: "GET",
+					headers: {
+						"X-Requested-With": "XMLHttpRequest",
+						"Content-Type": "application/json",
+						"X-CSRF-Token": "Fetch"
+					},
+					dataType: "json",
+					async: false,
+					complete: function (data) {
+						$.ajax({
+							//"url": "/sample.svc/v1/ImageStorages",
+							"url": url + "/PayDoc",
+							"data": JSON.stringify({
+								test
+							}),
+							"processData": false,
+							"headers": {
+								"X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
+								"Content-Type": "application/json"
+							},
+							"method": "post"
+						})
+					}
+				})
+
 				// $.ajax({
-    //                 url: "/",
-    //                 type: "GET",
-    //                 headers: {
-    //                     "X-Requested-With": "XMLHttpRequest",
-    //                     "Content-Type": "application/json",
-    //                     "X-CSRF-Token": "Fetch"
-    //                 },
-    //                 dataType: "json",
-    //                 async: false,
-    //                 complete: function(data) {
-    //                     $.ajax({
-    //                         //"url": "/sample.svc/v1/ImageStorages",
-    //                         "url": url+ "Request",
-    //                         "data": JSON.stringify({
-    //                             "ImageId": ref.textId+"",
-    //                             "ImageMimeType": "text/plaing",
-    //                             "ImageBinary": btoa(ref.fileData)
-    //                         }),
-    //                         "processData": false,
-    //                         "headers": {
-    //                             "X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
-    //                             "Content-Type": "application/json"
-    //                         },
-    //                         "method": "post"
-    //                     })
-    //                 }
-    //             })
-				
-				
+				//                 url: "/",
+				//                 type: "GET",
+				//                 headers: {
+				//                     "X-Requested-With": "XMLHttpRequest",
+				//                     "Content-Type": "application/json",
+				//                     "X-CSRF-Token": "Fetch"
+				//                 },
+				//                 dataType: "json",
+				//                 async: false,
+				//                 complete: function(data) {
+				//                     $.ajax({
+				//                         //"url": "/sample.svc/v1/ImageStorages",
+				//                         "url": url+ "/Request",
+				//                         "data": JSON.stringify({
+				//                             "ImageId": ref.textId+"",
+				//                             "ImageMimeType": "text/plaing",
+				//                             "ImageBinary": btoa(ref.fileData)
+				//                         }),
+				//                         "processData": false,
+				//                         "headers": {
+				//                             "X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
+				//                             "Content-Type": "application/json"
+				//                         },
+				//                         "method": "post"
+				//                     })
+				//                 }
+				//             })
 
 				// oModel.setHeaders({
 				// 		"X-Requested-With": "XMLHttpRequest",
