@@ -1,5 +1,5 @@
 service {
-    "RaiffeisenBank.Request"	as "Request" 	navigates ("PDHead" as "PayDocRu");
+    "RaiffeisenBank.Request"	as "Request" 	navigates ("PDHead" as "PayDocRu") create using "xsjs:dbf.xsjslib::paydocru_create";
 	"RaiffeisenBank.PayDocRu"	as "PayDocRu"	navigates ("PDItems" as "AccDoc") create using "xsjs:dbf.xsjslib::paydocru_create"; 
 	"RaiffeisenBank.Payer"		as "Payer"		navigates ("PDPayer" as "Payer");
 	"RaiffeisenBank.Payee"		as "Payee"		navigates ("PDPayee" as "Payee");
