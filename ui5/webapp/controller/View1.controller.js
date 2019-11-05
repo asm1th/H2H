@@ -35,7 +35,6 @@ sap.ui.define([
 				return;
 			}
 			// For UI5 Client Export --> The settings contains sap.ui.export.SpreadSheet relevant settings that be used to modify the output of excel
-
 			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
 			mExcelSettings.worker = false;
 		},
@@ -56,7 +55,7 @@ sap.ui.define([
 			if (fileName === "") {
 				MessageToast.show("Please choose File.");
 			} else {
-                var oModel = this.getOwnerComponent().getModel();
+				var oModel = this.getOwnerComponent().getModel();
 				var reader = new FileReader();
 				var that = this;
 				reader.onload = function (e) {
@@ -213,47 +212,6 @@ sap.ui.define([
 			}
 		},
 
-		/*OnUpload: function (e) {
-			var file = sap.ui.getCore()._file;
-			if (file && window.FileReader) {
-				var reader = new FileReader();
-				reader.onload = function (evn) {
-					var strCSV = evn.target.result; //string in CSV 
-					//alert(strCSV);
-					//console.log(strCSV);
-
-					var orders = strCSV.split("СекцияДокумент=Платежное поручение");
-					var JSON = [];
-					console.log("Строк: " + orders.length);
-					orders.forEach(function (order, i) {
-
-						var lines = order.split("\n");
-						console.log("Строк: " + lines.length);
-						var arORDER = [];
-						var obj = new Object();
-						lines.forEach(function (line, i) {
-							var row = line.split("=");
-							var prop = row[0];
-							if (prop) {
-								if (row[1]) {
-									var val = row[1];
-									val = val.replace(/\"/g, '\\"');
-								} else {
-									var val = null;
-								}
-								
-								obj[prop] = val;
-							}
-						});
-						JSON.push(obj);
-					});
-					console.log(JSON);
-				};
-				reader.readAsText(file);
-			}
-		}
-        */
-
 		//sign
 
 		onSignCreate: function () {
@@ -277,55 +235,19 @@ sap.ui.define([
 					//document.getElementById("signature").innerHTML = result;
 					console.log(result);
 				});
-		}
+		},
 
-		// 		SignCreate: function (certSubjectName, dataToSign) {
-		// 			var CADESCOM_CADES_BES = 1;
-		// 			var CAPICOM_CURRENT_USER_STORE = 2;
-		// 			var CAPICOM_MY_STORE = "My";
-		// 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
-		// 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
+		SignCreate: function (certSubjectName, dataToSign) {
+			var CADESCOM_CADES_BES = 1;
+			var CAPICOM_CURRENT_USER_STORE = 2;
+			var CAPICOM_MY_STORE = "My";
+			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
+			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
 
-		// 			return new Promise(function (resolve, reject) {
-		// 				window.cadesplugin.async_spawn(function* (args) {
-		// 					try {
-		// 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
-		// 						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,
-		// 							CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
-
-		// 						var CertificatesObj = yield oStore.Certificates;
-		// 						var oCertificates = yield CertificatesObj.Find(
-		// 							CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
-
-		// 						var Count = yield oCertificates.Count;
-		// 						if (Count == 0) {
-		// 							throw ("Certificate not found: " + args[0]);
-		// 						}
-		// 						var oCertificate = yield oCertificates.Item(1);
-		// 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
-		// 						yield oSigner.propset_Certificate(oCertificate);
-
-		// 						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
-		// 						yield oSignedData.propset_Content(dataToSign);
-
-		// 						var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_CADES_BES);
-
-		// 						yield oStore.Close();
-
-		// 						args[2](sSignedMessage);
-		// 					} catch (e) {
-		// 						args[3]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
-		// 					}
-		// 				}, certSubjectName, dataToSign, resolve, reject);
-		// 			});
-		// 		},
-
-		/*
-		onSignCreate: function (certSubjectName, dataToSign) {
 			return new Promise(function (resolve, reject) {
-				cadesplugin.async_spawn(function* (args) {
+				window.cadesplugin.async_spawn(function* (args) {
 					try {
-						var oStore = yield cadesplugin.CreateObjectAsync("CAdESCOM.Store");
+						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
 						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,
 							CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
@@ -338,10 +260,10 @@ sap.ui.define([
 							throw ("Certificate not found: " + args[0]);
 						}
 						var oCertificate = yield oCertificates.Item(1);
-						var oSigner = yield cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
+						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
 						yield oSigner.propset_Certificate(oCertificate);
 
-						var oSignedData = yield cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
+						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
 						yield oSignedData.propset_Content(dataToSign);
 
 						var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_CADES_BES);
@@ -350,31 +272,11 @@ sap.ui.define([
 
 						args[2](sSignedMessage);
 					} catch (e) {
-						args[3]("Failed to create signature. Error: " + cadesplugin.getLastError(err));
+						args[3]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
 					}
 				}, certSubjectName, dataToSign, resolve, reject);
 			});
 		},
-
-		run: function() {
-			//var oCertName = document.getElementById("CertName");
-			//var sCertName = oCertName.value;
-			var sCertName = ""
-			if ("" == sCertName) {
-				alert("Введите имя сертификата (CN).");
-				return;
-			}
-			var thenable = SignCreate(sCertName, "Message");
-
-			thenable.then(
-				function (result) {
-					document.getElementById("signature").innerHTML = result;
-				},
-				function (result) {
-					document.getElementById("signature").innerHTML = result;
-				});
-		},
-        */
 
 		/* https://github.com/anpur/line-navigator Anton Purin MIT 2016 */
 	});
