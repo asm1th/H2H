@@ -58,7 +58,7 @@ sap.ui.define([
 				var oModel = this.getOwnerComponent().getModel();
 				var oEntry = {};
 				oEntry.requestId = "0000000000";
-				oEntry.docExtId = file;
+				oEntry.docExtId = btoa(file);
 				
 				oModel.setHeaders({
 					"X-Requested-With": "XMLHttpRequest",
