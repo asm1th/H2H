@@ -35,9 +35,23 @@ function paydocru_create(param) {
 
 	
 	try {
-	    var requestId = param.requestId;
+	    var requestId = '';
 	    var docExtId = param.docExtId;
 	    
+		$.trace.error("InsertPayDocRu");
+		var after = param.afterTableName;
+	    var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
+		var rs = null;
+		rs = pStmt.executeQuery();
+		while (rs.next()) {
+			requestId = rs.getString(1);
+			//docExtId = rs.getString(2);
+			//$.trace.error("Partner ID: " + rs.getString('requestId'));
+			//$.trace.error("Partner ID: " + rs.getString(2));
+		}
+		pStmt.close();
+	    
+	/*    
 	    var sql = 'INSERT INTO "RaiffeisenBank.PayDocRu" (requestId, docExtId) VALUES (?, ?)';
 		pStmt = param.connection.prepareStatement(sql);
 		pstmt.setString(1, param.requestId);
@@ -45,6 +59,7 @@ function paydocru_create(param) {
 	    pStmt.execute();
 	    //pStmt.executeUpdate();
 		pStmt.close();
+		*/
 	    
 	} catch (e) {
 	    $.trace.error(e.toString());

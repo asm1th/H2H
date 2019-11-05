@@ -175,7 +175,7 @@ sap.ui.define([
 				//const url = 'https://cors-anywhere.herokuapp.com/https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata';
 				var url = '/xsodata';
 				var oModel = new sap.ui.model.odata.ODataModel(url);
-                debugger;
+                //debugger;
                 
 				//var file = jQuery.sap.domById("__loader0-fu").files[0];
 
