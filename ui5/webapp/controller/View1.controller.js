@@ -14,9 +14,9 @@ sap.ui.define([
 
 			//var url = '/xsodata';
 			//var oModel = new sap.ui.model.odata.ODataModel(url);
-            var userModel = this.getOwnerComponent().getModel();
-            this.getView().setModel(userModel);
-            
+			var userModel = this.getOwnerComponent().getModel();
+			this.getView().setModel(userModel);
+
 			var oModel = this.getView().getModel();
 			var dataPage = {
 				selectedKey: "page1"
@@ -46,33 +46,44 @@ sap.ui.define([
 
 		// file upload
 		OnUpload: function (oEvent) {
-			var fileLoader = this.getView().byId("fileUploader");
-			var fileName = fileLoader.getValue();
-			jQuery.sap.require("sap.ui.commons.MessageBox");
+			var oFileUpload = this.getView().byId("fileUploader");
+			var domRef = oFileUpload.getFocusDomRef();
+			//var file = jQuery.sap.domById("__xmlview0--fileUploader-fu").files[0];
+			var file = domRef.files[0];
+			var fileName = file.name;
+			var fileType = file.type;
+
 			if (fileName === "") {
-				sap.ui.commons.MessageBox.show("Please choose File.", sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
+				MessageToast.show("Please choose File.");
 			} else {
-				//var FILE = btoa(this.fileData);
-				var file = jQuery.sap.domById("__xmlview0--fileUploader-fu").files[0];
-				
-				var oModel = this.getOwnerComponent().getModel();
-				var oEntry = {};
-				oEntry.requestId = "0000000000";
-				oEntry.docExtId = btoa(file);
-				
-				oModel.setHeaders({
-					"X-Requested-With": "XMLHttpRequest",
-					"Content-Type": "application/json",
-					"X-CSRF-Token": "Fetch"
-				});
-				var mParams = {};
-				mParams.success = function () {
-					sap.m.MessageToast.show("Create successful");
+                var oModel = this.getOwnerComponent().getModel();
+				var reader = new FileReader();
+				var that = this;
+				reader.onload = function (e) {
+					var vContent = e.currentTarget.result.replace("data:" + file.type + ";base64,", "");
+					//that.postFileToBackend(workorderId, that.fileName, that.fileType, vContent);
+
+					var oEntry = {};
+					oEntry.requestId = "0000000000";
+					oEntry.file = btoa(vContent);
+					//oEntry.fileName = fileName;
+					//oEntry.fileType = fileType;
+
+					oModel.setHeaders({
+						"X-Requested-With": "XMLHttpRequest",
+						"Content-Type": "application/json",
+						"X-CSRF-Token": "Fetch"
+					});
+					var mParams = {};
+					mParams.success = function () {
+						MessageToast.show("Create successful");
+					};
+					mParams.error = that.onErrorCall;
+					oModel.create("/Request", oEntry, mParams);
+
 				};
-				mParams.error = this.onErrorCall;
-				oModel.create("/PayDocRu", oEntry, mParams);
-				
-				
+				reader.readAsDataURL(file);
+
 				// $.ajax({
 				// 	url: "/",
 				// 	type: "GET",
@@ -182,8 +193,8 @@ sap.ui.define([
 				*/
 			}
 		},
-		
-		onErrorCall: function(oError) {
+
+		onErrorCall: function (oError) {
 			if (oError.statusCode === 500 || oError.statusCode === 400 || oError.statusCode === "500" || oError.statusCode === "400") {
 				var errorRes = JSON.parse(oError.responseText);
 				if (!errorRes.error.innererror) {
