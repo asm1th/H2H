@@ -35,8 +35,8 @@ function paydocru_create(param) {
 
 	
 	try {
-	    var requestId = '';
-	    var docExtId = param.docExtId;
+	    // var requestId = '';
+	    // var docExtId = param.docExtId;
 	    
 		$.trace.error("InsertPayDocRu");
 		var after = param.afterTableName;
@@ -44,8 +44,8 @@ function paydocru_create(param) {
 		var rs = null;
 		rs = pStmt.executeQuery();
 		while (rs.next()) {
-			requestId = rs.getString(1);
-			//docExtId = rs.getString(2);
+			var requestId = rs.getString(1);
+			var docExtId = rs.getString(2);
 			//$.trace.error("Partner ID: " + rs.getString('requestId'));
 			//$.trace.error("Partner ID: " + rs.getString(2));
 		}
