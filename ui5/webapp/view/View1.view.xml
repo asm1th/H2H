@@ -1,20 +1,7 @@
-<!--<mvc:View controllerName="h2h.ui5.controller.View1" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">-->
-<!--	<Shell id="shell">-->
-<!--		<App id="app">-->
-<!--			<pages>-->
-<!--				<Page id="page" title="!@@!@!@!@!@!@">-->
-<!--					<content></content>-->
-<!--				</Page>-->
-<!--			</pages>-->
-<!--		</App>-->
-<!--	</Shell>-->
-<!--</mvc:View>-->
-
 <mvc:View controllerName="h2h.ui5.controller.View1" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:fb="sap.ui.comp.filterbar" xmlns="sap.m" xmlns:t="sap.ui.table" displayBlock="true"
-	xmlns:variant="sap.ui.comp.variants" xmlns:f="sap.f" xmlns:u="sap.ui.unified" class="sapUiSizeCompact">
-    
-        
+	xmlns:variant="sap.ui.comp.variants" xmlns:f="sap.f" xmlns:u="sap.ui.unified" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable" class="sapUiSizeCompact">
 	<tnt:ToolPage id="toolPage">
 		<tnt:header>
 			<tnt:ToolHeader class="itsk-tool" design="Info">
@@ -75,126 +62,148 @@
 			<NavContainer id="pageContainer" initialPage="page1">
 				<pages>
 					<ScrollContainer id="page1" horizontal="false" vertical="true" height="100%">
-						<fb:FilterBar id="FilterBar" class="filterstyle" reset="onReset" search="onSearch" showGoOnFB="true" showFilterConfiguration="true">
-							<fb:filterGroupItems>
-								<fb:FilterGroupItem name="fi_be" label="Балансовая единица" groupName="__$INTERNAL$" partOfCurrentVariant="true" visibleInFilterBar="true">
-									<fb:control>
-										<ComboBox id="slCompCode" showSecondaryValues="true" filterSecondaryValues="true" selectedKey="1000" change="onFilterChange"
-											class="mySelect">
-											<items>
-												<core:ListItem key="1000" text="ПАО Газпромнефть" additionalText="1000"/>
-											</items>
-										</ComboBox>
-										<!--<ComboBox id="slCompCode" required="true" showSecondaryValues="true" filterSecondaryValues="true" change="onFilterChange" selectedKey="1000"-->
-										<!--	class="mySelect" items="{ path: '/COMPANY_CODE_SH_SET', templateShareable:false, sorter: { path: 'Value' } }">-->
-										<!--	<core:ListItem key="{Key}" text="{Value}" additionalText="{Key}"/>-->
-										<!--</ComboBox>-->
-									</fb:control>
-								</fb:FilterGroupItem>
-								<fb:FilterGroupItem groupName="__$INTERNAL$" name="DateRange" label="Диапазон дат" partOfCurrentVariant="true" visibleInFilterBar="true">
-									<fb:control>
-										<DateRangeSelection id="DRS1" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"
-											secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="handleChange"/>
-									</fb:control>
-								</fb:FilterGroupItem>
-								<fb:FilterGroupItem groupName="__$INTERNAL$" name="selfBank" label="Собственный Банк" partOfCurrentVariant="true" visibleInFilterBar="true">
-									<fb:control>
-										<Input type="Text" change="onChange"/>
-									</fb:control>
-								</fb:FilterGroupItem>
-								<fb:FilterGroupItem groupName="__$INTERNAL$" name="system" label="Система учета" partOfCurrentVariant="true" visibleInFilterBar="true">
-									<fb:control>
-										<ComboBox id="slSystem" showSecondaryValues="true" filterSecondaryValues="true" selectedKey="1000" change="onFilterChange" class="mySelect">
-											<items>
-												<core:ListItem key="SAP" text="SAP"/>
-											</items>
-										</ComboBox>
-									</fb:control>
-								</fb:FilterGroupItem>
-							</fb:filterGroupItems>
-						</fb:FilterBar>
-						<t:Table id="tableBalans" class="tablestyle" rows="{/table}" selectionMode="MultiToggle" ariaLabelledBy="title"
-							visibleRowCountMode="Auto" rowActionCount="2" enableCellFilter="true" showColumnVisibilityMenu="true"
-							rowSelectionChange="toggleEditableFields">
-							<t:extension>
-								<OverflowToolbar>
-									<core:Icon tooltip="Платежи" src="sap-icon://menu" class="size1" color="#cccccc">
-										<core:layoutData>
-											<FlexItemData growFactor="1"/>
-										</core:layoutData>
-									</core:Icon>
-									<Title id="title" text="Платежи (2)"/>
-									<ToolbarSeparator/>
-									<!--<ToolbarSpacer/>-->
-									<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
-									<!--<Button icon="sap-icon://action-settings" tooltip="Настройки" press="onPersonalizationDialogPress" enabled="fasle"/>-->
-									<!--<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>-->
-									<!--<Button icon="sap-icon://excel-attachment" tooltip="Приложения" id="onAttach" press="onAttach" enabled="fasle"/>-->
-									<!--<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>-->
-									<!--<ToolbarSeparator/>-->
-									<!--<Button icon="sap-icon://upload-to-cloud" text="Загрузить" class="btn btn-bordered" press="onUpload"/>-->
-									<!--<Button icon="sap-icon://paper-plane" type="Default" text="Отправить" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>-->
-									<!--<ToolbarSeparator/>-->
-									<!--<Button icon="sap-icon://undo" text="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>-->
-									<!--<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignCreate" enabled="true"/>-->
-									
-								<u:FileUploader
-                        			id="fileUploader"
-                        			name="myFileUpload"
-                        			change="OnFileSelected"
-                        			tooltip="Upload your file to the local server"
-                        			uploadComplete="handleUploadComplete"/>
-                        		<Button
-                        			text="Upload File"
-                        			press="OnUpload"/>
-                        			
-								</OverflowToolbar>
-							</t:extension>
-							<t:rowSettingsTemplate>
-								<t:RowSettings highlight="{Status}"/>
-							</t:rowSettingsTemplate>
-							<t:rowActionTemplate>
-								<t:RowAction>
-									<t:items>
-										<t:RowActionItem icon="sap-icon://signature" tooltip="Подписать" press="onSignatureRow"></t:RowActionItem>
-										<t:RowActionItem type="Navigation" press="fnPress"></t:RowActionItem>
-									</t:items>
-								</t:RowAction>
-							</t:rowActionTemplate>
-							<!--<t:customData>
+						<VBox fitContainer="true">
+						    
+							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PayDocRu" persistencyKey="SmartFilter_Explored"
+								basicSearchFieldName="requestId" enableBasicSearch="true">
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration key="requestId">
+										<smartFilterBar:defaultFilterValues>
+											<smartFilterBar:SelectOption low="123"></smartFilterBar:SelectOption>
+										</smartFilterBar:defaultFilterValues>
+									</smartFilterBar:ControlConfiguration>
+									<smartFilterBar:ControlConfiguration key="docExtId">
+										<smartFilterBar:defaultFilterValues>
+											<smartFilterBar:SelectOption low="321"></smartFilterBar:SelectOption>
+										</smartFilterBar:defaultFilterValues>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+								<!-- layout data used to make the table growing but the filter bar fixed -->
+								<smartFilterBar:layoutData>
+									<FlexItemData shrinkFactor="0"/>
+								</smartFilterBar:layoutData>
+							</smartFilterBar:SmartFilterBar>
+							
+							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PayDocRu" smartFilterId="smartFilterBar" tableType="Table" initiallyVisibleFields="requestId,docExtId"
+								useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="false" header="Платежные поручения"
+								showRowCount="true" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true" class="sapUiResponsiveContentPadding">
+								<!-- layout data used to make the table growing but the filter bar fixed -->
+								<smartTable:layoutData>
+									<FlexItemData growFactor="1" baseSize="0%"/>
+								</smartTable:layoutData>
+							</smartTable:SmartTable>
+							
+							<u:FileUploader id="fileUploader" name="myFileUpload" change="OnFileSelected" tooltip="Upload your file to the local server"
+											uploadComplete="handleUploadComplete"/>
+										<Button text="Upload File" press="OnUpload"/>
+							
+							<!--<fb:FilterBar id="FilterBar" class="filterstyle" reset="onReset" search="onSearch" showGoOnFB="true" showFilterConfiguration="true">-->
+							<!--	<fb:filterGroupItems>-->
+							<!--		<fb:FilterGroupItem name="fi_be" label="Балансовая единица" groupName="__$INTERNAL$" partOfCurrentVariant="true" visibleInFilterBar="true">-->
+							<!--			<fb:control>-->
+							<!--				<ComboBox id="slCompCode" showSecondaryValues="true" filterSecondaryValues="true" selectedKey="1000" change="onFilterChange"-->
+							<!--					class="mySelect">-->
+							<!--					<items>-->
+							<!--						<core:ListItem key="1000" text="ПАО Газпромнефть" additionalText="1000"/>-->
+							<!--					</items>-->
+							<!--				</ComboBox>-->
+											
+							<!--			</fb:control>-->
+							<!--		</fb:FilterGroupItem>-->
+							<!--		<fb:FilterGroupItem groupName="__$INTERNAL$" name="DateRange" label="Диапазон дат" partOfCurrentVariant="true" visibleInFilterBar="true">-->
+							<!--			<fb:control>-->
+							<!--				<DateRangeSelection id="DRS1" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"-->
+							<!--					secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="handleChange"/>-->
+							<!--			</fb:control>-->
+							<!--		</fb:FilterGroupItem>-->
+							<!--		<fb:FilterGroupItem groupName="__$INTERNAL$" name="selfBank" label="Собственный Банк" partOfCurrentVariant="true" visibleInFilterBar="true">-->
+							<!--			<fb:control>-->
+							<!--				<Input type="Text" change="onChange"/>-->
+							<!--			</fb:control>-->
+							<!--		</fb:FilterGroupItem>-->
+							<!--		<fb:FilterGroupItem groupName="__$INTERNAL$" name="system" label="Система учета" partOfCurrentVariant="true" visibleInFilterBar="true">-->
+							<!--			<fb:control>-->
+							<!--				<ComboBox id="slSystem" showSecondaryValues="true" filterSecondaryValues="true" selectedKey="1000" change="onFilterChange" class="mySelect">-->
+							<!--					<items>-->
+							<!--						<core:ListItem key="SAP" text="SAP"/>-->
+							<!--					</items>-->
+							<!--				</ComboBox>-->
+							<!--			</fb:control>-->
+							<!--		</fb:FilterGroupItem>-->
+							<!--	</fb:filterGroupItems>-->
+							<!--</fb:FilterBar>-->
+							<!--<t:Table id="tableBalans" class="tablestyle" rows="{/table}" selectionMode="MultiToggle" ariaLabelledBy="title" visibleRowCountMode="Auto"-->
+							<!--	rowActionCount="2" enableCellFilter="true" showColumnVisibilityMenu="true" rowSelectionChange="toggleEditableFields">-->
+							<!--	<t:extension>-->
+							<!--		<OverflowToolbar>-->
+							<!--			<core:Icon tooltip="Платежи" src="sap-icon://menu" class="size1" color="#cccccc">-->
+							<!--				<core:layoutData>-->
+							<!--					<FlexItemData growFactor="1"/>-->
+							<!--				</core:layoutData>-->
+							<!--			</core:Icon>-->
+							<!--			<Title id="title" text="Платежи (2)"/>-->
+							<!--			<ToolbarSeparator/>-->
+										
+										
+										<!--<ToolbarSpacer/>-->
+										<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
+										<!--<Button icon="sap-icon://action-settings" tooltip="Настройки" press="onPersonalizationDialogPress" enabled="fasle"/>-->
+										<!--<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>-->
+										<!--<Button icon="sap-icon://excel-attachment" tooltip="Приложения" id="onAttach" press="onAttach" enabled="fasle"/>-->
+										<!--<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>-->
+										<!--<ToolbarSeparator/>-->
+										<!--<Button icon="sap-icon://upload-to-cloud" text="Загрузить" class="btn btn-bordered" press="onUpload"/>-->
+										<!--<Button icon="sap-icon://paper-plane" type="Default" text="Отправить" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>-->
+										<!--<ToolbarSeparator/>-->
+										<!--<Button icon="sap-icon://undo" text="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>-->
+										<!--<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignCreate" enabled="true"/>-->
+										
+								<!--	</OverflowToolbar>-->
+								<!--</t:extension>-->
+								<!--<t:rowSettingsTemplate>-->
+								<!--	<t:RowSettings highlight="{Status}"/>-->
+								<!--</t:rowSettingsTemplate>-->
+								<!--<t:rowActionTemplate>-->
+								<!--	<t:RowAction>-->
+								<!--		<t:items>-->
+								<!--			<t:RowActionItem icon="sap-icon://signature" tooltip="Подписать" press="onSignatureRow"></t:RowActionItem>-->
+								<!--			<t:RowActionItem type="Navigation" press="fnPress"></t:RowActionItem>-->
+								<!--		</t:items>-->
+								<!--	</t:RowAction>-->
+								<!--</t:rowActionTemplate>-->
+								
+								<!--<t:customData>
                                 <core:CustomData key="mydata" value="{Status}" writeToDom="true"></core:CustomData>
                               </t:customData>-->
-							<t:columns>
-								<t:Column id="col_docDate" visible="true" sortProperty="docDate" filterProperty="docDate" showFilterMenuEntry="true"
-									showSortMenuEntry="true">
-									<Label text="Дата платежа"/>
-									<t:template>
-										<Text text="{docDate}"/>
-									</t:template>
-								</t:Column>
-								<t:Column id="col_Sys" visible="true" sortProperty="purpose" filterProperty="purpose" showFilterMenuEntry="true"
-									showSortMenuEntry="true">
-									<Label text="Система"/>
-									<t:template>
-										<Text text="{purpose}"/>
-									</t:template>
-								</t:Column>
-								<t:Column id="col_nd" visible="true" sortProperty="docNum" filterProperty="docNum" showFilterMenuEntry="true"
-									showSortMenuEntry="true">
-									<Label text="№ документа"/>
-									<t:template>
-										<Text text="{docNum}"/>
-									</t:template>
-								</t:Column>
-								<t:Column id="col_Stat" visible="true" sortProperty="docNum" filterProperty="docNum" showFilterMenuEntry="true"
-									showSortMenuEntry="true">
-									<Label text="Статус"/>
-									<t:template>
-									    <Text text="Статус"/>
-									</t:template>
-								</t:Column>
-							</t:columns>
-						</t:Table>
+							<!--	<t:columns>-->
+							<!--		<t:Column id="col_docDate" visible="true" sortProperty="docDate" filterProperty="docDate" showFilterMenuEntry="true"-->
+							<!--			showSortMenuEntry="true">-->
+							<!--			<Label text="Дата платежа"/>-->
+							<!--			<t:template>-->
+							<!--				<Text text="{docDate}"/>-->
+							<!--			</t:template>-->
+							<!--		</t:Column>-->
+							<!--		<t:Column id="col_Sys" visible="true" sortProperty="purpose" filterProperty="purpose" showFilterMenuEntry="true" showSortMenuEntry="true">-->
+							<!--			<Label text="Система"/>-->
+							<!--			<t:template>-->
+							<!--				<Text text="{purpose}"/>-->
+							<!--			</t:template>-->
+							<!--		</t:Column>-->
+							<!--		<t:Column id="col_nd" visible="true" sortProperty="docNum" filterProperty="docNum" showFilterMenuEntry="true" showSortMenuEntry="true">-->
+							<!--			<Label text="№ документа"/>-->
+							<!--			<t:template>-->
+							<!--				<Text text="{docNum}"/>-->
+							<!--			</t:template>-->
+							<!--		</t:Column>-->
+							<!--		<t:Column id="col_Stat" visible="true" sortProperty="docNum" filterProperty="docNum" showFilterMenuEntry="true" showSortMenuEntry="true">-->
+							<!--			<Label text="Статус"/>-->
+							<!--			<t:template>-->
+							<!--				<Text text="Статус"/>-->
+							<!--			</t:template>-->
+							<!--		</t:Column>-->
+							<!--	</t:columns>-->
+							<!--</t:Table>-->
+						</VBox>
 					</ScrollContainer>
 					<ScrollContainer id="page2" horizontal="false" vertical="true" height="100%">
 						<Text text="This is the dsfsfsdfsdf page"></Text>
@@ -203,6 +212,4 @@
 			</NavContainer>
 		</tnt:mainContents>
 	</tnt:ToolPage>
-	
-
 </mvc:View>

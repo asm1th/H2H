@@ -12,122 +12,36 @@ sap.ui.define([
 		//return Controller.extend("h2h.ui5.controller.View1", {
 		onInit: function () {
 
-			//var oModel = new sap.ui.model.odata.ODataModel("/xsodata/h2h.xsodata", true);
-			//this.getView().setModel(oModel);
-			//debugger;
-			//this.csrfToken = this.getView().getModel().oHeaders['x-csrf-token'];
-			//var oModel = new sap.ui.model.odata.ODataModel("https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata");
-			//this.getView().setModel(oModel);
-			//console.log(oModel);
-
-			//var oModel = new JSONModel();
-			//this.oModel.loadData(jQuery.sap.getModulePath("host2host", "/localService/tablemodel.json"), null, false);
-			//oModel.loadData("/localService/tablemodel.json");
-			//this.getView().setModel(oModel);
-			//console.log(oModel);
-			//dev
-			/*var oModel = this.getOwnerComponent().getModel();
-			console.info("Full App Model: ");
-			console.log(oModel);*/
-			//.dev
-
-			var oModel = new JSONModel();
-			/*
-			var dateFrom = new Date();
-			dateFrom.setUTCDate(2);
-			dateFrom.setUTCMonth(1);
-			dateFrom.setUTCFullYear(2014);
-
-			var dateTo = new Date();
-			dateTo.setUTCDate(17);
-			dateTo.setUTCMonth(1);
-			dateTo.setUTCFullYear(2014);
-
-			
-			oModel.setData({
-				delimiterDRS1: "@",
-				dateValueDRS1: dateFrom,
-				secondDateValueDRS1: dateTo,
-				dateFormatDRS1: "yyyy/MM/dd",
-				dateValueDRS2: new Date(2016, 1, 16),
-				secondDateValueDRS2: new Date(2016, 1, 18),
-				dateMinDRS2: new Date(2016, 0, 1),
-				dateMaxDRS2: new Date(2016, 11, 31)
-			});
-			this.getView().setModel(oModel);
-            */
-			this._iEvent = 0;
-
+			//var url = '/xsodata';
+			//var oModel = new sap.ui.model.odata.ODataModel(url);
+            var userModel = this.getOwnerComponent().getModel();
+            this.getView().setModel(userModel);
+            
+			var oModel = this.getView().getModel();
 			var dataPage = {
 				selectedKey: "page1"
 			};
-			//var oModel = new sap.ui.model.json.JSONModel(dataPage);
 			oModel.setProperty("/dataPage", dataPage);
-			var table = [{
-				"docDate": "2019-10-18",
-				"docNum": "2946",
-				"docSum": "33700000.00",
-				"paytKind": "0",
-				"priority": "5",
-				"purpose": "Предоплата по дог. ГПН-18/39000/03564/Р/64537-2018-174 от 29.12.2018 по сч 19-685 от 14.10.2019 по отгр. по РФ в 3 декаде октября 2019г. В т.ч.НДС(20%) 5.616.666,67=",
-				"transKind": "01",
-				"vatSum": "0.00",
-				"vatRate": "0.00",
-				"vat": "VatManualAll",
-				"nodocs": "1"
-			}, {
-				"docDate": "2019-10-18",
-				"docNum": "2946",
-				"docSum": "33700000.00",
-				"paytKind": "0",
-				"priority": "5",
-				"purpose": "Предоплата по дог. ГПН-18/39000/03564/Р/64537-2018-174 от 29.12.2018 по сч 19-685 от 14.10.2019 по отгр. по РФ в 3 декаде октября 2019г. В т.ч.НДС(20%) 5.616.666,67=",
-				"transKind": "01",
-				"vatSum": "0.00",
-				"vatRate": "0.00",
-				"vat": "VatManualAll",
-				"nodocs": "1"
-			}];
-			oModel.setProperty("/table", table);
-			this.getView().setModel(oModel);
-
-			//cripto
-			//this.run();
-
-			$(function () {
-				$.ajax({
-					type: 'GET',
-					url: '/',
-					headers: {
-						'X-Csrf-Token': 'Fetch'
-					},
-					success: function (res, status, xhr) {
-						var sHeaderCsrfToken = 'X-Csrf-Token';
-						var sCsrfToken = xhr.getResponseHeader(sHeaderCsrfToken);
-						$(document).ajaxSend(function (event, jqxhr, settings) {
-							if (settings.type === 'POST' || settings.type === 'PUT' || settings.type === 'DELETE') {
-								jqxhr.setRequestHeader(sHeaderCsrfToken, sCsrfToken);
-							}
-						});
-					}
-				});
-			});
-
 		},
 
 		onPress: function (evt) {
 			MessageToast.show(evt.getSource().getId() + " Pressed");
 		},
 
-		onUpload: function (evt) {
-			MessageToast.show(evt.getSource().getId() + " Pressed");
+		onBeforeExport: function (oEvt) {
+			var mExcelSettings = oEvt.getParameter("exportSettings");
+			// GW export
+			if (mExcelSettings.url) {
+				return;
+			}
+			// For UI5 Client Export --> The settings contains sap.ui.export.SpreadSheet relevant settings that be used to modify the output of excel
 
+			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
+			mExcelSettings.worker = false;
 		},
 
 		OnFileSelected: function (e) {
-			MessageToast.show(e.getSource().getId() + " OnFileSelected");
-
-			sap.ui.getCore()._file = e.getParameter("files") && e.getParameter("files")[0];
+			//sap.ui.getCore()._file = e.getParameter("files") && e.getParameter("files")[0];
 		},
 
 		// file upload
@@ -138,82 +52,60 @@ sap.ui.define([
 			if (fileName === "") {
 				sap.ui.commons.MessageBox.show("Please choose File.", sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
 			} else {
-				// var file = jQuery.sap.domById(fileLoader.getId() + "-fu").files[0];
+
+				var oModel = this.getOwnerComponent().getModel();
+				var oEntry = {};
+				oEntry.requestId = "0000000000";
+				oEntry.docExtId = "213213";
 				// var oEntry = {
-				// 	"d": {
-				// 		bank: "RAIF",
-				// 		xmlns: "http://bssys.com/upg/request",
-				// 		requestId: "ae059298-e102-1ee9-a8ae-7595552d079a",
-				// 		version: "0.1",
-				// 		filename: fileName,
-				// 		file: file
+				// 	d: {
+				// 		requestId: "123213",
+				// 		docExtId: "213213"
 				// 	}
 				// };
-				// console.log("Отправляем file:");
-				// console.log(oEntry);
 
-				// VAR3
-				// var insertdata = JSON.stringify(oEntry);
+				oModel.setHeaders({
+					"X-Requested-With": "XMLHttpRequest",
+					"Content-Type": "application/json",
+					"X-CSRF-Token": "Fetch"
+				});
+				var mParams = {};
+				mParams.success = function () {
+					sap.m.MessageToast.show("Create successful");
+				};
+				mParams.error = this.onErrorCall;
+				oModel.create("/PayDocRu", oEntry, mParams);
+
+				
+
+				
+
 				// $.ajax({
-				// 	type: "POST",
-				// 	url: "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/insert.xsjs",
-				// 	contentType: "application/json",
-				// 	data: insertdata,
-				// 	dataType: "json",
-				// 	crossDomain: true,
-				// 	success: function (data) {
-				// 		alert("Data inserted successfully");
+				// 	url: "/",
+				// 	type: "GET",
+				// 	headers: {
+				// 		"X-Requested-With": "XMLHttpRequest",
+				// 		"Content-Type": "application/json",
+				// 		"X-CSRF-Token": "Fetch"
 				// 	},
-				// 	error: function (data) {
-				// 		var message = JSON.stringify(data);
-				// 		alert(message);
+				// 	dataType: "json",
+				// 	async: false,
+				// 	complete: function (data) {
+				// 		$.ajax({
+				// 			//"url": "/sample.svc/v1/ImageStorages",
+				// 			"url": url + "/PayDocRu",
+				// 			"data": JSON.stringify(test),
+				// 			"processData": false,
+				// 			"headers": {
+				// 				"X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
+				// 				"Content-Type": "application/json"
+				// 			},
+				// 			"method": "post"
+				// 		});
 				// 	}
 				// });
 
-				/// VAR2
-				//var oModel = new sap.ui.model.odata.ODataModel("https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata", true);
-				//const url = 'https://cors-anywhere.herokuapp.com/https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/xsodata/h2h.xsodata';
-				var url = '/xsodata';
-				var oModel = new sap.ui.model.odata.ODataModel(url);
-                debugger;
-                
-				//var file = jQuery.sap.domById("__loader0-fu").files[0];
-
-				var ref = this;
-				ref.textId = Math.floor(Math.random() * 1000);
-
-				var test = {
-					d: {
-						requestId: "123213",
-						docExtId: "213213"
-					}
-				};
-
-				$.ajax({
-					url: "/",
-					type: "GET",
-					headers: {
-						"X-Requested-With": "XMLHttpRequest",
-						"Content-Type": "application/json",
-						"X-CSRF-Token": "Fetch"
-					},
-					dataType: "json",
-					async: false,
-					complete: function (data) {
-						$.ajax({
-							//"url": "/sample.svc/v1/ImageStorages",
-							"url": url + "/PayDocRu",
-							"data": JSON.stringify(test),
-							"processData": false,
-							"headers": {
-								"X-Csrf-Token": data.getResponseHeader('X-Csrf-Token'),
-								"Content-Type": "application/json"
-							},
-							"method": "post"
-						});
-					}
-				});
-
+				///=======================
 				// $.ajax({
 				//                 url: "/",
 				//                 type: "GET",
@@ -295,6 +187,25 @@ sap.ui.define([
 					}
 				});
 				*/
+			}
+		},
+		
+		onErrorCall: function(oError) {
+			if (oError.statusCode === 500 || oError.statusCode === 400 || oError.statusCode === "500" || oError.statusCode === "400") {
+				var errorRes = JSON.parse(oError.responseText);
+				if (!errorRes.error.innererror) {
+					sap.m.MessageBox.alert(errorRes.error.message.value);
+				} else {
+					if (!errorRes.error.innererror.message) {
+						sap.m.MessageBox.alert(errorRes.error.innererror.toString());
+					} else {
+						sap.m.MessageBox.alert(errorRes.error.innererror.message);
+					}
+				}
+				return;
+			} else {
+				sap.m.MessageBox.alert(oError.response.statusText);
+				return;
 			}
 		},
 
