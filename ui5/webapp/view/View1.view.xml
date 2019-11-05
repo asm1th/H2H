@@ -2,7 +2,7 @@
 	xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:fb="sap.ui.comp.filterbar" xmlns="sap.m" xmlns:t="sap.ui.table" displayBlock="true"
 	xmlns:variant="sap.ui.comp.variants" xmlns:f="sap.f" xmlns:u="sap.ui.unified" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
 	xmlns:smartTable="sap.ui.comp.smarttable" class="sapUiSizeCompact">
-	<tnt:ToolPage id="toolPage">
+	<tnt:ToolPage id="toolPage" class="hostapp">
 		<tnt:header>
 			<tnt:ToolHeader class="itsk-tool" design="Info">
 				<Button id="sideNavigationToggleButton" icon="sap-icon://menu2" type="Transparent" press="onSideNavButtonPress">
@@ -51,7 +51,7 @@
 			</tnt:ToolHeader>
 		</tnt:header>
 		<tnt:sideContent>
-			<tnt:SideNavigation expanded="true" selectedKey="{/dataPage/selectedKey}" itemSelect="onItemSelect">
+			<tnt:SideNavigation expanded="fasle" selectedKey="{/dataPage/selectedKey}" itemSelect="onItemSelect">
 				<tnt:NavigationList>
 					<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"></tnt:NavigationListItem>
 					<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"></tnt:NavigationListItem>
@@ -63,7 +63,6 @@
 				<pages>
 					<ScrollContainer id="page1" horizontal="false" vertical="true" height="100%">
 						<VBox fitContainer="true">
-						    
 							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PayDocRu" persistencyKey="SmartFilter_Explored"
 								basicSearchFieldName="requestId" enableBasicSearch="true">
 								<smartFilterBar:controlConfiguration>
@@ -83,20 +82,31 @@
 									<FlexItemData shrinkFactor="0"/>
 								</smartFilterBar:layoutData>
 							</smartFilterBar:SmartFilterBar>
-							
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PayDocRu" smartFilterId="smartFilterBar" tableType="Table" initiallyVisibleFields="requestId,docExtId"
-								useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="true" header="Платежные поручения"
-								showRowCount="true" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true" class="sapUiResponsiveContentPadding">
+							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PayDocRu" smartFilterId="smartFilterBar" tableType="Table"
+								initiallyVisibleFields="requestId,docExtId" useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="false"
+								useTablePersonalisation="true" header="Платежные поручения" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored"
+								enableAutoBinding="true" showFullScreenButton="true" class="sapUiResponsiveContentPadding">
 								<!-- layout data used to make the table growing but the filter bar fixed -->
 								<smartTable:layoutData>
 									<FlexItemData growFactor="1" baseSize="0%"/>
 								</smartTable:layoutData>
+								<smartTable:customToolbar>
+									<Toolbar>
+										<ToolbarSpacer/>
+									    <Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>
+            							<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>
+            							<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>
+            							<Button icon="sap-icon://upload-to-cloud" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>
+            							<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
+            							
+            							<Button icon="sap-icon://undo" text="ЭЦП" tooltip="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>
+            							<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
+									</Toolbar>
+								</smartTable:customToolbar>
 							</smartTable:SmartTable>
-							
 							<u:FileUploader id="fileUploader" name="myFileUpload" change="OnFileSelected" tooltip="Upload your file to the local server"
-											uploadComplete="handleUploadComplete"/>
-										<Button text="Upload File" press="OnUpload"/>
-							
+								uploadComplete="handleUploadComplete"/>
+							<Button text="Upload File" press="OnUpload"/>
 							<!--<fb:FilterBar id="FilterBar" class="filterstyle" reset="onReset" search="onSearch" showGoOnFB="true" showFilterConfiguration="true">-->
 							<!--	<fb:filterGroupItems>-->
 							<!--		<fb:FilterGroupItem name="fi_be" label="Балансовая единица" groupName="__$INTERNAL$" partOfCurrentVariant="true" visibleInFilterBar="true">-->
@@ -107,7 +117,6 @@
 							<!--						<core:ListItem key="1000" text="ПАО Газпромнефть" additionalText="1000"/>-->
 							<!--					</items>-->
 							<!--				</ComboBox>-->
-											
 							<!--			</fb:control>-->
 							<!--		</fb:FilterGroupItem>-->
 							<!--		<fb:FilterGroupItem groupName="__$INTERNAL$" name="DateRange" label="Диапазон дат" partOfCurrentVariant="true" visibleInFilterBar="true">-->
@@ -143,36 +152,32 @@
 							<!--			</core:Icon>-->
 							<!--			<Title id="title" text="Платежи (2)"/>-->
 							<!--			<ToolbarSeparator/>-->
-										
-										
-										<!--<ToolbarSpacer/>-->
-										<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
-										<!--<Button icon="sap-icon://action-settings" tooltip="Настройки" press="onPersonalizationDialogPress" enabled="fasle"/>-->
-										<!--<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>-->
-										<!--<Button icon="sap-icon://excel-attachment" tooltip="Приложения" id="onAttach" press="onAttach" enabled="fasle"/>-->
-										<!--<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>-->
-										<!--<ToolbarSeparator/>-->
-										<!--<Button icon="sap-icon://upload-to-cloud" text="Загрузить" class="btn btn-bordered" press="onUpload"/>-->
-										<!--<Button icon="sap-icon://paper-plane" type="Default" text="Отправить" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>-->
-										<!--<ToolbarSeparator/>-->
-										<!--<Button icon="sap-icon://undo" text="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>-->
-										<!--<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignCreate" enabled="true"/>-->
-										
-								<!--	</OverflowToolbar>-->
-								<!--</t:extension>-->
-								<!--<t:rowSettingsTemplate>-->
-								<!--	<t:RowSettings highlight="{Status}"/>-->
-								<!--</t:rowSettingsTemplate>-->
-								<!--<t:rowActionTemplate>-->
-								<!--	<t:RowAction>-->
-								<!--		<t:items>-->
-								<!--			<t:RowActionItem icon="sap-icon://signature" tooltip="Подписать" press="onSignatureRow"></t:RowActionItem>-->
-								<!--			<t:RowActionItem type="Navigation" press="fnPress"></t:RowActionItem>-->
-								<!--		</t:items>-->
-								<!--	</t:RowAction>-->
-								<!--</t:rowActionTemplate>-->
-								
-								<!--<t:customData>
+							<!--<ToolbarSpacer/>-->
+							<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
+							<!--<Button icon="sap-icon://action-settings" tooltip="Настройки" press="onPersonalizationDialogPress" enabled="fasle"/>-->
+							<!--<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>-->
+							<!--<Button icon="sap-icon://excel-attachment" tooltip="Приложения" id="onAttach" press="onAttach" enabled="fasle"/>-->
+							<!--<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>-->
+							<!--<ToolbarSeparator/>-->
+							<!--<Button icon="sap-icon://upload-to-cloud" text="Загрузить" class="btn btn-bordered" press="onUpload"/>-->
+							<!--<Button icon="sap-icon://paper-plane" type="Default" text="Отправить" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>-->
+							<!--<ToolbarSeparator/>-->
+							<!--<Button icon="sap-icon://undo" text="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>-->
+							<!--<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignCreate" enabled="true"/>-->
+							<!--	</OverflowToolbar>-->
+							<!--</t:extension>-->
+							<!--<t:rowSettingsTemplate>-->
+							<!--	<t:RowSettings highlight="{Status}"/>-->
+							<!--</t:rowSettingsTemplate>-->
+							<!--<t:rowActionTemplate>-->
+							<!--	<t:RowAction>-->
+							<!--		<t:items>-->
+							<!--			<t:RowActionItem icon="sap-icon://signature" tooltip="Подписать" press="onSignatureRow"></t:RowActionItem>-->
+							<!--			<t:RowActionItem type="Navigation" press="fnPress"></t:RowActionItem>-->
+							<!--		</t:items>-->
+							<!--	</t:RowAction>-->
+							<!--</t:rowActionTemplate>-->
+							<!--<t:customData>
                                 <core:CustomData key="mydata" value="{Status}" writeToDom="true"></core:CustomData>
                               </t:customData>-->
 							<!--	<t:columns>-->
