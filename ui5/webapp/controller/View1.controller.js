@@ -52,18 +52,14 @@ sap.ui.define([
 			if (fileName === "") {
 				sap.ui.commons.MessageBox.show("Please choose File.", sap.ui.commons.MessageBox.Icon.INFORMATION, "Information");
 			} else {
-
+				//var FILE = btoa(this.fileData);
+				var file = jQuery.sap.domById("__xmlview0--fileUploader-fu").files[0];
+				
 				var oModel = this.getOwnerComponent().getModel();
 				var oEntry = {};
 				oEntry.requestId = "0000000000";
-				oEntry.docExtId = "213213";
-				// var oEntry = {
-				// 	d: {
-				// 		requestId: "123213",
-				// 		docExtId: "213213"
-				// 	}
-				// };
-
+				oEntry.docExtId = file;
+				
 				oModel.setHeaders({
 					"X-Requested-With": "XMLHttpRequest",
 					"Content-Type": "application/json",
@@ -75,11 +71,8 @@ sap.ui.define([
 				};
 				mParams.error = this.onErrorCall;
 				oModel.create("/PayDocRu", oEntry, mParams);
-
 				
-
 				
-
 				// $.ajax({
 				// 	url: "/",
 				// 	type: "GET",
