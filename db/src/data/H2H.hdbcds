@@ -1,14 +1,17 @@
 context H2H {
 
 	entity Bank{
+		id		: String(5);
 		name	: String(255);
 	};
 	
 	entity Mapping{
-		key bankType			: String(255);
-		key formatType			: String(255);
-		key formatVersion		: String(255);
-		key fildSource			: String(255);
-		key fieldDestination	: String(255);
+		key BANKTYPE			: String(255);
+		key FORMATTYPE			: String(255);
+		key FORMATVERSION		: String(255);
+		key ENTITYNAME			: String(255);
+		key FIELDDESTINATION	: String(255);
+		key FILDSOURCE			: String(255);
 	};
+
 }

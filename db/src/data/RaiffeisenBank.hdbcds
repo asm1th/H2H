@@ -10,129 +10,188 @@ context RaiffeisenBank {
     type t_date : LocalDate;
     type t_sum : Decimal(13, 2);
     type t_int : Integer;
-    type t_bank {
-        @Comment : 'БИК'
-        bic            : String(9);
 
-        @Comment : 'Номер корр. счёта банка'
-        correspAcc     : String(20);
-
-        @Comment : 'Наименование банка'
-        Name           : String(80);
-
-        @Comment : 'Название населённого пункта банка'
-        BankCity       : String(30);
-
-        @Comment : 'Тип населённого пункта банка'
-        SettlementType : String(20);
-    }
-
-    /*@@layout{"layoutInfo":{"x":228.9365234375,"y":97}}*/
-    entity Request {
-    		bank	  : t_str;
-            xmlns     : t_str;
-        key requestId : t_uuid;
-            version   : t_str;
-            file	  : LargeBinary;
-        //PayDocRu	: association[1,  1..1] to RaiffeisenBank.PayDocRu { requestId };
+	entity TRequest {
+    		BANK	  : t_str;
+            XMLNS     : t_str;
+        key	REQUESTID : t_uuid ;
+            VERSION   : t_str;
+            FILE	  : LargeBinary;
+        	_PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.REQUESTID = REQUESTID;
     };
 
     @Comment : 'Платёжное поручение рублёвое'
-    /*@@layout{"layoutInfo":{"x":29.033203125,"y":-270}}*/
-
-    entity PayDocRu {
-            @Comment : 'Request.requestId'
-        key requestId : t_uuid;
-
+    entity TPayDocRu {
+        key REQUESTID : t_uuid;
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
-        key docExtId  : t_uuid;
-            //AccDoc    : association[1,0..*] to RaiffeisenBank.AccDoc { docExtId };
-            //Payer     : association[1, 1..1] to RaiffeisenBank.Payer { docExtId };
-            //Payee     : association[1, 1..1] to RaiffeisenBank.Payee { docExtId };
+        key DOCEXTID  : t_uuid;
+        	_REQUEST : association[1] to TRequest	on _REQUEST.REQUESTID	= REQUESTID;
+        	_ACCDOC  : association[*] to TAccDoc	on _ACCDOC.DOCEXTID		= DOCEXTID;
+            _PAYER   : association[1] to TPayer 	on _PAYER.DOCEXTID 		= DOCEXTID;
+            _PAYEE   : association[1] to TPayee 	on  _PAYEE.DOCEXTID 	= DOCEXTID;
     };
-
+    
     @Comment : 'Реквизиты платёжного документа'
-    /*@@layout{"layoutInfo":{"x":273.06640625,"y":-270}}*/
-
-    entity AccDoc {
+    entity TAccDoc {
             @Comment : 'PayDocRu.docExtId'
-        key docExtId  : t_uuid;
+        key DOCEXTID  : t_uuid ;
 
             @Comment : 'Назначение платежа'
-            purpose   : t_str_210;
+            PURPOSE   : t_str_210;
 
             @Comment : 'Дата составления документа'
-            docDate   : t_str;
+            DOCDATE   : t_str;
 
             @Comment : 'Номер документа'
-        key docNum    : t_str_6;
+        key DOCNUM    : t_str_6;
 
             @Comment : 'Сумма платежа'
-            docSum    : t_sum;
+            DOCSUM    : t_sum;
 
             @Comment : 'Сумма НДС'
-            vatSum    : t_sum;
+            VATSUM    : t_sum;
 
             @Comment : '% НДС'
-            vatRate   : t_sum;
+            VATRATE   : t_sum;
 
             @Comment : 'Указывается способ расчета НДС согласно перечню: Vat1 «Расчет по % (1)»	Vat2 «Расчет по % (2)» VatAdd «Расчет по % (+)» VatZero «НДС не облаг.» VatManualRate «Ввод НДС» VatManualAll «Ручной ввод»'
-            vat       : t_str;
+            VAT       : t_str;
 
             @Comment : 'Вид операции'
-            transKind : t_str_2;
+            TRANSKIND : t_str_2;
 
             @Comment : 'Вид платежа Возможные значения: «почтой», «электронно», «телеграфом» («срочно» временно недоступно). Если не указано, заполняется: «0»'
-            paytKind  : t_str_15;
+            PAYTKIND  : t_str_15;
 
             @Comment : 'Код вида платежа Возможные значения: «0», «1», «2», «3», «4».'
-            paytCode  : t_str_1;
+            PAYTCODE  : t_str_1;
 
             @Comment : 'Очерёдность платежа: число от 1 до 6'
-            priority  : t_int;
+            PRIORITY  : t_int;
 
             @Comment : 'Код вида валютной операции'
-            codeVO    : t_str_5;
+            CODEVO    : t_str_5;
 
             @Comment : 'Документы не требуются'
-            nodocs    : t_int;
+            NODOCS    : t_int;
+			
+			_PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
-
+    
     @Comment : 'Реквизиты плательщика'
-    entity Payer {
+    entity TPayer {
             @Comment : 'PayDocRu.docExtId'
-        key docExtId    : t_uuid;
+        key DOCEXTID  : t_uuid ;
 
             @Comment : 'ИНН (до 12)'
-            inn         : String(12);
+            INN         : String(12);
 
             @Comment : 'КПП (до 9)'
-            kpp         : String(9);
+            KPP         : String(9);
 
             @Comment : 'Номер счёта'
-            personalAcc : String(20);
+            PERSONALACC : String(20);
 
             @Comment : 'Наименование плательщика'
-            Name        : String(160);
-            Bank        : t_bank; //Реквизиты банка плательщика
+            NAME        : String(160);
+            
+            @Comment : 'БИК'
+	        BANKBIC         : String(9);
+	
+	        @Comment : 'Номер корр. счёта банка'
+	        BANKCORRESPACC     : String(20);
+	
+	        @Comment : 'Наименование банка'
+	        BANKNAME           : String(80);
+	
+	        @Comment : 'Название населённого пункта банка'
+	        BANKCITY       : String(30);
+	
+	        @Comment : 'Тип населённого пункта банка'
+	        BANKSETTLEMENTTYPE : String(20);
+            
+            
+            
+           _PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
 
     @Comment : 'Реквизиты получателя'
-    entity Payee {
+    entity TPayee {
             @Comment : 'PayDocRu.docExtId'
-        key docExtId    : t_uuid;
+        key DOCEXTID  : t_uuid ;
 
             @Comment : 'ИНН (до 12)'
-            inn         : String(12);
+            INN         : String(12);
 
             @Comment : 'КПП (до 9)'
-            kpp         : String(9);
+            KPP         : String(9);
 
             @Comment : 'Номер счёта'
-            personalAcc : String(20);
+            PERSONALACC : String(20);
 
             @Comment : 'Наименование плательщика'
-            Name        : String(160);
-            Bank        : t_bank; //Реквизиты банка плательщика
-    }
-};  
+            NAME        : String(160);
+            
+            @Comment : 'БИК'
+	        BANKBIC         : String(9);
+	
+	        @Comment : 'Номер корр. счёта банка'
+	        BANKCORRESPACC     : String(20);
+	
+	        @Comment : 'Наименование банка'
+	        BANKNAME           : String(80);
+	
+	        @Comment : 'Название населённого пункта банка'
+	        BANKCITY       : String(30);
+	
+	        @Comment : 'Тип населённого пункта банка'
+	        BANKSETTLEMENTTYPE : String(20);
+            
+            _PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
+    };
+    
+    define view Request as Select from TRequest{
+    	BANK		as bank,
+        XMLNS		as xmlns,
+        REQUESTID	as requestId,
+        VERSION		as version,
+        FILE		as file
+    };
+    define view PayDocRu as Select from TPayDocRu{
+    	REQUESTID	as requestId,
+        DOCEXTID	as docExtId
+    };
+    
+    define view AccDoc as Select from TAccDoc{
+    	DOCEXTID 	as docExtId,
+		PURPOSE		as purpose,
+		DOCDATE		as docDate,
+		DOCNUM		as docNum,
+		DOCSUM		as docSum,
+		VATSUM		as vatSum,
+		VATRATE		as vatRate,
+		VAT			as vat,
+		TRANSKIND	as transKind,
+		PAYTKIND 	as paytKind,
+		PAYTCODE 	as paytCode,
+		PRIORITY 	as priority,
+		CODEVO		as codeVO,
+		NODOCS		as nodocs
+    };
+    
+    define view Payer as Select from TPayer{
+        DOCEXTID    as docExtId,
+        INN         as inn,
+        KPP         as kpp,
+        PERSONALACC as personalAcc,
+        NAME        as Name
+    };
+    
+    define view Payee as Select from TPayee{
+        DOCEXTID    as docExtId,
+        INN         as inn,
+        KPP         as kpp,
+        PERSONALACC as personalAcc,
+        NAME        as Name
+    };
+};       

@@ -12,7 +12,7 @@
 		        } 
             },
             "import_settings": {
-                "import_columns": ["bankType","formatType","formatVersion","fildSource","fieldDestination"]
+                "import_columns": ["BANKTYPE","FORMATTYPE","FORMATVERSION","ENTITYNAME","FIELDDESTINATION","FILDSOURCE"]
             }
     	}
     ]
