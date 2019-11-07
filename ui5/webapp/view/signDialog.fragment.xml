@@ -10,7 +10,7 @@
 				<!--		</content>-->
 				<!--	</OverflowToolbar>-->
 				<!--</headerToolbar>-->
-				<StandardListItem press="useSign" title="{id}" description="{213213}" type="Navigation"/>
+				<StandardListItem press="useSign" title="{cert}" description="id: {id}" type="Navigation"/>
 			</List>
 		</content>
 		<buttons>
