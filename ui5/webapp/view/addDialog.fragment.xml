@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified" class="sapUiSizeCompact">
+  <Dialog title="Загрузка ПП" resizable="true">
+    <content>
+      <form:SimpleForm id="EditFormId" minWidth="1024" maxContainerCols="2" editable="true" layout="ResponsiveGridLayout" labelSpanL="3"
+        labelSpanM="3" emptySpanL="1" emptySpanM="1" columnsL="1" columnsM="1" class="editableForm">
+        <form:content>
+            <u:FileUploader id="fileUploader" name="myFileUpload" change="OnFileSelected" tooltip="Выбрать ПП" uploadComplete="handleUploadComplete"/>
+        </form:content>
+      </form:SimpleForm>
+    </content>
+    <buttons>
+      <Button text="Загрузить" press="OnUpload"></Button>
+      <Button text="Отменить" press="addDialogClose"></Button>
+    </buttons>
+  </Dialog>
+</core:FragmentDefinition>

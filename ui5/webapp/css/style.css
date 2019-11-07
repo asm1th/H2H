@@ -11,11 +11,10 @@
 .hostapp .sapUiSizeCompact .sapTntNavLIItem {
     height: 3rem;
 }
-
-
-
-
-
+.hostapp .sapTntToolPageHeader .bankbutton .sapMBtnInner {
+    border: 1px solid #fff;
+    background: transparent;
+}
 
 
 

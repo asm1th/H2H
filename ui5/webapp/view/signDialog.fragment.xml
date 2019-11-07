@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified"
+	class="sapUiSizeCompact">
+	<Dialog title="Выбрать подпись" resizable="true">
+		<content>
+			<List id="SignList" items="{/signs}" includeItemInSelection="true">
+				<!--<headerToolbar>-->
+				<!--	<OverflowToolbar>-->
+				<!--		<content>-->
+				<!--			<Title text="ЭЦП"/>-->
+				<!--		</content>-->
+				<!--	</OverflowToolbar>-->
+				<!--</headerToolbar>-->
+				<StandardListItem press="useSign" title="{id}" description="{213213}" type="Navigation"/>
+			</List>
+		</content>
+		<buttons>
+			<Button text="Отменить" press="signDialogClose"></Button>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

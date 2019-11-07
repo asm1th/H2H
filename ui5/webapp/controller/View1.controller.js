@@ -9,7 +9,6 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("h2h.ui5.controller.View1", {
-		//return Controller.extend("h2h.ui5.controller.View1", {
 		onInit: function () {
 
 			//var url = '/xsodata';
@@ -22,6 +21,8 @@ sap.ui.define([
 				selectedKey: "page1"
 			};
 			oModel.setProperty("/dataPage", dataPage);
+
+			this.getView().setModel(oModel);
 		},
 
 		onPress: function (evt) {
@@ -43,11 +44,69 @@ sap.ui.define([
 			//sap.ui.getCore()._file = e.getParameter("files") && e.getParameter("files")[0];
 		},
 
-		// file upload
+		// кнопка подписать
+		onSignDialog: function (oEvent) {
+			var oView = this.getView();
+			if (!this.signDialog) {
+				this.signDialog = sap.ui.xmlfragment("signDialog", "h2h.ui5.view.signDialog", this).addStyleClass(
+					"sapUiSizeCompact");
+				oView.addDependent(this.signDialog);
+				var oModel = new JSONModel();
+				var Signs = [{
+					id: "123123",
+					cert: "213213"
+				}];
+				oModel.setProperty("/signs", Signs);
+				this.signDialog.setModel(oModel);
+			}
+			this.signDialog.open();
+			//useSign{}
+		},
+
+		useSign: function (oEvent) {
+			this.onSignCreate();
+		},
+
+		signDialogClose: function (oEvent) {
+			this.signDialog.close();
+		},
+
+		// кнопка отправить
+		onSend: function (oEvent) {
+			var oView = this.getView();
+			var oTable = oView.byId("LineItemsSmartTable");
+			var aIndices = oTable.getSelectedIndices();
+			if (aIndices.length) {
+				var dataZsbnreqn = [];
+				for (var i = 0; i < aIndices.length; i++) {
+					var sPath = oTable.getContextByIndex(aIndices[i]).sPath;
+					var obj = oTable.getModel().getProperty(sPath);
+					dataZsbnreqn[i] = obj.ZsbnReqn;
+				}
+			}
+			alert(aIndices);
+		},
+
+		//  кнопка загрузки пп
+		OnUploadDialog: function (oEvent) {
+			var oView = this.getView();
+			if (!this.addDialog) {
+				this.addDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.addDialog", this).addStyleClass(
+					"sapUiSizeCompact");
+				oView.addDependent(this.addDialog);
+			}
+			this.addDialog.open();
+		},
+
+		addDialogClose: function (oEvent) {
+			this.addDialog.close();
+		},
+
+		// загрузка пп - file upload
 		OnUpload: function (oEvent) {
 			var oFileUpload = this.getView().byId("fileUploader");
+			//var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
 			var domRef = oFileUpload.getFocusDomRef();
-			//var file = jQuery.sap.domById("__xmlview0--fileUploader-fu").files[0];
 			var file = domRef.files[0];
 			var fileName = file.name;
 			var fileType = file.type;
@@ -59,6 +118,8 @@ sap.ui.define([
 				var reader = new FileReader();
 				var that = this;
 				reader.onload = function (e) {
+					var sdfds = e;
+
 					var vContent = e.currentTarget.result.replace("data:" + file.type + ";base64,", "");
 					//that.postFileToBackend(workorderId, that.fileName, that.fileType, vContent);
 
@@ -76,6 +137,7 @@ sap.ui.define([
 					var mParams = {};
 					mParams.success = function () {
 						MessageToast.show("Create successful");
+						this.add_oDialog.close();
 					};
 					mParams.error = that.onErrorCall;
 					oModel.create("/Request", oEntry, mParams);
@@ -193,6 +255,7 @@ sap.ui.define([
 			}
 		},
 
+		// обработка ошибки и вывод при загрузке
 		onErrorCall: function (oError) {
 			if (oError.statusCode === 500 || oError.statusCode === 400 || oError.statusCode === "500" || oError.statusCode === "400") {
 				var errorRes = JSON.parse(oError.responseText);
@@ -212,8 +275,7 @@ sap.ui.define([
 			}
 		},
 
-		//sign
-
+		//sign Подпись
 		onSignCreate: function () {
 			//var oCertName = document.getElementById("CertName");
 			//var sCertName = oCertName.value;
@@ -225,7 +287,7 @@ sap.ui.define([
 			var sCertName = "Test Certificate";
 
 			var thenable = this.SignCreate(sCertName, "Message");
-
+			// бработка ошибки
 			thenable.then(
 				function (result) {
 					//document.getElementById("signature").innerHTML = result;
@@ -237,6 +299,7 @@ sap.ui.define([
 				});
 		},
 
+		// получение сертификата иподписание
 		SignCreate: function (certSubjectName, dataToSign) {
 			var CADESCOM_CADES_BES = 1;
 			var CAPICOM_CURRENT_USER_STORE = 2;
