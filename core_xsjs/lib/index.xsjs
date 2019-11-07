@@ -1,3 +1,13 @@
-$.response.contentType = "text/plain";
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
 
-$.response.setBody("Hello World");
+var uuid = guid() ;
+$.response.contentType = "text/html";
+$.response.setBody( uuid ); 
