@@ -180,7 +180,7 @@ sap.ui.define([
 
 					var oEntry = {};
 					oEntry.requestId = "0000000000";
-					oEntry.file = btoa(vContent);
+					oEntry.file = vContent;
 					//oEntry.fileName = fileName;
 					//oEntry.fileType = fileType;
 
