@@ -95,7 +95,9 @@ sap.ui.define([
 			
 			var sertList = new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
+				    //https://cpdn.cryptopro.ru/content/cades/plugin-methods.html
 					try {
+					    var Info =  yield  window.cadesplugin.CreateObjectAsync("CAdESCOM");
 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
 						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 						//yield oStore.Open();
@@ -117,11 +119,11 @@ sap.ui.define([
 										
 									}
 									console.log(cert.ValidToDate);
-									console.log(cert.HasPrivateKey());
-									console.log(cert.IsValid().Result);
-									console.log(cert.GetInfo());
-									console.log(cert.BasicConstraints());
-									console.log(cert.SubjectName());
+									console.log(yield cert.HasPrivateKey());
+									console.log(yield cert.IsValid().Result);
+									console.log(yield cert.GetInfo());
+									console.log(yield cert.BasicConstraints());
+									console.log(yield cert.SubjectName());
 									return cert;
 								}
 							} catch (ex) {
