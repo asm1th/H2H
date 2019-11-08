@@ -3,12 +3,13 @@ function request_create(param) {
 		var rs = null;
 		
 		var H2HMapping = new Map();
-		var pStmt = param.connection.prepareStatement("Select \"FILDSOURCE\",\"FIELDDESTINATION\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
+		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
 		rs = null;
 		rs = pStmt.executeQuery();
 		while (rs.next()) {
-			var fildSource = rs.getString(1);
-			var fieldDestination = rs.getString(2);
+			var entityName = rs.getString(1);
+			var fildSource = rs.getString(2);
+			var fieldDestination = rs.getString(3);
 			H2HMapping.set(fildSource, fieldDestination);
 		}
 		
@@ -24,14 +25,14 @@ function request_create(param) {
 				decodedString = decodeURIComponent(escape(encodedString));
 				content = decodedString;
 			var fileRows = content.split(/\r\n|\n/);
-			
-			
-			//$.trace.error("Partner ID: " + rs.getString('requestId'));
-			//$.trace.error("Partner ID: " + rs.getString(2));
 		}
 		pStmt.close();
 		
-		// var vFile = getBase64(file);
+		fileRows.forEach(function(row, i, fileRows){
+			var sourceValue = row.split('=');
+			var sourceField = sourceValue[1];
+			var sourceValue = sourceValue[2];
+		});
 	    
    
 	    var sql = 'INSERT INTO "RaiffeisenBank.PayDocRu" VALUES (?, ?)';
