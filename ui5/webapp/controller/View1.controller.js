@@ -16,13 +16,12 @@ sap.ui.define([
 			var userModel = this.getOwnerComponent().getModel();
 			this.getView().setModel(userModel);
 
-			var oModel = this.getView().getModel();
 			var dataPage = {
 				selectedKey: "page1"
 			};
-			oModel.setProperty("/dataPage", dataPage);
+			var oModel = new JSONModel(dataPage);
+			this.getView().setModel("PageModel", oModel);
 
-			this.getView().setModel(oModel);
 		},
 
 		onPress: function (evt) {
@@ -48,23 +47,22 @@ sap.ui.define([
 		onSignDialog: function (oEvent) {
 			var oView = this.getView();
 			if (!this.signDialog) {
-				this.signDialog = sap.ui.xmlfragment("signDialog", "h2h.ui5.view.signDialog", this).addStyleClass(
-					"sapUiSizeCompact");
-				oView.addDependent(this.signDialog);
+				this.signDialog = sap.ui.xmlfragment("signDialog", "h2h.ui5.view.signDialog", this);
+				//oView.addDependent(this.signDialog);
 				var oModel = new JSONModel();
 				var Signs = [{
 					id: "123123",
-					cert: "213213"
+					cert: "Сертификат такой-то"
 				}];
 				oModel.setProperty("/signs", Signs);
 				this.signDialog.setModel(oModel);
 			}
 			this.signDialog.open();
-			//useSign{}
 		},
 
 		useSign: function (oEvent) {
 			this.onSignCreate();
+			this.signDialog.close();
 		},
 
 		signDialogClose: function (oEvent) {
@@ -74,17 +72,72 @@ sap.ui.define([
 		// кнопка отправить
 		onSend: function (oEvent) {
 			var oView = this.getView();
-			var oTable = oView.byId("LineItemsSmartTable");
-			var aIndices = oTable.getSelectedIndices();
-			if (aIndices.length) {
-				var dataZsbnreqn = [];
-				for (var i = 0; i < aIndices.length; i++) {
-					var sPath = oTable.getContextByIndex(aIndices[i]).sPath;
-					var obj = oTable.getModel().getProperty(sPath);
-					dataZsbnreqn[i] = obj.ZsbnReqn;
-				}
-			}
-			alert(aIndices);
+// 			var oTable = oView.byId("LineItemsSmartTable");
+// 			var aIndices = oTable.getSelectedIndices();
+// 			if (aIndices.length) {
+// 				var dataZsbnreqn = [];
+// 				for (var i = 0; i < aIndices.length; i++) {
+// 					var sPath = oTable.getContextByIndex(aIndices[i]).sPath;
+// 					var obj = oTable.getModel().getProperty(sPath);
+// 					dataZsbnreqn[i] = obj.ZsbnReqn;
+// 				}
+// 			}
+// 			alert(aIndices);
+			
+			// считываем ЭЦП
+			//var oStore = window.cadesplugin.CreateObject("CAdESCOM.Store");
+            var CADESCOM_CADES_BES = 1;
+			var CAPICOM_CURRENT_USER_STORE = 2;
+			var CAPICOM_MY_STORE = "My";
+			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
+			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
+			var dateObj = new Date();
+			
+			var sertList = new Promise(function (resolve, reject) {
+				window.cadesplugin.async_spawn(function* (args) {
+					try {
+						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
+						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+						//yield oStore.Open();
+	                    debugger;
+						var CertificatesObj = yield oStore.Certificates;
+
+						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
+						
+						var Count = yield CertificatesObj.Count;
+						//var Count = yield oStore.Certificates.Count;
+						if (Count == 0) {
+							throw ("Certificate not found");
+						} else {
+							try {
+								for (var i = 1; i <= Count; i++) {
+									var cert = yield CertificatesObj.Item(i);
+									if (dateObj <  cert.ValidToDate && cert.HasPrivateKey() && cert.IsValid().Result) {
+										//return cert
+										
+									}
+									console.log(cert.ValidToDate);
+									console.log(cert.HasPrivateKey());
+									console.log(cert.IsValid().Result);
+									console.log(cert.GetInfo());
+									console.log(cert.BasicConstraints());
+									console.log(cert.SubjectName());
+									return cert;
+								}
+							} catch (ex) {
+								alert("Ошибка при перечислении сертификатов: " + window.cadesplugin.getLastError(ex));
+							}
+						}
+
+						var oCertificate = yield oCertificates.Item(1);
+						yield alert(oCertificate);
+
+						yield oStore.Close();
+					} catch (e) {
+						args[1]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
+					}
+				}, resolve, reject);
+			});
 		},
 
 		//  кнопка загрузки пп
@@ -276,7 +329,7 @@ sap.ui.define([
 		},
 
 		//sign Подпись
-		onSignCreate: function () {
+		onSignCreate: function (e) {
 			//var oCertName = document.getElementById("CertName");
 			//var sCertName = oCertName.value;
 			// if ("" == sCertName) {
@@ -284,22 +337,24 @@ sap.ui.define([
 			//     return;
 			// }
 
-			var sCertName = "Test Certificate";
+			var sCertName = "Алексей";
 
 			var thenable = this.SignCreate(sCertName, "Message");
 			// бработка ошибки
 			thenable.then(
 				function (result) {
-					//document.getElementById("signature").innerHTML = result;
+					sap.m.MessageBox.alert(result);
 					console.log(result);
 				},
 				function (result) {
-					//document.getElementById("signature").innerHTML = result;
+					sap.m.MessageBox.alert(result);
 					console.log(result);
 				});
 		},
 
 		// получение сертификата иподписание
+		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-fileapi.html
+		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-sign-cades-bes-async.html
 		SignCreate: function (certSubjectName, dataToSign) {
 			var CADESCOM_CADES_BES = 1;
 			var CAPICOM_CURRENT_USER_STORE = 2;
@@ -322,6 +377,8 @@ sap.ui.define([
 						if (Count == 0) {
 							throw ("Certificate not found: " + args[0]);
 						}
+						debugger;
+
 						var oCertificate = yield oCertificates.Item(1);
 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
 						yield oSigner.propset_Certificate(oCertificate);
