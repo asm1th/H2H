@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:sap="http://www.sap.com/Protocols/SAPData">
     <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
         <Schema Namespace="default" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
             <EntityType Name="RequestType">
@@ -11,7 +11,7 @@
                 <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
                 <Property Name="version" Type="Edm.String" MaxLength="255"/>
                 <Property Name="file" Type="Edm.Binary"/>
-                <NavigationProperty Name="PayDocRu" Relationship="default.PDHeadType" FromRole="RequestPrincipal" ToRole="PayDocRuDependent"/>
+                <NavigationProperty Name="PayDocRu" Relationship="default.PDHeadType" FromRole="RequestPrincipal" ToRole="PayDocRuDependent" sap:creatable="false" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="PayDocRuType">
                 <Key>
@@ -20,7 +20,7 @@
                 </Key>
                 <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
                 <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-                <NavigationProperty Name="AccDoc" Relationship="default.PDItemsType" FromRole="PayDocRuPrincipal" ToRole="AccDocDependent"/>
+                <NavigationProperty Name="AccDoc" Relationship="default.PDItemsType" FromRole="PayDocRuPrincipal" ToRole="AccDocDependent" sap:creatable="false" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="PayerType">
                 <Key>
@@ -31,12 +31,7 @@
                 <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
                 <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
                 <Property Name="Name" Type="Edm.String" MaxLength="160"/>
-                <Property Name="Bank.bic" Type="Edm.String" MaxLength="9"/>
-                <Property Name="Bank.correspAcc" Type="Edm.String" MaxLength="20"/>
-                <Property Name="Bank.Name" Type="Edm.String" MaxLength="80"/>
-                <Property Name="Bank.BankCity" Type="Edm.String" MaxLength="30"/>
-                <Property Name="Bank.SettlementType" Type="Edm.String" MaxLength="20"/>
-                <NavigationProperty Name="Payer" Relationship="default.PDPayerType" FromRole="PayerDependent" ToRole="PayDocRuPrincipal"/>
+                <NavigationProperty Name="Payer" Relationship="default.PDPayerType" FromRole="PayerDependent" ToRole="PayDocRuPrincipal" sap:creatable="false" sap:filterable="false"/>
             </EntityType>
             <EntityType Name="PayeeType">
                 <Key>
@@ -47,12 +42,7 @@
                 <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
                 <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
                 <Property Name="Name" Type="Edm.String" MaxLength="160"/>
-                <Property Name="Bank.bic" Type="Edm.String" MaxLength="9"/>
-                <Property Name="Bank.correspAcc" Type="Edm.String" MaxLength="20"/>
-                <Property Name="Bank.Name" Type="Edm.String" MaxLength="80"/>
-                <Property Name="Bank.BankCity" Type="Edm.String" MaxLength="30"/>
-                <Property Name="Bank.SettlementType" Type="Edm.String" MaxLength="20"/>
-                <NavigationProperty Name="Payee" Relationship="default.PDPayeeType" FromRole="PayeeDependent" ToRole="PayDocRuPrincipal"/>
+                <NavigationProperty Name="Payee" Relationship="default.PDPayeeType" FromRole="PayeeDependent" ToRole="PayDocRuPrincipal" sap:creatable="false" sap:filterable="false"/>
             </EntityType>
             <Association Name="PDHeadType">
                 <End Type="default.RequestType" Role="RequestPrincipal" Multiplicity="1"/>
@@ -71,10 +61,10 @@
                 <End Type="default.PayeeType" Role="PayeeDependent" Multiplicity="1"/>
             </Association>
             <EntityContainer Name="v2" m:IsDefaultEntityContainer="true">
-                <EntitySet Name="Request" EntityType="default.RequestType"/>
-                <EntitySet Name="PayDocRu" EntityType="default.PayDocRuType"/>
-                <EntitySet Name="Payer" EntityType="default.PayerType"/>
-                <EntitySet Name="Payee" EntityType="default.PayeeType"/>
+                <EntitySet Name="Request" EntityType="default.RequestType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+                <EntitySet Name="PayDocRu" EntityType="default.PayDocRuType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+                <EntitySet Name="Payer" EntityType="default.PayerType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+                <EntitySet Name="Payee" EntityType="default.PayeeType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
                 <AssociationSet Name="PDHead" Association="default.PDHeadType">
                     <End Role="RequestPrincipal" EntitySet="Request"/>
                     <End Role="PayDocRuDependent" EntitySet="PayDocRu"/>
