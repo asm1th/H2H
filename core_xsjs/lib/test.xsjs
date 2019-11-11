@@ -35,22 +35,26 @@
 
 // var raif = new raif(guid(), guid());
 // $.response.setBody('Good!');
+// document.createElement('pre');
+// document['createElement']('pre');
+// var raif = {};
+// raif.PayDocRu = [];
+// var PayDocRu = new Map();
+// PayDocRu.set('Test', '123');
+// raif.PayDocRu.push(PayDocRu);
+// var PayDocRu = new Map();
+// PayDocRu.set('Test', '124');
+// raif.PayDocRu.push(PayDocRu);
+// PayDocRu.set('Test', '125');
+// var PayDocRu = {};
+// PayDocRu['REQUESTID'] = '123';
+// PayDocRu['DOCEXTID'] = '456';
+// raif.PayDocRu.push(PayDocRu);
+// PayDocRu['REQUESTID'] = '567';
+// PayDocRu['DOCEXTID'] = '890';
+// raif.PayDocRu.push(PayDocRu);
 
-var rs = null;
 
-var mappingField = new Map();
-var mappingEntity = new Map();
-var conn = $.db.getConnection();
-var pStmt = conn.prepareStatement(
-	"Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
-rs = null;
-rs = pStmt.executeQuery();
-while (rs.next()) {
-	var entityDestination = rs.getString(1);
-	var fildSource = rs.getString(2);
-	var fieldDestination = rs.getString(3);
-	mappingField.set(fildSource, fieldDestination);
-	mappingEntity.set(fieldDestination, entityDestination);
-}
 
-$.response.setBody(mappingField['Дата']);
+// 
+
