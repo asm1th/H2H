@@ -103,7 +103,7 @@ sap.ui.define([
             }
 		},
 
-=======
+//=======
 		OnFileSelected: function (e) {
 			//sap.ui.getCore()._file = e.getParameter("files") && e.getParameter("files")[0];
 		},
