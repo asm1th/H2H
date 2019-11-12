@@ -1,6 +1,18 @@
 <edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
-	<edmx:Reference Uri="/xsodata$metadata"/>
+	<edmx:Reference Uri="/xsodata$metadata">
+		<edmx:Include Alias="Metadata" Namespace="default"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2">
+		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+	</edmx:Reference>
 	<edmx:DataServices>
-		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
+		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="H2H.ui5.annotations.annotations.default">
+			<Annotations Target="Metadata.PaymentOrderType/docExtId">
+				<Annotation Term="Common.Label" String="{@i18n&gt;ИДЕНТИФИКАТОР_ВЫПИСКИ_В_ELBRUS}"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/purpose">
+				<Annotation Term="Common.Label" String="{@i18n&gt;НАЗНАЧЕНИЕ_ПЛАТЕЖА}"/>
+			</Annotations>
+		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
