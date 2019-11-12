@@ -1,6 +1,7 @@
 context RaiffeisenBank {
     type t_uuid : String(37);
     type t_str : String(255);
+    type t_longstr : String(1024);
     type t_str_1 : String(1);
     type t_str_2 : String(2);
     type t_str_5 : String(5);
@@ -9,6 +10,7 @@ context RaiffeisenBank {
     type t_str_210 : String(210);
     type t_date : LocalDate;
     type t_sum : Decimal(13, 2);
+    type t_file: LargeBinary;
     type t_int : Integer;
 
 	entity TRequest {
@@ -16,8 +18,17 @@ context RaiffeisenBank {
             XMLNS     : t_str;
         key	REQUESTID : t_uuid ;
             VERSION   : t_str;
-            FILE	  : LargeBinary;
-        	_PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.REQUESTID = REQUESTID;
+        	_PAYDOCRU : association[1] to TPayDocRu on _PAYDOCRU.REQUESTID	= REQUESTID;
+        	_TFILE	  : association[1] to TFile 	on _TFILE.REQUESTID 	= REQUESTID;
+    };
+    
+    entity TFile{
+    	key	REQUESTID : t_uuid ;
+    		FILENAME  : t_str;
+    		FILETYPE  : t_str;
+    		FILESIZE  : t_int;
+    		FILEBODY  : t_file;
+    		_REQUEST : association[1] to TRequest	on _REQUEST.REQUESTID	= REQUESTID;
     };
 
     @Comment : 'Платёжное поручение рублёвое'
@@ -28,7 +39,9 @@ context RaiffeisenBank {
         	_REQUEST : association[1] to TRequest	on _REQUEST.REQUESTID	= REQUESTID;
         	_ACCDOC  : association[*] to TAccDoc	on _ACCDOC.DOCEXTID		= DOCEXTID;
             _PAYER   : association[1] to TPayer 	on _PAYER.DOCEXTID 		= DOCEXTID;
-            _PAYEE   : association[1] to TPayee 	on  _PAYEE.DOCEXTID 	= DOCEXTID;
+            _PAYEE   : association[1] to TPayee 	on _PAYEE.DOCEXTID 		= DOCEXTID;
+            _TFILE	 : association[1] to TFile 		on _TFILE.REQUESTID 	= REQUESTID;
+            _TSIGN	 : association[*] to TSign		on _TSIGN.DOCEXTID 		= DOCEXTID;
     };
     
     @Comment : 'Реквизиты платёжного документа'
@@ -150,13 +163,69 @@ context RaiffeisenBank {
             _PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
     
+     entity TSign {
+            @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
+        key DOCEXTID		: t_uuid;
+        	@Comment : 'Серийный номер сертификата'
+        	SN				: t_str;
+        	@Comment : 'Значение ЭП'
+        	VALUE			: t_file;
+        	@Comment : 'Идентификатор поставщика сертификата'
+        	ISSUER  		: t_longstr;
+        	@Comment : 'Имя схемы подписи'
+        	DIGESTNAME		: t_str;
+        	@Comment : 'Версия схемы подписи'
+        	DIGESTVERSION	: t_str;
+        	@Comment : 'Тип подписи'
+        key	SIGNTYPE : t_str;
+        	@Comment : 'ФИО УЛК, наложившего данную подпись.'
+        	FIO				: t_str;
+        	@Comment : 'Должность УЛК, наложившего подпись'
+        	POSITION		: t_str;
+        	_PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
+    };
+    
+    
+     define view PaymentOrder as Select from TPayDocRu{
+     	DOCEXTID			as docExtId,
+		_ACCDOC.PURPOSE		as purpose,
+		_ACCDOC.DOCDATE		as docDate,
+		_ACCDOC.DOCNUM		as docNum,
+		_ACCDOC.DOCSUM		as docSum,
+		_ACCDOC.VATSUM		as vatSum,
+		_ACCDOC.VATRATE		as vatRate,
+		_ACCDOC.VAT			as vat,
+		_ACCDOC.TRANSKIND	as transKind,
+		_ACCDOC.PAYTKIND 	as paytKind,
+		_ACCDOC.PAYTCODE 	as paytCode,
+		_ACCDOC.PRIORITY 	as priority,
+		_ACCDOC.CODEVO		as codeVO,
+		_ACCDOC.NODOCS		as nodocs,
+		_PAYER.INN      	as PayerInn,
+        _PAYER.KPP      	as PayerKpp,
+        _PAYER.PERSONALACC	as PayerPersonalAcc,
+        _PAYER.NAME			as PayerName,
+		_PAYEE.INN      	as PayeeInn,
+        _PAYEE.KPP      	as PayeeKpp,
+        _PAYEE.PERSONALACC	as PayeePersonalAcc,
+        _PAYEE.NAME			as PayeeName
+     };
+    
     define view Request as Select from TRequest{
     	BANK		as bank,
         XMLNS		as xmlns,
         REQUESTID	as requestId,
-        VERSION		as version,
-        FILE		as file
+        VERSION		as version
     };
+    
+    define view Files as Select from TFile{
+    	REQUESTID as requestId,
+    	FILENAME  as fileName,
+    	FILETYPE  as fileType,
+    	FILESIZE  as fileSize,
+    	FILEBODY  as fileBody
+    };
+    
     define view PayDocRu as Select from TPayDocRu{
     	REQUESTID	as requestId,
         DOCEXTID	as docExtId
@@ -194,4 +263,17 @@ context RaiffeisenBank {
         PERSONALACC as personalAcc,
         NAME        as Name
     };
+    
+    define view Sign as Select from TSign {
+		DOCEXTID		as docExtId,
+		SN				as SN,
+		VALUE			as Value,
+		ISSUER  		as Issuer,
+		DIGESTNAME		as DigestName,
+		DIGESTVERSION	as DigestVersion,
+		SIGNTYPE		as SignType,
+		FIO				as Fio,
+		POSITION		as Position
+    };
+    
 };       
