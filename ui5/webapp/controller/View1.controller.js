@@ -69,9 +69,10 @@ sap.ui.define([
 //             window.location = blobUrl;
 
 			//var array = new Uint8Array(btoa(fileDownload));
-
-			var decodedString = base64ToArrayBuffer(fileDownload);
-			//var array = new Uint8Array(decodedString);
+			var decodedString2 =  window.atob(fileDownload);
+			var decodedString3 =  window.atob(decodedString2);
+			var decodedString = base64ToArrayBuffer(decodedString2);
+			
             var saveByteArray = (function () {
 				var a = document.createElement("a");
 				document.body.appendChild(a);
