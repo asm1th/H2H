@@ -10,6 +10,7 @@ context H2H {
 		key FORMATTYPE			: String(255);
 		key FORMATVERSION		: String(255);
 		key ENTITYNAME			: String(255);
+			FIELDTYPE			: String(3);
 		key FIELDDESTINATION	: String(255);
 		key FILDSOURCE			: String(255);
 	};

@@ -14,23 +14,31 @@ function po_create(param) {
 		var raif = {};
 		var requestID = guid();
 		var docExtID = guid();
-		var mappingField = new Map();
-		var mappingEntity = new Map();
-		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
+		var mappingField		= new Map();
+		var mappingEntity		= new Map();
+		var mappingFieldType	= new Map();
+		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
 		rs = null;
 		rs = pStmt.executeQuery();
 		
-		var fieldsRequest = [];
-		var fieldsPayDocRu = [];
-		var fieldsAccDoc = [];
-		var fieldsPayer = [];
-		var fieldsPayee = [];
+		var fieldsRequest	= [];
+		var fieldsPayDocRu	= [];
+		var fieldsAccDoc	= [];
+		var fieldsPayer 	= [];
+		var fieldsPayee		= [];
+		var fieldsFile		= [];
 		while (rs.next()) {
 			var entityDestination = rs.getString(1);
 			var fildSource = rs.getString(2);
 			var fieldDestination = rs.getString(3);
+			var fildDestinationType = rs.getString(4);
 			mappingField.set(fildSource, fieldDestination);
 			mappingEntity.set(fildSource, entityDestination);
+			if (mappingFieldType.has(fieldDestination) != true) { 
+					mappingFieldType.set(fieldDestination, fildDestinationType);
+				}
+			
+			mappingFieldType
 			switch (entityDestination) {
 				case 'Request':
 					if (fieldsRequest.indexOf(fieldDestination) < 0) { 
@@ -57,6 +65,11 @@ function po_create(param) {
 						fieldsPayee.push(fieldDestination);
 					}
 					break;
+				case 'File':
+					if (fieldsFile.indexOf(fieldDestination) < 0) { 
+						fieldsFile.push(fieldDestination);
+					}
+					break;	
 				// default:
 			}
 		}
@@ -65,14 +78,16 @@ function po_create(param) {
 	    var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
 	    rs = null;
 		rs = pStmt.executeQuery();
-		var sourceFile = null;
+		var fileBody = null;
 		while (rs.next()) {
-			//var requestId = rs.getString(3);
+			var fileName = rs.getString(2);
+    		var fileType = rs.getString(3);
+    		var fileSize = rs.getInt(4);
 			var array = new Uint8Array(rs.getBlob(5));
 			var encodedString = String.fromCharCode.apply(null,array),
 				decodedString = decodeURIComponent(escape(encodedString));
 				content = decodedString;
-			sourceFile = $.util.codec.encodeBase64(rs.getBlob(5));
+			fileBody = $.util.codec.encodeBase64(rs.getBlob(5));
 			var fileRows = content.split(/\r\n|\n/);
 		}
 		pStmt.close();
@@ -83,12 +98,15 @@ function po_create(param) {
 		Request.set('XMLNS','http://bssys.com/upg/request');
 		Request.set('REQUESTID',requestID);
 		Request.set('VERSION','0.1');
-		Request.set('FILE', sourceFile);
 		raif.Request.push(Request);
 		
 		raif.File = [];
+		File = new Map();
 		File.set('REQUESTID', requestID);
-		File.set('FILE', sourceFile);
+		File.set('FILENAME',  fileName);
+		File.set('FILETYPE',  fileType);
+		File.set('FILESIZE',  fileSize);
+		File.set('FILEBODY',  fileBody);
 		raif.File.push(File);
 		
 		var startDoc = false;
@@ -137,10 +155,25 @@ function po_create(param) {
 					raif.Payer.push(Payer);
 					raif.Payee.push(Payee);
 				} else if (destinationField == 'EOF' ){
-					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TRequest\" (" + fieldsRequest.toString() +") VALUES(?, ?, ?, ?, ?)");
+					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TRequest\" (" + fieldsRequest.toString() +") VALUES(?, ?, ?, ?)");
 					fieldsRequest.forEach(function(field, i, fieldsRequest){ pStmt.setString(i+1, raif.Request[0].get(field)); });
 					pStmt.execute();
 					pStmt.close();	
+					
+					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TFile\" (" + fieldsFile.toString() +") VALUES(?, ?, ?, ?, ?)");
+					fieldsFile.forEach(function(field, i, fieldsFile){ 
+						switch (mappingFieldType.get(field)) {
+							case 'Int':
+								pStmt.setInt(i+1, raif.File[0].get(field)); 
+								break;
+							case 'Str':
+								pStmt.setString(i+1, raif.File[0].get(field)); 
+								break;
+							default:
+						}
+					});
+					pStmt.execute();
+					pStmt.close();
 					
 					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TPayDocRu\" (" + fieldsPayDocRu.toString() +") VALUES(?, ?)");
 					fieldsPayDocRu.forEach(function(field, i, fieldsPayDocRu){ pStmt.setString(i+1, raif.PayDocRu[0].get(field));	});
