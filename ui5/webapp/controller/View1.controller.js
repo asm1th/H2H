@@ -261,7 +261,7 @@ sap.ui.define([
 						this.add_oDialog.close();
 					};
 					mParams.error = that.onErrorCall;
-					oModel.create("/File", oEntry, mParams);
+					oModel.create("/Files", oEntry, mParams);
 
 				};
 				reader.readAsDataURL(file);
