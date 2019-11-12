@@ -54,7 +54,12 @@
 // PayDocRu['DOCEXTID'] = '890';
 // raif.PayDocRu.push(PayDocRu);
 
-
-
-// 
+	var conn = $.db.getConnection();
+	var pStmt = conn.prepareStatement("Select \"FILE\" From \"RaiffeisenBank.TRequest\"");
+	var rs = null;
+	rs = pStmt.executeQuery();
+	while (rs.next()) {
+		var array = new Uint8Array(rs.getBlob(1));
+		sourceFile = $.util.codec.decodeBase64(array);
+	}
 

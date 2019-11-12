@@ -8,7 +8,7 @@ function guid() {
     s4() + '-' + s4() + s4() + s4();
 }
 
-function request_create(param) {
+function po_create(param) {
 	try {
 		var rs = null;
 		var raif = {};
@@ -67,7 +67,7 @@ function request_create(param) {
 		rs = pStmt.executeQuery();
 		var sourceFile = null;
 		while (rs.next()) {
-			var requestId = rs.getString(3);
+			//var requestId = rs.getString(3);
 			var array = new Uint8Array(rs.getBlob(5));
 			var encodedString = String.fromCharCode.apply(null,array),
 				decodedString = decodeURIComponent(escape(encodedString));
@@ -85,6 +85,11 @@ function request_create(param) {
 		Request.set('VERSION','0.1');
 		Request.set('FILE', sourceFile);
 		raif.Request.push(Request);
+		
+		raif.File = [];
+		File.set('REQUESTID', requestID);
+		File.set('FILE', sourceFile);
+		raif.File.push(File);
 		
 		var startDoc = false;
 		raif.PayDocRu	= [];

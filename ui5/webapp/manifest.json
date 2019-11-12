@@ -19,12 +19,21 @@
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
-					"localUri": "localService/metadata.xml"
+					"localUri": "localService/metadata.xml",
+					"annotations": [
+						"annotations"
+					]
+				}
+			},
+			"annotations": {
+				"type": "ODataAnnotation",
+				"uri": "annotations/annotations.xml",
+				"settings": {
+					"localUri": "annotations/annotations.xml"
 				}
 			}
 		}
 	},
-
 	"sap.ui": {
 		"technology": "UI5",
 		"icons": {
@@ -41,7 +50,6 @@
 			"phone": true
 		}
 	},
-
 	"sap.ui5": {
 		"rootView": {
 			"viewName": "h2h.ui5.view.App",
@@ -69,7 +77,7 @@
 				}
 			},
 			"": {
-			    "dataSource": "userService",
+				"dataSource": "userService",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"preload": true,
 				"settings": {
@@ -78,12 +86,18 @@
 					"defaultBindingMode": "TwoWay",
 					"defaultUpdateMethod": "PUT"
 				}
+			},
+			"@i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"uri": "i18n/i18n.properties"
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -98,11 +112,13 @@
 					"target": "notFound"
 				}
 			},
-			"routes": [{
-			    "pattern": "",
-				"name": "RouteView1",
-				"target": "TargetView1"
-			}],
+			"routes": [
+				{
+					"pattern": "",
+					"name": "RouteView1",
+					"target": "TargetView1"
+				}
+			],
 			"targets": {
 				"TargetView1": {
 					"viewName": "View1",

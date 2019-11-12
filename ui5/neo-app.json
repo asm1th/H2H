@@ -9,7 +9,7 @@
 		},
 		"description": "SAPUI5 Resources"
 	}, {
-		"path": "/xsodata",
+		"path": "xsodata",
 		"description": "xsodata description",
 		"target": {
 			"type": "destination",
