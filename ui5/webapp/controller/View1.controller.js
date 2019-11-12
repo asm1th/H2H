@@ -244,10 +244,11 @@ sap.ui.define([
 					//that.postFileToBackend(workorderId, that.fileName, that.fileType, vContent);
 
 					var oEntry = {};
-					oEntry.requestId = "0000000000";
-					oEntry.file = vContent;
-					//oEntry.fileName = fileName;
-					//oEntry.fileType = fileType;
+					//oEntry.requestId = "";
+					oEntry.fileBody = vContent;
+					oEntry.fileName = file.name;
+					oEntry.fileType = file.type;
+					oEntry.fileSize = file.size;
 
 					oModel.setHeaders({
 						"X-Requested-With": "XMLHttpRequest",
@@ -260,7 +261,7 @@ sap.ui.define([
 						this.add_oDialog.close();
 					};
 					mParams.error = that.onErrorCall;
-					oModel.create("/Request", oEntry, mParams);
+					oModel.create("/File", oEntry, mParams);
 
 				};
 				reader.readAsDataURL(file);
