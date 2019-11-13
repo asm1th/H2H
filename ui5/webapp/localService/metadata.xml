@@ -1,97 +1,166 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
-    <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
-        <Schema Namespace="default" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-            <EntityType Name="RequestType">
-                <Key>
-                    <PropertyRef Name="requestId"/>
-                </Key>
-                <Property Name="bank" Type="Edm.String" MaxLength="255"/>
-                <Property Name="xmlns" Type="Edm.String" MaxLength="255"/>
-                <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-                <Property Name="version" Type="Edm.String" MaxLength="255"/>
-                <Property Name="file" Type="Edm.Binary"/>
-                <NavigationProperty Name="PayDocRu" Relationship="default.PDHeadType" FromRole="RequestPrincipal" ToRole="PayDocRuDependent"/>
-            </EntityType>
-            <EntityType Name="PayDocRuType">
-                <Key>
-                    <PropertyRef Name="requestId"/>
-                    <PropertyRef Name="docExtId"/>
-                </Key>
-                <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-                <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-                <NavigationProperty Name="AccDoc" Relationship="default.PDItemsType" FromRole="PayDocRuPrincipal" ToRole="AccDocDependent"/>
-            </EntityType>
-            <EntityType Name="PayerType">
-                <Key>
-                    <PropertyRef Name="docExtId"/>
-                </Key>
-                <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-                <Property Name="inn" Type="Edm.String" MaxLength="12"/>
-                <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
-                <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
-                <Property Name="Name" Type="Edm.String" MaxLength="160"/>
-                <Property Name="Bank.bic" Type="Edm.String" MaxLength="9"/>
-                <Property Name="Bank.correspAcc" Type="Edm.String" MaxLength="20"/>
-                <Property Name="Bank.Name" Type="Edm.String" MaxLength="80"/>
-                <Property Name="Bank.BankCity" Type="Edm.String" MaxLength="30"/>
-                <Property Name="Bank.SettlementType" Type="Edm.String" MaxLength="20"/>
-                <NavigationProperty Name="Payer" Relationship="default.PDPayerType" FromRole="PayerDependent" ToRole="PayDocRuPrincipal"/>
-            </EntityType>
-            <EntityType Name="PayeeType">
-                <Key>
-                    <PropertyRef Name="docExtId"/>
-                </Key>
-                <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-                <Property Name="inn" Type="Edm.String" MaxLength="12"/>
-                <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
-                <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
-                <Property Name="Name" Type="Edm.String" MaxLength="160"/>
-                <Property Name="Bank.bic" Type="Edm.String" MaxLength="9"/>
-                <Property Name="Bank.correspAcc" Type="Edm.String" MaxLength="20"/>
-                <Property Name="Bank.Name" Type="Edm.String" MaxLength="80"/>
-                <Property Name="Bank.BankCity" Type="Edm.String" MaxLength="30"/>
-                <Property Name="Bank.SettlementType" Type="Edm.String" MaxLength="20"/>
-                <NavigationProperty Name="Payee" Relationship="default.PDPayeeType" FromRole="PayeeDependent" ToRole="PayDocRuPrincipal"/>
-            </EntityType>
-            <Association Name="PDHeadType">
-                <End Type="default.RequestType" Role="RequestPrincipal" Multiplicity="1"/>
-                <End Type="default.PayDocRuType" Role="PayDocRuDependent" Multiplicity="1"/>
-            </Association>
-            <Association Name="PDItemsType">
-                <End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
-                <End Type="default.AccDocType" Role="AccDocDependent" Multiplicity="*"/>
-            </Association>
-            <Association Name="PDPayerType">
-                <End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
-                <End Type="default.PayerType" Role="PayerDependent" Multiplicity="1"/>
-            </Association>
-            <Association Name="PDPayeeType">
-                <End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
-                <End Type="default.PayeeType" Role="PayeeDependent" Multiplicity="1"/>
-            </Association>
-            <EntityContainer Name="v2" m:IsDefaultEntityContainer="true">
-                <EntitySet Name="Request" EntityType="default.RequestType"/>
-                <EntitySet Name="PayDocRu" EntityType="default.PayDocRuType"/>
-                <EntitySet Name="Payer" EntityType="default.PayerType"/>
-                <EntitySet Name="Payee" EntityType="default.PayeeType"/>
-                <AssociationSet Name="PDHead" Association="default.PDHeadType">
-                    <End Role="RequestPrincipal" EntitySet="Request"/>
-                    <End Role="PayDocRuDependent" EntitySet="PayDocRu"/>
-                </AssociationSet>
-                <AssociationSet Name="PDItems" Association="default.PDItemsType">
-                    <End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
-                    <End Role="AccDocDependent" EntitySet="AccDoc"/>
-                </AssociationSet>
-                <AssociationSet Name="PDPayer" Association="default.PDPayerType">
-                    <End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
-                    <End Role="PayerDependent" EntitySet="Payer"/>
-                </AssociationSet>
-                <AssociationSet Name="PDPayee" Association="default.PDPayeeType">
-                    <End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
-                    <End Role="PayeeDependent" EntitySet="Payee"/>
-                </AssociationSet>
-            </EntityContainer>
-        </Schema>
-    </edmx:DataServices>
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+<Schema xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="default">
+<EntityType Name="RequestType">
+<Key>
+<PropertyRef Name="requestId"/>
+</Key>
+<Property Name="bank" Type="Edm.String" MaxLength="255"/>
+<Property Name="xmlns" Type="Edm.String" MaxLength="255"/>
+<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="version" Type="Edm.String" MaxLength="255"/>
+<NavigationProperty Name="PayDocRu" Relationship="default.RequestPayDocType" FromRole="RequestPrincipal" ToRole="PayDocRuDependent" sap:creatable="false" sap:filterable="false"/>
+</EntityType>
+<EntityType Name="PayDocRuType">
+<Key>
+<PropertyRef Name="requestId"/>
+<PropertyRef Name="docExtId"/>
+</Key>
+<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<NavigationProperty Name="AccDoc" Relationship="default.RequestAccDocType" FromRole="PayDocRuPrincipal" ToRole="AccDocDependent" sap:creatable="false" sap:filterable="false"/>
+</EntityType>
+<EntityType Name="PayerType">
+<Key>
+<PropertyRef Name="docExtId"/>
+</Key>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="inn" Type="Edm.String" MaxLength="12"/>
+<Property Name="kpp" Type="Edm.String" MaxLength="9"/>
+<Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="Name" Type="Edm.String" MaxLength="160"/>
+<NavigationProperty Name="Payer" Relationship="default.RequestPayerType" FromRole="PayerDependent" ToRole="PayDocRuPrincipal" sap:creatable="false" sap:filterable="false"/>
+</EntityType>
+<EntityType Name="PayeeType">
+<Key>
+<PropertyRef Name="docExtId"/>
+</Key>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="inn" Type="Edm.String" MaxLength="12"/>
+<Property Name="kpp" Type="Edm.String" MaxLength="9"/>
+<Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="Name" Type="Edm.String" MaxLength="160"/>
+<NavigationProperty Name="Payee" Relationship="default.RequestPayeeType" FromRole="PayeeDependent" ToRole="PayDocRuPrincipal" sap:creatable="false" sap:filterable="false"/>
+</EntityType>
+<EntityType Name="FilesType">
+<Key>
+<PropertyRef Name="requestId"/>
+</Key>
+<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="fileName" Type="Edm.String" MaxLength="255"/>
+<Property Name="fileType" Type="Edm.String" MaxLength="255"/>
+<Property Name="fileSize" Type="Edm.Int32"/>
+<Property Name="fileBody" Type="Edm.Binary"/>
+<NavigationProperty Name="Files" Relationship="default.RequestFileType" FromRole="FilesDependent" ToRole="PayDocRuPrincipal" sap:creatable="false" sap:filterable="false"/>
+</EntityType>
+<EntityType Name="SignType">
+<Key>
+<PropertyRef Name="docExtId"/>
+</Key>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="SN" Type="Edm.String" MaxLength="255"/>
+<Property Name="Value" Type="Edm.Binary"/>
+<Property Name="Issuer" Type="Edm.String" MaxLength="1024"/>
+<Property Name="DigestName" Type="Edm.String" MaxLength="255"/>
+<Property Name="DigestVersion" Type="Edm.String" MaxLength="255"/>
+<Property Name="SignType" Type="Edm.String" Nullable="false" MaxLength="255"/>
+<Property Name="Fio" Type="Edm.String" MaxLength="255"/>
+<Property Name="Position" Type="Edm.String" MaxLength="255"/>
+<NavigationProperty Name="Sign" Relationship="default.RequestSignType" FromRole="SignDependent" ToRole="PayDocRuPrincipal" sap:creatable="false" sap:filterable="false"/>
+</EntityType>
+<EntityType Name="PaymentOrderType">
+<Key>
+<PropertyRef Name="docExtId"/>
+</Key>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="purpose" Type="Edm.String" MaxLength="210"/>
+<Property Name="docDate" Type="Edm.String" MaxLength="255"/>
+<Property Name="docNum" Type="Edm.String" MaxLength="6"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="vatSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="vatRate" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="vat" Type="Edm.String" MaxLength="255"/>
+<Property Name="transKind" Type="Edm.String" MaxLength="2"/>
+<Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
+<Property Name="paytCode" Type="Edm.String" MaxLength="1"/>
+<Property Name="priority" Type="Edm.Int32"/>
+<Property Name="codeVO" Type="Edm.String" MaxLength="5"/>
+<Property Name="nodocs" Type="Edm.Int32"/>
+<Property Name="PayerInn" Type="Edm.String" MaxLength="12"/>
+<Property Name="PayerKpp" Type="Edm.String" MaxLength="9"/>
+<Property Name="PayerPersonalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="PayerName" Type="Edm.String" MaxLength="160"/>
+<Property Name="PayeeInn" Type="Edm.String" MaxLength="12"/>
+<Property Name="PayeeKpp" Type="Edm.String" MaxLength="9"/>
+<Property Name="PayeePersonalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="PayeeName" Type="Edm.String" MaxLength="160"/>
+<NavigationProperty Name="PaymentOrderFile" Relationship="default.POFileType" FromRole="PaymentOrderPrincipal" ToRole="FilesDependent" sap:creatable="false" sap:filterable="false"/>
+</EntityType>
+<Association Name="RequestPayDocType">
+<End Type="default.RequestType" Role="RequestPrincipal" Multiplicity="1"/>
+<End Type="default.PayDocRuType" Role="PayDocRuDependent" Multiplicity="1"/>
+</Association>
+<Association Name="RequestAccDocType">
+<End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
+<End Type="default.AccDocType" Role="AccDocDependent" Multiplicity="*"/>
+</Association>
+<Association Name="RequestPayerType">
+<End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
+<End Type="default.PayerType" Role="PayerDependent" Multiplicity="1"/>
+</Association>
+<Association Name="RequestPayeeType">
+<End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
+<End Type="default.PayeeType" Role="PayeeDependent" Multiplicity="1"/>
+</Association>
+<Association Name="RequestFileType">
+<End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
+<End Type="default.FilesType" Role="FilesDependent" Multiplicity="1"/>
+</Association>
+<Association Name="RequestSignType">
+<End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
+<End Type="default.SignType" Role="SignDependent" Multiplicity="*"/>
+</Association>
+<Association Name="POFileType">
+<End Type="default.PaymentOrderType" Role="PaymentOrderPrincipal" Multiplicity="1"/>
+<End Type="default.FilesType" Role="FilesDependent" Multiplicity="1"/>
+</Association>
+<EntityContainer Name="v2" m:IsDefaultEntityContainer="true">
+<EntitySet Name="Request" EntityType="default.RequestType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="PayDocRu" EntityType="default.PayDocRuType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="Payer" EntityType="default.PayerType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="Payee" EntityType="default.PayeeType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="Files" EntityType="default.FilesType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="Sign" EntityType="default.SignType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="PaymentOrder" EntityType="default.PaymentOrderType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<AssociationSet Name="RequestPayDoc" Association="default.RequestPayDocType">
+<End Role="RequestPrincipal" EntitySet="Request"/>
+<End Role="PayDocRuDependent" EntitySet="PayDocRu"/>
+</AssociationSet>
+<AssociationSet Name="RequestAccDoc" Association="default.RequestAccDocType">
+<End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
+<End Role="AccDocDependent" EntitySet="AccDoc"/>
+</AssociationSet>
+<AssociationSet Name="RequestPayer" Association="default.RequestPayerType">
+<End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
+<End Role="PayerDependent" EntitySet="Payer"/>
+</AssociationSet>
+<AssociationSet Name="RequestPayee" Association="default.RequestPayeeType">
+<End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
+<End Role="PayeeDependent" EntitySet="Payee"/>
+</AssociationSet>
+<AssociationSet Name="RequestFile" Association="default.RequestFileType">
+<End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
+<End Role="FilesDependent" EntitySet="Files"/>
+</AssociationSet>
+<AssociationSet Name="RequestSign" Association="default.RequestSignType">
+<End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
+<End Role="SignDependent" EntitySet="Sign"/>
+</AssociationSet>
+<AssociationSet Name="POFile" Association="default.POFileType">
+<End Role="PaymentOrderPrincipal" EntitySet="PaymentOrder"/>
+<End Role="FilesDependent" EntitySet="Files"/>
+</AssociationSet>
+</EntityContainer>
+</Schema>
+</edmx:DataServices>
 </edmx:Edmx>

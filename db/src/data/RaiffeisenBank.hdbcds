@@ -1,3 +1,4 @@
+@OData.publish : true
 context RaiffeisenBank {
     type t_uuid : String(37);
     type t_str : String(255);
@@ -187,28 +188,39 @@ context RaiffeisenBank {
     
     
      define view PaymentOrder as Select from TPayDocRu{
-     	DOCEXTID			as docExtId,
-		_ACCDOC.PURPOSE		as purpose,
-		_ACCDOC.DOCDATE		as docDate,
-		_ACCDOC.DOCNUM		as docNum,
-		_ACCDOC.DOCSUM		as docSum,
-		_ACCDOC.VATSUM		as vatSum,
-		_ACCDOC.VATRATE		as vatRate,
-		_ACCDOC.VAT			as vat,
-		_ACCDOC.TRANSKIND	as transKind,
-		_ACCDOC.PAYTKIND 	as paytKind,
-		_ACCDOC.PAYTCODE 	as paytCode,
-		_ACCDOC.PRIORITY 	as priority,
-		_ACCDOC.CODEVO		as codeVO,
-		_ACCDOC.NODOCS		as nodocs,
-		_PAYER.INN      	as PayerInn,
-        _PAYER.KPP      	as PayerKpp,
-        _PAYER.PERSONALACC	as PayerPersonalAcc,
-        _PAYER.NAME			as PayerName,
-		_PAYEE.INN      	as PayeeInn,
-        _PAYEE.KPP      	as PayeeKpp,
-        _PAYEE.PERSONALACC	as PayeePersonalAcc,
-        _PAYEE.NAME			as PayeeName
+    	REQUESTID					as requestId,
+     	DOCEXTID					as docExtId,
+		_ACCDOC.PURPOSE				as purpose,
+		_ACCDOC.DOCDATE				as docDate,
+		_ACCDOC.DOCNUM				as docNum,
+		_ACCDOC.DOCSUM				as docSum,
+		_ACCDOC.VATSUM				as vatSum,
+		_ACCDOC.VATRATE				as vatRate,
+		_ACCDOC.VAT					as vat,
+		_ACCDOC.TRANSKIND			as transKind,
+		_ACCDOC.PAYTKIND 			as paytKind,
+		_ACCDOC.PAYTCODE 			as paytCode,
+		_ACCDOC.PRIORITY 			as priority,
+		_ACCDOC.CODEVO				as codeVO,
+		_ACCDOC.NODOCS				as nodocs,
+		_PAYER.INN      			as PayerInn,
+        _PAYER.KPP      			as PayerKpp,
+        _PAYER.PERSONALACC			as PayerPersonalAcc,
+        _PAYER.NAME					as PayerName,
+        _PAYER.BANKBIC				as PayerBankBic,
+		_PAYER.BANKCORRESPACC		as PayerBankCorrespAcc,
+		_PAYER.BANKNAME 			as PayerBankName,
+		_PAYER.BANKCITY 			as PayerBankBankCity,
+		_PAYER.BANKSETTLEMENTTYPE	as PayerBankSettlementType,
+		_PAYEE.INN      			as PayeeInn,
+        _PAYEE.KPP      			as PayeeKpp,
+        _PAYEE.PERSONALACC			as PayeePersonalAcc,
+        _PAYEE.NAME					as PayeeName,
+        _PAYEE.BANKBIC				as PayeeBankBic,
+		_PAYEE.BANKCORRESPACC		as PayeeBankCorrespAcc,
+		_PAYEE.BANKNAME 			as PayeeBankName,
+		_PAYEE.BANKCITY 			as PayeeBankBankCity,
+		_PAYEE.BANKSETTLEMENTTYPE	as PayeeBankSettlementType
      };
     
     define view Request as Select from TRequest{
