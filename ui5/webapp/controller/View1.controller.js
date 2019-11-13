@@ -43,14 +43,14 @@ sap.ui.define([
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
-			var fileDownload;
+			var requestId;
 
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
 					var Context = oTable.getContextByIndex(item);
 					var sPath = Context.sPath;
 					var obj = oTable.getModel().getProperty(sPath);
-					var docExtId = obj.docExtId;
+					requestId = obj.requestId;
 				});
 			}
 
@@ -59,30 +59,26 @@ sap.ui.define([
 			//var oModel = new sap.ui.model.odata.ODataModel(url);
 			var oModel = this.getView().getModel();
 			var that = this;
-            
-            docExtId = "dbcfa37f-5c47-beef-88ff-6e3cb3fed730";
-            
-			var aFilters = [];
-			if (docExtId) aFilters.push(new sap.ui.model.Filter("requestId", sap.ui.model.FilterOperator.EQ, docExtId));
-            
-			oModel.read("/Files", {
-				filters: aFilters,
+			
+			oModel.read("/Files('" + requestId + "')", {
 				success: function (file) {
-					//var array = new Uint8Array(btoa(fileDownload));
-					var decodedString2 = window.atob(file.fileBody);
-					var decodedString3 = window.atob(decodedString2);
-					var decodedString = that.base64ToArrayBuffer(decodedString2);
+					var decodedString = file.fileBody;
+					var decodedString1 = window.atob(decodedString);
+					var decodedString2 = window.atob(decodedString1);
 
-					//that.saveByteArray([decodedString], 'filePP2.txt');
+					var binaryLen = decodedString2.length;
+					var bytes = new Uint8Array(binaryLen);
+					for (var i = 0; i < binaryLen; i++) {
+						var ascii = decodedString2.charCodeAt(i);
+						bytes[i] = ascii;
+					}
+				
 					// saveByteArray
 					var a = document.createElement("a");
 					document.body.appendChild(a);
 					a.style = "display: none";
-					var blob = new Blob(decodedString, {
-							type: file.fileType
-						}),
-						url = window.URL.createObjectURL(blob);
-					a.href = url;
+					var blob = new Blob([bytes], {type: file.fileType});
+					a.href= window.URL.createObjectURL(blob);
 					a.download = file.fileName;
 					a.click();
 					window.URL.revokeObjectURL(url);
@@ -108,7 +104,9 @@ sap.ui.define([
 			// 				};
 			// 			}());
 
-			function base64ToArrayBuffer(base64) {
+		},
+		
+		base64ToArrayBuffer: function (base64) {
 				var binaryString = window.atob(base64);
 				var binaryLen = binaryString.length;
 				var bytes = new Uint8Array(binaryLen);
@@ -117,7 +115,6 @@ sap.ui.define([
 					bytes[i] = ascii;
 				}
 				return bytes;
-			}
 		},
 
 		//=======

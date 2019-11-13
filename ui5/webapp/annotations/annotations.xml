@@ -77,6 +77,12 @@
 			<Annotations Target="Metadata.PaymentOrderType/nodocs">
 				<Annotation Term="Common.Label" String="Документы не требуются"/>
 			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType">
+				<Annotation Term="Common.Label" String="Платежное поручение"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/requestId">
+				<Annotation Term="Common.Label" String="Идентификатор платежа"/>
+			</Annotations>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
