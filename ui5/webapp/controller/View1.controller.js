@@ -50,60 +50,77 @@ sap.ui.define([
 					var Context = oTable.getContextByIndex(item);
 					var sPath = Context.sPath;
 					var obj = oTable.getModel().getProperty(sPath);
-					var file = obj.file;
-
-					fileDownload = file;
+					var docExtId = obj.docExtId;
 				});
 			}
-			//var sampleBytes = new Int8Array(4096);
 
-//             var contentType = "text/plain"
-//             var byteCharacters = atob(fileDownload);
-//             var byteNumbers = new Array(byteCharacters.length);
-//             for (var i = 0; i < byteCharacters.length; i++) {
-//                 byteNumbers[i] = byteCharacters.charCodeAt(i);
-//             }
-//             var byteArray = new Uint8Array(byteNumbers);
-//             var blob = new Blob([byteArray], {type: contentType});
-// 			var blobUrl = URL.createObjectURL(blob);
-//             window.location = blobUrl;
+			//Get file
+			//var url = '/xsodata';
+			//var oModel = new sap.ui.model.odata.ODataModel(url);
+			var oModel = this.getView().getModel();
+			var that = this;
+            
+            docExtId = "dbcfa37f-5c47-beef-88ff-6e3cb3fed730";
+            
+			var aFilters = [];
+			if (docExtId) aFilters.push(new sap.ui.model.Filter("requestId", sap.ui.model.FilterOperator.EQ, docExtId));
+            
+			oModel.read("/Files", {
+				filters: aFilters,
+				success: function (file) {
+					//var array = new Uint8Array(btoa(fileDownload));
+					var decodedString2 = window.atob(file.fileBody);
+					var decodedString3 = window.atob(decodedString2);
+					var decodedString = that.base64ToArrayBuffer(decodedString2);
 
-			//var array = new Uint8Array(btoa(fileDownload));
-			var decodedString2 =  window.atob(fileDownload);
-			var decodedString3 =  window.atob(decodedString2);
-			var decodedString = base64ToArrayBuffer(decodedString2);
-			
-            var saveByteArray = (function () {
-				var a = document.createElement("a");
-				document.body.appendChild(a);
-				a.style = "display: none";
-				return function (data, name) {
-					var blob = new Blob(data, {
-							type: "text/plain"
+					//that.saveByteArray([decodedString], 'filePP2.txt');
+					// saveByteArray
+					var a = document.createElement("a");
+					document.body.appendChild(a);
+					a.style = "display: none";
+					var blob = new Blob(decodedString, {
+							type: file.fileType
 						}),
 						url = window.URL.createObjectURL(blob);
 					a.href = url;
-					a.download = name;
+					a.download = file.fileName;
 					a.click();
 					window.URL.revokeObjectURL(url);
-				};
-			}());
+				},
+				error: function (oError) {
+					console.log("error: " + oError);
+				}
+			});
 
-			saveByteArray([decodedString], 'filePP2.txt');
-			
+			// 			var saveByteArray = (function () {
+			// 				var a = document.createElement("a");
+			// 				document.body.appendChild(a);
+			// 				a.style = "display: none";
+			// 				return function (data, name) {
+			// 					var blob = new Blob(data, {
+			// 							type: "text/plain"
+			// 						}),
+			// 						url = window.URL.createObjectURL(blob);
+			// 					a.href = url;
+			// 					a.download = name;
+			// 					a.click();
+			// 					window.URL.revokeObjectURL(url);
+			// 				};
+			// 			}());
+
 			function base64ToArrayBuffer(base64) {
-                var binaryString =  window.atob(base64);
-                var binaryLen = binaryString.length;
-                var bytes = new Uint8Array(binaryLen);
-                for (var i = 0; i < binaryLen; i++)        {
-                    var ascii = binaryString.charCodeAt(i);
-                    bytes[i] = ascii;
-                }
-                return bytes;
-            }
+				var binaryString = window.atob(base64);
+				var binaryLen = binaryString.length;
+				var bytes = new Uint8Array(binaryLen);
+				for (var i = 0; i < binaryLen; i++) {
+					var ascii = binaryString.charCodeAt(i);
+					bytes[i] = ascii;
+				}
+				return bytes;
+			}
 		},
 
-//=======
+		//=======
 		OnFileSelected: function (e) {
 			//sap.ui.getCore()._file = e.getParameter("files") && e.getParameter("files")[0];
 		},
@@ -137,40 +154,40 @@ sap.ui.define([
 		// кнопка отправить
 		onSend: function (oEvent) {
 			var oView = this.getView();
-// 			var oTable = oView.byId("LineItemsSmartTable");
-// 			var aIndices = oTable.getSelectedIndices();
-// 			if (aIndices.length) {
-// 				var dataZsbnreqn = [];
-// 				for (var i = 0; i < aIndices.length; i++) {
-// 					var sPath = oTable.getContextByIndex(aIndices[i]).sPath;
-// 					var obj = oTable.getModel().getProperty(sPath);
-// 					dataZsbnreqn[i] = obj.ZsbnReqn;
-// 				}
-// 			}
-// 			alert(aIndices);
-			
+			// 			var oTable = oView.byId("LineItemsSmartTable");
+			// 			var aIndices = oTable.getSelectedIndices();
+			// 			if (aIndices.length) {
+			// 				var dataZsbnreqn = [];
+			// 				for (var i = 0; i < aIndices.length; i++) {
+			// 					var sPath = oTable.getContextByIndex(aIndices[i]).sPath;
+			// 					var obj = oTable.getModel().getProperty(sPath);
+			// 					dataZsbnreqn[i] = obj.ZsbnReqn;
+			// 				}
+			// 			}
+			// 			alert(aIndices);
+
 			// считываем ЭЦП
 			//var oStore = window.cadesplugin.CreateObject("CAdESCOM.Store");
-            var CADESCOM_CADES_BES = 1;
+			var CADESCOM_CADES_BES = 1;
 			var CAPICOM_CURRENT_USER_STORE = 2;
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
 			var dateObj = new Date();
-			
+
 			var sertList = new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
-				    //https://cpdn.cryptopro.ru/content/cades/plugin-methods.html
+					//https://cpdn.cryptopro.ru/content/cades/plugin-methods.html
 					try {
-					    var Info =  yield  window.cadesplugin.CreateObjectAsync("CAdESCOM");
+						var Info = yield window.cadesplugin.CreateObjectAsync("CAdESCOM");
 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
-						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 						//yield oStore.Open();
-	                    debugger;
+						debugger;
 						var CertificatesObj = yield oStore.Certificates;
 
 						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
-						
+
 						var Count = yield CertificatesObj.Count;
 						//var Count = yield oStore.Certificates.Count;
 						if (Count == 0) {
@@ -179,9 +196,9 @@ sap.ui.define([
 							try {
 								for (var i = 1; i <= Count; i++) {
 									var cert = yield CertificatesObj.Item(i);
-									if (dateObj <  cert.ValidToDate && cert.HasPrivateKey() && cert.IsValid().Result) {
+									if (dateObj < cert.ValidToDate && cert.HasPrivateKey() && cert.IsValid().Result) {
 										//return cert
-										
+
 									}
 									console.log(cert.ValidToDate);
 									console.log(yield cert.HasPrivateKey());

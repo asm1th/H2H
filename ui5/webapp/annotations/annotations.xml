@@ -5,13 +5,77 @@
 	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2">
 		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
 	</edmx:Reference>
+	<edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+		<edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+	</edmx:Reference>
 	<edmx:DataServices>
 		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="H2H.ui5.annotations.annotations.default">
 			<Annotations Target="Metadata.PaymentOrderType/docExtId">
-				<Annotation Term="Common.Label" String="{@i18n&gt;ИДЕНТИФИКАТОР_ВЫПИСКИ_В_ELBRUS}"/>
+				<Annotation Term="Core.Ordered" Bool="true"/>
+				<Annotation Term="Common.Label" String="Идентификатор выписки в ELBRUS"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/purpose">
-				<Annotation Term="Common.Label" String="{@i18n&gt;НАЗНАЧЕНИЕ_ПЛАТЕЖА}"/>
+				<Annotation Term="Common.Label" String="Назначение платежа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/docDate">
+				<Annotation Term="Common.Label" String="Дата составления документа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/docNum">
+				<Annotation Term="Common.Label" String="Номер документа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/docSum">
+				<Annotation Term="Common.Label" String="Сумма документа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerInn">
+				<Annotation Term="Common.Label" String="ИНН плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerKpp">
+				<Annotation Term="Common.Label" String="КПП плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerPersonalAcc">
+				<Annotation Term="Common.Label" String="Номер счёта плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerName">
+				<Annotation Term="Common.Label" String="ИНН плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeeInn">
+				<Annotation Term="Common.Label" String="ИНН плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeeKpp">
+				<Annotation Term="Common.Label" String="КПП получателя"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeePersonalAcc">
+				<Annotation Term="Common.Label" String="Номер счёта получателя"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeeName">
+				<Annotation Term="Common.Label" String="Наименование получателя"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/vatSum">
+				<Annotation Term="Common.Label" String="Сумма НДС"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/vatRate">
+				<Annotation Term="Common.Label" String="% НДС"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/vat">
+				<Annotation Term="Common.Label" String="НДС"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/transKind">
+				<Annotation Term="Common.Label" String="Вид операции"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/paytKind">
+				<Annotation Term="Common.Label" String="Вид платеж"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/paytCode">
+				<Annotation Term="Common.Label" String="Код вида платежа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/priority">
+				<Annotation Term="Common.Label" String="Очерёдность платежа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/codeVO">
+				<Annotation Term="Common.Label" String="Код вида валютной операции"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/nodocs">
+				<Annotation Term="Common.Label" String="Документы не требуются"/>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>
