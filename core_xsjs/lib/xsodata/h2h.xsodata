@@ -9,7 +9,9 @@ service {
 																										"PayDocRu_Payee"	as "PayDocRuPayee",
 																										"PayDocRu_File"		as "PayDocRuFile",
 																										"PayDocRu_Sign" 	as "PayDocRuSign"
-																										from principal); 																								
+																										from principal); 					
+																											
+	"RaiffeisenBank.AccDoc"			as "AccDoc"			key ("docExtId");
 	"RaiffeisenBank.Payer"			as "Payer"			key ("docExtId");
 	"RaiffeisenBank.Payee"			as "Payee"			key ("docExtId");
 	"RaiffeisenBank.Files"			as "Files"			key ("requestId") create using "xsjs:dbf.xsjslib::po_create";
