@@ -1,20 +1,28 @@
 service {
-	"RaiffeisenBank.Request"		as "Request" 		key ("requestId")				navigates ("RequestPayDoc" 	as "PayDocRu");
-	"RaiffeisenBank.PayDocRu"		as "PayDocRu"		key ("requestId", "docExtId")	navigates ("RequestAccDoc"	as "AccDoc"); 
-	"RaiffeisenBank.Payer"			as "Payer"			key ("docExtId")				navigates ("RequestPayer"	as "Payer");
-	"RaiffeisenBank.Payee"			as "Payee"			key ("docExtId")				navigates ("RequestPayee"	as "Payee");
-	"RaiffeisenBank.Files"			as "Files"			key ("requestId")				navigates ("RequestFile"	as "Files") create using "xsjs:dbf.xsjslib::po_create";
-	"RaiffeisenBank.Sign"			as "Sign"			key ("docExtId")				navigates ("RequestSign"	as "Sign");
-	
-	"RaiffeisenBank.PaymentOrder"	as "PaymentOrder"		key ("docExtId")			navigates ("POFile"	as "PaymentOrderFile") create using "xsjs:dbf.xsjslib::po_create";
-	
-	association "RequestPayDoc"		principal  "Request"("requestId")			multiplicity "1" dependent "PayDocRu"("Request.requestId")	multiplicity "1";
-	association "RequestAccDoc"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "AccDoc"("AccDoc.docExtId")		multiplicity "*";
-	association "RequestPayer"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payer"("Payer.docExtId")		multiplicity "1";
-	association "RequestPayee"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payee"("Payee.docExtId")		multiplicity "1";
-	association "RequestFile"		principal  "PayDocRu"("requestId") 			multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
-	association "RequestSign"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Sign"("Sign.docExtId")			multiplicity "*";
-	association "POFile"			principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
+	"RaiffeisenBank.PaymentOrder"	as "PaymentOrder"		key ("requestId", "docExtId")	navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
+																										"PaymentOrder_Sign"				as "PaymentOrderSign"
+																										from principal);
+	"RaiffeisenBank.Request"		as "Request" 			key ("requestId")				navigates (	"Request_PayDoc"				as "RequestPayDoc"
+																										from principal);	
+	"RaiffeisenBank.PayDocRu"		as "PayDocRu"			key ("requestId", "docExtId")	navigates (	"PayDocRu_AccDoc"	as "PayDocRuAccDoc",
+																										"PayDocRu_Payer"	as "PayDocRuPayer",
+																										"PayDocRu_Payee"	as "PayDocRuPayee",
+																										"PayDocRu_File"		as "PayDocRuFile",
+																										"PayDocRu_Sign" 	as "PayDocRuSign"
+																										from principal); 																								
+	"RaiffeisenBank.Payer"			as "Payer"			key ("docExtId");
+	"RaiffeisenBank.Payee"			as "Payee"			key ("docExtId");
+	"RaiffeisenBank.Files"			as "Files"			key ("requestId") create using "xsjs:dbf.xsjslib::po_create";
+	"RaiffeisenBank.Sign"			as "Sign"			key ("docExtId");																									
+																										
+	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
+	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("Sign.docExtId")			multiplicity "*";
+	association "Request_PayDoc"		principal  "Request"("requestId")			multiplicity "1" dependent "PayDocRu"("Request.requestId")	multiplicity "1";
+	association "PayDocRu_AccDoc"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "AccDoc"("AccDoc.docExtId")		multiplicity "*";
+	association "PayDocRu_Payer"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payer"("Payer.docExtId")		multiplicity "1";
+	association "PayDocRu_Payee"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payee"("Payee.docExtId")		multiplicity "1";
+	association "PayDocRu_File"			principal  "PayDocRu"("requestId") 			multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
+	association "PayDocRu_Sign"			principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Sign"("Sign.docExtId")			multiplicity "*";
 }
 annotations {
    enable OData4SAP;
