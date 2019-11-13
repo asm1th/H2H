@@ -261,19 +261,29 @@ context RaiffeisenBank {
     };
     
     define view Payer as Select from TPayer{
-        DOCEXTID    as docExtId,
-        INN         as inn,
-        KPP         as kpp,
-        PERSONALACC as personalAcc,
-        NAME        as Name
+        DOCEXTID    		as docExtId,
+        INN         		as inn,
+        KPP         		as kpp,
+        PERSONALACC 		as personalAcc,
+        NAME        		as Name,
+        BANKBIC				as BankBic,
+		BANKCORRESPACC		as BankCorrespAcc,
+		BANKNAME 			as BankName,
+		BANKCITY 			as BankBankCity,
+		BANKSETTLEMENTTYPE	as BankSettlementType
     };
     
     define view Payee as Select from TPayee{
-        DOCEXTID    as docExtId,
-        INN         as inn,
-        KPP         as kpp,
-        PERSONALACC as personalAcc,
-        NAME        as Name
+        DOCEXTID    		as docExtId,
+        INN         		as inn,
+        KPP         		as kpp,
+        PERSONALACC 		as personalAcc,
+        NAME        		as Name,
+        BANKBIC				as BankBic,
+		BANKCORRESPACC		as BankCorrespAcc,
+		BANKNAME 			as BankName,
+		BANKCITY 			as BankBankCity,
+		BANKSETTLEMENTTYPE	as BankSettlementType
     };
     
     define view Sign as Select from TSign {
