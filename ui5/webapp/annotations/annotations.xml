@@ -8,80 +8,157 @@
 	<edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
 		<edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
 	</edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2">
+		<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+	</edmx:Reference>
 	<edmx:DataServices>
 		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="H2H.ui5.annotations.annotations.default">
 			<Annotations Target="Metadata.PaymentOrderType/docExtId">
+				<Annotation Term="UI.DataFieldDefault"/>
+				<Annotation Term="Common.QuickInfo" String="Идентификатор выписки в ELBRUS"/>
 				<Annotation Term="Core.Ordered" Bool="true"/>
 				<Annotation Term="Common.Label" String="Идентификатор выписки в ELBRUS"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/purpose">
+				<Annotation Term="Common.QuickInfo" String="Назначение платежа"/>
 				<Annotation Term="Common.Label" String="Назначение платежа"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/docDate">
+				<Annotation Term="Common.QuickInfo" String="Дата составления документа"/>
 				<Annotation Term="Common.Label" String="Дата составления документа"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/docNum">
+				<Annotation Term="Common.QuickInfo" String="Номер документа"/>
 				<Annotation Term="Common.Label" String="Номер документа"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/docSum">
+				<Annotation Term="Common.QuickInfo" String="Сумма документа"/>
 				<Annotation Term="Common.Label" String="Сумма документа"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayerInn">
+				<Annotation Term="Common.QuickInfo" String="ИНН плательщика"/>
 				<Annotation Term="Common.Label" String="ИНН плательщика"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayerKpp">
+				<Annotation Term="Common.QuickInfo" String="КПП плательщика"/>
 				<Annotation Term="Common.Label" String="КПП плательщика"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayerPersonalAcc">
+				<Annotation Term="Common.QuickInfo" String="Номер счёта плательщика"/>
 				<Annotation Term="Common.Label" String="Номер счёта плательщика"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayerName">
-				<Annotation Term="Common.Label" String="ИНН плательщика"/>
+				<Annotation Term="Common.QuickInfo" String="Наименование плательщика"/>
+				<Annotation Term="Common.Label" String="Наименование плательщика"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayeeInn">
-				<Annotation Term="Common.Label" String="ИНН плательщика"/>
+				<Annotation Term="Common.QuickInfo" String="ИНН получателя"/>
+				<Annotation Term="Common.Label" String="ИНН получателя"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayeeKpp">
+				<Annotation Term="Common.QuickInfo" String="КПП получателя"/>
 				<Annotation Term="Common.Label" String="КПП получателя"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayeePersonalAcc">
+				<Annotation Term="Common.QuickInfo" String="Номер счёта получателя"/>
 				<Annotation Term="Common.Label" String="Номер счёта получателя"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayeeName">
+				<Annotation Term="Common.QuickInfo" String="Наименование получателя"/>
 				<Annotation Term="Common.Label" String="Наименование получателя"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/vatSum">
+				<Annotation Term="Common.QuickInfo" String="Сумма НДС"/>
 				<Annotation Term="Common.Label" String="Сумма НДС"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/vatRate">
+				<Annotation Term="Common.QuickInfo" String="% НДС"/>
 				<Annotation Term="Common.Label" String="% НДС"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/vat">
+				<Annotation Term="Common.QuickInfo" String="НДС"/>
 				<Annotation Term="Common.Label" String="НДС"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/transKind">
+				<Annotation Term="Common.QuickInfo" String="Вид операции"/>
 				<Annotation Term="Common.Label" String="Вид операции"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/paytKind">
+				<Annotation Term="Common.QuickInfo" String="Вид платеж"/>
 				<Annotation Term="Common.Label" String="Вид платеж"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/paytCode">
+				<Annotation Term="Common.QuickInfo" String="Код вида платежа"/>
 				<Annotation Term="Common.Label" String="Код вида платежа"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/priority">
+				<Annotation Term="Common.QuickInfo" String="Очерёдность платежа"/>
 				<Annotation Term="Common.Label" String="Очерёдность платежа"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/codeVO">
+				<Annotation Term="Common.QuickInfo" String="Код вида валютной операции"/>
 				<Annotation Term="Common.Label" String="Код вида валютной операции"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/nodocs">
+				<Annotation Term="Common.QuickInfo" String="Документы не требуются"/>
 				<Annotation Term="Common.Label" String="Документы не требуются"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType">
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="requestId"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docDate"/>
+						</Record>
+					</Collection>
+				</Annotation>
 				<Annotation Term="Common.Label" String="Платежное поручение"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/requestId">
+				<Annotation Term="UI.Hidden" Bool="true"/>
 				<Annotation Term="Common.Label" String="Идентификатор платежа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerBankBic">
+				<Annotation Term="Common.QuickInfo" String="БИК банка плательщика"/>
+				<Annotation Term="Common.Label" String="БИК банка плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerBankCorrespAcc">
+				<Annotation Term="Common.QuickInfo" String="Номер корр. счёта банка плательщика"/>
+				<Annotation Term="Common.Label" String="Номер корр. счёта банка плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerBankName">
+				<Annotation Term="Common.QuickInfo" String="Наименование банка плательщика"/>
+				<Annotation Term="Common.Label" String="Наименование банка плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerBankBankCity">
+				<Annotation Term="Common.QuickInfo" String="Название населённого пункта банка плательщика"/>
+				<Annotation Term="Common.Label" String="Название населённого пункта банка плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayerBankSettlementType">
+				<Annotation Term="Common.QuickInfo" String="Тип населённого пункта банка плательщика"/>
+				<Annotation Term="Common.Label" String="Тип населённого пункта банка плательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeeBankBic">
+				<Annotation Term="Common.QuickInfo" String="БИК банка получателя"/>
+				<Annotation Term="Common.Label" String="БИК банка получателя"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeeBankSettlementType">
+				<Annotation Term="Common.QuickInfo" String="Тип населённого пункта банка получателя"/>
+				<Annotation Term="Common.Label" String="Тип населённого пункта банка получателя"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeeBankBankCity">
+				<Annotation Term="Common.QuickInfo" String="Название населённого пункта банка получателя"/>
+				<Annotation Term="Common.Label" String="Название населённого пункта банка получателя"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeeBankCorrespAcc">
+				<Annotation Term="Common.QuickInfo" String="Номер корр. счёта банка получателя"/>
+				<Annotation Term="Common.Label" String="Номер корр. счёта банка получателя"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/PayeeBankName">
+				<Annotation Term="Common.QuickInfo" String="Наименование банка получателя"/>
+				<Annotation Term="Common.Label" String="Наименование банка получателя"/>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>

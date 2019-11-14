@@ -50,6 +50,17 @@ sap.ui.define([
 					var Context = oTable.getContextByIndex(item);
 					var sPath = Context.sPath;
 					var obj = oTable.getModel().getProperty(sPath);
+					
+		///////// test
+					var Context333 = oTable.getSelectedContexts();
+					var rows = oSmartTable.getTable().getBinding("rows");
+                    //var context = tblUser.getContextByIndex(tblUser.getSelectedIndex());
+                    var obj1 = Context.getObject();
+                    
+                    // console.log(context.getObject().ID); you can access all column values via the object returned by getObject()
+            		var items = oSmartTable.getTable().getBinding("rows");
+		///////// test
+					
 					requestId = obj.requestId;
 				});
 			}

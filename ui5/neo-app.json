@@ -1,21 +1,23 @@
 {
-	"welcomeFile": "/webapp/index.html",
-	"routes": [{
-		"path": "/resources",
-		"target": {
-			"type": "service",
-			"name": "sapui5",
-			"entryPath": "/resources"
-		},
-		"description": "SAPUI5 Resources"
-	}, {
-		"path": "xsodata",
-		"description": "xsodata description",
-		"target": {
-			"type": "destination",
-			"name": "xsodata"
-		}
-
-	}],
-	"sendWelcomeFileRedirect": true
+  "welcomeFile": "/webapp/index.html",
+  "routes": [
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "xsodata",
+      "description": "xsodata description",
+      "target": {
+        "type": "destination",
+        "name": "xsodata"
+      }
+    }
+  ],
+  "sendWelcomeFileRedirect": true
 }

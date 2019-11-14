@@ -1,7 +1,7 @@
 <mvc:View controllerName="h2h.ui5.controller.View1" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:fb="sap.ui.comp.filterbar" xmlns="sap.m" xmlns:t="sap.ui.table" displayBlock="true"
 	xmlns:variant="sap.ui.comp.variants" xmlns:f="sap.f" xmlns:u="sap.ui.unified" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
-	xmlns:smartTable="sap.ui.comp.smarttable" class="sapUiSizeCompact">
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" class="sapUiSizeCompact">
 	<tnt:ToolPage id="toolPage" class="hostapp">
 		<tnt:header>
 			<tnt:ToolHeader class="itsk-tool" design="Info">
@@ -51,7 +51,7 @@
 			</tnt:ToolHeader>
 		</tnt:header>
 		<tnt:sideContent>
-			<tnt:SideNavigation expanded="fasle" selectedKey="{PageModel>selectedKey}" itemSelect="onItemSelect">
+			<tnt:SideNavigation expanded="fasle" selectedKey="{PageModel>/selectedKey}" itemSelect="onItemSelect">
 				<tnt:NavigationList>
 					<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"></tnt:NavigationListItem>
 					<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"></tnt:NavigationListItem>
@@ -65,21 +65,21 @@
 						<VBox fitContainer="true">
 							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_Explored"
 								basicSearchFieldName="docExtId" enableBasicSearch="true">
-								<smartFilterBar:controlConfiguration>
-									<!--<smartFilterBar:ControlConfiguration key="docExtId">-->
-									<!--	<smartFilterBar:defaultFilterValues>-->
-									<!--		<smartFilterBar:SelectOption low="23cb2ada-6207-4994-8354-d7f4d78b1f18"></smartFilterBar:SelectOption>-->
-									<!--	</smartFilterBar:defaultFilterValues>-->
-									<!--</smartFilterBar:ControlConfiguration>-->
-								</smartFilterBar:controlConfiguration>
+								<!--<smartFilterBar:controlConfiguration>-->
+								<!--	<smartFilterBar:ControlConfiguration key="docExtId">-->
+								<!--		<smartFilterBar:defaultFilterValues>-->
+								<!--			<smartFilterBar:SelectOption low="23cb2ada-6207-4994-8354-d7f4d78b1f18"></smartFilterBar:SelectOption>-->
+								<!--		</smartFilterBar:defaultFilterValues>-->
+								<!--	</smartFilterBar:ControlConfiguration>-->
+								<!--</smartFilterBar:controlConfiguration>-->
 								<!-- layout data used to make the table growing but the filter bar fixed -->
 								<smartFilterBar:layoutData>
 									<FlexItemData shrinkFactor="0"/>
 								</smartFilterBar:layoutData>
 							</smartFilterBar:SmartFilterBar>
-							<!--tableBindingPath="PayDocRu" -->
+							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" 	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
 							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" tableType="Table"
-								initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="false"
+							 useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="false"
 								useTablePersonalisation="true" header="Платежные поручения" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored"
 								enableAutoBinding="true" showFullScreenButton="true" class="sapUiResponsiveContentPadding">
 								<!-- layout data used to make the table growing but the filter bar fixed -->
