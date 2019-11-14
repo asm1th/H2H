@@ -39,7 +39,7 @@ BANKTYPE;FORMATTYPE;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSOUR
 "RAIF";"PO";"0.1";"Payer";"Str";"BANKCITY";"ПлательщикБанк2";
 "RAIF";"PO";"0.1";"Payer";"Str";"BANKSETTLEMENTTYPE";"";
 "RAIF";"PO";"0.1";"Payee";"Str";"DOCEXTID";"";
-"RAIF";"PO";"0.1";"Payee";"Str";"INN";ПолучательИНН";
+"RAIF";"PO";"0.1";"Payee";"Str";"INN";"ПолучательИНН";
 "RAIF";"PO";"0.1";"Payee";"Str";"KPP";"ПолучательКПП";
 "RAIF";"PO";"0.1";"Payee";"Str";"PERSONALACC";"ПолучательРасчСчет";
 "RAIF";"PO";"0.1";"Payee";"Str";"PERSONALACC";"ПолучательСчет";
