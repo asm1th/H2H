@@ -8,12 +8,93 @@ function guid() {
     s4() + '-' + s4() + s4() + s4();
 }
 
+function isNull(xmlField, xmlValue) {
+	if (xmlValue == null) {
+		switch (xmlField) {
+			case 'PURPOSE':
+				errMsg += 'purpose:isNull;';		return '';		break;
+			case 'DOCDATE':
+				errMsg += 'docDate:isNull;';		return '';		break;	
+			case 'DOCNUM':
+				errMsg += 'docNum:isNull;'; 		return '';		break;		
+			case 'DOCSUM':
+				errMsg += 'docSum:isNull;'; 		return '';		break;	
+			case 'VATSUM':
+													return '0.00';	break;
+			case 'VATRATE':
+													return '0.00';	break;
+			case 'VAT':
+				// errMsg += 'vat:isNull;';
+													return 'VatManualAll'; break;
+			case 'TRANSKIND':
+				// errMsg += 'transKind:isNull;';
+													return '01';	break;
+			case 'PAYTKIND':
+				// errMsg += 'paytKind:isNull;'; 
+													return '0'; 	break;
+			case 'PRIORITY':
+				// errMsg += 'priority:isNull;';		
+													return '5';		break;
+			case 'NODOCS':
+													return '0'; 	break; 
+			case 'INN':
+				errMsg += 'inn:isNull;';			return '';		break;
+			case 'PERSONALACC':
+				errMsg += 'personalAcc:isNull;';	return '';		break;
+			case 'NAME':	
+				errMsg += 'Name:isNull;';			return '';		break;
+			case 'BIC':	
+				errMsg += 'bic:isNull;';			return '';		break;	
+			case 'BANKCITY':	
+				errMsg += 'BankCity:isNull;';		return '';		break;
+			case 'SETTLEMENTTYPE':	
+				// errMsg += 'SettlementType:isNull;'; 
+													return 'Г';		break;
+			default:
+		}
+	} else {
+		return xmlValue;
+	}
+}
+
+function insertFile(param, entityName, entitySet, entitySetFields, entitySetFieldsType ){
+		var values = '';
+		var fld = '';
+		try {
+			entitySetFields.forEach(function(field, i){ values += i==0 ? '?' : ' ,?';	} );
+			sql = 'INSERT INTO "RaiffeisenBank.T' + entityName + '" (' + entitySetFields.toString() + ') VALUES(' + values + ')';
+			var pStmt = param.connection.prepareStatement(sql);
+			entitySet.forEach(function(entity){ 
+				entitySetFields.forEach(function(field, j){ 
+					var fieldValue = isNull(field, entity.get(field));
+					switch (entitySetFieldsType.get(field)) {
+							case 'Int':
+								pStmt.setInt(j+1, parseInt(fieldValue)); 
+								break;
+							case 'Str':
+								pStmt.setString(j+1, fieldValue); 
+								break;
+							default:
+						};
+				});
+				pStmt.addBatch();
+			});
+			
+			// pStmt.close();
+			pStmt.executeBatch();
+			pStmt.close();
+			return '';
+		} catch (e) {
+			return e.toString();
+		}
+		return sql;
+}
+
 function po_create(param) {
 	try {
 		var rs = null;
 		var raif = {};
 		var requestID = guid();
-		var docExtID = guid();
 		var mappingField		= new Map();
 		var mappingEntity		= new Map();
 		var mappingFieldType	= new Map();
@@ -123,6 +204,7 @@ function po_create(param) {
 				var destinationEntity = mappingEntity.get(sourceField);
 				if (destinationField == 'START') {
 					startDoc = true
+					var docExtID = guid();
 					PayDocRu	= new Map();
 					AccDoc 		= new Map();
 					Payer		= new Map();
@@ -155,60 +237,19 @@ function po_create(param) {
 					raif.Payer.push(Payer);
 					raif.Payee.push(Payee);
 				} else if (destinationField == 'EOF' ){
-					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TRequest\" (" + fieldsRequest.toString() +") VALUES(?, ?, ?, ?)");
-					fieldsRequest.forEach(function(field, i, fieldsRequest){ pStmt.setString(i+1, raif.Request[0].get(field)); });
-					pStmt.execute();
-					pStmt.close();	
-					
-					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TFile\" (" + fieldsFile.toString() +") VALUES(?, ?, ?, ?, ?)");
-					fieldsFile.forEach(function(field, i, fieldsFile){ 
-						switch (mappingFieldType.get(field)) {
-							case 'Int':
-								pStmt.setInt(i+1, raif.File[0].get(field)); 
-								break;
-							case 'Str':
-								pStmt.setString(i+1, raif.File[0].get(field)); 
-								break;
-							default:
-						}
-					});
-					pStmt.execute();
-					pStmt.close();
-					
-					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TPayDocRu\" (" + fieldsPayDocRu.toString() +") VALUES(?, ?)");
-					fieldsPayDocRu.forEach(function(field, i, fieldsPayDocRu){ pStmt.setString(i+1, raif.PayDocRu[0].get(field));	});
-					pStmt.execute();
-					pStmt.close();
-					
-					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TAccDoc\" (" + fieldsAccDoc.toString() +") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-					fieldsAccDoc.forEach(function(field, i, fieldsAccDoc){ pStmt.setString(i+1, raif.AccDoc[0].get(field));	});
-					pStmt.execute();
-					pStmt.close();
-					
-					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TPayer\" (" + fieldsPayer.toString() +") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-					fieldsPayer.forEach(function(field, i, fieldsPayer){ pStmt.setString(i+1, raif.Payer[0].get(field));	});
-					pStmt.execute();
-					pStmt.close();
-					
-					pStmt = param.connection.prepareStatement("INSERT INTO \"RaiffeisenBank.TPayee\" (" + fieldsPayee.toString() +") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-					fieldsPayee.forEach(function(field, i, fieldsPayee){ pStmt.setString(i+1, raif.Payee[0].get(field));	});
-					pStmt.execute();
-					pStmt.close();
-					
+					var errMsg = '';
+					errMsg = insertFile(param, 'Request',	raif.Request,	fieldsRequest,	mappingFieldType);
+					errMsg = insertFile(param, 'File',		raif.File,		fieldsFile,		mappingFieldType);
+					errMsg = insertFile(param, 'PayDocRu',	raif.PayDocRu,	fieldsPayDocRu, mappingFieldType);
+					errMsg = insertFile(param, 'AccDoc',	raif.AccDoc,	fieldsAccDoc,	mappingFieldType);
+					errMsg = insertFile(param, 'Payer', 	raif.Payer, 	fieldsPayer,	mappingFieldType);
+					errMsg = insertFile(param, 'Payee', 	raif.Payee, 	fieldsPayee,	mappingFieldType);
 				} 
 			} else{
 				
 			}
 			
 		});
-
-	 //   var sql = 'INSERT INTO "RaiffeisenBank.PayDocRu" VALUES (?, ?)';
-		// pStmt = param.connection.prepareStatement(sql);
-		// pStmt.setString(1, '123');
-		// pStmt.setString(2, '456');
-	 //   pStmt.execute();
-	 //   //pStmt.executeUpdate();
-		// pStmt.close();
 	} catch (e) {
 	    $.trace.error(e.toString());
 		throw e;
@@ -216,3 +257,50 @@ function po_create(param) {
 		
 	
 }
+
+function po_create_v2(param) {
+	var rs = null;
+		var raif = {};
+		var requestID = guid();
+		var docExtID = guid();
+		var mappingField		= new Map();
+		var mappingEntity		= new Map();
+		var mappingFieldType	= new Map();
+		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
+		rs = null;
+		rs = pStmt.executeQuery();
+		
+		var fieldsRequest	= [];
+		var fieldsPayDocRu	= [];
+		var fieldsAccDoc	= [];
+		var fieldsPayer 	= [];
+		var fieldsPayee		= [];
+		var fieldsFile		= [];
+		
+		raif.mapping = new Map();
+		var mappingEtity = '';
+		
+		while (rs.next()) {
+			var entityDestination = rs.getString(1);
+			if (mappingEtity == null || mappingEtity == '') {
+				mappingEtity = entityDestination;
+				var mapping = [];
+			}else if(mappingEtity != entityDestination){
+				raif.mapping.set(mappingEtity, mapping)
+				mappingEtity = entityDestination;
+				var mapping = [];
+			}
+			
+			var fieldOptions = {};
+			var fildSource = rs.getString(2);
+			var fieldDestination = rs.getString(3);
+			var fildDestinationType = rs.getString(4);
+			
+			fieldOptions.fildSource = fildSource;
+			fieldOptions.fieldDestination = fieldDestination;
+			fieldOptions.fildDestinationType = fildDestinationType;
+			mapping.push(fieldOptions);
+		}
+}
+
+
