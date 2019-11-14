@@ -2,7 +2,7 @@
 	class="sapUiSizeCompact">
 	<Dialog title="Выбрать подпись" resizable="true">
 		<content>
-			<List id="SignList" items="{/signs}" includeItemInSelection="true">
+			<List id="SignList" items="{/mySerts}" includeItemInSelection="true">
 				<!--<headerToolbar>-->
 				<!--	<OverflowToolbar>-->
 				<!--		<content>-->
@@ -10,7 +10,7 @@
 				<!--		</content>-->
 				<!--	</OverflowToolbar>-->
 				<!--</headerToolbar>-->
-				<StandardListItem press="useSign" title="{cert}" description="id: {id}" type="Navigation"/>
+				<StandardListItem press="onUseSign" title="{SubjectName}" description="Издатель: {IssuerName}" info="SN = {SerialNumber}" type="Navigation"/>
 			</List>
 		</content>
 		<buttons>

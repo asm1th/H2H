@@ -15,8 +15,12 @@
     border: 1px solid #fff;
     background: transparent;
 }
-
-
+.sapUiResponsiveContentPadding{
+    height: 100%;
+}
+.sapMScrollContScroll{
+    height: 100%;
+}
 
 
 

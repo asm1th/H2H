@@ -1,8 +1,9 @@
 <mvc:View controllerName="h2h.ui5.controller.View1" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:fb="sap.ui.comp.filterbar" xmlns="sap.m" xmlns:t="sap.ui.table" displayBlock="true"
 	xmlns:variant="sap.ui.comp.variants" xmlns:f="sap.f" xmlns:u="sap.ui.unified" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
-	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" class="sapUiSizeCompact">
-	<tnt:ToolPage id="toolPage" class="hostapp">
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	class="sapUiSizeCompact">
+	<tnt:ToolPage id="toolPage" class="hostapp" sideExpanded="false">
 		<tnt:header>
 			<tnt:ToolHeader class="itsk-tool" design="Info">
 				<Button id="sideNavigationToggleButton" icon="sap-icon://menu2" type="Transparent" press="onSideNavButtonPress">
@@ -51,7 +52,7 @@
 			</tnt:ToolHeader>
 		</tnt:header>
 		<tnt:sideContent>
-			<tnt:SideNavigation expanded="fasle" selectedKey="{PageModel>/selectedKey}" itemSelect="onItemSelect">
+			<tnt:SideNavigation selectedKey="{PageModel>/selectedKey}" itemSelect="onItemSelect">
 				<tnt:NavigationList>
 					<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"></tnt:NavigationListItem>
 					<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"></tnt:NavigationListItem>
@@ -61,53 +62,51 @@
 		<tnt:mainContents>
 			<NavContainer id="pageContainer" initialPage="page1">
 				<pages>
-					<ScrollContainer id="page1" horizontal="false" vertical="true" height="100%">
+					<ScrollContainer id="page1" horizontal="false" vertical="false" height="100%">
 						<VBox fitContainer="true">
-							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_Explored"
-								basicSearchFieldName="docExtId" enableBasicSearch="true">
-								<!--<smartFilterBar:controlConfiguration>-->
-								<!--	<smartFilterBar:ControlConfiguration key="docExtId">-->
-								<!--		<smartFilterBar:defaultFilterValues>-->
-								<!--			<smartFilterBar:SelectOption low="23cb2ada-6207-4994-8354-d7f4d78b1f18"></smartFilterBar:SelectOption>-->
-								<!--		</smartFilterBar:defaultFilterValues>-->
-								<!--	</smartFilterBar:ControlConfiguration>-->
-								<!--</smartFilterBar:controlConfiguration>-->
-								<!-- layout data used to make the table growing but the filter bar fixed -->
-								<smartFilterBar:layoutData>
-									<FlexItemData shrinkFactor="0"/>
-								</smartFilterBar:layoutData>
-							</smartFilterBar:SmartFilterBar>
-							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" 	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" tableType="Table"
-							 useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="false"
-								useTablePersonalisation="true" header="Платежные поручения" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored"
-								enableAutoBinding="true" showFullScreenButton="true" class="sapUiResponsiveContentPadding">
-								<!-- layout data used to make the table growing but the filter bar fixed -->
-								<smartTable:layoutData>
-									<FlexItemData growFactor="1" baseSize="0%"/>
-								</smartTable:layoutData>
-								<smartTable:customToolbar>
-									<Toolbar>
-										<ToolbarSpacer/>
-									    <Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>
-            							<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>
-            							<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>
-            							<Button icon="sap-icon://upload-to-cloud" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>
-            							<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
-            							
-            							<Button icon="sap-icon://download" tooltip="Скачать" class="btn btn-bordered" press="onDownload" enabled="true"/>
-            							<Button icon="sap-icon://undo" text="ЭЦП" tooltip="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>
-            							<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
-									</Toolbar>
-								</smartTable:customToolbar>
-							</smartTable:SmartTable>
-							<u:FileUploader id="fileUploader" name="myFileUpload" change="OnFileSelected" tooltip="Upload your file to the local server"
-								uploadComplete="handleUploadComplete"/>
-							<Button text="Upload File" press="OnUpload"/>
+						<!--basicSearchFieldName="docExtId" enableBasicSearch="true"-->
+						<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_Explored">
+							<!--<smartFilterBar:controlConfiguration>-->
+							<!--	<smartFilterBar:ControlConfiguration key="docExtId">-->
+							<!--		<smartFilterBar:defaultFilterValues>-->
+							<!--			<smartFilterBar:SelectOption low="23cb2ada-6207-4994-8354-d7f4d78b1f18"></smartFilterBar:SelectOption>-->
+							<!--		</smartFilterBar:defaultFilterValues>-->
+							<!--	</smartFilterBar:ControlConfiguration>-->
+							<!--</smartFilterBar:controlConfiguration>-->
+							<!-- layout data used to make the table growing but the filter bar fixed -->
+							<smartFilterBar:layoutData>
+								<FlexItemData shrinkFactor="0"/>
+							</smartFilterBar:layoutData>
+						</smartFilterBar:SmartFilterBar>
+						<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
+						<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" tableType="GridTable" smartFilterId="smartFilterBar" useExportToExcel="true"
+							beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
+							persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true" class="sapUiResponsiveContentPadding">
+							<!-- layout data used to make the table growing but the filter bar fixed -->
+							<smartTable:customToolbar>
+								<Toolbar>
+									<ToolbarSpacer/>
+									<u:FileUploader id="fileUploader" name="myFileUpload" change="OnFileSelected" tooltip="Upload your file to the local server"
+										uploadComplete="handleUploadComplete"/>
+									<Button text="Upload File" press="OnUpload"/>
+									<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>
+									<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>
+									<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>
+									<Button icon="sap-icon://upload-to-cloud" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>
+									<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
+									<Button icon="sap-icon://download" tooltip="Скачать" class="btn btn-bordered" press="onDownload" enabled="true"/>
+									<Button icon="sap-icon://undo" text="ЭЦП" tooltip="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>
+									<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
+								</Toolbar>
+							</smartTable:customToolbar>
+							<!--<Table id="innerUi5Table" growing="true" visibleRowCountMode="true">-->
+							<!--<ColumnListItem highlight="{path:'Cnt', formatter:'.formatRowHighlight'}"/>-->
+							<!--</Table>-->
+						</smartTable:SmartTable>
 						</VBox>
-					</ScrollContainer>
-					<ScrollContainer id="page2" horizontal="false" vertical="true" height="100%">
-						<Text text="This is the dsfsfsdfsdf page"></Text>
+					<!--</ScrollContainer>-->
+					<!--<ScrollContainer id="page2" horizontal="false" vertical="true" height="100%">-->
+					<!--	<Text text="This is the dsfsfsdfsdf page"></Text>-->
 					</ScrollContainer>
 				</pages>
 			</NavContainer>
