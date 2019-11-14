@@ -372,6 +372,14 @@ sap.ui.define([
 						// поиск по имени
 						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
 						// поиск по SerialNumber
+						
+// 1.	IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru"
+// 2.	PrivateKey: {objid: 8, propset_ContainerName: ƒ, propset_ProviderType: ƒ, propset_ProviderName: ƒ, propset_KeySpec: ƒ, …}
+// 3.	SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07"
+// 4.	SubjectName: "CN=Алексей, E=kleale@kleale.ru"
+// 5.	Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF"
+// 6.	ValidToDate: "2020-02-06T11:56:17.000Z"
+						
 						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SHA1_HASH, SerialNumber);
 						debugger;
 
