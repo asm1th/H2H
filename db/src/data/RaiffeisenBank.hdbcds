@@ -187,7 +187,7 @@ context RaiffeisenBank {
     };
     
     
-     define view PaymentOrder as Select from TPayDocRu{
+    define view PaymentOrder as Select from TPayDocRu{
     	REQUESTID					as requestId,
      	DOCEXTID					as docExtId,
 		_ACCDOC.PURPOSE				as purpose,
@@ -221,6 +221,44 @@ context RaiffeisenBank {
 		_PAYEE.BANKNAME 			as PayeeBankName,
 		_PAYEE.BANKCITY 			as PayeeBankBankCity,
 		_PAYEE.BANKSETTLEMENTTYPE	as PayeeBankSettlementType
+     };
+    
+    define view Extract as Select from TPayDocRu{
+    	REQUESTID					as REQUESTID,
+     	DOCEXTID					as DOCEXTID,
+     	_REQUEST.XMLNS				as XMLNS,
+        _REQUEST.VERSION			as VERSION,
+		_ACCDOC.PURPOSE				as PURPOSE,
+		_ACCDOC.DOCDATE				as DOCDATE,
+		_ACCDOC.DOCNUM				as DOCNUM,
+		_ACCDOC.DOCSUM				as DOCSUM,
+		_ACCDOC.VATSUM				as VATSUM,
+		_ACCDOC.VATRATE				as VATRATE,
+		_ACCDOC.VAT					as VAT,
+		_ACCDOC.TRANSKIND			as TRANSKIND,
+		_ACCDOC.PAYTKIND 			as PAYTKIND,
+		_ACCDOC.PAYTCODE 			as PAYTCODE,
+		_ACCDOC.PRIORITY 			as PRIORITY,
+		_ACCDOC.CODEVO				as CODEVO,
+		_ACCDOC.NODOCS				as NODOCS,
+		_PAYER.INN      			as PAYERINN,
+        _PAYER.KPP      			as PAYERKPP,
+        _PAYER.PERSONALACC			as PAYERPERSONALACC,
+        _PAYER.NAME					as PAYERNAME,
+        _PAYER.BANKBIC				as PAYERBANKBIC,
+		_PAYER.BANKCORRESPACC		as PAYERBANKCORRESPACC,
+		_PAYER.BANKNAME 			as PAYERBANKNAME,
+		_PAYER.BANKCITY 			as PAYERBANKBANKCITY,
+		_PAYER.BANKSETTLEMENTTYPE	as PAYERBANKSETTLEMENTTYPE,
+		_PAYEE.INN      			as PAYEEINN,
+        _PAYEE.KPP      			as PAYEEKPP,
+        _PAYEE.PERSONALACC			as PAYEEPERSONALACC,
+        _PAYEE.NAME					as PAYEENAME,
+        _PAYEE.BANKBIC				as PAYEEBANKBIC,
+		_PAYEE.BANKCORRESPACC		as PAYEEBANKCORRESPACC,
+		_PAYEE.BANKNAME 			as PAYEEBANKNAME,
+		_PAYEE.BANKCITY 			as PAYEEBANKBANKCITY,
+		_PAYEE.BANKSETTLEMENTTYPE	as PAYEEBANKSETTLEMENTTYPE
      };
     
     define view Request as Select from TRequest{
