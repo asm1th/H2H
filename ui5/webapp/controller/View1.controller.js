@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
+	"sap/m/MessageBox",
 	"h2h/ui5/js/cadesplugin_api"
-], function (BaseController, jQuery, Filter, JSONModel, MessageToast, cadesplugin) {
+], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, cadesplugin) {
 	"use strict";
 
 	return BaseController.extend("h2h.ui5.controller.View1", {
@@ -60,6 +61,9 @@ sap.ui.define([
 					//var obj1 = Context.getObject();
 					//requestId = obj.requestId;
 				});
+			} else {
+			    // exit
+			    return MessageBox.alert("Выберите 1 ПП");
 			}
 
 			//Get file
@@ -94,6 +98,7 @@ sap.ui.define([
 					window.URL.revokeObjectURL(url);
 				},
 				error: function (oError) {
+				    MessageBox.alert(oError.responseText);
 					console.log("error: " + oError);
 				}
 			});
@@ -114,6 +119,9 @@ sap.ui.define([
 					var myAttr = sPath.match(nov_reg);
 					docExtId.push(myAttr[1]);
 				});
+			} else {
+			    // exit
+			    return MessageBox.alert("Выберите 1 ПП");
 			}
 
 			//Get file download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27
@@ -122,29 +130,20 @@ sap.ui.define([
 			var oView = this.getView();
 
 			//var url = "download.xsjs?docExtId=" + docExtId[1];
-			var url = "/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27;
+			var url = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27";
 			$.ajax({
 				type: "GET",
 				url: url,
 				//data: $("#insertTime").serialize(),
 				success: function (data) {
-					sap.m.MessageBox.alert(data);
+					MessageBox.alert(data);
 					console.log("XML: ", data);
 				},
-				error: function (data) {
-					sap.m.MessageBox.alert(data);
-					console.log(data);
+				error: function (oError) {
+					MessageBox.alert(oError.responseText);
+					console.log(oError);
 				}
 			});
-
-			// если использовать диалог
-			// 			if (!this.xmlViewDialog) {
-			// 				this.xmlViewDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.xmlViewDialog", this).addStyleClass(
-			// 					"sapUiSizeCompact");
-			// 				oView.addDependent(this.xmlViewDialog);
-			// 			}
-			// 			this.xmlViewDialog.open();
-
 		},
 
 		//======= select input
@@ -155,8 +154,7 @@ sap.ui.define([
 		// кнопка отправить
 		onSend: function (oEvent) {
 			var oView = this.getView();
-			sap.m.MessageBox.alert("onSend");
-
+			MessageBox.alert("onSend");
 			//code here
 		},
 
@@ -164,8 +162,7 @@ sap.ui.define([
 		OnUploadDialog: function (oEvent) {
 			var oView = this.getView();
 			if (!this.addDialog) {
-				this.addDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.addDialog", this).addStyleClass(
-					"sapUiSizeCompact");
+				this.addDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.addDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialog);
 			}
 			this.addDialog.open();
@@ -185,7 +182,7 @@ sap.ui.define([
 			var fileType = file.type;
 
 			if (fileName === "") {
-				MessageToast.show("Please choose File.");
+				return MessageToast.show("Please choose File.");
 			} else {
 				var oModel = this.getOwnerComponent().getModel();
 				var reader = new FileReader();
@@ -225,17 +222,17 @@ sap.ui.define([
 			if (oError.statusCode === 500 || oError.statusCode === 400 || oError.statusCode === "500" || oError.statusCode === "400") {
 				var errorRes = JSON.parse(oError.responseText);
 				if (!errorRes.error.innererror) {
-					sap.m.MessageBox.alert(errorRes.error.message.value);
+					MessageBox.alert(errorRes.error.message.value);
 				} else {
 					if (!errorRes.error.innererror.message) {
-						sap.m.MessageBox.alert(errorRes.error.innererror.toString());
+						MessageBox.alert(errorRes.error.innererror.toString());
 					} else {
-						sap.m.MessageBox.alert(errorRes.error.innererror.message);
+						MessageBox.alert(errorRes.error.innererror.message);
 					}
 				}
 				return;
 			} else {
-				sap.m.MessageBox.alert(oError.response.statusText);
+				MessageBox.alert(oError.response.statusText);
 				return;
 			}
 		},
@@ -345,7 +342,8 @@ sap.ui.define([
 					DigestToSign = data;
 				},
 				error: function (oError) {
-					console.log("error: " + oError);
+					MessageBox.alert(oError.responseText);
+					console.warn(oError);
 				}
 			});
 
@@ -367,11 +365,11 @@ sap.ui.define([
 			// бработка ошибки
 			thenable.then(
 				function (result) {
-					sap.m.MessageBox.alert(result);
+					MessageBox.alert(result);
 					console.log(result);
 				},
 				function (result) {
-					sap.m.MessageBox.alert(result);
+					MessageBox.alert(result);
 					console.log(result);
 				});
 		},

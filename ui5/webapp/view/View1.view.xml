@@ -79,7 +79,7 @@
 							</smartFilterBar:layoutData>
 						</smartFilterBar:SmartFilterBar>
 						<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
-						<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" tableType="GridTable" smartFilterId="smartFilterBar" useExportToExcel="true"
+						<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" tableType="Table" smartFilterId="smartFilterBar" useExportToExcel="true"
 							beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
 							persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true" class="sapUiResponsiveContentPadding">
 							<!-- layout data used to make the table growing but the filter bar fixed -->
