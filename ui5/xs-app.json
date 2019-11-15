@@ -3,6 +3,7 @@
 	"authenticationMethod": "none",
 	"routes": [{
 		"source": "(.*)(.xsjs)",
+		"csrfProtection": false,
 		"destination": "core-xsjs-backend"
 	}, {
 		"source": "(.*)(.xsodata)",

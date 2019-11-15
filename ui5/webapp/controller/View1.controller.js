@@ -38,7 +38,9 @@ sap.ui.define([
 			mExcelSettings.worker = false;
 		},
 
+		// скачать загруженное ПП в том же формате
 		onDownload: function (e) {
+			console.log('скачать загруженное ПП в том же формате');
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
@@ -53,7 +55,7 @@ sap.ui.define([
 					var myAttr = sPath.match(nov_reg);
 					requestId.push(myAttr[1]);
 
-					// не работает так как Олата не возвращает скрытые колонки
+					// не работает так как oData не возвращает скрытые колонки
 					//var obj = oTable.getModel().getProperty(sPath);
 					//var obj1 = Context.getObject();
 					//requestId = obj.requestId;
@@ -95,40 +97,67 @@ sap.ui.define([
 					console.log("error: " + oError);
 				}
 			});
+		},
+
+		onShowXml: function (e) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var docExtId = []; // если сделаем мультиселект
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					var sPath = Context.sPath;
+					//"/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
+					var nov_reg = "docExtId='(.*)'";
+					var myAttr = sPath.match(nov_reg);
+					docExtId.push(myAttr[1]);
+				});
+			}
+
+			//Get file download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27
+			var oModel = this.getView().getModel();
+			var that = this;
+			var oView = this.getView();
+
+			//var url = "download.xsjs?docExtId=" + docExtId[1];
+			var url = "/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27;
+			$.ajax({
+				type: "GET",
+				url: url,
+				//data: $("#insertTime").serialize(),
+				success: function (data) {
+					sap.m.MessageBox.alert(data);
+					console.log("XML: ", data);
+				},
+				error: function (data) {
+					sap.m.MessageBox.alert(data);
+					console.log(data);
+				}
+			});
+
+			// если использовать диалог
+			// 			if (!this.xmlViewDialog) {
+			// 				this.xmlViewDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.xmlViewDialog", this).addStyleClass(
+			// 					"sapUiSizeCompact");
+			// 				oView.addDependent(this.xmlViewDialog);
+			// 			}
+			// 			this.xmlViewDialog.open();
 
 		},
 
-		// 		_base64ToArrayBuffer: function (base64) {
-		// 			var binaryString = window.atob(base64);
-		// 			var binaryLen = binaryString.length;
-		// 			var bytes = new Uint8Array(binaryLen);
-		// 			for (var i = 0; i < binaryLen; i++) {
-		// 				var ascii = binaryString.charCodeAt(i);
-		// 				bytes[i] = ascii;
-		// 			}
-		// 			return bytes;
-		// 		},
-
-		//=======
+		//======= select input
 		OnFileSelected: function (e) {
-			//sap.ui.getCore()._file = e.getParameter("files") && e.getParameter("files")[0];
+			console.log("OnFileSelected");
 		},
 
 		// кнопка отправить
 		onSend: function (oEvent) {
 			var oView = this.getView();
-			// 			var oTable = oView.byId("LineItemsSmartTable");
-			// 			var aIndices = oTable.getSelectedIndices();
-			// 			if (aIndices.length) {
-			// 				var dataZsbnreqn = [];
-			// 				for (var i = 0; i < aIndices.length; i++) {
-			// 					var sPath = oTable.getContextByIndex(aIndices[i]).sPath;
-			// 					var obj = oTable.getModel().getProperty(sPath);
-			// 					dataZsbnreqn[i] = obj.ZsbnReqn;
-			// 				}
-			// 			}
-			// 			alert(aIndices);
+			sap.m.MessageBox.alert("onSend");
 
+			//code here
 		},
 
 		//  кнопка загрузки пп
@@ -162,8 +191,6 @@ sap.ui.define([
 				var reader = new FileReader();
 				var that = this;
 				reader.onload = function (e) {
-					var sdfds = e;
-
 					var vContent = e.currentTarget.result.replace("data:" + file.type + ";base64,", "");
 					//that.postFileToBackend(workorderId, that.fileName, that.fileType, vContent);
 
@@ -220,21 +247,15 @@ sap.ui.define([
 				this.signDialog = sap.ui.xmlfragment("signDialog", "h2h.ui5.view.signDialog", this);
 				//oView.addDependent(this.signDialog);
 
-				// var oModel = new JSONModel();
-				// var mySerts = [{
-				// 	id: "123123",
-				// 	cert: "Сертификат такой-то"
-				// }];
-
 				var mySerts;
-				// вызов промиса
+				// вызов промиса - получаем сертификаты в окно
 				var thenable = this._getUserCertificates();
 				var that = this;
 				thenable.then(
 					function (result) {
 						mySerts = result;
 						console.log(result);
-						
+
 						var oModel = new JSONModel();
 						oModel.setProperty("/mySerts", mySerts);
 						that.signDialog.setModel(oModel);
@@ -242,12 +263,14 @@ sap.ui.define([
 					},
 					function (result) {
 						mySerts = result;
-					    console.log(result);
+						console.log(result);
 					});
 				console.log(mySerts);
 
+			} else {
+				this.signDialog.open();
 			}
-			
+
 		},
 
 		// Получаем сертификаты пользователя
@@ -258,9 +281,6 @@ sap.ui.define([
 			var CAPICOM_CURRENT_USER_STORE = 2;
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
-			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
-			// опция поиска по издателю
-			var CAPICOM_CERTIFICATE_FIND_ISSUER_NAME = 2;
 
 			var dateObj = new Date();
 
@@ -270,11 +290,6 @@ sap.ui.define([
 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
 						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 						var CertificatesObj = yield oStore.Certificates;
-						// поиск по имени certSubjectName
-						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
-						// поиск по издателю 
-						//var certIssuertName = 'NAME HERE';
-						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_ISSUER_NAME, certIssuertName);
 
 						// все действующие
 						var CAPICOM_CERTIFICATE_FIND_TIME_VALID = 9;
@@ -287,9 +302,6 @@ sap.ui.define([
 							try {
 								for (var i = 1; i <= Count; i++) {
 									var cert = yield CertificatesObj.Item(i);
-									if (dateObj < cert.ValidToDate && cert.HasPrivateKey() && cert.IsValid().Result) {
-										//return cert
-									}
 									var mysert = {
 										//HasPrivateKey: yield cert.HasPrivateKey(),
 										ValidToDate: yield cert.ValidToDate,
@@ -321,11 +333,25 @@ sap.ui.define([
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var obj = src.getModel().getProperty(ctx.getPath());
-			var certSN = obj.SerialNumber;
+			var Thumbprint = obj.Thumbprint; // берем отпечаток = SHA1
 			///////////////////
-            var data = "Digest";
+			// get Digest
+			var oModel = this.getView().getModel();
+			var that = this;
+			var DigestToSign = "Digest";
+
+			oModel.read("/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')", {
+				success: function (data) {
+					DigestToSign = data;
+				},
+				error: function (oError) {
+					console.log("error: " + oError);
+				}
+			});
+
+			var DigestToSign = "Digest";
 			///////////////////
-			this.onSignCreate(certSN, Digest);
+			this.onSignCreate(Thumbprint, DigestToSign);
 			this.signDialog.close();
 		},
 
@@ -335,9 +361,9 @@ sap.ui.define([
 		},
 
 		//sign Подпись
-		onSignCreate: function (SerialNumber, Digest) {
+		onSignCreate: function (Thumbprint, dataToSign) {
 			//var sCertName = "Алексей";
-			var thenable = this._SignCreate(sCertName, Digest);
+			var thenable = this._SignCreate(Thumbprint, dataToSign);
 			// бработка ошибки
 			thenable.then(
 				function (result) {
@@ -353,41 +379,32 @@ sap.ui.define([
 		// получение сертификата иподписание
 		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-fileapi.html
 		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-sign-cades-bes-async.html
-		_SignCreate: function (SerialNumber, dataToSign) {
+		_SignCreate: function (Thumbprint, dataToSign) {
 			var CADESCOM_CADES_BES = 1;
 			var CAPICOM_CURRENT_USER_STORE = 2;
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
-			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0;//	Возвращает сертификаты соответствующие указанному хэшу SHA1.
+			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; //	Возвращает сертификаты соответствующие указанному хэшу SHA1.
 
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
 					try {
 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
-						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE,
-							CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
-
-						var CertificatesObj = yield oStore.Certificates;
-						// поиск по имени
-						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
-						// поиск по SerialNumber
-						
-// 1.	IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru"
-// 2.	PrivateKey: {objid: 8, propset_ContainerName: ƒ, propset_ProviderType: ƒ, propset_ProviderName: ƒ, propset_KeySpec: ƒ, …}
-// 3.	SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07"
-// 4.	SubjectName: "CN=Алексей, E=kleale@kleale.ru"
-// 5.	Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF"
-// 6.	ValidToDate: "2020-02-06T11:56:17.000Z"
-						
-						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SHA1_HASH, SerialNumber);
+						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 						debugger;
+						var CertificatesObj = yield oStore.Certificates;
+
+						// ============== поиск по имени
+						//var certSubjectName = 'Алексей';
+						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
+						// ============== поиск по Thumbprint
+						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SHA1_HASH, Thumbprint);
 
 						var Count = yield oCertificates.Count;
 						if (Count == 0) {
 							throw ("Certificate not found: " + args[0]);
 						}
-						debugger;
 
 						var oCertificate = yield oCertificates.Item(1);
 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
@@ -404,10 +421,10 @@ sap.ui.define([
 					} catch (e) {
 						args[3]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
 					}
-				}, certSubjectName, dataToSign, resolve, reject);
+				}, Thumbprint, dataToSign, resolve, reject);
 			});
-		},
+		}
 
-		/* https://github.com/anpur/line-navigator Anton Purin MIT 2016 */
+		/////////////////////////////////// end
 	});
 });
