@@ -17,6 +17,14 @@
         "type": "destination",
         "name": "xsodata"
       }
+    },
+    {
+      "path": "xsjs",
+      "description": "xsjs description",
+      "target": {
+        "type": "destination",
+        "name": "core-xsjs-backend"
+      }
     }
   ],
   "sendWelcomeFileRedirect": true

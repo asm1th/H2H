@@ -5,8 +5,9 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
-	"h2h/ui5/js/cadesplugin_api"
-], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, cadesplugin) {
+	"h2h/ui5/js/cadesplugin_api",
+	"sap/ui/codeeditor/CodeEditor"
+], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, cadesplugin, CodeEditor) {
 	"use strict";
 
 	return BaseController.extend("h2h.ui5.controller.View1", {
@@ -62,8 +63,8 @@ sap.ui.define([
 					//requestId = obj.requestId;
 				});
 			} else {
-			    // exit
-			    return MessageBox.alert("Выберите 1 ПП");
+				// exit
+				return MessageBox.alert("Выберите 1 ПП");
 			}
 
 			//Get file
@@ -92,13 +93,14 @@ sap.ui.define([
 					var blob = new Blob([bytes], {
 						type: file.fileType
 					});
-					a.href = window.URL.createObjectURL(blob);
+					var url = window.URL.createObjectURL(blob);
+					a.href = url;
 					a.download = file.fileName;
 					a.click();
 					window.URL.revokeObjectURL(url);
 				},
 				error: function (oError) {
-				    MessageBox.alert(oError.responseText);
+					MessageBox.alert(oError.responseText);
 					console.log("error: " + oError);
 				}
 			});
@@ -120,8 +122,8 @@ sap.ui.define([
 					docExtId.push(myAttr[1]);
 				});
 			} else {
-			    // exit
-			    return MessageBox.alert("Выберите 1 ПП");
+				// exit
+				return MessageBox.alert("Выберите 1 ПП");
 			}
 
 			//Get file download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27
@@ -129,14 +131,45 @@ sap.ui.define([
 			var that = this;
 			var oView = this.getView();
 
-			//var url = "download.xsjs?docExtId=" + docExtId[1];
-			var url = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27";
+			var url = "/xsjs/download.xsjs";
+			//var url = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27";
 			$.ajax({
 				type: "GET",
 				url: url,
-				//data: $("#insertTime").serialize(),
+				data: "docExtId=%27" + docExtId[0] + "%27",
+				dataType: "xml",
 				success: function (data) {
-					MessageBox.alert(data);
+
+					var xmlText = new XMLSerializer().serializeToString(data);
+					
+					var box = new sap.m.VBox({
+						items: [
+							new CodeEditor({
+								value: data,
+								type: "xml",
+								editable: false, // read-only
+								width: "40rem",
+								height: "20rem"
+							})
+						]
+					});
+
+					MessageBox.show(
+						box, {
+							icon: sap.m.MessageBox.Icon.INFORMATION,
+							title: "Платежное поручение для загрузки в банк",
+							styleClass: 'MessageBoxLarge',
+							actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+							onClose: function (oAction) {
+								// if (oAction === sap.m.MessageBox.Action.YES) {
+								// 	sap.m.MessageToast.show(box.getModel().getProperty('/message'));
+								// }
+							}
+						}
+					);
+
+					//MessageBox.alert(XMLeditor);
+
 					console.log("XML: ", data);
 				},
 				error: function (oError) {
