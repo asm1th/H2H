@@ -104,8 +104,25 @@
 				<Annotation Term="Common.Label" String="Документы не требуются"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType">
+				<Annotation Term="UI.DataPoint" Qualifier="Porder">
+					<Record Type="UI.DataPointType">
+						<PropertyValue Property="Value" Path="docExtId"/>
+						<PropertyValue Property="Title" String="Title123123"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.SelectionFields">
+					<Collection>
+					    <PropertyPath>PayerName</PropertyPath>
+					    <PropertyPath>docDate</PropertyPath>
+						<PropertyPath>PayeeBankName</PropertyPath>
+						<PropertyPath>PayeeBankCorrespAcc</PropertyPath>
+					</Collection>
+				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
+					    <Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docExtId"/>
+						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="requestId"/>
 						</Record>
@@ -113,7 +130,10 @@
 							<PropertyValue Property="Value" Path="docDate"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeeBankBankCity"/>
+							<PropertyValue Property="Value" Path="docNum"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docSum"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="PayeeBankBic"/>
@@ -137,6 +157,9 @@
 							<PropertyValue Property="Value" Path="PayeePersonalAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="PayeeBankBankCity"/>
+						</Record>
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="PayerBankName"/>
 						</Record>
 						<Record Type="UI.DataField">
@@ -155,22 +178,13 @@
 							<PropertyValue Property="Value" Path="PayerPersonalAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="codeVO"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docExtId"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docNum"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docSum"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="nodocs"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="paytCode"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="codeVO"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="paytKind"/>

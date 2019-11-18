@@ -21,14 +21,47 @@
 .sapMScrollContScroll{
     height: 100%;
 }
+.pad1{
+    padding: .2rem 1rem .3rem;
+}
+.sapMDialogSection .FormTitle{
+    border-top: 1px solid #ccc;
+    font-size: 1rem;
+    padding: .5rem 2rem;
+    width: 100%;
+    color: #333;
+}
+.sapUiFormM:not(.sapUiFormEdit) .sapUiFormResGridCont>div {
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    font-size: 1px;
+}
+.sapUiFormLblColon .sapUiFormElementLbl>.sapMLabel {
+    padding-right: 0.3em;
+    padding-top: .5rem;
+}
+.sapMInputBaseReadonly .sapMInputBaseContentWrapper {
+    border-color: #cfd4da;
+    border-radius: .2rem;
+}
 
-
-
-
-
-
-
-
+.label1{
+    width: 40%;
+}
+.labelFull{
+  align-items: center;
+  align-content: flex-end;  
+}
+.labelFull > div{
+    flex-grow: 1 !important;
+}
+.labelFull .sapMLabel{
+    float: right;
+    padding: 0 1rem;
+}
+.formInput> div{
+    flex-grow: 1 !important;
+}
 
 /* old */
 
