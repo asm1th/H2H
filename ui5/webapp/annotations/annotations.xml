@@ -120,9 +120,6 @@
 				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-					    <Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docExtId"/>
-						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="requestId"/>
 						</Record>
@@ -206,6 +203,9 @@
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="vatSum"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docExtId"/>
 						</Record>
 					</Collection>
 				</Annotation>

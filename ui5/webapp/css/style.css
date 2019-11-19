@@ -62,6 +62,32 @@
 .formInput> div{
     flex-grow: 1 !important;
 }
+.dialogTable{
+    padding: 0 1rem;
+}
+.dialogTable .sapMLabel {
+    padding-right: 0.3em;
+    padding-top: .5rem;
+}
+
+.small_inputs {
+    padding: 0 2rem 2rem 2rem;
+}
+
+.sapUiSizeCompact .small_inputs .sapUiTableCell {
+    padding: .1rem;
+    font-size: 11px;
+}
+.small_inputs .sapMLabel {
+    padding-right: 0.3em;
+    padding: .5rem 0.3em .5rem 1rem;
+    font-size: 12px;
+}
+
+.TextAreaBlock{
+    padding: 1rem 1rem 0;
+}
+
 
 /* old */
 

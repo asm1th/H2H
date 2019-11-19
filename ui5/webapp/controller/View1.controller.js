@@ -105,7 +105,7 @@ sap.ui.define([
 				});
 			} else {
 				// exit
-				return MessageBox.alert("Выберите 1 ПП");
+				return MessageBox.alert("Выберите одно платежное поручение");
 			}
 
 			//Get file
@@ -141,7 +141,7 @@ sap.ui.define([
 					window.URL.revokeObjectURL(url);
 				},
 				error: function (oError) {
-					MessageBox.alert(oError.responseText);
+					MessageBox.error(oError.responseText);
 					console.log("error: " + oError);
 				}
 			});
@@ -166,7 +166,7 @@ sap.ui.define([
 				});
 			} else {
 				// exit
-				return MessageBox.alert("Выберите 1 ПП");
+				return MessageBox.alert("Выберите одно платежное поручение");
 			}
 
 			//Get file download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27
@@ -182,13 +182,11 @@ sap.ui.define([
 				data: "docExtId=%27" + docExtId[0] + "%27",
 				dataType: "xml",
 				success: function (data) {
-
-					//var xmlText = new XMLSerializer().serializeToString(data);
-
+					var xmlText = new XMLSerializer().serializeToString(data);
 					var box = new sap.m.VBox({
 						items: [
 							new CodeEditor({
-								value: data,
+								value: xmlText,
 								type: "xml",
 								editable: false, // read-only
 								width: "40rem",
@@ -202,7 +200,7 @@ sap.ui.define([
 							icon: sap.m.MessageBox.Icon.INFORMATION,
 							title: "Платежное поручение для загрузки в банк",
 							styleClass: 'MessageBoxLarge',
-							actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+							actions: [sap.m.MessageBox.Action.YES], //[sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO]
 							onClose: function (oAction) {
 								// if (oAction === sap.m.MessageBox.Action.YES) {
 								// 	sap.m.MessageToast.show(box.getModel().getProperty('/message'));
@@ -214,7 +212,7 @@ sap.ui.define([
 					console.log("XML: ", data);
 				},
 				error: function (oError) {
-					MessageBox.alert(oError.responseText);
+					MessageBox.error(oError.responseText);
 					console.warn(oError);
 				}
 			});
@@ -350,50 +348,48 @@ sap.ui.define([
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 
-			/*
-						return new Promise(function (resolve, reject) {
-							window.cadesplugin.async_spawn(function* (args) {
-								try {
-									var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
-									yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
-									var CertificatesObj = yield oStore.Certificates;
+			return new Promise(function (resolve, reject) {
+				window.cadesplugin.async_spawn(function* (args) {
+					try {
+						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
+						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+						var CertificatesObj = yield oStore.Certificates;
 
-									// все действующие
-									var CAPICOM_CERTIFICATE_FIND_TIME_VALID = 9;
-									var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_TIME_VALID);
+						// все действующие
+						var CAPICOM_CERTIFICATE_FIND_TIME_VALID = 9;
+						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_TIME_VALID);
 
-									var Count = yield oCertificates.Count;
-									if (Count == 0) {
-										throw ("Certificate not found");
-									} else {
-										try {
-											for (var i = 1; i <= Count; i++) {
-												var cert = yield CertificatesObj.Item(i);
-												var mysert = {
-													//HasPrivateKey: yield cert.HasPrivateKey(),
-													ValidToDate: yield cert.ValidToDate,
-													SerialNumber: yield cert.SerialNumber,
-													IssuerName: yield cert.IssuerName,
-													SubjectName: yield cert.SubjectName,
-													PrivateKey: yield cert.PrivateKey,
-													Thumbprint: yield cert.Thumbprint
-												}
-												mySerts.push(mysert); // массив сертификатов
-											}
-										} catch (ex) {
-											alert("Ошибка при перечислении сертификатов: " + window.cadesplugin.getLastError(ex));
-										}
+						var Count = yield oCertificates.Count;
+						if (Count == 0) {
+							throw ("Certificate not found");
+						} else {
+							try {
+								for (var i = 1; i <= Count; i++) {
+									var cert = yield CertificatesObj.Item(i);
+									var mysert = {
+										//HasPrivateKey: yield cert.HasPrivateKey(),
+										ValidToDate: yield cert.ValidToDate,
+										SerialNumber: yield cert.SerialNumber,
+										IssuerName: yield cert.IssuerName,
+										SubjectName: yield cert.SubjectName,
+										PrivateKey: yield cert.PrivateKey,
+										Thumbprint: yield cert.Thumbprint
 									}
-									yield oStore.Close();
-								} catch (e) {
-									args[1]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
-									alert(window.cadesplugin.getLastError(e));
+									mySerts.push(mysert); // массив сертификатов
 								}
-								// то что выплевывает в resolve
-								args[0](mySerts);
-							}, resolve, reject);
-						});
-			*/
+							} catch (ex) {
+								alert("Ошибка при перечислении сертификатов: " + window.cadesplugin.getLastError(ex));
+							}
+						}
+						yield oStore.Close();
+					} catch (e) {
+						args[1]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
+						alert(window.cadesplugin.getLastError(e));
+					}
+					// то что выплевывает в resolve
+					args[0](mySerts);
+				}, resolve, reject);
+			});
 		},
 
 		// выбрали подпись в окне выбора
@@ -411,6 +407,9 @@ sap.ui.define([
 			oModel.read("/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')", {
 				success: function (data) {
 					DigestToSign = data;
+					
+				// 	this.onSignCreate(Thumbprint, DigestToSign);
+			    //  this.signDialog.close();
 				},
 				error: function (oError) {
 					MessageBox.alert(oError.responseText);
@@ -435,11 +434,11 @@ sap.ui.define([
 			// бработка ошибки
 			thenable.then(
 				function (result) {
-					MessageBox.alert(result);
+					MessageBox.success("Платежное поручение подписано");
 					console.log(result);
 				},
 				function (result) {
-					MessageBox.alert(result);
+					MessageBox.error(result);
 					console.warn(result);
 				});
 		},
@@ -455,43 +454,42 @@ sap.ui.define([
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
 			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; //	Возвращает сертификаты соответствующие указанному хэшу SHA1.
 
-			// 			return new Promise(function (resolve, reject) {
-			// 				window.cadesplugin.async_spawn(function* (args) {
-			// 					try {
-			// 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
-			// 						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
-			// 						debugger;
-			// 						var CertificatesObj = yield oStore.Certificates;
+			return new Promise(function (resolve, reject) {
+				window.cadesplugin.async_spawn(function* (args) {
+					try {
+						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
+						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+						debugger;
+						var CertificatesObj = yield oStore.Certificates;
 
-			// 						// ============== поиск по имени
-			// 						//var certSubjectName = 'Алексей';
-			// 						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
-			// 						// ============== поиск по Thumbprint
-			// 						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SHA1_HASH, Thumbprint);
+						// ============== поиск по имени
+						//var certSubjectName = 'Алексей';
+						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
+						// ============== поиск по Thumbprint
+						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SHA1_HASH, Thumbprint);
 
-			// 						var Count = yield oCertificates.Count;
-			// 						if (Count == 0) {
-			// 							throw ("Certificate not found: " + args[0]);
-			// 						}
+						var Count = yield oCertificates.Count;
+						if (Count == 0) {
+							throw ("Certificate not found: " + args[0]);
+						}
 
-			// 						var oCertificate = yield oCertificates.Item(1);
-			// 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
-			// 						yield oSigner.propset_Certificate(oCertificate);
+						var oCertificate = yield oCertificates.Item(1);
+						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
+						yield oSigner.propset_Certificate(oCertificate);
 
-			// 						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
-			// 						yield oSignedData.propset_Content(dataToSign);
+						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
+						yield oSignedData.propset_Content(dataToSign);
 
-			// 						var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_CADES_BES);
+						var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_CADES_BES);
 
-			// 						yield oStore.Close();
+						yield oStore.Close();
 
-			// 						args[2](sSignedMessage);
-			// 					} catch (e) {
-			// 						args[3]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
-			// 					}
-			// 				}, Thumbprint, dataToSign, resolve, reject);
-			// 			});
-
+						args[2](sSignedMessage);
+					} catch (e) {
+						args[3]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
+					}
+				}, Thumbprint, dataToSign, resolve, reject);
+			});
 		}
 
 		/////////////////////////////////// end BaseController

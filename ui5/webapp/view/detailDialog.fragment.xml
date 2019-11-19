@@ -1,4 +1,4 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified"
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified" xmlns:t="sap.ui.table"
 	class="sapUiSizeCompact">
 	<Dialog id="detailDialog" title="Платежное поручение" resizable="true" contentWidth="1024px">
 		<content>
@@ -27,15 +27,15 @@
 						</HBox>
 						<HBox width="60%">
 							<HBox width="20%" class="pad05">
-								<Input id="aa" value="{docExtId}" editable="false"/>
+								<Input id="aa" value="" editable="false"/>
 							</HBox>
 							<HBox width="40%" class="pad05 labelFull">
 								<Label text="ИНН:" class="label2"/>
-								<Input id="bb" value="{docExtId}" editable="false"/>
+								<Input id="PayerInn" value="{PayerInn}" editable="false"/>
 							</HBox>
 							<HBox width="40%" class="pad05 labelFull">
 								<Label text="КПП:" class="label2"/>
-								<Input id="cc" value="{docExtId}" editable="false"/>
+								<Input id="PayerKpp" value="{PayerKpp}" editable="false"/>
 							</HBox>
 						</HBox>
 					</HBox>
@@ -44,7 +44,7 @@
 							<Label text="Наименование Плательщика:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="aa3" value="{docExtId}" editable="false"/>
+							<Input id="PayerName" value="{PayerName}" editable="false"/>
 						</HBox>
 					</HBox>
 					<HBox width="100%">
@@ -52,7 +52,7 @@
 							<Label text="Наименование Банка Плательщика:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="aa333" value="{docExtId}" editable="false"/>
+							<Input id="PayerBankName" value="{PayerBankName}" editable="false"/>
 						</HBox>
 					</HBox>
 					<HBox width="100%">
@@ -60,7 +60,7 @@
 							<Label text="Город Банка Плательщика:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="aa33" value="{docExtId}" editable="false"/>
+							<Input id="PayerBankBankCity" value="{PayerBankBankCity}" editable="false"/>
 						</HBox>
 					</HBox>
 				</VBox>
@@ -68,14 +68,14 @@
 					<form:SimpleForm editable="false" layout="ResponsiveGridLayout" class="ppform" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
 						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" singleContainerFullSize="false">
 						<form:content>
-							<Label text="Сумма:"/>
-							<Input id="aa1" value="{docExtId}" editable="false"/>
-							<Label text="Счет №:"/>
-							<Input id="bb1" value="{docExtId}" editable="false"/>
-							<Label text="БИК:"/>
-							<Input id="cc1" value="{docExtId}" editable="false"/>
-							<Label text="Счет № ???:"/>
-							<Input id="dd1" value="{docExtId}" editable="false"/>
+							<Label text="Сумма"/>
+							<Input id="docSum" value="{docSum}" editable="false"/>
+							<Label text="Счет №"/>
+							<Input id="PayerPersonalAcc" value="{PayerPersonalAcc}" editable="false"/>
+							<Label text="БИК"/>
+							<Input id="PayerBankBic" value="{PayerBankBic}" editable="false"/>
+							<Label text="Счет №"/>
+							<Input id="PayerBankCorrespAcc" value="{PayerBankCorrespAcc}" editable="false"/>
 						</form:content>
 					</form:SimpleForm>
 				</VBox>
@@ -90,7 +90,7 @@
 							<Label text="Наименование Банка Получателя:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="aa5" value="{docExtId}" editable="false"/>
+							<Input id="PayeeBankName" value="{PayeeBankName}" editable="false"/>
 						</HBox>
 					</HBox>
 					<HBox width="100%">
@@ -98,24 +98,21 @@
 							<Label text="Город Банка Получателя:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="aa6" value="{docExtId}" editable="false"/>
+							<Input id="PayeeBankBankCity" value="{PayeeBankBankCity}" editable="false"/>
 						</HBox>
 					</HBox>
 					<HBox width="100%">
-						<HBox width="50%" class="labelFull">
+						<HBox width="40%" class="labelFull">
 							 <!-- -->
 						</HBox>
-						<HBox width="50%">
-							<HBox width="20%" class="pad05">
-								<Input id="aa4" value="{docExtId}" editable="false"/>
-							</HBox>
-							<HBox width="40%" class="pad05 labelFull">
+						<HBox width="60%">
+							<HBox width="50%" class="pad05 labelFull">
 								<Label text="ИНН:" class="label2"/>
-								<Input id="bb4" value="{docExtId}" editable="false"/>
+								<Input id="PayeeInn" value="{PayeeInn}" editable="false"/>
 							</HBox>
-							<HBox width="40%" class="pad05 labelFull">
+							<HBox width="50%" class="pad05 labelFull">
 								<Label text="КПП:" class="label2"/>
-								<Input id="cc4" value="{docExtId}" editable="false"/>
+								<Input id="PayeeKpp" value="{PayeeKpp}" editable="false"/>
 							</HBox>
 						</HBox>
 					</HBox>
@@ -124,7 +121,7 @@
 							<Label text="Наименование Получателя:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="aa7" value="{docExtId}" editable="false"/>
+							<Input id="PayeeName" value="{PayeeName}" editable="false"/>
 						</HBox>
 					</HBox>
 				</VBox>
@@ -132,14 +129,14 @@
 					<form:SimpleForm editable="false" layout="ResponsiveGridLayout" class="ppform" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
 						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" singleContainerFullSize="false">
 						<form:content>
-							<Label text="Сумма:"/>
-							<Input id="aa11" value="{docExtId}" editable="false"/>
-							<Label text="Счет №:"/>
-							<Input id="bb11" value="{docExtId}" editable="false"/>
-							<Label text="БИК:"/>
-							<Input id="cc11" value="{docExtId}" editable="false"/>
-							<Label text="Счет № ???:"/>
-							<Input id="dd11" value="{docExtId}" editable="false"/>
+							<Label text="Счет №"/>
+							<Input id="PayeePersonalAcc" value="{PayeePersonalAcc}" editable="false"/>
+							<Label text="БИК"/>
+							<Input id="PayeeBankBic" value="{PayeeBankBic}" editable="false"/>
+							<Label text="КСчет №"/>
+							<Input id="PayeeBankCorrespAcc" value="{PayeeBankCorrespAcc}" editable="false"/>
+							<Label text="НДС"/>
+							<Input id="vatRate" value="{vatRate}" editable="false"/>
 						</form:content>
 					</form:SimpleForm>
 				</VBox>
@@ -149,11 +146,85 @@
 			<!-- -->
 			<HBox class="small_inputs" width="100%">
 			    <Label text="101:"/>
-			    <Input id="sm1" value="{docExtId}" editable="false"/>
-			    <Label text="101:"/>
-			    <Input id="sm2" value="{docExtId}" editable="false"/>
+			    <Input id="sm1" value="" editable="false"/>
+			    <Label text="Вид операции:"/>
+			    <Input id="sm2" value="{transKind}" editable="false"/>
+			    <Label text="Очередность платежа:"/>
+			    <Input id="sm3" value="" editable="false"/>
+			    <Label text="Код вида ВО:"/>
+			    <Input id="sm4" value="{codeVO}" editable="false"/>
+			    <Label text="Код валюты ISO:"/>
+			    <Input id="sm5" value="" editable="false"/>
 			</HBox>
+			<!-- -->	
 			
+			<t:Table
+				selectionMode="None"
+				visibleRowCount="1"
+				class="dialogTable">
+				<t:columns>
+					<t:Column width="15%">
+						<Label text="КБК" />
+						<t:template>
+							<Text text="{Name}" wrapping="false" />
+						</t:template>
+					</t:Column>
+					<t:Column width="15%">
+						<Label text="ОКТМО" />
+						<t:template>
+							<Text text="{ProductId}"/>
+						</t:template>
+					</t:Column>
+					<t:Column width="15%">
+						<Label text="Осн. пл." />
+						<t:template>
+							<Text text="{Quantity}" />
+						</t:template>
+					</t:Column>
+					<t:Column width="15%">
+						<Label text="Налоговый период" />
+						<t:template>
+							<Text text="{Quantity}" />
+						</t:template>
+					</t:Column>
+					<t:Column width="15%">
+						<Label text="Номер документа" />
+						<t:template>
+							<Text text="{Quantity}" />
+						</t:template>
+					</t:Column>
+					<t:Column width="15%">
+						<Label text="Дата документа" />
+						<t:template>
+							<Text text="{Quantity}" />
+						</t:template>
+					</t:Column>
+					<t:Column width="15%">
+						<Label text="Тип платежа" />
+						<t:template>
+							<Text text="{Quantity}" />
+						</t:template>
+					</t:Column>
+					<t:Column width="15%">
+						<Label text="Код УИН" />
+						<t:template>
+							<Text text="{Quantity}" />
+						</t:template>
+					</t:Column>
+				</t:columns>
+			</t:Table>
+			
+			<HBox width="100%" class="TextAreaBlock">
+				<VBox width="50%">
+				    <Label text="Назначение платежа:"/>
+				    <TextArea value="{purpose}" rows="3" width="90%"/>
+			    </VBox>
+			    <VBox width="50%">
+			        <Label text="Сообщение из банка:"/>
+			        <TextArea value="??" rows="3" width="100%"/>
+			    </VBox>
+			</HBox>
+			 
 			
 		</content>
 		<buttons>
