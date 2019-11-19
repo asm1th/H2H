@@ -76,6 +76,8 @@
 							<Input id="PayerBankBic" value="{PayerBankBic}" editable="false"/>
 							<Label text="Счет №"/>
 							<Input id="PayerBankCorrespAcc" value="{PayerBankCorrespAcc}" editable="false"/>
+							<Label text="НДС"/>
+							<Input id="vatRate" value="{vatRate}" editable="false"/>
 						</form:content>
 					</form:SimpleForm>
 				</VBox>
@@ -129,14 +131,12 @@
 					<form:SimpleForm editable="false" layout="ResponsiveGridLayout" class="ppform" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
 						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" singleContainerFullSize="false">
 						<form:content>
-							<Label text="Счет №"/>
-							<Input id="PayeePersonalAcc" value="{PayeePersonalAcc}" editable="false"/>
+						    <Label text="КСчет №"/>
+							<Input id="PayeeBankCorrespAcc" value="{PayeeBankCorrespAcc}" editable="false"/>
 							<Label text="БИК"/>
 							<Input id="PayeeBankBic" value="{PayeeBankBic}" editable="false"/>
-							<Label text="КСчет №"/>
-							<Input id="PayeeBankCorrespAcc" value="{PayeeBankCorrespAcc}" editable="false"/>
-							<Label text="НДС"/>
-							<Input id="vatRate" value="{vatRate}" editable="false"/>
+							<Label text="Счет №"/>
+							<Input id="PayeePersonalAcc" value="{PayeePersonalAcc}" editable="false"/>
 						</form:content>
 					</form:SimpleForm>
 				</VBox>
@@ -150,7 +150,7 @@
 			    <Label text="Вид операции:"/>
 			    <Input id="sm2" value="{transKind}" editable="false"/>
 			    <Label text="Очередность платежа:"/>
-			    <Input id="sm3" value="" editable="true"/>
+			    <Input id="sm3" value="{priority}" editable="true"/>
 			    <Label text="Код вида ВО:"/>
 			    <Input id="sm4" value="{codeVO}" editable="false"/>
 			    <Label text="Код валюты ISO:"/>
@@ -221,7 +221,7 @@
 			    </VBox>
 			    <VBox width="50%">
 			        <Label text="Сообщение из банка:"/>
-			        <TextArea value="??" rows="3" width="100%"/>
+			        <TextArea value="" rows="3" width="100%"/>
 			    </VBox>
 			</HBox>
 			 

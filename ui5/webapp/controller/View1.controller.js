@@ -28,8 +28,8 @@ sap.ui.define([
 		onPress: function (evt) {
 			MessageToast.show(evt.getSource().getId() + " Pressed");
 		},
-        
-        //////////////////
+
+		//////////////////
 		// фикс размер колонок по заголовкам table
 		onDataReceived: function () {
 			var oTable = this.byId("LineItemsSmartTable");
@@ -40,9 +40,9 @@ sap.ui.define([
 				i++;
 			});
 		},
-        
-        //////////////////
-        // экспорт таблицы
+
+		//////////////////
+		// экспорт таблицы
 		onBeforeExport: function (oEvent) {
 			var mExcelSettings = oEvent.getParameter("exportSettings");
 			// GW export
@@ -53,28 +53,29 @@ sap.ui.define([
 			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
 			mExcelSettings.worker = false;
 		},
-        
-        ///////////////////////
-        // окно подробностей
+
+		///////////////////////
+		// окно подробностей
 		onDetailDialog: function (oEvent) {
 			var oView = this.getView();
 			if (!this.detailDialog) {
 				this.detailDialog = sap.ui.xmlfragment("detailDialog", "h2h.ui5.view.detailDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.detailDialog);
 			}
-			
+
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			//var path = ctx.getPath();
 			this.detailDialog.setBindingContext(ctx);
-			
+
 			this.detailDialog.open();
 		},
-		
+
 		detailDialogSave: function (oEvent) {
+			MessageToast.show("Сохраняем очередность платежа");
 			this.detailDialog.close();
 		},
-		
+
 		detailDialogClose: function (oEvent) {
 			this.detailDialog.close();
 		},
@@ -146,9 +147,9 @@ sap.ui.define([
 				}
 			});
 		},
-        
-        //////////////////
-        // просмотр платежки загружаемой в банк
+
+		//////////////////
+		// просмотр платежки загружаемой в банк
 		onShowXml: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
@@ -170,9 +171,9 @@ sap.ui.define([
 			}
 
 			//Get file download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27
-// 			var oModel = this.getView().getModel();
-// 			var that = this;
-// 			var oView = this.getView();
+			// 			var oModel = this.getView().getModel();
+			// 			var that = this;
+			// 			var oView = this.getView();
 
 			var url = "/xsjs/download.xsjs";
 			//var url = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27";
@@ -217,12 +218,12 @@ sap.ui.define([
 				}
 			});
 		},
-        
-        //////////////////
+
+		//////////////////
 		// select input
-// 		OnFileSelected: function (oEvent) {
-// 			console.log("OnFileSelected");
-// 		},
+		// 		OnFileSelected: function (oEvent) {
+		// 			console.log("OnFileSelected");
+		// 		},
 
 		// кнопка отправить
 		onSend: function (oEvent) {
@@ -407,9 +408,9 @@ sap.ui.define([
 			oModel.read("/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')", {
 				success: function (data) {
 					DigestToSign = data;
-					
-				// 	this.onSignCreate(Thumbprint, DigestToSign);
-			    //  this.signDialog.close();
+
+					// 	this.onSignCreate(Thumbprint, DigestToSign);
+					//  this.signDialog.close();
 				},
 				error: function (oError) {
 					MessageBox.alert(oError.responseText);
@@ -490,6 +491,58 @@ sap.ui.define([
 					}
 				}, Thumbprint, dataToSign, resolve, reject);
 			});
+		},
+
+		onPrint: function (Thumbprint, dataToSign) {
+            // ================
+			// печать из таблицы
+			// ================
+			var oTarget = this.getView(),
+              sTargetId = oEvent.getSource().data("targetId");
+              if (sTargetId) {
+                oTarget = oTarget.byId(sTargetId);
+              }
+              if (oTarget) {
+                var $domTarget = oTarget.$()[0],
+                  sTargetContent = $domTarget.innerHTML,
+                  sOriginalContent = document.body.innerHTML;
+        
+                document.body.innerHTML = sTargetContent;
+                window.print();
+                document.body.innerHTML = sOriginalContent;
+              } else {
+                jQuery.sap.log.error("onPrint needs a valid target container [view|data:targetId=\"SID\"]");
+              }
+
+			// ================
+			// вызов внешней печатной формы
+			// ================
+			//bwd bwq - чтоб не зависило от системы
+// 			var href = window.location.href;
+// 			var matches = href.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i); // порт
+// 			//var matches = href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i);  // без порта
+// 			var domain = matches && matches[1];
+
+// 			var oTable = this.byId("tableHeaders");
+// 			var iIndex = oTable.getSelectedIndices();
+// 			var data = [];
+// 			if (iIndex.length > 0 & iIndex.length < 2) {
+// 				for (var i = 0; i < iIndex.length; i++) {
+// 					var sPath = oTable.getContextByIndex(iIndex[i]).sPath;
+// 					data.push(oTable.getModel().getProperty(sPath));
+// 				}
+// 				console.log(data);
+// 				var ZsbnReqn = [];
+// 				for (var i = 0; i < data.length; i++) {
+// 					ZsbnReqn.push(data[i].ZsbnReqn);
+// 				}
+// 				// https://sapbwq.gazprom-neft.local:8143
+// 				var url = "https://" + domain + "/sap/bw/analysis?APPLICATION=EXCEL&OBJECT_TYPE=DOCUMENT&OBJECT_ID=ZSBNCP017_WBR002" +
+// 					"&VARZCOMP_CODE_VAR_CMP002=1000&VARZSBNNUMZK_VAR_CMP001=" + ZsbnReqn;
+// 				sap.m.URLHelper.redirect(url, true);
+// 			} else {
+// 				MessageToast.show("Выделите одну заявку в первой таблице заявок для печати");
+// 			}
 		}
 
 		/////////////////////////////////// end BaseController

@@ -3,7 +3,7 @@
 	xmlns:u="sap.ui.unified" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="h2h.ui5.controller.View1" displayBlock="true"
 	class="sapUiSizeCompact">
-	<tnt:ToolPage id="toolPage" class="hostapp" sideExpanded="false">
+	<tnt:ToolPage id="toolPage" class="hostapp" sideExpanded="true">
 		<tnt:header>
 			<tnt:ToolHeader class="itsk-tool" design="Info">
 				<Button id="sideNavigationToggleButton" icon="sap-icon://menu2" type="Transparent" press="onSideNavButtonPress">
@@ -54,8 +54,29 @@
 		<tnt:sideContent>
 			<tnt:SideNavigation selectedKey="{PageModel>/selectedKey}" itemSelect="onItemSelect">
 				<tnt:NavigationList>
-					<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"/>
-					<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"/>
+					<!--<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"/>-->
+					<!--<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"/>-->
+					<tnt:NavigationListItem text="Газпром нефть" icon="sap-icon://building">
+						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="PaymentOrderType"/>
+						<tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="subItem2"/>
+						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="subItem3"/>
+					</tnt:NavigationListItem>
+					<tnt:NavigationListItem text="Газпром нефть БС" icon="sap-icon://building" expanded="false">
+						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
+						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
+						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
+					</tnt:NavigationListItem>
+					<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false">
+						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
+						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
+						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
+					</tnt:NavigationListItem>
+					<tnt:NavigationListItem text="ГПН Финанс" icon="sap-icon://building" expanded="false">
+						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
+						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
+						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
+					</tnt:NavigationListItem>
+					<tnt:NavigationListItem text="Все счета" key="all"/>
 				</tnt:NavigationList>
 			</tnt:SideNavigation>
 		</tnt:sideContent>
@@ -82,7 +103,8 @@
 							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
 							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
 								beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
-								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true" class="sapUiResponsiveContentPadding">
+								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
+								class="sapUiResponsiveContentPadding">
 								<!--beforeRebindTable="onDataReceived"-->
 								<!-- layout data used to make the table growing but the filter bar fixed -->
 								<smartTable:customToolbar>
@@ -93,7 +115,7 @@
 										<Button text="Загрузить ПП" press="OnUpload"/>
 										<ToolbarSeparator/>
 										<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>
-										<Button icon="sap-icon://print" tooltip="Печать" id="printTable" press="onPrintTable" enabled="fasle"/>
+										<Button icon="sap-icon://print" tooltip="Печать" id="print" press="onPrint" enabled="fasle"/>
 										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>
 										<!--<Button icon="sap-icon://upload-to-cloud" text="Загрузить ПП" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>-->
 										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
