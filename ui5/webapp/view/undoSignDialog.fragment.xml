@@ -1,13 +1,13 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified"
 	class="sapUiSizeCompact">
-	<Dialog title="Выбрать подпись" resizable="true">
+	<Dialog title="Выбрать подпись для отмены" resizable="true">
 		<content>
 			<List id="SignList" items="{/mySerts}" includeItemInSelection="true">
-				<StandardListItem press="onUseSign" title="{SubjectName}" description="Издатель: {IssuerName}" info="SN = {SerialNumber}" type="Navigation"/>
+				<StandardListItem press="onUndoThisSign" title="{SubjectName}" description="Издатель: {IssuerName}" info="SN = {SerialNumber}" type="Navigation"/>
 			</List>
 		</content>
 		<buttons>
-			<Button text="Закрыть" press="signDialogClose"></Button>
+			<Button text="Закрыть" press="undoSignDialogClose"></Button>
 		</buttons>
 	</Dialog>
 </core:FragmentDefinition>

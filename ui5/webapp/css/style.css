@@ -90,6 +90,18 @@
     padding: 1rem 1rem 0;
 }
 
+.sapUiTableCHdr .sapUiTableColHdrCnt {
+    border-right: 1px solid #e5e5e5;
+    border-left: 1px solid #e5e5e5;
+}
+
+
+
+
+
+
+
+
 
 /* old */
 
@@ -408,7 +420,7 @@ html.sap-desktop .sapContrast .sapMFooter-CTX .btn-delete .sapMBtnInner.sapMBtnR
     position: relative;
     overflow: hidden;
     border: 1px solid #e5e5e5;
-    margin-top: 4px;
+    margin-top: 0px;
 }
 .sapMPage .sapUiTableVSb, .sapMPage .sapUiTableVSbBg {
     top: 40px!important;

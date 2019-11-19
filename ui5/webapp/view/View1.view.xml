@@ -114,14 +114,14 @@
 											uploadComplete="handleUploadComplete"/>
 										<Button text="Загрузить ПП" press="OnUpload"/>
 										<ToolbarSeparator/>
-										<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>
+										<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
 										<Button icon="sap-icon://print" tooltip="Печать" id="print" press="onPrint" enabled="fasle"/>
 										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>
 										<!--<Button icon="sap-icon://upload-to-cloud" text="Загрузить ПП" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>-->
 										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
 										<Button icon="sap-icon://download" text="ПП txt" tooltip="Скачать" class="btn btn-bordered" press="onDownload" enabled="true"/>
-										<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>
-										<Button icon="sap-icon://undo" text="ЭЦП" tooltip="Отменить ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="fasle"/>
+										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
+										<Button icon="sap-icon://undo" text="Снять ЭЦП" tooltip="Снять ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="true"/>
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
