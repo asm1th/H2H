@@ -150,7 +150,7 @@
 			    <Label text="Вид операции:"/>
 			    <Input id="sm2" value="{transKind}" editable="false"/>
 			    <Label text="Очередность платежа:"/>
-			    <Input id="sm3" value="" editable="false"/>
+			    <Input id="sm3" value="" editable="true"/>
 			    <Label text="Код вида ВО:"/>
 			    <Input id="sm4" value="{codeVO}" editable="false"/>
 			    <Label text="Код валюты ISO:"/>
