@@ -104,16 +104,10 @@
 				<Annotation Term="Common.Label" String="Документы не требуются"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType">
-				<Annotation Term="UI.DataPoint" Qualifier="Porder">
-					<Record Type="UI.DataPointType">
-						<PropertyValue Property="Value" Path="docExtId"/>
-						<PropertyValue Property="Title" String="Title123123"/>
-					</Record>
-				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
-					    <PropertyPath>PayerName</PropertyPath>
-					    <PropertyPath>docDate</PropertyPath>
+						<PropertyPath>PayerName</PropertyPath>
+						<PropertyPath>docDate</PropertyPath>
 						<PropertyPath>PayeeBankName</PropertyPath>
 						<PropertyPath>PayeeBankCorrespAcc</PropertyPath>
 					</Collection>

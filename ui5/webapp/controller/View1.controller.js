@@ -32,13 +32,15 @@ sap.ui.define([
 		//////////////////
 		// фикс размер колонок по заголовкам table
 		onDataReceived: function () {
-			var oTable = this.byId("LineItemsSmartTable");
-			var i = 0;
-			oTable.getTable().getColumns().forEach(function (oLine) {
-				oLine.setWidth("100%");
-				oLine.getParent().autoResizeColumn(i);
-				i++;
-			});
+ 			var oTable = this.byId("LineItemsSmartTable");
+// 			var i = 0;
+// 			oTable.getTable().getColumns().forEach(function (oLine) {
+// 				oLine.setWidth("100%");
+// 				oLine.getParent().autoResizeColumn(i);
+// 				i++;
+// 			});
+		    oTable.rerender();
+            //oTable.setFirstVisibleRow(1)
 		},
 
 		//////////////////
@@ -109,7 +111,6 @@ sap.ui.define([
 
 		// скачать загруженное ПП в том же формате
 		onDownload: function (oEvent) {
-			console.log('скачать загруженное ПП в том же формате');
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
@@ -118,16 +119,11 @@ sap.ui.define([
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
 					var Context = oTable.getContextByIndex(item);
-					var sPath = Context.sPath; //"/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
-
+					var sPath = Context.sPath;
+					// sPath = "/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
 					var nov_reg = "requestId='(.*)',";
 					var myAttr = sPath.match(nov_reg);
 					requestId.push(myAttr[1]);
-
-					// не работает так как oData не возвращает скрытые колонки
-					//var obj = oTable.getModel().getProperty(sPath);
-					//var obj1 = Context.getObject();
-					//requestId = obj.requestId;
 				});
 			} else {
 				// exit
@@ -179,29 +175,11 @@ sap.ui.define([
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
-			var docExtId = []; // если сделаем мультиселект
+			var docExtId = this._getDocExtId();
 
-			if (iIndex.length > 0) {
-				iIndex.forEach(function (item, i) {
-					var Context = oTable.getContextByIndex(item);
-					var sPath = Context.sPath;
-					//"/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
-					var nov_reg = "docExtId='(.*)'";
-					var myAttr = sPath.match(nov_reg);
-					docExtId.push(myAttr[1]);
-				});
-			} else {
-				// exit
-				return MessageBox.alert("Выберите одно платежное поручение в таблице");
-			}
-
-			//Get file download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27
-			// 			var oModel = this.getView().getModel();
-			// 			var that = this;
-			// 			var oView = this.getView();
-
+			// Get file
+			// var url = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27";
 			var url = "/xsjs/download.xsjs";
-			//var url = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27";
 			$.ajax({
 				type: "GET",
 				url: url,
@@ -246,28 +224,6 @@ sap.ui.define([
 
 		// кнопка отправить
 		onSend: function (oEvent) {
-			//var oView = this.getView();
-			//MessageBox.alert("onSend");
-
-			// 			var oSmartTable = this.byId("LineItemsSmartTable");
-			// 			var oTable = oSmartTable.getTable();
-			// 			var iIndex = oTable.getSelectedIndices();
-			// 			var docExtId = []; // если сделаем мультиселект
-
-			// 			if (iIndex.length > 0) {
-			// 				iIndex.forEach(function (item, i) {
-			// 					var Context = oTable.getContextByIndex(item);
-			// 					var sPath = Context.sPath;
-			// 					//"/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
-			// 					var nov_reg = "docExtId='(.*)'";
-			// 					var myAttr = sPath.match(nov_reg);
-			// 					docExtId.push(myAttr[1]);
-			// 				});
-			// 			} else {
-			// 				// exit
-			// 				return MessageBox.alert("Выберите одно платежное поручение в таблице");
-			// 			}
-
 			this.onShowXml(oEvent);
 		},
 
@@ -334,10 +290,15 @@ sap.ui.define([
 				if (!errorRes.error.innererror) {
 					MessageBox.alert(errorRes.error.message.value);
 				} else {
-					if (!errorRes.error.innererror.message) {
-						MessageBox.alert(errorRes.error.innererror.toString());
+				// 	if (!errorRes.error.innererror.message) {
+				// 		MessageBox.alert(JSON.stringify(errorRes.error.innererror));
+				// 	} else {
+				// 		MessageBox.alert(JSON.stringify(errorRes.error.innererror.message));
+				// 	}
+					if (!errorRes.error.message) {
+						MessageBox.alert(errorRes.error.toString());
 					} else {
-						MessageBox.alert(errorRes.error.innererror.message);
+						MessageBox.alert(JSON.stringify(errorRes.error.message));
 					}
 				}
 				return;
@@ -346,9 +307,9 @@ sap.ui.define([
 				return;
 			}
 		},
-        
-        ////////////
-        // кнопка отмена подписи - открыли окно
+
+		////////////
+		// кнопка отмена подписи - открыли окно
 		onUndoSign: function () {
 			if (!this.undoSignDialog) {
 				this.undoSignDialog = sap.ui.xmlfragment("undoSignDialog", "h2h.ui5.view.undoSignDialog", this);
@@ -373,20 +334,22 @@ sap.ui.define([
 				this.undoSignDialog.open();
 			}
 		},
-		
+
 		// выбрали подпись в окне выбора
 		onUndoThisSign: function (oEvent) {
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var objSign = src.getModel().getProperty(ctx.getPath());
 			var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
+			var docExtId = this._getDocExtId();
+
 			var oEntry = {};
-			oEntry.docExtId = docExtId;
-// 			oEntry.Value = Sign;
-// 			oEntry.SN = objSign.SerialNumber;
-// 			oEntry.Issuer = objSign.IssuerName;
-// 			oEntry.Fio = objSign.SubjectName;
-			
+			oEntry.docExtId = docExtId[0];
+			// 			oEntry.Value = Sign;
+			// 			oEntry.SN = objSign.SerialNumber;
+			// 			oEntry.Issuer = objSign.IssuerName;
+			// 			oEntry.Fio = objSign.SubjectName;
+
 			debugger;
 			var oModel = this.getOwnerComponent().getModel();
 			oModel.setHeaders({
@@ -401,16 +364,14 @@ sap.ui.define([
 			};
 			mParams.error = this._onErrorCall;
 			oModel.remove("/Sign", oEntry, mParams);
-            
+
 			this.undoSignDialog.close();
 		},
-		
 
 		//закрыли signDialog
 		undoSignDialogClose: function (oEvent) {
 			this.undoSignDialog.close();
 		},
-
 
 		//////
 		// кнопка подписать - открыли окно
@@ -538,29 +499,38 @@ sap.ui.define([
 				});
 		},
 
-		// отправка подписи
-		_sendSign: function (Sign, objSign) {
-			/// get docExtId
+		_getDocExtId: function () {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
-			var docExtId; // если сделаем мультиселект
+			var docExtId = [];
 
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
+					// не работает так как oData не возвращает скрытые колонки 2==================
+					//var obj = oTable.getModel().getProperty(sPath);
+					//var obj1 = Context.getObject();
+					//requestId = obj.requestId;
+					//===========================
+
 					var Context = oTable.getContextByIndex(item);
-					var sPath = Context.sPath;
+					var sPath = Context.sPath; //"/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
 					var nov_reg = "docExtId='(.*)'";
 					var myAttr = sPath.match(nov_reg);
-					docExtId = myAttr[1];
+					docExtId.push(myAttr[1]);
 				});
+				return docExtId;
 			} else {
-				return MessageBox.alert("docExtId не выбран в таблице");
+				return MessageBox.alert("Выберите хотя бы одно ПП в таблице");
 			}
-			//.get docExtId
+		},
+
+		// отправка подписи
+		_sendSign: function (Sign, objSign) {
+			var docExtId = this._getDocExtId();
 
 			var oEntry = {};
-			oEntry.docExtId = docExtId;
+			oEntry.docExtId = docExtId[0];
 			oEntry.Value = Sign;
 			oEntry.SN = objSign.SerialNumber;
 			oEntry.Issuer = objSign.IssuerName;
@@ -590,23 +560,6 @@ sap.ui.define([
 		signDialogClose: function (oEvent) {
 			this.signDialog.close();
 		},
-
-		//sign Подпись
-		// 		onSignCreate: function (Thumbprint, dataToSign) {
-		// 			//var sCertName = "Алексей";
-		// 			var thenable = this._SignCreate(Thumbprint, dataToSign);
-		// 			// бработка ошибки
-		// 			thenable.then(
-		// 				function (result) {
-		// 					MessageBox.success("Платежное поручение подписано");
-		// 					console.log(result);
-		// 					return result;
-		// 				},
-		// 				function (result) {
-		// 					MessageBox.error(result);
-		// 					console.warn(result);
-		// 				});
-		// 		},
 
 		// получение сертификата иподписание
 		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-fileapi.html
@@ -657,28 +610,22 @@ sap.ui.define([
 			});
 		},
 
+		// форматтер для подсветки строки в таблице
+		formatRowHighlight: function (oValue) {
+			// Your logic for rowHighlight goes here
+			if (oValue < 6) {
+				return "Success";
+			} else if (oValue < 3) {
+				return "Warning";
+			} else if (oValue < 5) {
+				return "None";
+			}
+			return "Error";
+		},
+
 		// печать выбранной ПП
 		onPrint: function (oEvent) {
-
-			var oSmartTable = this.byId("LineItemsSmartTable");
-			var oTable = oSmartTable.getTable();
-			var iIndex = oTable.getSelectedIndices();
-			var docExtId = []; // если сделаем мультиселект
-
-			if (iIndex.length > 0) {
-				iIndex.forEach(function (item, i) {
-					var Context = oTable.getContextByIndex(item);
-					var sPath = Context.sPath;
-					var nov_reg = "docExtId='(.*)'";
-					var myAttr = sPath.match(nov_reg);
-					docExtId.push(myAttr[1]);
-				});
-			} else {
-				// exit
-				return MessageBox.alert("Выберите одно платежное поручение в таблице");
-			}
-
-			// получили docExtId[0];
+			var docExtId = this._getDocExtId();
 
 			// ================
 			// печать из таблицы

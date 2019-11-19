@@ -78,7 +78,7 @@
 
 
 .small_inputs {
-    padding: 0 2rem 1rem 2rem;
+    padding: 1rem 2rem 1rem 2rem;
 }
 .small_inputs .sapMLabel {
     padding-right: 0.3em;
@@ -87,7 +87,7 @@
 }
 
 .TextAreaBlock{
-    padding: 1rem 1rem 0;
+    padding: 1rem;
 }
 
 .sapUiTableCHdr .sapUiTableColHdrCnt {
@@ -95,8 +95,12 @@
     border-left: 1px solid #e5e5e5;
 }
 
-
-
+.itsk-logo-image {
+    padding: .3rem 4.6rem 0 0;
+}
+.hostapp .bankbutton .sapMFlexItem{
+    height: 30px;
+}
 
 
 

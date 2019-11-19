@@ -15,7 +15,7 @@
 					<Image press="onHomePress" src="./images/logo2.png" height="40px" class="itsk-logo-image"/>
 				</HBox>
 				<HBox class="bankbutton">
-					<Image press="onHomePress" src="./images/rai2.png" height="30px" class="bank-logo"/>
+					<!--<Image press="onHomePress" src="./images/rai2.png" height="30px" class="bank-logo"/>-->
 					<MenuButton text="Райффайзенбанк">
 						<menu>
 							<Menu>
@@ -100,8 +100,8 @@
 									<FlexItemData shrinkFactor="0"/>
 								</smartFilterBar:layoutData>
 							</smartFilterBar:SmartFilterBar>
-							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
+							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
+							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" tableType="GridTable" smartFilterId="smartFilterBar" useExportToExcel="true"
 								beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
 								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
 								class="sapUiResponsiveContentPadding">
@@ -125,10 +125,10 @@
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:Table rowActionCount="1">
-									<!--<t:rowSettingsTemplate>-->
-									<!--	<t:RowSettings highlight="{Status}"/>-->
-									<!--</t:rowSettingsTemplate>-->
+								<t:Table visibleRowCountMode="Auto" rowActionCount="1">
+									<t:rowSettingsTemplate>
+										<t:RowSettings highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>
+									</t:rowSettingsTemplate>
 									<t:rowActionTemplate>
 										<t:RowAction>
 											<t:items>
@@ -136,11 +136,12 @@
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
-									<!--<t:columns>-->
-									<!--	<t:Column>-->
-									<!--		<t:template></t:template>-->
-									<!--	</t:Column>-->
-									<!--</t:columns>-->
+									
+									<t:columns>
+										<t:Column>
+											<t:template></t:template>
+										</t:Column>
+									</t:columns>
 								</t:Table>
 							</smartTable:SmartTable>
 						</VBox>
