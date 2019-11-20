@@ -57,7 +57,7 @@ function isNull(xmlField, xmlValue) {
 	}
 }
 
-function insertFile(param, entityName, entitySet, entitySetFields, entitySetFieldsType ){
+function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFieldsType ){
 		var values = '';
 		var fld = '';
 		try {
@@ -238,12 +238,12 @@ function po_create(param) {
 					raif.Payee.push(Payee);
 				} else if (destinationField == 'EOF' ){
 					var errMsg = '';
-					errMsg = insertFile(param, 'Request',	raif.Request,	fieldsRequest,	mappingFieldType);
-					errMsg = insertFile(param, 'File',		raif.File,		fieldsFile,		mappingFieldType);
-					errMsg = insertFile(param, 'PayDocRu',	raif.PayDocRu,	fieldsPayDocRu, mappingFieldType);
-					errMsg = insertFile(param, 'AccDoc',	raif.AccDoc,	fieldsAccDoc,	mappingFieldType);
-					errMsg = insertFile(param, 'Payer', 	raif.Payer, 	fieldsPayer,	mappingFieldType);
-					errMsg = insertFile(param, 'Payee', 	raif.Payee, 	fieldsPayee,	mappingFieldType);
+					errMsg = insertEntity(param, 'Request',	raif.Request,	fieldsRequest,	mappingFieldType);
+					errMsg = insertEntity(param, 'File',		raif.File,		fieldsFile,		mappingFieldType);
+					errMsg = insertEntity(param, 'PayDocRu',	raif.PayDocRu,	fieldsPayDocRu, mappingFieldType);
+					errMsg = insertEntity(param, 'AccDoc',	raif.AccDoc,	fieldsAccDoc,	mappingFieldType);
+					errMsg = insertEntity(param, 'Payer', 	raif.Payer, 	fieldsPayer,	mappingFieldType);
+					errMsg = insertEntity(param, 'Payee', 	raif.Payee, 	fieldsPayee,	mappingFieldType);
 				} 
 			} else{
 				
