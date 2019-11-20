@@ -33,12 +33,12 @@ sap.ui.define([
 		// фикс размер колонок по заголовкам table
 		onDataReceived: function () {
 			var oSmartTable = this.byId("LineItemsSmartTable");
-			// 			var i = 0;
-			// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
-			// 				oLine.setWidth("100%");
-			// 				oLine.getParent().autoResizeColumn(i);
-			// 				i++;
-			// 			});
+// 			var i = 0;
+// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
+// 				oLine.setWidth("100%");
+// 				oLine.getParent().autoResizeColumn(i);
+// 				i++;
+// 			});
 			//oSmartTable.getTable().rerender();
 			//oSmartTable.getTable().setFirstVisibleRow(1)
 		},
@@ -583,12 +583,12 @@ sap.ui.define([
 			var mParams = {};
 			mParams.success = function () {
 				MessageToast.show("ПП подписана");
-				this.add_oDialog.close();
+				this.signDialog.close();
 			};
 			mParams.error = this._onErrorCall;
 			oModel.create("/Sign", oEntry, mParams);
 
-			this.signDialog.close();
+			//this.signDialog.close();
 		},
 
 		//закрыли signDialog

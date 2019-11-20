@@ -102,7 +102,7 @@
 							</smartFilterBar:SmartFilterBar>
 							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
 							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder"  smartFilterId="smartFilterBar" useExportToExcel="true"
-								beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
+								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
 								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
 								class="sapUiResponsiveContentPadding">
 								<!--beforeRebindTable="onDataReceived"-->
@@ -110,14 +110,14 @@
 								<smartTable:customToolbar>
 									<Toolbar>
 										<ToolbarSpacer/>
-										<u:FileUploader id="fileUploader" name="myFileUpload" multiple="true" change="OnFileSelected" tooltip="Upload your file to the local server"
+										<u:FileUploader id="fileUploader" name="myFileUpload" multiple="true" change="OnFileSelected" tooltip="Загрузка"
 											uploadComplete="handleUploadComplete"/>
 										<Button text="Загрузить ПП" press="OnUpload"/>
 										<ToolbarSeparator/>
 										<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
-										<Button icon="sap-icon://print" tooltip="Печать" id="print" press="onPrint" enabled="fasle"/>
-										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="true"/>
-										<!--<Button icon="sap-icon://upload-to-cloud" text="Загрузить ПП" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>-->
+										<Button icon="sap-icon://print" tooltip="Печать" id="print" press="onPrint" class="btn btn-bordered" enabled="fasle"/>
+										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="true"/>
+										<Button icon="sap-icon://upload-to-cloud" text="Загрузить ПП" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>
 										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
 										<Button icon="sap-icon://download" text="ПП txt" tooltip="Скачать" class="btn btn-bordered" press="onDownload" enabled="true"/>
 										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->

@@ -106,17 +106,13 @@
 			<Annotations Target="Metadata.PaymentOrderType">
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
-						<PropertyPath>PayerName</PropertyPath>
 						<PropertyPath>docDate</PropertyPath>
-						<PropertyPath>PayeeBankName</PropertyPath>
+						<PropertyPath>PayerBankName</PropertyPath>
 						<PropertyPath>PayeeBankCorrespAcc</PropertyPath>
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="requestId"/>
-						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 						</Record>
@@ -210,12 +206,14 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docExtId"/>
 						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="requestId"/>
+						</Record>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Платежное поручение"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/requestId">
-				<Annotation Term="UI.Hidden" Bool="true"/>
 				<Annotation Term="Common.Label" String="Идентификатор платежа"/>
 			</Annotations>
 			<Annotations Target="Metadata.PaymentOrderType/PayerBankBic">
