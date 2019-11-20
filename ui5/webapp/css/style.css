@@ -101,8 +101,14 @@
 .hostapp .bankbutton .sapMFlexItem{
     height: 30px;
 }
-
-
+.hostapp .sapUiFormResGrid>div {
+    padding: 0rem 0.75rem;
+}
+.hostapp .sapUiFormM:not(.sapUiFormEdit) .sapUiFormResGridCont>div {
+    padding-top: .05rem;
+    padding-bottom: 0;
+    font-size: 1px;
+}
 
 
 

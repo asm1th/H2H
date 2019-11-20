@@ -382,6 +382,20 @@ sap.ui.define([
 		undoSignDialogClose: function (oEvent) {
 			this.undoSignDialog.close();
 		},
+		
+		// журнал
+		onJournal: function (oEvent) {
+		    // тест
+		    var objSign = {
+		        IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru",
+                SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07",
+                SubjectName: "CN=Алексей, E=kleale@kleale.ru",
+                Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
+                ValidToDate: "2020-02-06T11:56:17.000Z",
+		    }
+		    var result = "MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
+			this._sendSign(result, objSign);
+		},
 
 		//////
 		// кнопка подписать - открыли окно
@@ -474,19 +488,21 @@ sap.ui.define([
 			var oModel = this.getOwnerComponent().getModel();
 			//var that = this;
 			var dataToSign = "Digest";
-
+			var docExtId = this._getDocExtId();
+            
 			// get Digest HERE 
-			// !!!!!!!!!!!!!!!!!!!!!!!!! FIX IT !!!!!!!!!!!!!!!!!!!!!!!!! 
-			///////////////////////
-			oModel.read("/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')", {
+			var url = "/xsjs/digest.xsjs";
+			$.ajax({
+				type: "GET",
+				url: url,
+				data: "docExtId=%27" + docExtId[0] + "%27",
+				//dataType: "text/plain",
 				success: function (data) {
-					DigestToSign = data;
-
-					// 	this.onSignCreate(Thumbprint, dataToSign);
-					//  this.signDialog.close();
+					dataToSign = data;
+					console.log("digest: ", data);
 				},
 				error: function (oError) {
-					MessageBox.alert(oError.responseText);
+					MessageBox.error(oError.responseText);
 					console.warn(oError);
 				}
 			});
@@ -543,14 +559,13 @@ sap.ui.define([
 			//var Sign2 = Sign.replace("/r/", "");
 			//oEntry.Value = Sign2.replace(" ", "");
 			oEntry.Value = Sign;
-			debugger;
+			//debugger;
 			oEntry.SN = objSign.SerialNumber;
 			oEntry.Issuer = objSign.IssuerName;
 			oEntry.Fio = objSign.SubjectName;
 			// oEntry.ValidToDate = objSign.ValidToDate;
 			// oEntry.Thumbprint = objSign.Thumbprint;
 
-			debugger;
 			var oModel = this.getOwnerComponent().getModel();
 			oModel.setHeaders({
 				"X-Requested-With": "XMLHttpRequest",

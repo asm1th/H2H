@@ -116,7 +116,7 @@
 										<ToolbarSeparator/>
 										<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
 										<Button icon="sap-icon://print" tooltip="Печать" id="print" press="onPrint" enabled="fasle"/>
-										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="fasle"/>
+										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn" press="onJournal" enabled="true"/>
 										<!--<Button icon="sap-icon://upload-to-cloud" text="Загрузить ПП" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>-->
 										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
 										<Button icon="sap-icon://download" text="ПП txt" tooltip="Скачать" class="btn btn-bordered" press="onDownload" enabled="true"/>
