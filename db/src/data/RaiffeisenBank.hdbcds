@@ -220,7 +220,8 @@ context RaiffeisenBank {
 		_PAYEE.BANKCORRESPACC		as PayeeBankCorrespAcc,
 		_PAYEE.BANKNAME 			as PayeeBankName,
 		_PAYEE.BANKCITY 			as PayeeBankBankCity,
-		_PAYEE.BANKSETTLEMENTTYPE	as PayeeBankSettlementType
+		_PAYEE.BANKSETTLEMENTTYPE	as PayeeBankSettlementType,
+		_TSIGN.SIGNTYPE				as SignType
      };
     
     define view Extract as Select from TPayDocRu{
