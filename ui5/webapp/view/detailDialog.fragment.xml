@@ -60,7 +60,7 @@
 							<Label text="Город Банка Плательщика:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="PayerBankBankCity" value="{PayerBankBankCity}" editable="true"/>
+							<Input id="PayerBankBankCity" value="{PayerBankBankCity}" editable="false"/>
 						</HBox>
 					</HBox>
 				</VBox>

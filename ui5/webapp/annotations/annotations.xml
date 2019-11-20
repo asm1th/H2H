@@ -127,6 +127,15 @@
 							<PropertyValue Property="Value" Path="docSum"/>
 						</Record>
 						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="vat"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="vatRate"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="vatSum"/>
+						</Record>
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="PayeeBankBic"/>
 						</Record>
 						<Record Type="UI.DataField">
@@ -166,6 +175,15 @@
 							<PropertyValue Property="Value" Path="PayerName"/>
 						</Record>
 						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="PayerBankBankCity"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="PayerBankBic"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="PayerBankCorrespAcc"/>
+						</Record>
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="PayerPersonalAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
@@ -188,15 +206,6 @@
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="transKind"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="vat"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="vatRate"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="vatSum"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docExtId"/>

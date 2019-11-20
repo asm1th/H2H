@@ -326,12 +326,12 @@ function updateAccDoc(param){
 	var rs = pStmt.executeQuery();
 	while (rs.next()) {
 		docExtId	= 		rs.getString(2);
-    	piority 	=		rs.getString(15);
+    	piority 	=		rs.getInt(15);
 	}
 	pStmt.close();
 // TODO: Добавить проверку на существование строки
 	pStmt = param.connection.prepareStatement("Update \"RaiffeisenBank.TAccDoc\" set \"PRIORITY\" = ? Where \"DOCEXTID\"='" + docExtId + "'");
-    pStmt.setString(1, piority);
+    pStmt.setInt(1, piority);
     pStmt.execute();
     pStmt.close();
 }

@@ -74,17 +74,18 @@ sap.ui.define([
 		},
 
 		detailDialogSave: function (oEvent) {
-			MessageToast.show("Сохраняем очередность платежа");
+            //MessageToast.show("Сохраняем очередность платежа");
 
 			var src = oEvent.getSource().getParent();
 			var ctx = this.detailDialog.getBindingContext();
 
 			debugger;
-			var obj = ctx;
-
 			var oModel = this.getOwnerComponent().getModel();
+			var obj = oModel.getProperty(ctx.getPath());
+
+			
 			var oEntry = {};
-			oEntry.requestId = obj.requestId;
+			oEntry.docExtId = obj.docExtId;
 			oEntry.priority = obj.priority;
 
 			oModel.setHeaders({
@@ -98,7 +99,7 @@ sap.ui.define([
 				this.add_oDialog.close();
 			};
 			mParams.error = this._onErrorCall;
-			oModel.create("/PaymentOrder", oEntry, mParams);
+			oModel.update("/PaymentOrder", oEntry, mParams);
 
 			this.detailDialog.close();
 		},
