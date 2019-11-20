@@ -14,8 +14,9 @@ service {
 	"RaiffeisenBank.AccDoc"			as "AccDoc"			key ("docExtId");
 	"RaiffeisenBank.Payer"			as "Payer"			key ("docExtId");
 	"RaiffeisenBank.Payee"			as "Payee"			key ("docExtId");
-	"RaiffeisenBank.Files"			as "Files"			key ("requestId") create using "xsjs:dbf.xsjslib::po_create";
-	"RaiffeisenBank.Sign"			as "Sign"			key ("docExtId");																									
+	"RaiffeisenBank.Files"			as "Files"			key ("requestId")	create using "xsjs:dbf.xsjslib::createPaymentOrder";
+	"RaiffeisenBank.Sign"			as "Sign"			key ("docExtId")	create using "xsjs:dbf.xsjslib::createSing"
+																			delete using "xsjs:dbf.xsjslib::deletSing";																									
 																										
 	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
 	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("Sign.docExtId")			multiplicity "*";

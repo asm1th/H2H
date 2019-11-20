@@ -52,3 +52,12 @@ BANKTYPE;FORMATTYPE;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSOUR
 "RAIF";"PO";"0.1";"";"";"START";"СекцияДокумент";"";
 "RAIF";"PO";"0.1";"";"";"END";"КонецДокумента";"";
 "RAIF";"PO";"0.1";"";"";"EOF";"КонецФайла";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"DOCEXTID";"";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"SN";"";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"VALUE";"";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"ISSUER";"";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"DIGESTNAME";"";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"DIGESTVERSION";"";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"SIGNTYPE";"";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"FIO";"";"";
+"RAIF";"PO";"0.1";"Sign";"Str";"POSITION";"";"";

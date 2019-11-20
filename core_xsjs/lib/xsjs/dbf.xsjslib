@@ -74,13 +74,14 @@ function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFi
 							case 'Str':
 								pStmt.setString(j+1, fieldValue); 
 								break;
+							case 'Blb':
+								pStmt.setBlob(j+1, fieldValue); 
+								break;
 							default:
 						};
 				});
 				pStmt.addBatch();
 			});
-			
-			// pStmt.close();
 			pStmt.executeBatch();
 			pStmt.close();
 			return '';
@@ -90,7 +91,7 @@ function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFi
 		return sql;
 }
 
-function po_create(param) {
+function createPaymentOrder(param) {
 	try {
 		var rs = null;
 		var raif = {};
@@ -238,12 +239,12 @@ function po_create(param) {
 					raif.Payee.push(Payee);
 				} else if (destinationField == 'EOF' ){
 					var errMsg = '';
-					errMsg = insertEntity(param, 'Request',	raif.Request,	fieldsRequest,	mappingFieldType);
+					errMsg = insertEntity(param, 'Request',		raif.Request,	fieldsRequest,	mappingFieldType);
 					errMsg = insertEntity(param, 'File',		raif.File,		fieldsFile,		mappingFieldType);
 					errMsg = insertEntity(param, 'PayDocRu',	raif.PayDocRu,	fieldsPayDocRu, mappingFieldType);
-					errMsg = insertEntity(param, 'AccDoc',	raif.AccDoc,	fieldsAccDoc,	mappingFieldType);
-					errMsg = insertEntity(param, 'Payer', 	raif.Payer, 	fieldsPayer,	mappingFieldType);
-					errMsg = insertEntity(param, 'Payee', 	raif.Payee, 	fieldsPayee,	mappingFieldType);
+					errMsg = insertEntity(param, 'AccDoc',		raif.AccDoc,	fieldsAccDoc,	mappingFieldType);
+					errMsg = insertEntity(param, 'Payer', 		raif.Payer, 	fieldsPayer,	mappingFieldType);
+					errMsg = insertEntity(param, 'Payee', 		raif.Payee, 	fieldsPayee,	mappingFieldType);
 				} 
 			} else{
 				
@@ -256,6 +257,104 @@ function po_create(param) {
 	}	
 		
 	
+}
+
+
+function createSing(param){
+	
+	var after = param.afterTableName;
+	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
+	rs = null;
+	rs = pStmt.executeQuery();
+	var fileBody = null;
+	var sign = {};
+	while (rs.next()) {
+		sign.docExtId = 		rs.getString(1);
+    	sign.SN =				rs.getString(2);
+    	sign.Value =			$.util.codec.encodeBase64(rs.getBlob(3));
+    	sign.Issuer =			rs.getString(4);
+		sign.DigestName =		rs.getString(5);
+		sign.DigestVersion =	rs.getString(6);
+		sign.SignType = 		rs.getString(7);
+		sign.Fio =				rs.getString(8);
+		sign.Position = 		rs.getString(9);
+	}
+	pStmt.close();
+	
+	var mappingField		= new Map();
+	var mappingEntity		= new Map();
+	var mappingFieldType	= new Map();
+	var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO' and \"ENTITYNAME\" = 'Sign' ");
+	rs = null;
+	rs = pStmt.executeQuery();
+	var fieldsSign	= [];
+	while (rs.next()) {
+		var fieldDestination = rs.getString(3);
+		var fildDestinationType = rs.getString(4);
+		if (mappingFieldType.has(fieldDestination) != true) { 
+				mappingFieldType.set(fieldDestination, fildDestinationType);
+			}
+		fieldsSign.push(fieldDestination);
+	}
+	
+	var raif = {};
+	raif.Sign = [];
+	Sign = new Map();
+	Sign.set('DOCEXTID', sign.docExtId);
+	Sign.set('SN', sign.SN);
+	Sign.set('VALUE', sign.Value);
+	Sign.set('ISSUER', sign.Issuer);
+	Sign.set('DIGESTNAME', sign.DigestName);
+	Sign.set('DIGESTVERSION', sign.DigestVersion);
+	// Sign.set('SIGNTYPE', sign.SignType);
+	Sign.set('SIGNTYPE', 'Первая подпись');
+	Sign.set('FIO', sign.Fio);
+	Sign.set('POSITION', sign.Position);
+	raif.Sign.push(Sign);
+	errMsg = insertEntity(param, 'Sign', raif.Sign, fieldsSign, mappingFieldType);
+	// if (errMsg = "") {
+	// 	$.response.status = $.net.http.OK;	
+	// }else{
+	// 	$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
+	// 	 $.response.setBody(errMsg);
+	// }
+}
+
+function deletSing(param){
+	var after = param.afterTableName;
+	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
+	rs = null;
+	rs = pStmt.executeQuery();
+	var fileBody = null;
+	var sign = {};
+	while (rs.next()) {
+		sign.docExtId = 		rs.getString(1);
+  //  	sign.SN =				rs.getString(2);
+  //  	sign.Value =			$.util.codec.encodeBase64(rs.getBlob(3));
+  //  	sign.Issuer =			rs.getString(4);
+		// sign.DigestName =		rs.getString(5);
+		// sign.DigestVersion =	rs.getString(6);
+		sign.SignType = 		rs.getString(7);
+		sign.Fio =				rs.getString(8);
+		sign.Position = 		rs.getString(9);
+	}
+	pStmt.close();
+	var salesOrderId = '';
+	pStmt = param.connection.prepareStatement("select \"DOCEXTID\",\"SIGNTYPE\" from \"RaiffeisenBank.TSign\" where \"DOCEXTID\" = '"+sign.docExtId+"' and \"SIGNTYPE\" = '" + sign.SignType + "'");
+	rs = pStmt.executeQuery();
+	while(rs.next()){
+		docExtId = rs.getString(1);
+		SignType = rs.getString(2);
+	}
+	pStmt.close();
+	
+	if(salesOrderId === ''){
+		throw new error("Invalid Sales Order ID.");
+	}else{
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TSign\" where \"DOCEXTID\" = '"+sign.docExtId+"' and \"SIGNTYPE\" = '" + sign.SignType + "'");
+	    pStmt.executeUpdate();
+	    pStmt.close();
+	}
 }
 
 function po_create_v2(param) {
