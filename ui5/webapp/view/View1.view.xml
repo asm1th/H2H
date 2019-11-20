@@ -101,7 +101,7 @@
 								</smartFilterBar:layoutData>
 							</smartFilterBar:SmartFilterBar>
 							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" tableType="GridTable" smartFilterId="smartFilterBar" useExportToExcel="true"
+							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
 								beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
 								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
 								class="sapUiResponsiveContentPadding">
@@ -110,7 +110,7 @@
 								<smartTable:customToolbar>
 									<Toolbar>
 										<ToolbarSpacer/>
-										<u:FileUploader id="fileUploader" name="myFileUpload" change="OnFileSelected" tooltip="Upload your file to the local server"
+										<u:FileUploader id="fileUploader" name="myFileUpload" multiple="true" change="OnFileSelected" tooltip="Upload your file to the local server"
 											uploadComplete="handleUploadComplete"/>
 										<Button text="Загрузить ПП" press="OnUpload"/>
 										<ToolbarSeparator/>

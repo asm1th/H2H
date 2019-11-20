@@ -32,15 +32,15 @@ sap.ui.define([
 		//////////////////
 		// фикс размер колонок по заголовкам table
 		onDataReceived: function () {
- 			var oTable = this.byId("LineItemsSmartTable");
-// 			var i = 0;
-// 			oTable.getTable().getColumns().forEach(function (oLine) {
-// 				oLine.setWidth("100%");
-// 				oLine.getParent().autoResizeColumn(i);
-// 				i++;
-// 			});
-		    oTable.rerender();
-            //oTable.setFirstVisibleRow(1)
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			// 			var i = 0;
+			// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
+			// 				oLine.setWidth("100%");
+			// 				oLine.getParent().autoResizeColumn(i);
+			// 				i++;
+			// 			});
+			//oSmartTable.getTable().rerender();
+			//oSmartTable.getTable().setFirstVisibleRow(1)
 		},
 
 		//////////////////
@@ -273,8 +273,10 @@ sap.ui.define([
 					});
 					var mParams = {};
 					mParams.success = function () {
-						MessageToast.show("Сохранено");
-						this.add_oDialog.close();
+						//MessageToast.show("Сохранено");
+						var oSmartTable = that.byId("LineItemsSmartTable");
+						oSmartTable.rebindTable();
+						//that.add_oDialog.close();
 					};
 					mParams.error = that._onErrorCall;
 					oModel.create("/Files", oEntry, mParams);
@@ -282,7 +284,15 @@ sap.ui.define([
 				reader.readAsDataURL(file);
 			}
 		},
-
+		
+		OnFileSelected: function (oEvent) {
+		    MessageToast.show("Файлы ожидают загрузки ");
+		},
+		
+		handleUploadComplete: function (oEvent) {
+		    MessageToast.show("ПП загружены ");
+        },
+        
 		// обработка ошибки и вывод при загрузке
 		_onErrorCall: function (oError) {
 			if (oError.statusCode === 500 || oError.statusCode === 400 || oError.statusCode === "500" || oError.statusCode === "400") {
@@ -290,11 +300,11 @@ sap.ui.define([
 				if (!errorRes.error.innererror) {
 					MessageBox.alert(errorRes.error.message.value);
 				} else {
-				// 	if (!errorRes.error.innererror.message) {
-				// 		MessageBox.alert(JSON.stringify(errorRes.error.innererror));
-				// 	} else {
-				// 		MessageBox.alert(JSON.stringify(errorRes.error.innererror.message));
-				// 	}
+					// 	if (!errorRes.error.innererror.message) {
+					// 		MessageBox.alert(JSON.stringify(errorRes.error.innererror));
+					// 	} else {
+					// 		MessageBox.alert(JSON.stringify(errorRes.error.innererror.message));
+					// 	}
 					if (!errorRes.error.message) {
 						MessageBox.alert(errorRes.error.toString());
 					} else {
@@ -482,11 +492,9 @@ sap.ui.define([
 			});
 
 			///////////////////
-
-			//var Sign = this.onSignCreate(Thumbprint, dataToSign);
 			var thenable = this._SignCreate(Thumbprint, dataToSign);
 			var that = this;
-			// бработка ошибки
+			// обработка ошибки
 			thenable.then(
 				function (result) {
 					//MessageBox.success("Платежное поручение подписано");
@@ -531,7 +539,11 @@ sap.ui.define([
 
 			var oEntry = {};
 			oEntry.docExtId = docExtId[0];
+			// убираем переносы строк /r/ в SIgn
+			//var Sign2 = Sign.replace("/r/", "");
+			//oEntry.Value = Sign2.replace(" ", "");
 			oEntry.Value = Sign;
+			debugger;
 			oEntry.SN = objSign.SerialNumber;
 			oEntry.Issuer = objSign.IssuerName;
 			oEntry.Fio = objSign.SubjectName;
