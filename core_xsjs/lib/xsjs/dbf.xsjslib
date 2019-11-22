@@ -1,3 +1,5 @@
+var errMessage = [];
+
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -8,98 +10,115 @@ function guid() {
     s4() + '-' + s4() + s4() + s4();
 }
 
-function isNull(xmlField, xmlValue) {
-	if (xmlValue == null) {
-		switch (xmlField) {
-			case 'PURPOSE':
-				errMsg += 'purpose:isNull;';		return '';		break;
-			case 'DOCDATE':
-				errMsg += 'docDate:isNull;';		return '';		break;	
-			case 'DOCNUM':
-				errMsg += 'docNum:isNull;'; 		return '';		break;		
-			case 'DOCSUM':
-				errMsg += 'docSum:isNull;'; 		return '';		break;	
-			case 'VATSUM':
-													return '0.00';	break;
-			case 'VATRATE':
-													return '0.00';	break;
-			case 'VAT':
-				// errMsg += 'vat:isNull;';
-													return 'VatManualAll'; break;
-			case 'TRANSKIND':
-				// errMsg += 'transKind:isNull;';
-													return '01';	break;
-			case 'PAYTKIND':
-				// errMsg += 'paytKind:isNull;'; 
-													return '0'; 	break;
-			case 'PRIORITY':
-				// errMsg += 'priority:isNull;';		
-													return '5';		break;
-			case 'NODOCS':
-													return '0'; 	break; 
-			case 'INN':
-				errMsg += 'inn:isNull;';			return '';		break;
-			case 'PERSONALACC':
-				errMsg += 'personalAcc:isNull;';	return '';		break;
-			case 'NAME':	
-				errMsg += 'Name:isNull;';			return '';		break;
-			case 'BIC':	
-				errMsg += 'bic:isNull;';			return '';		break;	
-			case 'BANKCITY':	
-				errMsg += 'BankCity:isNull;';		return '';		break;
-			case 'SETTLEMENTTYPE':	
-				// errMsg += 'SettlementType:isNull;'; 
-													return 'Г';		break;
-			default:
-		}
-	} else {
-		return xmlValue;
+function errAdd(errType, errVal1, errVal2, errVal3, errVal4 ){
+	switch (errType) {
+		case 'errLoadEntityOblibatoryFielisNull':
+			errMessage.push("Ошибка загрузки " + errVal1 + ". Обязательное поле " + errVal2 + " не может быть пустам");
+			break;
 	}
 }
 
-function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFieldsType ){
-		var values = '';
-		var fld = '';
-		try {
-			entitySetFields.forEach(function(field, i){ values += i==0 ? '?' : ' ,?';	} );
-			sql = 'INSERT INTO "RaiffeisenBank.T' + entityName + '" (' + entitySetFields.toString() + ') VALUES(' + values + ')';
-			var pStmt = param.connection.prepareStatement(sql);
-			entitySet.forEach(function(entity){ 
-				entitySetFields.forEach(function(field, j){ 
-					var fieldValue = isNull(field, entity.get(field));
-					switch (entitySetFieldsType.get(field)) {
-							case 'Int':
-								pStmt.setInt(j+1, parseInt(fieldValue)); 
-								break;
-							case 'Str':
-								pStmt.setString(j+1, fieldValue); 
-								break;
-							case 'Blb':
-								pStmt.setBlob(j+1, fieldValue); 
-								break;
-							default:
-						};
-				});
-				pStmt.addBatch();
-			});
-			pStmt.executeBatch();
-			pStmt.close();
-			return '';
-		} catch (e) {
-			return e.toString();
+function getSettlementType(param, bic){
+	var pStmt = param.connection.prepareStatement("Select \"SETTLEMENTTYPE\" From \"H2H.BicInformation\" Where \"BIC\" = '" + bic + "'");
+		rs = null;
+		rs = pStmt.executeQuery();
+		while (rs.next()) {
+			return rs.getString(1);
 		}
-		return sql;
+		pStmt.close();
+}
+
+function isNull(destField, srcValue ) {
+	if ((destField.Obligatory == 'X' || destField.Type == "Int") && ( srcValue == null || srcValue == "" || srcValue == undefined) ) {
+		switch (destField.Field) {
+			case 'PURPOSE':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+			case 'DOCDATE':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;	
+			case 'DOCNUM':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' ); 		return '';				break;		
+			case 'DOCSUM':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' ); 		return '';				break;	
+			case 'VATSUM':																						return '0.00';			break;
+			case 'VATRATE':																						return '0.00';			break;
+			case 'VAT':																							return 'VatManualAll';	break;
+			case 'TRANSKIND':																					return '01';			break;
+			case 'PAYTKIND':																					return '0'; 			break;
+			case 'PRIORITY':																					return '0';				break;
+			case 'NODOCS':																						return '0'; 			break; 
+			case 'PAYERINN' || 'PAYEEINN':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+			case 'PAYERPERSONALACC' || 'PAYEEPERSONALACC':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+			case 'PAYERNAME' || 'PAYEENAME':	
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+			case 'PAYERBANKBIC' || 'PAYEEBANKBIC':	
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;	
+			case 'PAYERBANKCITY' || 'PAYEEBANKCITY':	
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+			case 'PAYERBANKSETTLEMENTTYPE' || 'PAYEEBANKSETTLEMENTTYPE':										return '';				break;
+			
+			case 'DRAWERSTATUS':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+			case 'CBC':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+			case 'OKATO':
+				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+			case 'PAYTREASON':																					return '0';				break;
+			case 'TAXPERIOD':																					return '0';				break;
+			case 'DOCNO':																						return '0';				break;
+			case 'DOCDATE':																						return '0';				break;
+			case 'TAXPAYTKIND':																					return '0';				break;
+		}
+	} else {
+		return srcValue;
+	}
+}
+
+function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFieldsOptions ){
+	var values = '';
+	var fld = '';
+	try {
+		entitySetFields.forEach(function(field, i){ values += i==0 ? '?' : ' ,?';	} );
+		sql = 'INSERT INTO "RaiffeisenBank.T' + entityName + '" (' + entitySetFields.toString() + ') VALUES(' + values + ')';
+		var pStmt = param.connection.prepareStatement(sql);
+		entitySet.forEach(function(entity){ 
+			entitySetFields.forEach(function(field, j){ 
+				fieldOptions = entitySetFieldsOptions.get(field);
+				var fieldValue = isNull(fieldOptions, entity.get(field));
+				switch (fieldOptions.Type) {
+						case 'Int':
+							pStmt.setInt(j+1, parseInt(fieldValue)); 
+							break;
+						case 'Str':
+							pStmt.setString(j+1, fieldValue); 
+							break;
+						case 'Blb':
+							pStmt.setBlob(j+1, fieldValue); 
+							break;
+						default:
+					};
+			});
+			pStmt.addBatch();
+		});
+		pStmt.executeBatch();
+		pStmt.close();
+		return '';
+	} catch (e) {
+		return e.toString();
+	}
+	return sql;
 }
 
 function createPaymentOrder(param) {
 	try {
 		var rs = null;
 		var raif = {};
-		var requestID = guid();
 		var mappingField		= new Map();
-		var mappingEntity		= new Map();
-		var mappingFieldType	= new Map();
-		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
+		// var mappingEntity		= new Map();
+		// var mappingFieldType	= new Map();
+		var destinatonFieldOpt  = new Map();
+		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\",\"OBLIGATORY\" From \"H2H.TMapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
 		rs = null;
 		rs = pStmt.executeQuery();
 		
@@ -108,19 +127,28 @@ function createPaymentOrder(param) {
 		var fieldsAccDoc	= [];
 		var fieldsPayer 	= [];
 		var fieldsPayee		= [];
+		var fieldsDepInfo	= [];
 		var fieldsFile		= [];
 		while (rs.next()) {
 			var entityDestination = rs.getString(1);
 			var fildSource = rs.getString(2);
 			var fieldDestination = rs.getString(3);
 			var fildDestinationType = rs.getString(4);
-			mappingField.set(fildSource, fieldDestination);
-			mappingEntity.set(fildSource, entityDestination);
-			if (mappingFieldType.has(fieldDestination) != true) { 
-					mappingFieldType.set(fieldDestination, fildDestinationType);
-				}
+			var fildObligatory = rs.getString(5);
+			var fieldDestinationOptions = {};
 			
-			mappingFieldType
+			fieldDestinationOptions.Entity = entityDestination;
+			fieldDestinationOptions.Field = fieldDestination;
+			fieldDestinationOptions.Type = fildDestinationType;
+			fieldDestinationOptions.Obligatory = fildObligatory;
+
+			destinatonFieldOpt.set(fieldDestination, fieldDestinationOptions);
+			mappingField.set(fildSource, fieldDestination);
+			// mappingEntity.set(fildSource, entityDestination);
+			// if (mappingFieldType.has(fieldDestination) != true) { 
+			// 		mappingFieldType.set(fieldDestination, fildDestinationType);
+			// 	}
+
 			switch (entityDestination) {
 				case 'Request':
 					if (fieldsRequest.indexOf(fieldDestination) < 0) { 
@@ -147,12 +175,16 @@ function createPaymentOrder(param) {
 						fieldsPayee.push(fieldDestination);
 					}
 					break;
+				case 'DepartmentalInfo':
+					if (fieldsDepInfo.indexOf(fieldDestination) < 0) { 
+						fieldsDepInfo.push(fieldDestination);
+					}
+					break;
 				case 'File':
 					if (fieldsFile.indexOf(fieldDestination) < 0) { 
 						fieldsFile.push(fieldDestination);
 					}
 					break;	
-				// default:
 			}
 		}
 		
@@ -174,6 +206,7 @@ function createPaymentOrder(param) {
 		}
 		pStmt.close();
 		
+		var requestID = guid();
 		raif.Request = [];
 		Request = new Map();
 		Request.set('BANK','RAIF');
@@ -192,76 +225,92 @@ function createPaymentOrder(param) {
 		raif.File.push(File);
 		
 		var startDoc = false;
+		var docExtID = "";
 		raif.PayDocRu	= [];
 		raif.AccDoc 	= [];
 		raif.Payer		= [];
 		raif.Payee		= [];
+		raif.DepInfo	= [];
 		fileRows.forEach(function(row, i, fileRows){
-			var sourceRow = row.split('=');
+			var sourceRow = [];
+			sourceRow = row.split('=');
 			var sourceField = sourceRow[0];
 			var sourceValue = sourceRow[1];
-			var destinationField = mappingField.get(sourceField);
-			if (destinationField != null) {
-				var destinationEntity = mappingEntity.get(sourceField);
-				if (destinationField == 'START') {
-					startDoc = true
-					var docExtID = guid();
+			var _destinationField = mappingField.get(sourceField);
+			if (_destinationField != null) {
+				var destinationField = destinatonFieldOpt.get(_destinationField);
+				// var destinationEntity = mappingEntity.get(sourceField);
+				if (destinationField.Field == "START") {
+					startDoc	= true
+					docExtID	= guid();
 					PayDocRu	= new Map();
 					AccDoc 		= new Map();
 					Payer		= new Map();
 					Payee		= new Map();
+					DepInfo		= new Map();
+				}else if (startDoc == true && destinationField.Field != "END"){
+					if (sourceValue != "" ) {
+						switch (destinationField.Entity) {
+							case 'PayDocRu':			PayDocRu.set(destinationField.Field, sourceValue);	break;
+							case 'AccDoc':				AccDoc.set(destinationField.Field, sourceValue);	break;
+							case 'Payer':				Payer.set(destinationField.Field, sourceValue);		break;
+							case 'Payee':				Payee.set(destinationField.Field, sourceValue);		break;
+							case 'DepartmentalInfo':	DepInfo.set(destinationField.Field, sourceValue);	break;
+						}
+					}
+				}else if (destinationField.Field == "END") {
+					startDoc = false
 					PayDocRu.set('REQUESTID', requestID);
 					PayDocRu.set('DOCEXTID', docExtID);
-					AccDoc.set('DOCEXTID', docExtID);
-					Payer.set('DOCEXTID', docExtID);
-					Payee.set('DOCEXTID', docExtID);
-				}else if (startDoc == true && destinationField != 'END'){
-					switch (destinationEntity) {
-						case 'PayDocRu':
-							PayDocRu.set(destinationField, sourceValue);
-							break;
-						case 'AccDoc':
-							AccDoc.set(destinationField, sourceValue);
-							break;
-						case 'Payer':
-							Payer.set(destinationField, sourceValue);
-							break;
-						case 'Payee':
-							Payee.set(destinationField, sourceValue);
-							break;
-						default:
-					}
-				}else if (destinationField == 'END') {
-					startDoc = false
 					raif.PayDocRu.push(PayDocRu);
-					raif.AccDoc.push(AccDoc);
-					raif.Payer.push(Payer);
-					raif.Payee.push(Payee);
-				} else if (destinationField == 'EOF' ){
-					var errMsg = '';
-					errMsg = insertEntity(param, 'Request',		raif.Request,	fieldsRequest,	mappingFieldType);
-					errMsg = insertEntity(param, 'File',		raif.File,		fieldsFile,		mappingFieldType);
-					errMsg = insertEntity(param, 'PayDocRu',	raif.PayDocRu,	fieldsPayDocRu, mappingFieldType);
-					errMsg = insertEntity(param, 'AccDoc',		raif.AccDoc,	fieldsAccDoc,	mappingFieldType);
-					errMsg = insertEntity(param, 'Payer', 		raif.Payer, 	fieldsPayer,	mappingFieldType);
-					errMsg = insertEntity(param, 'Payee', 		raif.Payee, 	fieldsPayee,	mappingFieldType);
+					
+					if (AccDoc.size > 0) {
+						AccDoc.set('DOCEXTID', docExtID);
+						raif.AccDoc.push(AccDoc);
+					}
+					if (Payer.size > 0) {
+						Payer.set('DOCEXTID', docExtID);
+						
+						if (!Payer.has('PAYERBANKSETTLEMENTTYPE') && Payer.has('PAYERBANKBIC')) {
+							var PayerBankSettlementType = getSettlementType(param, Payer.get('PAYERBANKBIC'));
+							Payer.set('PAYERBANKSETTLEMENTTYPE', PayerBankSettlementType);
+						}
+						
+						raif.Payer.push(Payer);
+					}
+					if (Payee.size > 0) {
+						Payee.set('DOCEXTID', docExtID);
+						
+						if (!Payee.has('PAYEEBANKSETTLEMENTTYPE') && Payee.has('PAYEEBANKBIC')) {
+							var PayeeBankSettlementType = getSettlementType(param, Payee.get('PAYEEBANKBIC'));
+							Payee.set('PAYEEBANKSETTLEMENTTYPE', PayeeBankSettlementType);
+						}
+						
+						raif.Payee.push(Payee);
+					}
+					if (DepInfo.size > 0) {
+						DepInfo.set('DOCEXTID', docExtID);
+						raif.DepInfo.push(DepInfo);
+					}
+				} else if (destinationField.Field == "EOF" ){
+					insertEntity(param, 'Request',				raif.Request,	fieldsRequest,	destinatonFieldOpt);
+					insertEntity(param, 'File',					raif.File,		fieldsFile,		destinatonFieldOpt);
+					insertEntity(param, 'PayDocRu',				raif.PayDocRu,	fieldsPayDocRu, destinatonFieldOpt);
+					insertEntity(param, 'AccDoc',				raif.AccDoc,	fieldsAccDoc,	destinatonFieldOpt);
+					insertEntity(param, 'Payer', 				raif.Payer, 	fieldsPayer,	destinatonFieldOpt);
+					insertEntity(param, 'Payee', 				raif.Payee, 	fieldsPayee,	destinatonFieldOpt);
+					insertEntity(param, 'DepartmentalInfo', 	raif.DepInfo, 	fieldsDepInfo,	destinatonFieldOpt);
 				} 
-			} else{
-				
-			}
-			
+			} 
 		});
 	} catch (e) {
 	    $.trace.error(e.toString());
 		throw e;
 	}	
-		
-	
 }
 
 
 function createSing(param){
-	
 	var after = param.afterTableName;
 	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
 	rs = null;
@@ -284,7 +333,7 @@ function createSing(param){
 	var mappingField		= new Map();
 	var mappingEntity		= new Map();
 	var mappingFieldType	= new Map();
-	var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO' and \"ENTITYNAME\" = 'Sign' ");
+	var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\" From \"H2H.TMapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO' and \"ENTITYNAME\" = 'Sign' ");
 	rs = null;
 	rs = pStmt.executeQuery();
 	var fieldsSign	= [];
@@ -311,7 +360,7 @@ function createSing(param){
 	Sign.set('FIO', sign.Fio);
 	Sign.set('POSITION', sign.Position);
 	raif.Sign.push(Sign);
-	errMsg = insertEntity(param, 'Sign', raif.Sign, fieldsSign, mappingFieldType);
+	insertEntity(param, 'Sign', raif.Sign, fieldsSign, mappingFieldType);
 	// if (errMsg = "") {
 	// 	$.response.status = $.net.http.OK;	
 	// }else{
@@ -372,50 +421,3 @@ function deletSing(param){
 	    pStmt.close();
 	}
 }
-
-function po_create_v2(param) {
-	var rs = null;
-		var raif = {};
-		var requestID = guid();
-		var docExtID = guid();
-		var mappingField		= new Map();
-		var mappingEntity		= new Map();
-		var mappingFieldType	= new Map();
-		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\" From \"H2H.Mapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
-		rs = null;
-		rs = pStmt.executeQuery();
-		
-		var fieldsRequest	= [];
-		var fieldsPayDocRu	= [];
-		var fieldsAccDoc	= [];
-		var fieldsPayer 	= [];
-		var fieldsPayee		= [];
-		var fieldsFile		= [];
-		
-		raif.mapping = new Map();
-		var mappingEtity = '';
-		
-		while (rs.next()) {
-			var entityDestination = rs.getString(1);
-			if (mappingEtity == null || mappingEtity == '') {
-				mappingEtity = entityDestination;
-				var mapping = [];
-			}else if(mappingEtity != entityDestination){
-				raif.mapping.set(mappingEtity, mapping)
-				mappingEtity = entityDestination;
-				var mapping = [];
-			}
-			
-			var fieldOptions = {};
-			var fildSource = rs.getString(2);
-			var fieldDestination = rs.getString(3);
-			var fildDestinationType = rs.getString(4);
-			
-			fieldOptions.fildSource = fildSource;
-			fieldOptions.fieldDestination = fieldDestination;
-			fieldOptions.fildDestinationType = fildDestinationType;
-			mapping.push(fieldOptions);
-		}
-}
-
-

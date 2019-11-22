@@ -1,0 +1,29 @@
+{
+    "format_version": 1,
+    "imports": [
+        {
+            "target_table": "H2H.TBICInformation",
+            "source_data": {
+                "data_type": "CSV",
+                "file_name": "H2H_BICInformation.csv",
+                "has_header": true,
+                "type_config" : { 
+		        	"delimiter" : ";" 
+		        } 
+            },
+            
+            "column_mappings" : {
+		        "BIC"				: "NEWNUM", 
+		        "NAME"				: "NAMEN",
+		        "SETTLEMENTTYPE"	: "TNP", 
+		        "SETTLEMENTNAME"	: "NNP",
+		        "ADDRESS"			: "ADR"
+		     }, 
+            
+            
+            "import_settings": {
+                "import_columns": ["BIC","NAME","SETTLEMENTTYPE","SETTLEMENTNAME","ADDRESS"]
+            }
+    	}
+    ]
+}

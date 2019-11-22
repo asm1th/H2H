@@ -37,12 +37,13 @@ context RaiffeisenBank {
         key REQUESTID : t_uuid;
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
         key DOCEXTID  : t_uuid;
-        	_REQUEST : association[1] to TRequest	on _REQUEST.REQUESTID	= REQUESTID;
-        	_ACCDOC  : association[*] to TAccDoc	on _ACCDOC.DOCEXTID		= DOCEXTID;
-            _PAYER   : association[1] to TPayer 	on _PAYER.DOCEXTID 		= DOCEXTID;
-            _PAYEE   : association[1] to TPayee 	on _PAYEE.DOCEXTID 		= DOCEXTID;
-            _TFILE	 : association[1] to TFile 		on _TFILE.REQUESTID 	= REQUESTID;
-            _TSIGN	 : association[*] to TSign		on _TSIGN.DOCEXTID 		= DOCEXTID;
+        	_REQUEST  : association[1] to TRequest			on _REQUEST.REQUESTID	= REQUESTID;
+        	_ACCDOC   : association[*] to TAccDoc			on _ACCDOC.DOCEXTID		= DOCEXTID;
+            _PAYER    : association[1] to TPayer 			on _PAYER.DOCEXTID 		= DOCEXTID;
+            _PAYEE    : association[1] to TPayee 			on _PAYEE.DOCEXTID 		= DOCEXTID;
+            _FILE	  : association[1] to TFile 			on _FILE.REQUESTID 		= REQUESTID;
+            _DEPART   : association[1] to TDepartmentalInfo on _DEPART.DOCEXTID 	= DOCEXTID;
+            _SIGN	  : association[*] to TSign				on _SIGN.DOCEXTID 		= DOCEXTID;
     };
     
     @Comment : 'Реквизиты платёжного документа'
@@ -98,33 +99,31 @@ context RaiffeisenBank {
         key DOCEXTID  : t_uuid ;
 
             @Comment : 'ИНН (до 12)'
-            INN         : String(12);
+            PAYERINN         : String(12);
 
             @Comment : 'КПП (до 9)'
-            KPP         : String(9);
+            PAYERKPP         : String(9);
 
             @Comment : 'Номер счёта'
-            PERSONALACC : String(20);
+            PAYERPERSONALACC : String(20);
 
             @Comment : 'Наименование плательщика'
-            NAME        : String(160);
+            PAYERNAME        : String(160);
             
             @Comment : 'БИК'
-	        BANKBIC         : String(9);
+	        PAYERBANKBIC         : String(9);
 	
 	        @Comment : 'Номер корр. счёта банка'
-	        BANKCORRESPACC     : String(20);
+	        PAYERBANKCORRESPACC     : String(20);
 	
 	        @Comment : 'Наименование банка'
-	        BANKNAME           : String(80);
+	        PAYERBANKNAME           : String(80);
 	
 	        @Comment : 'Название населённого пункта банка'
-	        BANKCITY       : String(30);
+	        PAYERBANKCITY       : String(30);
 	
 	        @Comment : 'Тип населённого пункта банка'
-	        BANKSETTLEMENTTYPE : String(20);
-            
-            
+	        PAYERBANKSETTLEMENTTYPE : String(20);
             
            _PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
@@ -135,34 +134,64 @@ context RaiffeisenBank {
         key DOCEXTID  : t_uuid ;
 
             @Comment : 'ИНН (до 12)'
-            INN         : String(12);
+            PAYEEINN         : String(12);
 
             @Comment : 'КПП (до 9)'
-            KPP         : String(9);
+            PAYEEKPP         : String(9);
 
             @Comment : 'Номер счёта'
-            PERSONALACC : String(20);
+            PAYEEPERSONALACC : String(20);
 
             @Comment : 'Наименование плательщика'
-            NAME        : String(160);
+            PAYEENAME        : String(160);
             
             @Comment : 'БИК'
-	        BANKBIC         : String(9);
+	        PAYEEBANKBIC         : String(9);
 	
 	        @Comment : 'Номер корр. счёта банка'
-	        BANKCORRESPACC     : String(20);
+	        PAYEEBANKCORRESPACC     : String(20);
 	
 	        @Comment : 'Наименование банка'
-	        BANKNAME           : String(80);
+	        PAYEEBANKNAME           : String(80);
 	
 	        @Comment : 'Название населённого пункта банка'
-	        BANKCITY       : String(30);
+	        PAYEEBANKCITY       : String(30);
 	
 	        @Comment : 'Тип населённого пункта банка'
-	        BANKSETTLEMENTTYPE : String(20);
+	        PAYEEBANKSETTLEMENTTYPE : String(20);
             
             _PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
+    
+    entity TDepartmentalInfo{
+    	@Comment : 'Ссылка на документ'
+        key DOCEXTID		: t_uuid;
+        
+	    @Comment : 'Показатель статуса налогоплательщика'
+	    DRAWERSTATUS		: t_str_2;
+	    
+		@Comment : 'Код бюджетной классификации'
+		CBC					: String(20);
+		
+		@Comment :  'Код ОКАТО'
+		OKATO				: String(11);
+		
+		@Comment :  'Показатель основания платежа'
+		PAYTREASON			: t_str_2;
+		
+		@Comment :  'Налоговый период / Код таможенного органа'
+		TAXPERIOD			: String(10);
+		
+		@Comment :  'Номер налогового документа'
+		DEPDOCNO			: t_str_15;		
+		
+		@Comment :  'Дата налогового документа'
+		DEPDOCDATE			: String(10);
+		
+		@Comment :  'Тип налогового платежа'
+		TAXPAYTKIND			: t_str_2;
+    }
+
     
      entity TSign {
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
@@ -188,78 +217,94 @@ context RaiffeisenBank {
     
     
     define view PaymentOrder as Select from TPayDocRu{
-    	REQUESTID					as requestId,
-     	DOCEXTID					as docExtId,
-		_ACCDOC.PURPOSE				as purpose,
-		_ACCDOC.DOCDATE				as docDate,
-		_ACCDOC.DOCNUM				as docNum,
-		_ACCDOC.DOCSUM				as docSum,
-		_ACCDOC.VATSUM				as vatSum,
-		_ACCDOC.VATRATE				as vatRate,
-		_ACCDOC.VAT					as vat,
-		_ACCDOC.TRANSKIND			as transKind,
-		_ACCDOC.PAYTKIND 			as paytKind,
-		_ACCDOC.PAYTCODE 			as paytCode,
-		_ACCDOC.PRIORITY 			as priority,
-		_ACCDOC.CODEVO				as codeVO,
-		_ACCDOC.NODOCS				as nodocs,
-		_PAYER.INN      			as PayerInn,
-        _PAYER.KPP      			as PayerKpp,
-        _PAYER.PERSONALACC			as PayerPersonalAcc,
-        _PAYER.NAME					as PayerName,
-        _PAYER.BANKBIC				as PayerBankBic,
-		_PAYER.BANKCORRESPACC		as PayerBankCorrespAcc,
-		_PAYER.BANKNAME 			as PayerBankName,
-		_PAYER.BANKCITY 			as PayerBankBankCity,
-		_PAYER.BANKSETTLEMENTTYPE	as PayerBankSettlementType,
-		_PAYEE.INN      			as PayeeInn,
-        _PAYEE.KPP      			as PayeeKpp,
-        _PAYEE.PERSONALACC			as PayeePersonalAcc,
-        _PAYEE.NAME					as PayeeName,
-        _PAYEE.BANKBIC				as PayeeBankBic,
-		_PAYEE.BANKCORRESPACC		as PayeeBankCorrespAcc,
-		_PAYEE.BANKNAME 			as PayeeBankName,
-		_PAYEE.BANKCITY 			as PayeeBankBankCity,
-		_PAYEE.BANKSETTLEMENTTYPE	as PayeeBankSettlementType,
-		_TSIGN.SIGNTYPE				as SignType
+    	REQUESTID						as requestId,
+     	DOCEXTID						as docExtId,
+		_ACCDOC.PURPOSE					as purpose,
+		_ACCDOC.DOCDATE					as docDate,
+		_ACCDOC.DOCNUM					as docNum,
+		_ACCDOC.DOCSUM					as docSum,
+		_ACCDOC.VATSUM					as vatSum,
+		_ACCDOC.VATRATE					as vatRate,
+		_ACCDOC.VAT						as vat,
+		_ACCDOC.TRANSKIND				as transKind,
+		_ACCDOC.PAYTKIND 				as paytKind,
+		_ACCDOC.PAYTCODE 				as paytCode,
+		_ACCDOC.PRIORITY 				as priority,
+		_ACCDOC.CODEVO					as codeVO,
+		_ACCDOC.NODOCS					as nodocs,
+		_PAYER.PAYERINN      			as payerInn,
+        _PAYER.PAYERKPP      			as payerKpp,
+        _PAYER.PAYERPERSONALACC			as payerPersonalAcc,
+        _PAYER.PAYERNAME				as payerName,
+        _PAYER.PAYERBANKBIC				as payerBankBic,
+		_PAYER.PAYERBANKCORRESPACC		as payerBankCorrespAcc,
+		_PAYER.PAYERBANKNAME 			as payerBankName,
+		_PAYER.PAYERBANKCITY 			as payerBankBankCity,
+		_PAYER.PAYERBANKSETTLEMENTTYPE	as payerBankSettlementType,
+		_PAYEE.PAYEEINN      			as payeeInn,
+        _PAYEE.PAYEEKPP      			as payeeKpp,
+        _PAYEE.PAYEEPERSONALACC			as payeePersonalAcc,
+        _PAYEE.PAYEENAME				as payeeName,
+        _PAYEE.PAYEEBANKBIC				as payeeBankBic,
+		_PAYEE.PAYEEBANKCORRESPACC		as payeeBankCorrespAcc,
+		_PAYEE.PAYEEBANKNAME 			as payeeBankName,
+		_PAYEE.PAYEEBANKCITY 			as payeeBankBankCity,
+		_PAYEE.PAYEEBANKSETTLEMENTTYPE	as payeeBankSettlementType,
+		_DEPART.DRAWERSTATUS			as drawerStatus,
+		_DEPART.CBC 					as cbc,
+		_DEPART.OKATO					as okato,
+		_DEPART.PAYTREASON				as paytReason,
+		_DEPART.TAXPERIOD				as taxPeriod,
+		_DEPART.DEPDOCNO				as depDocNo,
+		_DEPART.DEPDOCDATE				as depDocDate,
+		_DEPART.TAXPAYTKIND 			as taxPaytKind,
+		_SIGN.SIGNTYPE					as signType
      };
     
     define view Extract as Select from TPayDocRu{
-    	REQUESTID					as REQUESTID,
-     	DOCEXTID					as DOCEXTID,
-     	_REQUEST.XMLNS				as XMLNS,
-        _REQUEST.VERSION			as VERSION,
-		_ACCDOC.PURPOSE				as PURPOSE,
-		_ACCDOC.DOCDATE				as DOCDATE,
-		_ACCDOC.DOCNUM				as DOCNUM,
-		_ACCDOC.DOCSUM				as DOCSUM,
-		_ACCDOC.VATSUM				as VATSUM,
-		_ACCDOC.VATRATE				as VATRATE,
-		_ACCDOC.VAT					as VAT,
-		_ACCDOC.TRANSKIND			as TRANSKIND,
-		_ACCDOC.PAYTKIND 			as PAYTKIND,
-		_ACCDOC.PAYTCODE 			as PAYTCODE,
-		_ACCDOC.PRIORITY 			as PRIORITY,
-		_ACCDOC.CODEVO				as CODEVO,
-		_ACCDOC.NODOCS				as NODOCS,
-		_PAYER.INN      			as PAYERINN,
-        _PAYER.KPP      			as PAYERKPP,
-        _PAYER.PERSONALACC			as PAYERPERSONALACC,
-        _PAYER.NAME					as PAYERNAME,
-        _PAYER.BANKBIC				as PAYERBANKBIC,
-		_PAYER.BANKCORRESPACC		as PAYERBANKCORRESPACC,
-		_PAYER.BANKNAME 			as PAYERBANKNAME,
-		_PAYER.BANKCITY 			as PAYERBANKBANKCITY,
-		_PAYER.BANKSETTLEMENTTYPE	as PAYERBANKSETTLEMENTTYPE,
-		_PAYEE.INN      			as PAYEEINN,
-        _PAYEE.KPP      			as PAYEEKPP,
-        _PAYEE.PERSONALACC			as PAYEEPERSONALACC,
-        _PAYEE.NAME					as PAYEENAME,
-        _PAYEE.BANKBIC				as PAYEEBANKBIC,
-		_PAYEE.BANKCORRESPACC		as PAYEEBANKCORRESPACC,
-		_PAYEE.BANKNAME 			as PAYEEBANKNAME,
-		_PAYEE.BANKCITY 			as PAYEEBANKBANKCITY,
-		_PAYEE.BANKSETTLEMENTTYPE	as PAYEEBANKSETTLEMENTTYPE
+    	REQUESTID						as REQUESTID,
+     	DOCEXTID						as DOCEXTID,
+     	_REQUEST.XMLNS					as XMLNS,
+        _REQUEST.VERSION				as VERSION,
+		_ACCDOC.PURPOSE					as PURPOSE,
+		_ACCDOC.DOCDATE					as DOCDATE,
+		_ACCDOC.DOCNUM					as DOCNUM,
+		_ACCDOC.DOCSUM					as DOCSUM,
+		_ACCDOC.VATSUM					as VATSUM,
+		_ACCDOC.VATRATE					as VATRATE,
+		_ACCDOC.VAT						as VAT,
+		_ACCDOC.TRANSKIND				as TRANSKIND,
+		_ACCDOC.PAYTKIND 				as PAYTKIND,
+		_ACCDOC.PAYTCODE 				as PAYTCODE,
+		_ACCDOC.PRIORITY 				as PRIORITY,
+		_ACCDOC.CODEVO					as CODEVO,
+		_ACCDOC.NODOCS					as NODOCS,
+		_PAYER.PAYERINN      			as PAYERINN,
+        _PAYER.PAYERKPP      			as PAYERKPP,
+        _PAYER.PAYERPERSONALACC			as PAYERPERSONALACC,
+        _PAYER.PAYERNAME				as PAYERNAME,
+        _PAYER.PAYERBANKBIC				as PAYERBANKBIC,
+		_PAYER.PAYERBANKCORRESPACC		as PAYERBANKCORRESPACC,
+		_PAYER.PAYERBANKNAME 			as PAYERBANKNAME,
+		_PAYER.PAYERBANKCITY 			as PAYERBANKBANKCITY,
+		_PAYER.PAYERBANKSETTLEMENTTYPE	as PAYERBANKSETTLEMENTTYPE,
+		_PAYEE.PAYEEINN      			as PAYEEINN,
+        _PAYEE.PAYEEKPP      			as PAYEEKPP,
+        _PAYEE.PAYEEPERSONALACC			as PAYEEPERSONALACC,
+        _PAYEE.PAYEENAME				as PAYEENAME,
+        _PAYEE.PAYEEBANKBIC				as PAYEEBANKBIC,
+		_PAYEE.PAYEEBANKCORRESPACC		as PAYEEBANKCORRESPACC,
+		_PAYEE.PAYEEBANKNAME 			as PAYEEBANKNAME,
+		_PAYEE.PAYEEBANKCITY 			as PAYEEBANKBANKCITY,
+		_PAYEE.PAYEEBANKSETTLEMENTTYPE	as PAYEEBANKSETTLEMENTTYPE,
+		_DEPART.DRAWERSTATUS			as DRAWERSTATUS,
+		_DEPART.CBC 					as CBC,
+		_DEPART.OKATO					as OKATO,
+		_DEPART.PAYTREASON				as PAYTREASON,
+		_DEPART.TAXPERIOD				as TAXPERIOD,
+		_DEPART.DEPDOCNO				as DEPDOCNO,
+		_DEPART.DEPDOCDATE				as DEPDOCDATE,
+		_DEPART.TAXPAYTKIND 			as TAXPAYTKIND
      };
     
     define view Request as Select from TRequest{
@@ -300,29 +345,41 @@ context RaiffeisenBank {
     };
     
     define view Payer as Select from TPayer{
-        DOCEXTID    		as docExtId,
-        INN         		as inn,
-        KPP         		as kpp,
-        PERSONALACC 		as personalAcc,
-        NAME        		as Name,
-        BANKBIC				as BankBic,
-		BANKCORRESPACC		as BankCorrespAcc,
-		BANKNAME 			as BankName,
-		BANKCITY 			as BankBankCity,
-		BANKSETTLEMENTTYPE	as BankSettlementType
+        DOCEXTID    			as docExtId,
+        PAYERINN         		as inn,
+        PAYERKPP         		as kpp,
+        PAYERPERSONALACC 		as personalAcc,
+        PAYERNAME        		as Name,
+        PAYERBANKBIC			as BankBic,
+		PAYERBANKCORRESPACC		as BankCorrespAcc,
+		PAYERBANKNAME 			as BankName,
+		PAYERBANKCITY 			as BankBankCity,
+		PAYERBANKSETTLEMENTTYPE	as BankSettlementType
     };
     
     define view Payee as Select from TPayee{
-        DOCEXTID    		as docExtId,
-        INN         		as inn,
-        KPP         		as kpp,
-        PERSONALACC 		as personalAcc,
-        NAME        		as Name,
-        BANKBIC				as BankBic,
-		BANKCORRESPACC		as BankCorrespAcc,
-		BANKNAME 			as BankName,
-		BANKCITY 			as BankBankCity,
-		BANKSETTLEMENTTYPE	as BankSettlementType
+        DOCEXTID    			as docExtId,
+        PAYEEINN         		as inn,
+        PAYEEKPP         		as kpp,
+        PAYEEPERSONALACC 		as personalAcc,
+        PAYEENAME        		as Name,
+        PAYEEBANKBIC			as BankBic,
+		PAYEEBANKCORRESPACC		as BankCorrespAcc,
+		PAYEEBANKNAME 			as BankName,
+		PAYEEBANKCITY 			as BankBankCity,
+		PAYEEBANKSETTLEMENTTYPE	as BankSettlementType
+    };
+    
+    
+    define view DepartmentalInfo as Select from TDepartmentalInfo{
+    	DRAWERSTATUS    as drawerStatus,
+		CBC             as cbc,
+		OKATO           as okato,
+		PAYTREASON      as paytReason,
+		TAXPERIOD       as taxPeriod,
+		DEPDOCNO        as docNo,
+		DEPDOCDATE      as docDate,
+		TAXPAYTKIND     as taxPaytKind
     };
     
     define view Sign as Select from TSign {

@@ -1,11 +1,26 @@
 context H2H {
 
-	entity Bank{
+	entity TBank{
 		id		: String(5);
 		name	: String(255);
 	};
 	
-	entity Mapping{
+	entity TBICInformation{
+		BIC					: String(9);
+		NAME				: String(255);
+		SETTLEMENTTYPE		: String(1);
+		SETTLEMENTNAME		: String(255);
+		ADDRESS				: String(255);
+		_SETTLEMENT			: association[1] to TSettlement on _SETTLEMENT.TYPE = SETTLEMENTTYPE;
+	};
+	
+	entity TSettlement{
+		key TYPE		: String(1);
+			NAME		: String(10);
+			FULLNAME	: String(255);
+	};
+	
+	entity TMapping{
 		key BANKTYPE			: String(255);
 		key FORMATTYPE			: String(255);
 		key FORMATVERSION		: String(255);
@@ -13,6 +28,15 @@ context H2H {
 			FIELDTYPE			: String(3);
 		key FIELDDESTINATION	: String(255);
 		key FILDSOURCE			: String(255);
+			OBLIGATORY			: String(1);
 	};
 
+
+	define view BicInformation as Select from TBICInformation{
+		BIC					as BIC,
+		NAME				as NAME,
+		_SETTLEMENT.NAME	as SETTLEMENTTYPE,
+		SETTLEMENTNAME		as SETTLEMENTNAME,
+		ADDRESS				as ADDRESS
+	};
 }
