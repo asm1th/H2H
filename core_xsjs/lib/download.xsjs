@@ -1,51 +1,15 @@
-// https://upqqof26vorhny0l-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%27ffef6903-90f2-a3f2-cbe1-319feb679ecd%27
-var errMsg = '';
-function isNull(xmlField, xmlValue, emndskjdfkfdb) {
-	if (xmlValue == null) {
-		switch (xmlField) {
-			case 'purpose':
-				errMsg += 'purpose:isNull;';		return '';		break;
-			case 'docDate':
-				errMsg += 'docDate:isNull;';		return '';		break;	
-			case 'docNum':
-				errMsg += 'docNum:isNull;'; 		return '';		break;		
-			case 'docSum':
-				errMsg += 'docSum:isNull;'; 		return '';		break;	
-			case 'vatSum':
-													return '0.00';	break;
-			case 'vatRate':
-													return '0.00';	break;
-			case 'vat':
-				// errMsg += 'vat:isNull;';
-													return 'VatManualAll'; break;
-			case 'transKind':
-				// errMsg += 'transKind:isNull;';
-													return '01';	break;
-			case 'paytKind':
-				// errMsg += 'paytKind:isNull;'; 
-													return '0'; 	break;
-			case 'priority':
-				errMsg += 'priority:isNull;';		return '';		break;
-			case 'nodocs':
-													return '0'; 	break; 
-			case 'inn':
-				errMsg += 'inn:isNull;';			return '';		break;
-			case 'personalAcc':
-				errMsg += 'personalAcc:isNull;';	return '';		break;
-			case 'Name':	
-				errMsg += 'Name:isNull;';			return '';		break;
-			case 'bic':	
-				errMsg += 'bic:isNull;';			return '';		break;	
-			case 'BankCity':	
-				errMsg += 'BankCity:isNull;';		return '';		break;
-			case 'SettlementType':	
-				// errMsg += 'SettlementType:isNull;'; 
-													return 'Г';		break;
-			default:
+// https://upqqof26vorhny0l-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%2706296e2b-6b0e-5759-683a-eb5d7b214989%27
+var errMessage = [];
+var xml = '';
+function addValue(xmlField, xmlValue, xmlTag) {
+	if (xmlValue != null && xmlValue != "" && xmlValue != undefined ) {
+		if (xmlTag) {
+			xml += '<' + xmlField + '>' + xmlValue + '</' + xmlField +'>';
+		} else {
+			
 		}
-	} else {
-		return xmlValue;
 	}
+	return '';
 }
 
 var docExtId = $.request.parameters.get("docExtId");
@@ -60,7 +24,6 @@ var pStmt = conn.prepareStatement(sql);
 var rs = null;
 rs = pStmt.executeQuery();
 var raif = {};
-var err = '';
 while (rs.next()) {
 	raif.Request = {};
 	raif.PayDocRu = {};
@@ -70,43 +33,43 @@ while (rs.next()) {
 	raif.Payee = {};
 	raif.Payee.Bank = {};
 	
-	raif.Request.requestId			= isNull('requestId',rs.getString(1),err);
-	raif.PayDocRu.docExtId			= isNull('docExtId',rs.getString(2),err);
-	raif.Request.xmlns				= isNull('xmlns',rs.getString(3),err);
-	raif.Request.version			= isNull('version',rs.getString(4),err);
-	raif.AccDoc.purpose 			= isNull('purpose',rs.getString(5),err);
-	raif.AccDoc.docDate 			= isNull('docDate',rs.getString(6),err);
-	raif.AccDoc.docNum				= isNull('docNum',rs.getString(7),err);
-	raif.AccDoc.docSum				= isNull('docSum',rs.getString(8),err);
-	raif.AccDoc.vatSum				= isNull('vatSum',rs.getString(9),err);
-	raif.AccDoc.vatRate 			= isNull('vatRate',rs.getString(10),err);
-	raif.AccDoc.vat 				= isNull('vat',rs.getString(11),err);
-	raif.AccDoc.transKind			= isNull('transKind',rs.getString(12),err);
-	raif.AccDoc.paytKind			= isNull('paytKind',rs.getString(13),err);
-	raif.AccDoc.paytCode			= isNull('paytCode',rs.getString(14),err);
-	raif.AccDoc.priority			= isNull('priority',rs.getString(15),err);
-	raif.AccDoc.codeVO				= isNull('codeVO',rs.getString(16),err);
-	raif.AccDoc.nodocs				= isNull('nodocs',rs.getString(17),err);
-	raif.Payer.inn					= isNull('inn',rs.getString(18),err);
-	raif.Payer.kpp					= isNull('kpp',rs.getString(19),err);
-	raif.Payer.personalAcc			= isNull('personalAcc',rs.getString(20),err);
-	raif.Payer.Name 				= isNull('Name',rs.getString(21),err);
-	raif.Payer.Bank.Bic 			= isNull('Bic',rs.getString(22),err);
-	raif.Payer.Bank.CorrespAcc		= isNull('CorrespAcc',rs.getString(23),err);
-	raif.Payer.Bank.Name			= isNull('Name',rs.getString(24),err);
-	raif.Payer.Bank.BankCity		= isNull('BankCity',rs.getString(25),err);
-	raif.Payer.Bank.SettlementType	= isNull('SettlementType',rs.getString(26),err);
-	raif.Payee.inn					= isNull('inn',rs.getString(27),err);
-	raif.Payee.kpp					= isNull('kpp',rs.getString(28),err);
-	raif.Payee.personalAcc			= isNull('personalAcc',rs.getString(29),err);
-	raif.Payee.Name 				= isNull('Name',rs.getString(30),err);
-	raif.Payee.Bank.bic 			= isNull('bic',rs.getString(31),err);
-	raif.Payee.Bank.correspAcc		= isNull('correspAcc',rs.getString(32),err);
-	raif.Payee.Bank.Name			= isNull('Name',rs.getString(33),err);
-	raif.Payee.Bank.BankCity		= isNull('BankCity',rs.getString(34),err);
-	raif.Payee.Bank.SettlementType	= isNull('SettlementType',rs.getString(35),err);
+	raif.Request.requestId			= rs.getString(1);
+	raif.PayDocRu.docExtId			= rs.getString(2);
+	raif.Request.xmlns				= rs.getString(3);
+	raif.Request.version			= rs.getString(4);
+	raif.AccDoc.purpose 			= rs.getString(5);
+	raif.AccDoc.docDate 			= rs.getString(6);
+	raif.AccDoc.docNum				= rs.getString(7);
+	raif.AccDoc.docSum				= rs.getString(8);
+	raif.AccDoc.vatSum				= rs.getString(9);
+	raif.AccDoc.vatRate 			= rs.getString(10);
+	raif.AccDoc.vat 				= rs.getString(11);
+	raif.AccDoc.transKind			= rs.getString(12);
+	raif.AccDoc.paytKind			= rs.getString(13);
+	raif.AccDoc.paytCode			= rs.getString(14);
+	raif.AccDoc.priority			= rs.getString(15);
+	raif.AccDoc.codeVO				= rs.getString(16);
+	raif.AccDoc.nodocs				= rs.getString(17);
+	raif.Payer.inn					= rs.getString(18);
+	raif.Payer.kpp					= rs.getString(19);
+	raif.Payer.personalAcc			= rs.getString(20);
+	raif.Payer.Name 				= rs.getString(21);
+	raif.Payer.Bank.Bic 			= rs.getString(22);
+	raif.Payer.Bank.CorrespAcc		= rs.getString(23);
+	raif.Payer.Bank.Name			= rs.getString(24);
+	raif.Payer.Bank.BankCity		= rs.getString(25);
+	raif.Payer.Bank.SettlementType	= rs.getString(26);
+	raif.Payee.inn					= rs.getString(27);
+	raif.Payee.kpp					= rs.getString(28);
+	raif.Payee.personalAcc			= rs.getString(29);
+	raif.Payee.Name 				= rs.getString(30);
+	raif.Payee.Bank.bic 			= rs.getString(31);
+	raif.Payee.Bank.correspAcc		= rs.getString(32);
+	raif.Payee.Bank.Name			= rs.getString(33);
+	raif.Payee.Bank.BankCity		= rs.getString(34);
+	raif.Payee.Bank.SettlementType	= rs.getString(35);
 }
-if (errMsg == '') {
+if (errMessage.length == 0) {
 	
 
 var xml = '<?xml version="1.0" encoding="utf-8"?>';
@@ -158,6 +121,37 @@ xml += '<PayDocRu docExtId="' + raif.PayDocRu.docExtId + '">';
 	xml += '</Payee>';
 xml += '</PayDocRu>';
 
+pStmt.close();
+
+// var conn = $.db.getConnection();
+sql = "Select \"DOCEXTID\",\"SN\",\"VALUE\",\"ISSUER\",\"DIGESTNAME\",\"DIGESTVERSION\",\"SIGNTYPE\",\"FIO\",\"POSITION\"";
+sql += "From \"RaiffeisenBank.TSign\" Where \"DOCEXTID\" = " + docExtId;
+pStmt = conn.prepareStatement(sql);
+rs = null;
+rs = pStmt.executeQuery();
+var signs = [];
+while (rs.next()) {
+	var Sign = {};
+	Sign.SN = rs.getString(2);
+	var array = new Uint8Array(rs.getBlob(3));
+	var encodedString = String.fromCharCode.apply(null,array),
+		decodedString = decodeURIComponent(escape(encodedString));
+	Sign.Value = decodedString;
+	Sign.Issuer = rs.getString(4);
+	Sign.SignType = rs.getString(7);
+	signs.push(Sign);
+}	
+
+if(signs.length > 0){
+	xml += '<Signs>';
+		signs.forEach(function(sign, i){ 
+			addValue('SN',		sign.SN,		true);
+			addValue('Value',	sign.Value,		true);
+			addValue('Issuer',	sign.Issuer,	true);
+			addValue('SignType',sign.SignType,	true);
+		} );
+	xml += '</Signs>';
+}
 // <Signs>
 //         <Sign>
 //             <SN>D1D9D00DAAA33B643E6FDBE088495B6</SN>
@@ -180,6 +174,6 @@ $.response.contentType = "application/xml";
 $.response.setBody(xml);
 
 }else{
-	$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
-	$.response.setBody(errMsg);
+	// $.response.status = $.net.http.INTERNAL_SERVER_ERROR;
+	// $.response.setBody(errMsg);
 }

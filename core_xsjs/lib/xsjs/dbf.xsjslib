@@ -10,11 +10,37 @@ function guid() {
     s4() + '-' + s4() + s4() + s4();
 }
 
-function errAdd(errType, errVal1, errVal2, errVal3, errVal4 ){
+function errAdd(param, errType, errVal1, errVal2, errVal3, errVal4 ){
+	var errText = "";
+	var action = "";
+	var now = new Date();
 	switch (errType) {
 		case 'errLoadEntityOblibatoryFielisNull':
-			errMessage.push("Ошибка загрузки " + errVal1 + ". Обязательное поле " + errVal2 + " не может быть пустам");
+			action = 'Loading';
+			errText = "Ошибка загрузки " + errVal2 + ". Обязательное поле " + errVal3 + " не может быть пустам";
 			break;
+		case 'errSingUnknownAcc':
+			action = 'Signing';
+			errText = "Ошибка подписания. Неизвестный контрагент " + errVal2;
+	}
+	if(errText != ''){
+		errMessage.push(errText);
+		sql = 'INSERT INTO "RaiffeisenBank.THistory" (DOCEXTID,TIMESTAMP,ACTION,STATUS,DESCRIPTION) VALUES(?,?,?,?,?)';
+		var pStmt = param.connection.prepareStatement(sql);
+		pStmt.setString(1,errVal1);
+		pStmt.setTimestamp(2,now);
+		pStmt.setString(3,action);
+		pStmt.setString(4,'ERROR');
+		pStmt.setString(5,errText);
+		pStmt.execute();
+
+		var response = $.response.getResponse();
+		response.contentType = "text/html";
+		response.setBody(errText);
+		response.status = $.net.http.INTERNAL_SERVER_ERROR; 
+		
+		
+		pStmt.close();
 	}
 }
 
@@ -70,7 +96,9 @@ function isNull(destField, srcValue ) {
 			case 'DOCDATE':																						return '0';				break;
 			case 'TAXPAYTKIND':																					return '0';				break;
 		}
-	} else {
+	} else if(destField.Type == "Str" && ( srcValue == null || srcValue == "" || srcValue == undefined)){
+		return "";
+	}else{	
 		return srcValue;
 	}
 }
@@ -92,9 +120,6 @@ function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFi
 							break;
 						case 'Str':
 							pStmt.setString(j+1, fieldValue); 
-							break;
-						case 'Blb':
-							pStmt.setBlob(j+1, fieldValue); 
 							break;
 						default:
 					};
@@ -118,7 +143,7 @@ function createPaymentOrder(param) {
 		// var mappingEntity		= new Map();
 		// var mappingFieldType	= new Map();
 		var destinatonFieldOpt  = new Map();
-		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\",\"OBLIGATORY\" From \"H2H.TMapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO'");
+		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\",\"OBLIGATORY\" From \"H2H.TMapping\" Where \"BANK\" = 1 and \"DOCUMENTTYPEID\" = 1");
 		rs = null;
 		rs = pStmt.executeQuery();
 		
@@ -331,42 +356,70 @@ function createSing(param){
 	pStmt.close();
 	
 	var mappingField		= new Map();
-	var mappingEntity		= new Map();
-	var mappingFieldType	= new Map();
-	var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\" From \"H2H.TMapping\" Where \"BANKTYPE\" = 'RAIF' and \"FORMATTYPE\" = 'PO' and \"ENTITYNAME\" = 'Sign' ");
+	var destinatonFieldOpt  = new Map();
+	var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\",\"OBLIGATORY\" From \"H2H.TMapping\" Where \"BANKID\" = 1 and \"DOCUMENTTYPEID\" = 1 and \"ENTITYNAME\" = 'Sign' ");
 	rs = null;
 	rs = pStmt.executeQuery();
 	var fieldsSign	= [];
 	while (rs.next()) {
 		var fieldDestination = rs.getString(3);
 		var fildDestinationType = rs.getString(4);
-		if (mappingFieldType.has(fieldDestination) != true) { 
-				mappingFieldType.set(fieldDestination, fildDestinationType);
-			}
+		var fieldDestinationOptions = {};
+		fieldDestinationOptions.Field = fieldDestination;
+		fieldDestinationOptions.Type = fildDestinationType;
+		fieldDestinationOptions.Obligatory = rs.getString(5);
+		destinatonFieldOpt.set(fieldDestination, fieldDestinationOptions);
 		fieldsSign.push(fieldDestination);
 	}
 	
 	var raif = {};
 	raif.Sign = [];
-	Sign = new Map();
-	Sign.set('DOCEXTID', sign.docExtId);
-	Sign.set('SN', sign.SN);
-	Sign.set('VALUE', sign.Value);
-	Sign.set('ISSUER', sign.Issuer);
-	Sign.set('DIGESTNAME', sign.DigestName);
-	Sign.set('DIGESTVERSION', sign.DigestVersion);
-	// Sign.set('SIGNTYPE', sign.SignType);
-	Sign.set('SIGNTYPE', 'Первая подпись');
-	Sign.set('FIO', sign.Fio);
-	Sign.set('POSITION', sign.Position);
-	raif.Sign.push(Sign);
-	insertEntity(param, 'Sign', raif.Sign, fieldsSign, mappingFieldType);
-	// if (errMsg = "") {
-	// 	$.response.status = $.net.http.OK;	
-	// }else{
-	// 	$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
-	// 	 $.response.setBody(errMsg);
-	// }
+	
+	pStmt = param.connection.prepareStatement("select \"PAYERPERSONALACC\" from \"RaiffeisenBank.TPayer\" where \"DOCEXTID\" = '"+sign.docExtId+"'");
+	rs = null;
+	rs = pStmt.executeQuery();
+	while (rs.next()) {
+		raif.payerPersonalAcc = rs.getString(1);
+	}
+	
+	pStmt = param.connection.prepareStatement("select count(*) from \"RaiffeisenBank.TSign\" where \"DOCEXTID\" = '"+sign.docExtId+"'");
+	rs = null;
+	rs = pStmt.executeQuery();
+	while (rs.next()) {
+		raif.signOrder = rs.getInt(1);
+		raif.signOrder++;
+	}
+	
+	pStmt = param.connection.prepareStatement("select \"ACCOUNT\",\"NAME\"  from \"H2H.AccountMapping\" where \"ACCOUNT\"='" + raif.payerPersonalAcc + "' and \"SIGNORDER\"=" + raif.signOrder );
+	rs = null;
+	rs = pStmt.executeQuery();
+	while (rs.next()) {
+		raif.SignName = rs.getString(1);
+	}
+	pStmt.close();
+	if (raif.SignName == undefined || raif.SignName == "") {
+		errAdd(param, 'errSingUnknownAcc', sign.docExtId, raif.payerPersonalAcc, '', '');	
+	}else{
+		Sign = new Map();
+		Sign.set('DOCEXTID', sign.docExtId);
+		Sign.set('SN', sign.SN);
+		Sign.set('VALUE', sign.Value);
+		Sign.set('ISSUER', sign.Issuer);
+		Sign.set('DIGESTNAME', sign.DigestName);
+		Sign.set('DIGESTVERSION', sign.DigestVersion);
+		// Sign.set('SIGNTYPE', sign.SignType);
+		Sign.set('SIGNTYPE', raif.SignName);
+		Sign.set('FIO', sign.Fio);
+		Sign.set('POSITION', sign.Position);
+		raif.Sign.push(Sign);
+		//insertEntity(param, 'Sign', raif.Sign, fieldsSign, destinatonFieldOpt);
+		// if (errMsg = "") {
+		// 	$.response.status = $.net.http.OK;	
+		// }else{
+		// 	$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
+		// 	 $.response.setBody(errMsg);
+		// }
+	}
 }
 
 function updateAccDoc(param){

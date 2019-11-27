@@ -1,4 +1,5 @@
 @OData.publish : true
+
 context RaiffeisenBank {
     type t_uuid : String(37);
     type t_str : String(255);
@@ -23,6 +24,20 @@ context RaiffeisenBank {
         	_TFILE	  : association[1] to TFile 	on _TFILE.REQUESTID 	= REQUESTID;
     };
     
+    entity THistory {
+            @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
+        key DOCEXTID  : t_uuid;
+        key TIMESTAMP : UTCTimestamp;
+    		ACTION	  : t_str;
+    		STATUS	  : t_str_15;
+    		DESCRIPTION	: t_longstr;
+    }
+    
+    entity TStatus {
+    	key ID	: t_int;
+    		DESCRIPTION : String(25);
+    }
+    
     entity TFile{
     	key	REQUESTID : t_uuid ;
     		FILENAME  : t_str;
@@ -37,6 +52,7 @@ context RaiffeisenBank {
         key REQUESTID : t_uuid;
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
         key DOCEXTID  : t_uuid;
+        	STATUS	  : t_int;
         	_REQUEST  : association[1] to TRequest			on _REQUEST.REQUESTID	= REQUESTID;
         	_ACCDOC   : association[*] to TAccDoc			on _ACCDOC.DOCEXTID		= DOCEXTID;
             _PAYER    : association[1] to TPayer 			on _PAYER.DOCEXTID 		= DOCEXTID;
@@ -44,6 +60,7 @@ context RaiffeisenBank {
             _FILE	  : association[1] to TFile 			on _FILE.REQUESTID 		= REQUESTID;
             _DEPART   : association[1] to TDepartmentalInfo on _DEPART.DOCEXTID 	= DOCEXTID;
             _SIGN	  : association[*] to TSign				on _SIGN.DOCEXTID 		= DOCEXTID;
+            _STATUS	  : association[1] to TStatus			on _STATUS.ID 			= STATUS;
     };
     
     @Comment : 'Реквизиты платёжного документа'
@@ -219,6 +236,7 @@ context RaiffeisenBank {
     define view PaymentOrder as Select from TPayDocRu{
     	REQUESTID						as requestId,
      	DOCEXTID						as docExtId,
+     	_STATUS.DESCRIPTION				as status,
 		_ACCDOC.PURPOSE					as purpose,
 		_ACCDOC.DOCDATE					as docDate,
 		_ACCDOC.DOCNUM					as docNum,

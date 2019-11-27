@@ -54,12 +54,50 @@
 // PayDocRu['DOCEXTID'] = '890';
 // raif.PayDocRu.push(PayDocRu);
 
-	var conn = $.db.getConnection();
-	var pStmt = conn.prepareStatement("Select \"FILE\" From \"RaiffeisenBank.TRequest\"");
-	var rs = null;
-	rs = pStmt.executeQuery();
-	while (rs.next()) {
-		var array = new Uint8Array(rs.getBlob(1));
-		sourceFile = $.util.codec.decodeBase64(array);
-	}
+// 	var conn = $.db.getConnection();
+// 	var pStmt = conn.prepareStatement("Select \"VALUE\" From \"RaiffeisenBank.TSign\" Where \"DOCEXTID\"='06296e2b-6b0e-5759-683a-eb5d7b214989'");
+// 	var rs = null;
+// 	rs = pStmt.executeQuery();
+// 	while (rs.next()) {
+// 		var array = new Uint8Array(rs.getBlob(1));
+// 		var encodedString = String.fromCharCode.apply(null,array),
+// 				decodedString = decodeURIComponent(escape(encodedString));
+// 				content = decodedString;
+// 	}
+// 	rs.close();
+	
+// 	// var test = new $.util.codec.encodeBase64(content);
+// 	// encodedString = String.fromCharCode.apply(null,array),
+// 	// decodedString = decodeURIComponent(escape(encodedString));
+// 	// content = decodedString;
+	
+// $.response.status = $.net.http.OK;
+// $.response.contentType = "text/plain";
+// $.response.setBody(content);
 
+
+  
+/*eslint no-console: 0, no-unused-vars: 0, no-shadow:0, quotes: 0*/
+//create a new $.util.SAXParser object
+
+//parse XML from String
+// var xmlDocument = new $.require("xmldoc").XmlDocument;
+
+// var xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+//           '<!-- this is a note -->\n'+
+//           '<note noteName="NoteName">'+
+//               '<to>To</to>'+
+//               '<from>From</from>'+
+//               '<heading>Note heading</heading>'+
+//               '<body>Note body</body>'+
+//           '</note>';
+// var body = "";           
+// var note = new xmlDocument(xml);
+// note.eachChild(function(item){
+//   body += item.val + '</br>';	
+// });
+
+var now = new Date();
+$.response.status = $.net.http.INTERNAL_SERVER_ERROR; 
+$.response.contentType = "text/html";
+$.response.setBody(now); 

@@ -1,34 +1,101 @@
 context H2H {
-
+	@Comment : 'Справочник банков'
 	entity TBank{
-		id		: String(5);
-		name	: String(255);
+		@Comment : 'Порядковый номер'
+		key ID		: Integer;
+		@Comment : 'Наименование банка'
+			NAME	: String(255);
 	};
 	
+	@Comment : 'Справочник типа документа'
+	entity TDocumentType{
+		@Comment : 'Порядковый номер'
+		key	ID		: Integer;
+		@Comment : 'Наименование типа документа'
+			NAME	: String(255);
+	};
+	
+	@Comment : 'Справочник типа подписи'
+	entity TSignType{
+		@Comment : 'Порядковый номер'
+		key	ID			: Integer;
+		@Comment : 'Порядковый номер подписи'
+		key SIGNORDER	: Integer;
+		@Comment : 'Наименование подписи'
+			NAME		: String(255);
+	};
+	
+	@Comment : 'Справочник организиции'
+	entity TOrganization{
+		@Comment : 'Порядковый номер'
+		key ID		: Integer;
+		@Comment : 'Наименование организации'
+			NAME	: String(255);	
+	};
+	
+	@Comment : 'Связь счета плательщика с организацией и типом подписи'
+	entity TAccountMapping{
+		@Comment : 'Банк'
+		key BANKID				: Integer;
+		@Comment : 'Тип документа'
+		key DOCUMENTTYPEID		: Integer;
+		@Comment : 'Огразиция'
+		key ORGANIZATIONID		: Integer; 
+		@Comment : 'Счет плательщика'
+			ACCOUNT				: String(20);
+		@Comment : 'Тип подписи'
+			SIGNTYPEID			: Integer;
+		_BANK					: association[1] to TBank			on _BANK.ID = BANKID;
+		_DOCUMENTTYPE			: association[1] to TDocumentType	on _DOCUMENTTYPE.ID = DOCUMENTTYPEID;
+		_ORGANIZATION			: association[1] to TOrganization	on _ORGANIZATION.ID = ORGANIZATIONID;
+		_SIGNTYPE				: association[1] to TSignType		on _SIGNTYPE.ID = SIGNTYPEID;
+	};
+	
+	@Comment : 'Таблица БИК-ов'
 	entity TBICInformation{
+		@Comment : 'БИК'
 		BIC					: String(9);
+		@Comment : 'Имя Организации'
 		NAME				: String(255);
+		@Comment : 'Наименование населенного пункта'
 		SETTLEMENTTYPE		: String(1);
+		@Comment : 'Тип населенного пункта'
 		SETTLEMENTNAME		: String(255);
+		@Comment : 'Адрес'
 		ADDRESS				: String(255);
 		_SETTLEMENT			: association[1] to TSettlement on _SETTLEMENT.TYPE = SETTLEMENTTYPE;
 	};
 	
+	@Comment : 'Тип населенного пункта'
 	entity TSettlement{
+		@Comment : 'Порядковый номер'
 		key TYPE		: String(1);
+		@Comment : 'Краткое наименование'
 			NAME		: String(10);
+		@Comment : 'Полное наименование'
 			FULLNAME	: String(255);
 	};
 	
+	@Comment : 'Таблица маппинга'
 	entity TMapping{
-		key BANKTYPE			: String(255);
-		key FORMATTYPE			: String(255);
+		@Comment : 'Банк'
+		key BANKID				: Integer;
+		@Comment : 'Тип документа'
+		key DOCUMENTTYPEID		: Integer;
+		@Comment : 'Версия формата'
 		key FORMATVERSION		: String(255);
+		@Comment : 'Таблица назначения'
 		key ENTITYNAME			: String(255);
+		@Comment : 'Тип поля назначения'
 			FIELDTYPE			: String(3);
+		@Comment : 'Поле назначения'
 		key FIELDDESTINATION	: String(255);
+		@Comment : 'Поле источник'
 		key FILDSOURCE			: String(255);
+		@Comment : 'Обязательное для заполнения'
 			OBLIGATORY			: String(1);
+		_BANK					: association[1] to TBank			on _BANK.ID = BANKID;
+		_DOCUMENTTYPE			: association[1] to TDocumentType	on _DOCUMENTTYPE.ID = DOCUMENTTYPEID;
 	};
 
 
@@ -38,5 +105,25 @@ context H2H {
 		_SETTLEMENT.NAME	as SETTLEMENTTYPE,
 		SETTLEMENTNAME		as SETTLEMENTNAME,
 		ADDRESS				as ADDRESS
+	};
+	
+	define view Mapping as Select from TMapping{
+		_BANK.NAME			as BANK,
+		_DOCUMENTTYPE.NAME	as DOCUMENTTYPE,
+		FORMATVERSION,
+		ENTITYNAME,
+		FIELDTYPE,
+		FIELDDESTINATION,
+		FILDSOURCE,
+		OBLIGATORY
+	};
+	
+	define view AccountMapping as Select from TAccountMapping{
+		_BANK.NAME			as BANK,
+		_DOCUMENTTYPE.NAME	as DOCUMENTTYPE,
+		_ORGANIZATION.NAME	as ORGANIZATION,
+		ACCOUNT,
+		_SIGNTYPE.SIGNORDER	as SIGNORDER,
+		_SIGNTYPE.NAME		as NAME
 	};
 }

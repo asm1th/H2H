@@ -2,17 +2,17 @@
     "format_version": 1,
     "imports": [
         {
-            "target_table": "H2H.TMapping",
+            "target_table": "H2H.TBank",
             "source_data": {
                 "data_type": "CSV",
-                "file_name": "H2H_Mapping.csv",
+                "file_name": "H2H_Bank.csv",
                 "has_header": true,
                 "type_config" : { 
 		        	"delimiter" : ";" 
 		        } 
             },
             "import_settings": {
-                "import_columns": ["BANKID","DOCUMENTTYPEID","FORMATVERSION","ENTITYNAME","FIELDTYPE","FIELDDESTINATION","FILDSOURCE","OBLIGATORY"]
+                "import_columns": ["ID","NAME"]
             }
     	}
     ]
