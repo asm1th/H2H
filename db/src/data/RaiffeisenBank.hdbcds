@@ -158,7 +158,10 @@ context RaiffeisenBank {
 
             @Comment : 'Номер счёта'
             PAYEEPERSONALACC : String(20);
-
+            
+            @Comment : 'Уникальный Идентификатора Платежа'
+			PAYEEUIP		 : String(25);
+			
             @Comment : 'Наименование плательщика'
             PAYEENAME        : String(160);
             
@@ -233,6 +236,105 @@ context RaiffeisenBank {
     };
     
     
+    entity TStatement {
+		    @Comment : 'Уникальный идентификатор'
+		key RESPONSEID		: t_uuid ;
+		    @Comment : 'БИК банка клиента'
+		    BIC             : String(9);
+		    @Comment : 'Итого оборотов по кредиту'
+		    DEBETSUM        : t_sum;
+		    @Comment : 'Итого оборотов по кредиту'
+		    CREDITSUM       : t_sum;
+		    @Comment : 'Код валюты выписки'
+		    CURRCODE        : String(3);
+		    @Comment : 'Данные актуальны на (время)'
+		    DOCTIME         : String(8);
+		    @Comment : 'Исходящий остаток'
+		    OUTBAL          : t_sum;
+		    @Comment : 'Дата выписки'
+		    STMTDATE        : LocalDate;
+		    @Comment : 'Входящий остаток'
+		    ENTERBAL        : t_sum;
+		    @Comment : 'Номер документа'
+		    DOCNUM          : t_str_6;
+    };
+
+	entity TStatementItems {
+    		@Comment : 'Уникальный идентификатор'
+    	key RESPONSEID          	: t_uuid ;
+    		@Comment : 'Идентификатор выписки в ELBRUS'
+    	key EXTID               	: t_uuid ;
+    		@Comment : 'Банк плательщика/получателя'
+    		BANK                    : String(80);
+    		@Comment : 'Счет плательщика'
+    		CORRACC                 : String(20);
+    		@Comment : 'признак дебета/кредита. Если 1-дебет, 2-кредит'
+    		DC                      : t_int;
+    		@Comment : 'Номер документа'
+    		DOCNUM                  : t_str_6;
+    		@Comment : 'Сумма документа'
+    		DOCSUM                  : t_sum;
+    		@Comment : 'Дата операции'
+    		OPERDATE                : String(10);
+    		@Comment : 'Очередность платежа'
+    		PAYMENTORDER            : t_str_2;
+    		@Comment : 'Вид платежа'
+    		PAYTKIND                : String(15);
+    		@Comment : 'Счет плательщика'
+    		PERSONALACC             : String(20);
+    		@Comment : 'ИНН плательщика'
+    		PERSONALINN             : String(12);
+    		@Comment : 'КПП плательщика'
+    		PERSONALKPP             : String(9);
+    		@Comment : 'Тип операции'
+    		TRANSKIND               : t_str_2;
+    		@Comment : 'ИНН получателя'
+    		RECEIVERINN             : String(12);
+    		@Comment : 'КПП получателя'
+    		RECEIVERKPP             : String(9);
+    		@Comment : 'Населенный пункт'
+    		RECEIVERPLACE           : String(25);
+    		@Comment : 'Тип населенного пункта'
+    		RECEIVERPLACETYPE       : String(5);
+    		@Comment : 'Номер корр. счёта банка получателя'
+    		RECEIVERBANKCORRACCOUNT : String(20);
+    		@Comment : 'Наименование банка получателя'
+    		RECEIVERBANKNAME        : String(80);
+    		@Comment : 'Населенный пункт'
+    		PAYERPLACE              : String(25);
+    		@Comment : 'Тип населенного пункта'
+    		PAYERPLACETYPE          : String(5);
+    		@Comment : 'Номер корр. счёта банка плательщика'
+    		PAYERBANKCORRACCOUNT    : String(20);
+    		@Comment : 'БИК банка плательщика'
+    		PAYERBANKBIC            : String(9);
+    		@Comment : 'Название получателя'
+    		RECEIPTNAME             : String(160);
+    		@Comment : 'Наименование организации клиента'
+    		PERSONALNAME            : String(160);
+    		@Comment : 'Назначение платежа'
+    		PURPOSE                 : t_str_210;
+    		@Comment : 'КБК'
+    		CBC                     : String(20);
+    		@Comment : 'Дата документа'
+    		DOCDATE                 : String(10);
+    		@Comment : 'Номер налогового документа'
+    		DOCNO                   : t_str_15;
+    		@Comment : 'Статус составителя документа'
+    		DRAWERSTATUS            : t_str_2;
+    		@Comment : 'ОКАТО'
+    		OKATO                   : String(11);
+    		@Comment : 'Показатель основания платежа (106)'
+    		PAYTREASON              : t_str_2;
+    		@Comment : 'Тип налогового платежа (110)'
+    		TAXPAYTKIND             : t_str_2;
+    		@Comment : 'Налоговый период/ Код таможенного органа'
+    		TAXPERIOD               : String(10);
+    		@Comment : 'Уникальный Идентификатора Платежа'
+    		UIP                     : String(25);
+	};
+    
+    
     define view PaymentOrder as Select from TPayDocRu{
     	REQUESTID						as requestId,
      	DOCEXTID						as docExtId,
@@ -262,6 +364,7 @@ context RaiffeisenBank {
 		_PAYEE.PAYEEINN      			as payeeInn,
         _PAYEE.PAYEEKPP      			as payeeKpp,
         _PAYEE.PAYEEPERSONALACC			as payeePersonalAcc,
+        _PAYEE.PAYEEUIP					as payeeUip,
         _PAYEE.PAYEENAME				as payeeName,
         _PAYEE.PAYEEBANKBIC				as payeeBankBic,
 		_PAYEE.PAYEEBANKCORRESPACC		as payeeBankCorrespAcc,
@@ -309,6 +412,7 @@ context RaiffeisenBank {
 		_PAYEE.PAYEEINN      			as PAYEEINN,
         _PAYEE.PAYEEKPP      			as PAYEEKPP,
         _PAYEE.PAYEEPERSONALACC			as PAYEEPERSONALACC,
+        _PAYEE.PAYEEUIP					as PAYEEUIP,
         _PAYEE.PAYEENAME				as PAYEENAME,
         _PAYEE.PAYEEBANKBIC				as PAYEEBANKBIC,
 		_PAYEE.PAYEEBANKCORRESPACC		as PAYEEBANKCORRESPACC,
@@ -380,6 +484,7 @@ context RaiffeisenBank {
         PAYEEINN         		as inn,
         PAYEEKPP         		as kpp,
         PAYEEPERSONALACC 		as personalAcc,
+        PAYEEUIP				as uip,
         PAYEENAME        		as Name,
         PAYEEBANKBIC			as BankBic,
 		PAYEEBANKCORRESPACC		as BankCorrespAcc,

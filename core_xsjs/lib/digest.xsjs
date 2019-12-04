@@ -1,7 +1,7 @@
 var errMsg = '';
 var docExtId = $.request.parameters.get("docExtId");
 var conn = $.db.getConnection();
-var sql = "Select \"REQUESTID\",\"DOCEXTID\",\"XMLNS\",\"VERSION\",\"PURPOSE\",TO_VARCHAR (TO_DATE(\"DOCDATE\"), 'DD.MM.YYYY HH:MM:SS'),\"DOCNUM\",\"DOCSUM\",\"VATSUM\",\"VATRATE\",\"VAT\",";
+var sql = "Select \"REQUESTID\",\"DOCEXTID\",\"XMLNS\",\"VERSION\",\"PURPOSE\",TO_VARCHAR (TO_DATE(\"DOCDATE\"), 'DD.MM.YYYY'),\"DOCNUM\",\"DOCSUM\",\"VATSUM\",\"VATRATE\",\"VAT\",";
 sql += "\"TRANSKIND\",\"PAYTKIND\",\"PAYTCODE\",\"PRIORITY\",\"CODEVO\",\"NODOCS\",\"PAYERINN\",\"PAYERKPP\",\"PAYERPERSONALACC\",\"PAYERNAME\",";
 sql += "\"PAYERBANKBIC\",\"PAYERBANKCORRESPACC\",\"PAYERBANKNAME\",\"PAYERBANKBANKCITY\",\"PAYERBANKSETTLEMENTTYPE\",\"PAYEEINN\",\"PAYEEKPP\",";
 sql += "\"PAYEEPERSONALACC\",\"PAYEENAME\",\"PAYEEBANKBIC\",\"PAYEEBANKCORRESPACC\",\"PAYEEBANKNAME\",\"PAYEEBANKBANKCITY\",\"PAYEEBANKSETTLEMENTTYPE\" ";
@@ -26,7 +26,7 @@ while (rs.next()) {
 	raif.Request.xmlns				= rs.getString(3);
 	raif.Request.version			= rs.getString(4);
 	raif.AccDoc.purpose 			= rs.getString(5);
-	raif.AccDoc.docDate 			= rs.getString(6);
+	raif.AccDoc.docDate 			= rs.getString(6) + ' 00:00:00';
 	raif.AccDoc.docNum				= rs.getString(7);
 	raif.AccDoc.docSum				= rs.getString(8);
 	raif.AccDoc.vatSum				= rs.getString(9);
@@ -45,7 +45,7 @@ while (rs.next()) {
 	raif.Payer.Bank.bic 			= rs.getString(22);
 	raif.Payer.Bank.correspAcc		= rs.getString(23);
 	raif.Payer.Bank.Name			= rs.getString(24);
-	raif.Payer.Bank.BankCity		= rs.getString(25);
+	raif.Payer.Bank.BankCity		= rs.getString(25).toUpperCase();
 	raif.Payer.Bank.SettlementType	= rs.getString(26);
 	raif.Payee.inn					= rs.getString(27);
 	raif.Payee.kpp					= rs.getString(28);
@@ -54,7 +54,7 @@ while (rs.next()) {
 	raif.Payee.Bank.bic 			= rs.getString(31);
 	raif.Payee.Bank.correspAcc		= rs.getString(32);
 	raif.Payee.Bank.Name			= rs.getString(33);
-	raif.Payee.Bank.BankCity		= rs.getString(34);
+	raif.Payee.Bank.BankCity		= rs.getString(34).toUpperCase();
 	raif.Payee.Bank.SettlementType	= rs.getString(35);
 }
 if (errMsg == '') {
@@ -88,14 +88,14 @@ if (errMsg == '') {
 	digestBody += 'Срочность=\n';
 	digestBody += 'Срочные платежи=\n';
 	digestBody += 'Назначение платежа=' + raif.AccDoc.purpose + '\n';
-	digestBody += 'Вид платежа=\n';
+	digestBody += 'Вид платежа=' + raif.AccDoc.paytKind + '\n';
 	digestBody += 'Код вида платежа=\n';
 	digestBody += 'Вид операции=' + raif.AccDoc.transKind + '\n';
 	digestBody += 'КБК=\n';
 	digestBody += 'ОКАТО=\n';
 	digestBody += 'Основание платежа=\n';
 	digestBody += 'Очередность платежа=' + raif.AccDoc.priority + '\n';
-	digestBody += 'Код вида валютной операции=\n';
+	digestBody += 'Код вида валютной операции=' + raif.AccDoc.codeVO + '\n';
 	digestBody += 'Документы не требуются (0 - нет, 1 - да)=' + raif.AccDoc.nodocs + '\n';
 	digestBody += 'Налоговый период (день)=\n';
 	digestBody += 'Налоговый период (месяц)=\n';

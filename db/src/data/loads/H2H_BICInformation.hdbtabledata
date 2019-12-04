@@ -14,7 +14,7 @@
             
             "column_mappings" : {
 		        "BIC"				: "NEWNUM", 
-		        "NAME"				: "NAMEN",
+		        "NAME"				: "NAMEP",
 		        "SETTLEMENTTYPE"	: "TNP", 
 		        "SETTLEMENTNAME"	: "NNP",
 		        "ADDRESS"			: "ADR"

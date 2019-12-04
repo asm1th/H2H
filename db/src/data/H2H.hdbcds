@@ -23,6 +23,8 @@ context H2H {
 		key SIGNORDER	: Integer;
 		@Comment : 'Наименование подписи'
 			NAME		: String(255);
+		@Comment : 'Статус подписи'	
+    		STATUS		: Integer;
 	};
 	
 	@Comment : 'Справочник организиции'
@@ -102,6 +104,7 @@ context H2H {
 	define view BicInformation as Select from TBICInformation{
 		BIC					as BIC,
 		NAME				as NAME,
+		_SETTLEMENT.TYPE	as FILIAL,
 		_SETTLEMENT.NAME	as SETTLEMENTTYPE,
 		SETTLEMENTNAME		as SETTLEMENTNAME,
 		ADDRESS				as ADDRESS
@@ -124,6 +127,7 @@ context H2H {
 		_ORGANIZATION.NAME	as ORGANIZATION,
 		ACCOUNT,
 		_SIGNTYPE.SIGNORDER	as SIGNORDER,
-		_SIGNTYPE.NAME		as NAME
+		_SIGNTYPE.NAME		as NAME,
+		_SIGNTYPE.STATUS	as STATUS
 	};
 }

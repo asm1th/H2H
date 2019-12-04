@@ -12,7 +12,7 @@
 		        } 
             },
             "import_settings": {
-                "import_columns": ["ID","SIGNORDER","NAME"]
+                "import_columns": ["ID","SIGNORDER","NAME","STATUS"]
             }
     	}
     ]
