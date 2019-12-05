@@ -8,6 +8,7 @@
 </Key>
 <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
 <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="status" Type="Edm.String" MaxLength="25"/>
 <Property Name="purpose" Type="Edm.String" MaxLength="210"/>
 <Property Name="docDate" Type="Edm.String" MaxLength="255"/>
 <Property Name="docNum" Type="Edm.String" MaxLength="6"/>
@@ -21,24 +22,34 @@
 <Property Name="priority" Type="Edm.Int32"/>
 <Property Name="codeVO" Type="Edm.String" MaxLength="5"/>
 <Property Name="nodocs" Type="Edm.Int32"/>
-<Property Name="PayerInn" Type="Edm.String" MaxLength="12"/>
-<Property Name="PayerKpp" Type="Edm.String" MaxLength="9"/>
-<Property Name="PayerPersonalAcc" Type="Edm.String" MaxLength="20"/>
-<Property Name="PayerName" Type="Edm.String" MaxLength="160"/>
-<Property Name="PayerBankBic" Type="Edm.String" MaxLength="9"/>
-<Property Name="PayerBankCorrespAcc" Type="Edm.String" MaxLength="20"/>
-<Property Name="PayerBankName" Type="Edm.String" MaxLength="80"/>
-<Property Name="PayerBankBankCity" Type="Edm.String" MaxLength="30"/>
-<Property Name="PayerBankSettlementType" Type="Edm.String" MaxLength="20"/>
-<Property Name="PayeeInn" Type="Edm.String" MaxLength="12"/>
-<Property Name="PayeeKpp" Type="Edm.String" MaxLength="9"/>
-<Property Name="PayeePersonalAcc" Type="Edm.String" MaxLength="20"/>
-<Property Name="PayeeName" Type="Edm.String" MaxLength="160"/>
-<Property Name="PayeeBankBic" Type="Edm.String" MaxLength="9"/>
-<Property Name="PayeeBankCorrespAcc" Type="Edm.String" MaxLength="20"/>
-<Property Name="PayeeBankName" Type="Edm.String" MaxLength="80"/>
-<Property Name="PayeeBankBankCity" Type="Edm.String" MaxLength="30"/>
-<Property Name="PayeeBankSettlementType" Type="Edm.String" MaxLength="20"/>
+<Property Name="payerInn" Type="Edm.String" MaxLength="12"/>
+<Property Name="payerKpp" Type="Edm.String" MaxLength="9"/>
+<Property Name="payerPersonalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="payerName" Type="Edm.String" MaxLength="160"/>
+<Property Name="payerBankBic" Type="Edm.String" MaxLength="9"/>
+<Property Name="payerBankCorrespAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="payerBankName" Type="Edm.String" MaxLength="80"/>
+<Property Name="payerBankBankCity" Type="Edm.String" MaxLength="30"/>
+<Property Name="payerBankSettlementType" Type="Edm.String" MaxLength="20"/>
+<Property Name="payeeInn" Type="Edm.String" MaxLength="12"/>
+<Property Name="payeeKpp" Type="Edm.String" MaxLength="9"/>
+<Property Name="payeePersonalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="payeeUip" Type="Edm.String" MaxLength="25"/>
+<Property Name="payeeName" Type="Edm.String" MaxLength="160"/>
+<Property Name="payeeBankBic" Type="Edm.String" MaxLength="9"/>
+<Property Name="payeeBankCorrespAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="payeeBankName" Type="Edm.String" MaxLength="80"/>
+<Property Name="payeeBankBankCity" Type="Edm.String" MaxLength="30"/>
+<Property Name="payeeBankSettlementType" Type="Edm.String" MaxLength="20"/>
+<Property Name="drawerStatus" Type="Edm.String" MaxLength="2"/>
+<Property Name="cbc" Type="Edm.String" MaxLength="20"/>
+<Property Name="okato" Type="Edm.String" MaxLength="11"/>
+<Property Name="paytReason" Type="Edm.String" MaxLength="2"/>
+<Property Name="taxPeriod" Type="Edm.String" MaxLength="10"/>
+<Property Name="depDocNo" Type="Edm.String" MaxLength="15"/>
+<Property Name="depDocDate" Type="Edm.String" MaxLength="10"/>
+<Property Name="taxPaytKind" Type="Edm.String" MaxLength="2"/>
+<Property Name="signType" Type="Edm.String" MaxLength="255"/>
 <NavigationProperty Name="PaymentOrderFile" Relationship="default.PaymentOrder_FilesType" FromRole="PaymentOrderPrincipal" ToRole="FilesDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="PaymentOrderSign" Relationship="default.PaymentOrder_SignType" FromRole="PaymentOrderPrincipal" ToRole="SignDependent" sap:creatable="false" sap:filterable="false"/>
 </EntityType>
@@ -65,6 +76,25 @@
 <NavigationProperty Name="PayDocRuFile" Relationship="default.PayDocRu_FileType" FromRole="PayDocRuPrincipal" ToRole="FilesDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="PayDocRuSign" Relationship="default.PayDocRu_SignType" FromRole="PayDocRuPrincipal" ToRole="SignDependent" sap:creatable="false" sap:filterable="false"/>
 </EntityType>
+<EntityType Name="AccDocType">
+<Key>
+<PropertyRef Name="docExtId"/>
+</Key>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="purpose" Type="Edm.String" MaxLength="210"/>
+<Property Name="docDate" Type="Edm.String" MaxLength="255"/>
+<Property Name="docNum" Type="Edm.String" Nullable="false" MaxLength="6"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="vatSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="vatRate" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="vat" Type="Edm.String" MaxLength="255"/>
+<Property Name="transKind" Type="Edm.String" MaxLength="2"/>
+<Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
+<Property Name="paytCode" Type="Edm.String" MaxLength="1"/>
+<Property Name="priority" Type="Edm.Int32"/>
+<Property Name="codeVO" Type="Edm.String" MaxLength="5"/>
+<Property Name="nodocs" Type="Edm.Int32"/>
+</EntityType>
 <EntityType Name="PayerType">
 <Key>
 <PropertyRef Name="docExtId"/>
@@ -74,6 +104,11 @@
 <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
 <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
 <Property Name="Name" Type="Edm.String" MaxLength="160"/>
+<Property Name="BankBic" Type="Edm.String" MaxLength="9"/>
+<Property Name="BankCorrespAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="BankName" Type="Edm.String" MaxLength="80"/>
+<Property Name="BankBankCity" Type="Edm.String" MaxLength="30"/>
+<Property Name="BankSettlementType" Type="Edm.String" MaxLength="20"/>
 </EntityType>
 <EntityType Name="PayeeType">
 <Key>
@@ -83,7 +118,13 @@
 <Property Name="inn" Type="Edm.String" MaxLength="12"/>
 <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
 <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="uip" Type="Edm.String" MaxLength="25"/>
 <Property Name="Name" Type="Edm.String" MaxLength="160"/>
+<Property Name="BankBic" Type="Edm.String" MaxLength="9"/>
+<Property Name="BankCorrespAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="BankName" Type="Edm.String" MaxLength="80"/>
+<Property Name="BankBankCity" Type="Edm.String" MaxLength="30"/>
+<Property Name="BankSettlementType" Type="Edm.String" MaxLength="20"/>
 </EntityType>
 <EntityType Name="FilesType">
 <Key>
@@ -108,6 +149,105 @@
 <Property Name="SignType" Type="Edm.String" Nullable="false" MaxLength="255"/>
 <Property Name="Fio" Type="Edm.String" MaxLength="255"/>
 <Property Name="Position" Type="Edm.String" MaxLength="255"/>
+</EntityType>
+<EntityType Name="StatementType">
+<Key>
+<PropertyRef Name="responseId"/>
+</Key>
+<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="bic" Type="Edm.String" MaxLength="9"/>
+<Property Name="debetSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="creditSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="currCode" Type="Edm.String" MaxLength="3"/>
+<Property Name="docTime" Type="Edm.String" MaxLength="8"/>
+<Property Name="outBal" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="stmtDate" Type="Edm.DateTime" sap:display-format="Date"/>
+<Property Name="enterBal" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="docNum" Type="Edm.String" MaxLength="6"/>
+<NavigationProperty Name="ItemsCred" Relationship="default.Statement_ItemsCredType" FromRole="StatementPrincipal" ToRole="StatementItemsCredDependent" sap:creatable="false" sap:filterable="false"/>
+<NavigationProperty Name="ItemsDeb" Relationship="default.Statement_ItemsDebType" FromRole="StatementPrincipal" ToRole="StatementItemsDebDependent" sap:creatable="false" sap:filterable="false"/>
+</EntityType>
+<EntityType Name="StatementItemsCredType">
+<Key>
+<PropertyRef Name="responseId"/>
+</Key>
+<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="extId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="bank" Type="Edm.String" MaxLength="80"/>
+<Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="dc" Type="Edm.Int32" Nullable="false"/>
+<Property Name="docNum" Type="Edm.String" MaxLength="6"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="operDate" Type="Edm.String" MaxLength="10"/>
+<Property Name="paymentOrder" Type="Edm.String" MaxLength="2"/>
+<Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
+<Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="personalINN" Type="Edm.String" MaxLength="12"/>
+<Property Name="personalKPP" Type="Edm.String" MaxLength="9"/>
+<Property Name="transKind" Type="Edm.String" MaxLength="2"/>
+<Property Name="receiverINN" Type="Edm.String" MaxLength="12"/>
+<Property Name="receiverKPP" Type="Edm.String" MaxLength="9"/>
+<Property Name="receiverPlace" Type="Edm.String" MaxLength="25"/>
+<Property Name="receiverPlaceType" Type="Edm.String" MaxLength="5"/>
+<Property Name="receiverBankCorrAccount" Type="Edm.String" MaxLength="20"/>
+<Property Name="receiverBankName" Type="Edm.String" MaxLength="80"/>
+<Property Name="payerPlace" Type="Edm.String" MaxLength="25"/>
+<Property Name="payerPlaceType" Type="Edm.String" MaxLength="5"/>
+<Property Name="payerBankCorrAccount" Type="Edm.String" MaxLength="20"/>
+<Property Name="payerBankBic" Type="Edm.String" MaxLength="9"/>
+<Property Name="receiptName" Type="Edm.String" MaxLength="160"/>
+<Property Name="personalName" Type="Edm.String" MaxLength="160"/>
+<Property Name="purpose" Type="Edm.String" MaxLength="210"/>
+<Property Name="cbc" Type="Edm.String" MaxLength="20"/>
+<Property Name="docDate" Type="Edm.String" MaxLength="10"/>
+<Property Name="docNo" Type="Edm.String" MaxLength="15"/>
+<Property Name="drawerStatus" Type="Edm.String" MaxLength="2"/>
+<Property Name="okato" Type="Edm.String" MaxLength="11"/>
+<Property Name="paytReason" Type="Edm.String" MaxLength="2"/>
+<Property Name="taxPaytKind" Type="Edm.String" MaxLength="2"/>
+<Property Name="taxPeriod" Type="Edm.String" MaxLength="10"/>
+<Property Name="uip" Type="Edm.String" MaxLength="25"/>
+</EntityType>
+<EntityType Name="StatementItemsDebType">
+<Key>
+<PropertyRef Name="responseId"/>
+</Key>
+<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="extId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="bank" Type="Edm.String" MaxLength="80"/>
+<Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="dc" Type="Edm.Int32" Nullable="false"/>
+<Property Name="docNum" Type="Edm.String" MaxLength="6"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="operDate" Type="Edm.String" MaxLength="10"/>
+<Property Name="paymentOrder" Type="Edm.String" MaxLength="2"/>
+<Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
+<Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
+<Property Name="personalINN" Type="Edm.String" MaxLength="12"/>
+<Property Name="personalKPP" Type="Edm.String" MaxLength="9"/>
+<Property Name="transKind" Type="Edm.String" MaxLength="2"/>
+<Property Name="receiverINN" Type="Edm.String" MaxLength="12"/>
+<Property Name="receiverKPP" Type="Edm.String" MaxLength="9"/>
+<Property Name="receiverPlace" Type="Edm.String" MaxLength="25"/>
+<Property Name="receiverPlaceType" Type="Edm.String" MaxLength="5"/>
+<Property Name="receiverBankCorrAccount" Type="Edm.String" MaxLength="20"/>
+<Property Name="receiverBankName" Type="Edm.String" MaxLength="80"/>
+<Property Name="payerPlace" Type="Edm.String" MaxLength="25"/>
+<Property Name="payerPlaceType" Type="Edm.String" MaxLength="5"/>
+<Property Name="payerBankCorrAccount" Type="Edm.String" MaxLength="20"/>
+<Property Name="payerBankBic" Type="Edm.String" MaxLength="9"/>
+<Property Name="receiptName" Type="Edm.String" MaxLength="160"/>
+<Property Name="personalName" Type="Edm.String" MaxLength="160"/>
+<Property Name="purpose" Type="Edm.String" MaxLength="210"/>
+<Property Name="cbc" Type="Edm.String" MaxLength="20"/>
+<Property Name="docDate" Type="Edm.String" MaxLength="10"/>
+<Property Name="docNo" Type="Edm.String" MaxLength="15"/>
+<Property Name="drawerStatus" Type="Edm.String" MaxLength="2"/>
+<Property Name="okato" Type="Edm.String" MaxLength="11"/>
+<Property Name="paytReason" Type="Edm.String" MaxLength="2"/>
+<Property Name="taxPaytKind" Type="Edm.String" MaxLength="2"/>
+<Property Name="taxPeriod" Type="Edm.String" MaxLength="10"/>
+<Property Name="uip" Type="Edm.String" MaxLength="25"/>
 </EntityType>
 <Association Name="PaymentOrder_FilesType">
 <End Type="default.PaymentOrderType" Role="PaymentOrderPrincipal" Multiplicity="1"/>
@@ -141,14 +281,26 @@
 <End Type="default.PayDocRuType" Role="PayDocRuPrincipal" Multiplicity="1"/>
 <End Type="default.SignType" Role="SignDependent" Multiplicity="*"/>
 </Association>
+<Association Name="Statement_ItemsCredType">
+<End Type="default.StatementType" Role="StatementPrincipal" Multiplicity="1"/>
+<End Type="default.StatementItemsCredType" Role="StatementItemsCredDependent" Multiplicity="*"/>
+</Association>
+<Association Name="Statement_ItemsDebType">
+<End Type="default.StatementType" Role="StatementPrincipal" Multiplicity="1"/>
+<End Type="default.StatementItemsDebType" Role="StatementItemsDebDependent" Multiplicity="*"/>
+</Association>
 <EntityContainer Name="v2" m:IsDefaultEntityContainer="true">
 <EntitySet Name="PaymentOrder" EntityType="default.PaymentOrderType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="Request" EntityType="default.RequestType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="PayDocRu" EntityType="default.PayDocRuType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="AccDoc" EntityType="default.AccDocType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="Payer" EntityType="default.PayerType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="Payee" EntityType="default.PayeeType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="Files" EntityType="default.FilesType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="Sign" EntityType="default.SignType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="Statement" EntityType="default.StatementType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="StatementItemsCred" EntityType="default.StatementItemsCredType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="StatementItemsDeb" EntityType="default.StatementItemsDebType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <AssociationSet Name="PaymentOrder_Files" Association="default.PaymentOrder_FilesType">
 <End Role="PaymentOrderPrincipal" EntitySet="PaymentOrder"/>
 <End Role="FilesDependent" EntitySet="Files"/>
@@ -180,6 +332,14 @@
 <AssociationSet Name="PayDocRu_Sign" Association="default.PayDocRu_SignType">
 <End Role="PayDocRuPrincipal" EntitySet="PayDocRu"/>
 <End Role="SignDependent" EntitySet="Sign"/>
+</AssociationSet>
+<AssociationSet Name="Statement_ItemsCred" Association="default.Statement_ItemsCredType">
+<End Role="StatementPrincipal" EntitySet="Statement"/>
+<End Role="StatementItemsCredDependent" EntitySet="StatementItemsCred"/>
+</AssociationSet>
+<AssociationSet Name="Statement_ItemsDeb" Association="default.Statement_ItemsDebType">
+<End Role="StatementPrincipal" EntitySet="Statement"/>
+<End Role="StatementItemsDebDependent" EntitySet="StatementItemsDeb"/>
 </AssociationSet>
 </EntityContainer>
 </Schema>

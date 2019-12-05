@@ -307,7 +307,7 @@ sap.ui.define([
 					mParams.success = function () {
 						var oSmartTable = that.byId("LineItemsSmartTable");
 						oSmartTable.rebindTable();
-						that.add_oDialog.close();
+						that.addDialog.close();
 					};
 					mParams.error = that._onErrorCall;
 					oModel.create("/Files", oEntry, mParams);

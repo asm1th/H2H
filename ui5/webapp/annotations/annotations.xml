@@ -35,35 +35,35 @@
 				<Annotation Term="Common.QuickInfo" String="Сумма документа"/>
 				<Annotation Term="Common.Label" String="Сумма документа"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerInn">
+			<Annotations Target="Metadata.PaymentOrderType/payerInn">
 				<Annotation Term="Common.QuickInfo" String="ИНН плательщика"/>
 				<Annotation Term="Common.Label" String="ИНН плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerKpp">
+			<Annotations Target="Metadata.PaymentOrderType/payerKpp">
 				<Annotation Term="Common.QuickInfo" String="КПП плательщика"/>
 				<Annotation Term="Common.Label" String="КПП плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerPersonalAcc">
+			<Annotations Target="Metadata.PaymentOrderType/payerPersonalAcc">
 				<Annotation Term="Common.QuickInfo" String="Номер счёта плательщика"/>
 				<Annotation Term="Common.Label" String="Номер счёта плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerName">
+			<Annotations Target="Metadata.PaymentOrderType/payerName">
 				<Annotation Term="Common.QuickInfo" String="Наименование плательщика"/>
 				<Annotation Term="Common.Label" String="Наименование плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeeInn">
+			<Annotations Target="Metadata.PaymentOrderType/payeeInn">
 				<Annotation Term="Common.QuickInfo" String="ИНН получателя"/>
 				<Annotation Term="Common.Label" String="ИНН получателя"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeeKpp">
+			<Annotations Target="Metadata.PaymentOrderType/payeeKpp">
 				<Annotation Term="Common.QuickInfo" String="КПП получателя"/>
 				<Annotation Term="Common.Label" String="КПП получателя"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeePersonalAcc">
+			<Annotations Target="Metadata.PaymentOrderType/payeePersonalAcc">
 				<Annotation Term="Common.QuickInfo" String="Номер счёта получателя"/>
 				<Annotation Term="Common.Label" String="Номер счёта получателя"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeeName">
+			<Annotations Target="Metadata.PaymentOrderType/payeeName">
 				<Annotation Term="Common.QuickInfo" String="Наименование получателя"/>
 				<Annotation Term="Common.Label" String="Наименование получателя"/>
 			</Annotations>
@@ -107,8 +107,8 @@
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
 						<PropertyPath>docDate</PropertyPath>
-						<PropertyPath>PayerBankName</PropertyPath>
-						<PropertyPath>PayeeBankCorrespAcc</PropertyPath>
+						<PropertyPath>payerBankName</PropertyPath>
+						<PropertyPath>payeeBankCorrespAcc</PropertyPath>
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.LineItem">
@@ -132,55 +132,55 @@
 							<PropertyValue Property="Value" Path="vatSum"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeeBankBic"/>
+							<PropertyValue Property="Value" Path="payeeBankBic"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeeBankCorrespAcc"/>
+							<PropertyValue Property="Value" Path="payeeBankCorrespAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeeBankName"/>
+							<PropertyValue Property="Value" Path="payeeBankName"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeeInn"/>
+							<PropertyValue Property="Value" Path="payeeInn"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeeKpp"/>
+							<PropertyValue Property="Value" Path="payeeKpp"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeeName"/>
+							<PropertyValue Property="Value" Path="payeeName"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeePersonalAcc"/>
+							<PropertyValue Property="Value" Path="payeePersonalAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayeeBankBankCity"/>
+							<PropertyValue Property="Value" Path="payeeBankBankCity"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerBankName"/>
+							<PropertyValue Property="Value" Path="payerBankName"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerBankSettlementType"/>
+							<PropertyValue Property="Value" Path="payerBankSettlementType"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerInn"/>
+							<PropertyValue Property="Value" Path="payerInn"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerKpp"/>
+							<PropertyValue Property="Value" Path="payerKpp"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerName"/>
+							<PropertyValue Property="Value" Path="payerName"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerBankBankCity"/>
+							<PropertyValue Property="Value" Path="payerBankBankCity"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerBankBic"/>
+							<PropertyValue Property="Value" Path="payerBankBic"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerBankCorrespAcc"/>
+							<PropertyValue Property="Value" Path="payerBankCorrespAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="PayerPersonalAcc"/>
+							<PropertyValue Property="Value" Path="payerPersonalAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="nodocs"/>
@@ -216,43 +216,43 @@
 			<Annotations Target="Metadata.PaymentOrderType/requestId">
 				<Annotation Term="Common.Label" String="Идентификатор платежа"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerBankBic">
+			<Annotations Target="Metadata.PaymentOrderType/payerBankBic">
 				<Annotation Term="Common.QuickInfo" String="БИК банка плательщика"/>
 				<Annotation Term="Common.Label" String="БИК банка плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerBankCorrespAcc">
+			<Annotations Target="Metadata.PaymentOrderType/payerBankCorrespAcc">
 				<Annotation Term="Common.QuickInfo" String="Номер корр. счёта банка плательщика"/>
 				<Annotation Term="Common.Label" String="Номер корр. счёта банка плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerBankName">
+			<Annotations Target="Metadata.PaymentOrderType/payerBankName">
 				<Annotation Term="Common.QuickInfo" String="Наименование банка плательщика"/>
 				<Annotation Term="Common.Label" String="Наименование банка плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerBankBankCity">
+			<Annotations Target="Metadata.PaymentOrderType/payerBankBankCity">
 				<Annotation Term="Common.QuickInfo" String="Название населённого пункта банка плательщика"/>
 				<Annotation Term="Common.Label" String="Название населённого пункта банка плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayerBankSettlementType">
+			<Annotations Target="Metadata.PaymentOrderType/payerBankSettlementType">
 				<Annotation Term="Common.QuickInfo" String="Тип населённого пункта банка плательщика"/>
 				<Annotation Term="Common.Label" String="Тип населённого пункта банка плательщика"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeeBankBic">
+			<Annotations Target="Metadata.PaymentOrderType/payeeBankBic">
 				<Annotation Term="Common.QuickInfo" String="БИК банка получателя"/>
 				<Annotation Term="Common.Label" String="БИК банка получателя"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeeBankSettlementType">
+			<Annotations Target="Metadata.PaymentOrderType/payeeBankSettlementType">
 				<Annotation Term="Common.QuickInfo" String="Тип населённого пункта банка получателя"/>
 				<Annotation Term="Common.Label" String="Тип населённого пункта банка получателя"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeeBankBankCity">
+			<Annotations Target="Metadata.PaymentOrderType/payeeBankBankCity">
 				<Annotation Term="Common.QuickInfo" String="Название населённого пункта банка получателя"/>
 				<Annotation Term="Common.Label" String="Название населённого пункта банка получателя"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeeBankCorrespAcc">
+			<Annotations Target="Metadata.PaymentOrderType/payeeBankCorrespAcc">
 				<Annotation Term="Common.QuickInfo" String="Номер корр. счёта банка получателя"/>
 				<Annotation Term="Common.Label" String="Номер корр. счёта банка получателя"/>
 			</Annotations>
-			<Annotations Target="Metadata.PaymentOrderType/PayeeBankName">
+			<Annotations Target="Metadata.PaymentOrderType/payeeBankName">
 				<Annotation Term="Common.QuickInfo" String="Наименование банка получателя"/>
 				<Annotation Term="Common.Label" String="Наименование банка получателя"/>
 			</Annotations>

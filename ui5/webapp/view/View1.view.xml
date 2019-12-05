@@ -6,13 +6,13 @@
 	<tnt:ToolPage id="toolPage" class="hostapp" sideExpanded="true">
 		<tnt:header>
 			<tnt:ToolHeader class="itsk-tool" design="Info">
-				<Button id="sideNavigationToggleButton" icon="sap-icon://menu2" type="Transparent" press="onSideNavButtonPress">
+				<Button id="sideNavigationToggleButton" icon="sap-icon://menu2" tooltip="Меню" type="Transparent" press="onSideNavButtonPress">
 					<layoutData>
 						<OverflowToolbarLayoutData priority="NeverOverflow"/>
 					</layoutData>
 				</Button>
 				<HBox>
-					<Image press="onHomePress" src="./images/logo2.png" height="40px" class="itsk-logo-image"/>
+					<Image press="onHomePress" src="./images/logo2.png" height="40px" ariaLabeledBy="logo" class="itsk-logo-image"/>
 				</HBox>
 				<HBox class="bankbutton">
 					<!--<Image press="onHomePress" src="./images/rai2.png" height="30px" class="bank-logo"/>-->
@@ -37,7 +37,7 @@
 				<!--<Button icon="sap-icon://nav-back" type="Transparent" press="onNavBack"></Button>-->
 				<!--<Text class="tntHeadTxt" text="Настройки"/>-->
 				<ToolbarSpacer/>
-				<Button icon="sap-icon://search" type="Transparent"/>
+				<!--<Button icon="sap-icon://search" type="Transparent"/>-->
 				<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"/>
 				<!--src="./profile2.jpg"-->
 				<MenuButton type="Transparent">
@@ -90,7 +90,7 @@
 									<FlexItemData shrinkFactor="0"/>
 								</smartFilterBar:layoutData>
 							</smartFilterBar:SmartFilterBar>
-							<smartTable:SmartTable id="LineItemsSmartTable_1" entitySet="PaymentOrder" smartFilterId="smartFilterBar_1" useExportToExcel="true"
+							<smartTable:SmartTable id="LineItemsSmartTable_1" entitySet="Statement" smartFilterId="smartFilterBar_1" useExportToExcel="true"
 								useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
 								persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad">
 								<smartTable:customToolbar>
@@ -121,7 +121,7 @@
 								<!--</Table>-->
 							</smartTable:SmartTable>
 							<HBox>
-								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="PaymentOrder" smartFilterId="smartFilterBar_1" useExportToExcel="true"
+								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="Statement" tableBindingPath="StatementItemsCred" smartFilterId="smartFilterBar_1" useExportToExcel="true"
 									useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
 									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
@@ -133,7 +133,7 @@
 									<t:Table rowHeight="20" >
 								    </t:Table>
 								</smartTable:SmartTable>
-								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="PaymentOrder" smartFilterId="smartFilterBar_1" useExportToExcel="true"
+								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="Statement" smartFilterId="smartFilterBar_1" useExportToExcel="true"
 									useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
 									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
@@ -165,8 +165,8 @@
 									<FlexItemData shrinkFactor="0"/>
 								</smartFilterBar:layoutData>
 							</smartFilterBar:SmartFilterBar>
-							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
+							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable" initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
+							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true" tableBindingPath="StatementItemsDeb"
 								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
 								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
 								class="sapUiResponsiveContentPadding">
