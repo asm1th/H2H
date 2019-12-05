@@ -104,7 +104,7 @@
 										<Button icon="sap-icon://signature" type="Accept" text="Проверить ЭЦП" class="btn btn-bordered" press="onCheckSign" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:Table id="smtable_1" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1">
+								<t:Table id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" rowActionCount="1">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>
@@ -142,7 +142,7 @@
 											<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_C" class="btn btn-bordered" enabled="fasle"/>
 										</Toolbar>
 									</smartTable:customToolbar>
-									<t:Table rowHeight="20" >
+									<t:Table rowHeight="20" selectionMode="None">
 								    </t:Table>
 								</smartTable:SmartTable>
 							</HBox>
