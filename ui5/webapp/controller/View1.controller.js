@@ -16,16 +16,41 @@ sap.ui.define([
 			//var oModel = new sap.ui.model.odata.ODataModel(url);
 			var userModel = this.getOwnerComponent().getModel();
 			this.getView().setModel(userModel);
-
-			var dataPage = {
-				selectedKey: "page1"
-			};
-			var oModel = new JSONModel(dataPage);
-			this.getView().setModel("PageModel", oModel);
+            
+			//this.byId("pageContainer").to(this.getView().createId("page2"));
+		},
+		
+		onItemSelect : function(oEvent) {
+			var item = oEvent.getParameter('item');
+			this.byId("pageContainer").to(this.getView().createId(item.getKey()));
+		},
+		
+		onUploadToSap: function (oEvent) {
+			MessageToast.show(evt.getSource().getId() + " Pressed");
+		},
+		
+		onCheckSign: function (oEvent) {
+			MessageToast.show(evt.getSource().getId() + " Pressed");
+		},
+		
+		onAttachment: function (oEvent) {
+			MessageToast.show(evt.getSource().getId() + " Pressed");
+		},
+		
+		onPrint_1: function (oEvent) {
+			MessageToast.show(evt.getSource().getId() + " Pressed");
+		},
+		
+		onJournal_1: function (oEvent) {
+			MessageToast.show(evt.getSource().getId() + " Pressed");
+		},
+		
+		onPDF: function (oEvent) {
+			MessageToast.show(evt.getSource().getId() + " Pressed");
 		},
 
 		// test event for dev
-		onPress: function (evt) {
+		onPress: function (oEvent) {
 			MessageToast.show(evt.getSource().getId() + " Pressed");
 		},
 
@@ -250,8 +275,8 @@ sap.ui.define([
 
 		// загрузка пп - file upload
 		OnUpload: function () {
-			var oFileUpload = this.getView().byId("fileUploader");
-			//var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
+			//var oFileUpload = this.getView().byId("fileUploader");
+			var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
 			var domRef = oFileUpload.getFocusDomRef();
 			var file = domRef.files[0];
 			var fileName = file.name;
@@ -280,10 +305,9 @@ sap.ui.define([
 					});
 					var mParams = {};
 					mParams.success = function () {
-						//MessageToast.show("Сохранено");
 						var oSmartTable = that.byId("LineItemsSmartTable");
 						oSmartTable.rebindTable();
-						//that.add_oDialog.close();
+						that.add_oDialog.close();
 					};
 					mParams.error = that._onErrorCall;
 					oModel.create("/Files", oEntry, mParams);

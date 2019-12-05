@@ -17,6 +17,7 @@
 }
 .sapUiResponsiveContentPadding{
     height: 100%;
+    padding: .5rem 1rem;
 }
 .sapMScrollContScroll{
     height: 100%;
@@ -109,6 +110,33 @@
     padding-bottom: 0;
     font-size: 1px;
 }
+.hostPad{
+    padding: .5rem 1rem 0;
+    height: 100%;
+}
+.hostPad1{
+    padding: .5rem .5rem .5rem 1rem;
+    height: 100%;
+}
+.hostPad2{
+    padding: .5rem 1rem .5rem .5rem;
+    height: 100%;
+}
+.sapUiCompFilterBarNonPhone.sapUiRespGrid.sapUiRespGridHSpace0 {
+    padding: .5rem 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -289,7 +317,8 @@ html.sap-desktop .sapContrast .sapMFooter-CTX .btn-delete .sapMBtnInner.sapMBtnR
 /*** btn-bordered ****/
 .btn-bordered .sapMBtnInner,
 .sapMTB-Transparent-CTX .btn-bordered .sapMBtnInner{
-    border-color: #e4e4e4;
+    /*border-color: #e4e4e4;*/
+    border-color: transparent;
     background: transparent;
     color: #2378d9;
     font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
