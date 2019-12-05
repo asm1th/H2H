@@ -52,30 +52,30 @@
 			</tnt:ToolHeader>
 		</tnt:header>
 		<tnt:sideContent>
-			<tnt:SideNavigation selectedKey="{PageModel>/selectedKey}" itemSelect="onItemSelect">
+			<tnt:SideNavigation id="SideNavigation" selectedKey="page1" itemSelect="onItemSelect">
 				<tnt:NavigationList>
 					<!--<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"/>-->
 					<!--<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"/>-->
 					<tnt:NavigationListItem text="Газпром нефть" icon="sap-icon://building">
-						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="PaymentOrderType"/>
-						<tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="subItem2"/>
-						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="subItem3"/>
+						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="page1"/>
+						<tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="page2"/>
+						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="page3" enabled="false"/>
 					</tnt:NavigationListItem>
-					<tnt:NavigationListItem text="Газпром нефть БС" icon="sap-icon://building" expanded="false">
-						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
-						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
-						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
-					</tnt:NavigationListItem>
-					<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false">
-						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
-						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
-						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
-					</tnt:NavigationListItem>
-					<tnt:NavigationListItem text="ГПН Финанс" icon="sap-icon://building" expanded="false">
-						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
-						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
-						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
-					</tnt:NavigationListItem>
+					<!--<tnt:NavigationListItem text="Газпром нефть БС" icon="sap-icon://building" expanded="false">-->
+					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
+					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
+					<!--	<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>-->
+					<!--</tnt:NavigationListItem>-->
+					<!--<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false">-->
+					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
+					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
+					<!--	<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>-->
+					<!--</tnt:NavigationListItem>-->
+					<!--<tnt:NavigationListItem text="ГПН Финанс" icon="sap-icon://building" expanded="false">-->
+					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
+					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
+					<!--	<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>-->
+					<!--</tnt:NavigationListItem>-->
 					<tnt:NavigationListItem text="Все счета" key="all"/>
 				</tnt:NavigationList>
 			</tnt:SideNavigation>
@@ -84,6 +84,71 @@
 			<NavContainer id="pageContainer" initialPage="page1">
 				<pages>
 					<ScrollContainer id="page1" horizontal="false" vertical="false" height="100%">
+						<VBox fitContainer="true">
+							<smartFilterBar:SmartFilterBar id="smartFilterBar_1" entitySet="PaymentOrder" persistencyKey="SmartFilter_Explored_1">
+								<smartFilterBar:layoutData>
+									<FlexItemData shrinkFactor="0"/>
+								</smartFilterBar:layoutData>
+							</smartFilterBar:SmartFilterBar>
+							<smartTable:SmartTable id="LineItemsSmartTable_1" entitySet="PaymentOrder" smartFilterId="smartFilterBar_1" useExportToExcel="true"
+								useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
+								persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad">
+								<smartTable:customToolbar>
+									<Toolbar>
+										<ToolbarSpacer/>
+										<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_1" class="btn btn-bordered" enabled="fasle"/>
+										<Button icon="sap-icon://attachment" tooltip="Приложения" class="btn btn-bordered" press="onAttachment"/>
+										<Button icon="sap-icon://documents" tooltip="Журнал" class="btn btn-bordered" press="onJournal_1" enabled="true"/>
+										<Button icon="sap-icon://pdf-attachment" tooltip="PDF" class="btn btn-bordered" press="onPDF"/>
+										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Загрузить в SAP" class="btn btn-bordered" press="onUploadToSap" enabled="true"/>
+										<Button icon="sap-icon://signature" type="Accept" text="Проверить ЭЦП" class="btn btn-bordered" press="onCheckSign" enabled="true"/>
+									</Toolbar>
+								</smartTable:customToolbar>
+								<t:Table id="smtable_1" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1">
+									<t:rowSettingsTemplate>
+										<t:RowSettings highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>
+									</t:rowSettingsTemplate>
+									<t:rowActionTemplate>
+										<t:RowAction>
+											<t:items>
+												<t:RowActionItem type="Navigation" press="onDetailDialog"></t:RowActionItem>
+											</t:items>
+										</t:RowAction>
+									</t:rowActionTemplate>
+								</t:Table>
+								<!--<Table id="innerUi5Table" growing="true" mode="SingleSelect">-->
+								<!--<ColumnListItem type="Navigation" press="onDetailDialog" highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>-->
+								<!--</Table>-->
+							</smartTable:SmartTable>
+							<HBox>
+								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="PaymentOrder" smartFilterId="smartFilterBar_1" useExportToExcel="true"
+									useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
+									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad1">
+									<smartTable:customToolbar>
+										<Toolbar>
+											<ToolbarSpacer/>
+											<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_D" class="btn btn-bordered" enabled="fasle"/>
+										</Toolbar>
+									</smartTable:customToolbar>
+									<t:Table rowHeight="20" >
+								    </t:Table>
+								</smartTable:SmartTable>
+								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="PaymentOrder" smartFilterId="smartFilterBar_1" useExportToExcel="true"
+									useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
+									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad1">
+									<smartTable:customToolbar>
+										<Toolbar>
+											<ToolbarSpacer/>
+											<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_C" class="btn btn-bordered" enabled="fasle"/>
+										</Toolbar>
+									</smartTable:customToolbar>
+									<t:Table rowHeight="20" >
+								    </t:Table>
+								</smartTable:SmartTable>
+							</HBox>
+						</VBox>
+					</ScrollContainer>
+					<ScrollContainer id="page2" horizontal="false" vertical="false" height="100%">
 						<VBox fitContainer="true">
 							<!--https://blogs.sap.com/2019/08/13/configuring-filters-area-of-an-analytical-list-page-alp-application/-->
 							<!--basicSearchFieldName="docExtId" enableBasicSearch="true"-->
@@ -101,7 +166,7 @@
 								</smartFilterBar:layoutData>
 							</smartFilterBar:SmartFilterBar>
 							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable"	initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder"  smartFilterId="smartFilterBar" useExportToExcel="true"
+							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
 								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
 								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
 								class="sapUiResponsiveContentPadding">
@@ -110,10 +175,11 @@
 								<smartTable:customToolbar>
 									<Toolbar>
 										<ToolbarSpacer/>
-										<u:FileUploader id="fileUploader" name="myFileUpload" multiple="true" change="OnFileSelected" tooltip="Загрузка"
-											uploadComplete="handleUploadComplete"/>
-										<Button text="Загрузить ПП" press="OnUpload"/>
-										<ToolbarSeparator/>
+										<!--<u:FileUploader id="fileUploader" name="myFileUpload" multiple="true" change="OnFileSelected" tooltip="Загрузка"-->
+										<!--	uploadComplete="handleUploadComplete"/>-->
+										<!--<Button text="Загрузить ПП" press="OnUpload"/>-->
+										<!--<ToolbarSeparator/>-->
+										
 										<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
 										<Button icon="sap-icon://print" tooltip="Печать" id="print" press="onPrint" class="btn btn-bordered" enabled="fasle"/>
 										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="true"/>
@@ -125,7 +191,7 @@
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:Table id="smtable" visibleRowCountMode="Auto" rowActionCount="1">
+								<t:Table id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>
@@ -136,17 +202,15 @@
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
-									
-									<t:columns>
-										<t:Column>
-											<t:template></t:template>
-										</t:Column>
-									</t:columns>
+									<!--<t:columns>-->
+									<!--	<t:Column>-->
+									<!--		<t:template></t:template>-->
+									<!--	</t:Column>-->
+									<!--</t:columns>-->
 								</t:Table>
-								
 								<!--<Table id="innerUi5Table" growing="true" mode="SingleSelect">-->
-        <!--                			<ColumnListItem type="Navigation" press="onDetailDialog" highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>-->
-        <!--                		</Table>-->
+								<!--                			<ColumnListItem type="Navigation" press="onDetailDialog" highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>-->
+								<!--                		</Table>-->
 							</smartTable:SmartTable>
 						</VBox>
 						<!--</ScrollContainer>-->
