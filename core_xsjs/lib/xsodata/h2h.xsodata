@@ -25,16 +25,16 @@ service {
 	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId");																
 	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId");																		
 																										
-	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
-	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("Sign.docExtId")			multiplicity "*";
-	association "Request_PayDoc"		principal  "Request"("requestId")			multiplicity "1" dependent "PayDocRu"("Request.requestId")	multiplicity "1";
-	association "PayDocRu_AccDoc"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "AccDoc"("AccDoc.docExtId")		multiplicity "*";
-	association "PayDocRu_Payer"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payer"("Payer.docExtId")		multiplicity "1";
-	association "PayDocRu_Payee"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payee"("Payee.docExtId")		multiplicity "1";
-	association "PayDocRu_File"			principal  "PayDocRu"("requestId") 			multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
-	association "PayDocRu_Sign"			principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Sign"("Sign.docExtId")			multiplicity "*";
-	association "Statement_ItemsCred"	principal  "Statement"("responseId")		multiplicity "1" dependent "StatementItemsCred"("StatementItemsCred.responseId")	multiplicity "*";
-	association "Statement_ItemsDeb"	principal  "Statement"("responseId")		multiplicity "1" dependent "StatementItemsDeb"("StatementItemsDeb.responseId")		multiplicity "*";
+	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("requestId")						multiplicity "1";
+	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("docExtId")						multiplicity "*";
+	association "Request_PayDoc"		principal  "Request"("requestId")			multiplicity "1" dependent "PayDocRu"("requestId")					multiplicity "1";
+	association "PayDocRu_AccDoc"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "AccDoc"("docExtId")						multiplicity "*";
+	association "PayDocRu_Payer"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payer"("docExtId")						multiplicity "1";
+	association "PayDocRu_Payee"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payee"("docExtId")						multiplicity "1";
+	association "PayDocRu_File"			principal  "PayDocRu"("requestId") 			multiplicity "1" dependent "Files"("requestId")						multiplicity "1";
+	association "PayDocRu_Sign"			principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Sign"("docExtId")						multiplicity "*";
+	association "Statement_ItemsCred"	principal  "Statement"("responseId")		multiplicity "1" dependent "StatementItemsCred"("responseId")		multiplicity "*";
+	association "Statement_ItemsDeb"	principal  "Statement"("responseId")		multiplicity "1" dependent "StatementItemsDeb"("responseId")		multiplicity "*";
 }
 annotations {
    enable OData4SAP;
