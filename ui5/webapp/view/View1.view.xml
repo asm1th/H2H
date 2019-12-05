@@ -59,23 +59,23 @@
 					<tnt:NavigationListItem text="Газпром нефть" icon="sap-icon://building">
 						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="PaymentOrderType"/>
 						<tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="subItem2"/>
-						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="subItem3"/>
+						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="subItem3" />
 					</tnt:NavigationListItem>
-					<tnt:NavigationListItem text="Газпром нефть БС" icon="sap-icon://building" expanded="false">
-						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
-						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
-						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
-					</tnt:NavigationListItem>
-					<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false">
-						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
-						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
-						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
-					</tnt:NavigationListItem>
-					<tnt:NavigationListItem text="ГПН Финанс" icon="sap-icon://building" expanded="false">
-						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>
-						<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>
-						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>
-					</tnt:NavigationListItem>
+					<!--<tnt:NavigationListItem text="Газпром нефть БС" icon="sap-icon://building" expanded="false">-->
+					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
+					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
+					<!--	<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>-->
+					<!--</tnt:NavigationListItem>-->
+					<!--<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false">-->
+					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
+					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
+					<!--	<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>-->
+					<!--</tnt:NavigationListItem>-->
+					<!--<tnt:NavigationListItem text="ГПН Финанс" icon="sap-icon://building" expanded="false">-->
+					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
+					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
+					<!--	<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>-->
+					<!--</tnt:NavigationListItem>-->
 					<tnt:NavigationListItem text="Все счета" key="all"/>
 				</tnt:NavigationList>
 			</tnt:SideNavigation>
