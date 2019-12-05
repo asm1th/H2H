@@ -519,7 +519,7 @@ context RaiffeisenBank {
     };
     
     define view Statement as Select from TStatement{
-    	RESPONSEID		as responseid,
+    	RESPONSEID		as responseId,
 		BIC				as bic,
 		DEBETSUM		as debetSum,
 		CREDITSUM		as creditSum,
@@ -532,12 +532,12 @@ context RaiffeisenBank {
     };
     
     define view StatementItemsDeb as Select from TStatementItems{
-    	RESPONSEID				   as responseid,
+    	RESPONSEID				   as responseId,
     	EXTID                      as extId,
 		BANK                       as bank,
 		CORRACC                    as corrAcc,
 		DC                         as dc,
-		DOCNUM                     as _docNum,
+		DOCNUM                     as docNum,
 		DOCSUM                     as docSum,
 		OPERDATE                   as operDate,
 		PAYMENTORDER               as paymentOrder,
@@ -567,16 +567,16 @@ context RaiffeisenBank {
 		PAYTREASON                 as paytReason,
 		TAXPAYTKIND                as taxPaytKind,
 		TAXPERIOD                  as taxPeriod,
-		UIP                        as  uip	
+		UIP                        as uip	
     }	WHERE DC = 1;
     
     define view StatementItemsCred as Select from TStatementItems{
-    	RESPONSEID				   as responseid,
+    	RESPONSEID				   as responseId,
     	EXTID                      as extId,
 		BANK                       as bank,
 		CORRACC                    as corrAcc,
 		DC                         as dc,
-		DOCNUM                     as _docNum,
+		DOCNUM                     as docNum,
 		DOCSUM                     as docSum,
 		OPERDATE                   as operDate,
 		PAYMENTORDER               as paymentOrder,
@@ -606,7 +606,7 @@ context RaiffeisenBank {
 		PAYTREASON                 as paytReason,
 		TAXPAYTKIND                as taxPaytKind,
 		TAXPERIOD                  as taxPeriod,
-		UIP                        as  uip	
+		UIP                        as uip	
     }	WHERE DC = 2;
     
 };       

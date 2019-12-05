@@ -17,7 +17,13 @@ service {
 	"RaiffeisenBank.Payee"			as "Payee"			key ("docExtId");
 	"RaiffeisenBank.Files"			as "Files"			key ("requestId")	create using "xsjs:dbf.xsjslib::createPaymentOrder";
 	"RaiffeisenBank.Sign"			as "Sign"			key ("docExtId")	create using "xsjs:dbf.xsjslib::createSing"
-																			delete using "xsjs:dbf.xsjslib::deletSing";																									
+																			delete using "xsjs:dbf.xsjslib::deletSing";			
+																			
+	"RaiffeisenBank.Statement"		as "Statement"		key ("responseId")					navigates ( "Statement_ItemsCred" as "ItemsCred",
+																										"Statement_ItemsDeb"  as "ItemsDeb"
+																										from principal);
+	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId");																
+	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId");																		
 																										
 	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
 	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("Sign.docExtId")			multiplicity "*";
@@ -27,6 +33,8 @@ service {
 	association "PayDocRu_Payee"		principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Payee"("Payee.docExtId")		multiplicity "1";
 	association "PayDocRu_File"			principal  "PayDocRu"("requestId") 			multiplicity "1" dependent "Files"("Files.requestId")		multiplicity "1";
 	association "PayDocRu_Sign"			principal  "PayDocRu"("docExtId")			multiplicity "1" dependent "Sign"("Sign.docExtId")			multiplicity "*";
+	association "Statement_ItemsCred"	principal  "Statement"("responseId")		multiplicity "1" dependent "StatementItemsCred"("StatementItemsCred.responseId")	multiplicity "*";
+	association "Statement_ItemsDeb"	principal  "Statement"("responseId")		multiplicity "1" dependent "StatementItemsDeb"("StatementItemsDeb.responseId")		multiplicity "*";
 }
 annotations {
    enable OData4SAP;
