@@ -32,6 +32,12 @@ pStmt.executeUpdate();
 pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TSign\"");
 pStmt.executeUpdate();
 
+pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TStatement\"");
+pStmt.executeUpdate();
+
+pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TStatementItems\"");
+pStmt.executeUpdate();
+
 conn.commit();
 pStmt.close();
 

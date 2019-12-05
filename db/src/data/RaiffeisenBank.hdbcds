@@ -257,6 +257,7 @@ context RaiffeisenBank {
 		    ENTERBAL        : t_sum;
 		    @Comment : 'Номер документа'
 		    DOCNUM          : t_str_6;
+		    _STITEMS : Association[1] to TStatementItems on _STITEMS.RESPONSEID = RESPONSEID;
     };
 
 	entity TStatementItems {
@@ -516,5 +517,96 @@ context RaiffeisenBank {
 		FIO				as Fio,
 		POSITION		as Position
     };
+    
+    define view Statement as Select from TStatement{
+    	RESPONSEID		as responseid,
+		BIC				as bic,
+		DEBETSUM		as debetSum,
+		CREDITSUM		as creditSum,
+		CURRCODE		as currCode,
+		DOCTIME			as docTime,
+		OUTBAL			as outBal,
+		STMTDATE		as stmtDate,
+		ENTERBAL		as enterBal,
+		DOCNUM			as docNum
+    };
+    
+    define view StatementItemsDeb as Select from TStatementItems{
+    	RESPONSEID				   as responseid,
+    	EXTID                      as extId,
+		BANK                       as bank,
+		CORRACC                    as corrAcc,
+		DC                         as dc,
+		DOCNUM                     as _docNum,
+		DOCSUM                     as docSum,
+		OPERDATE                   as operDate,
+		PAYMENTORDER               as paymentOrder,
+		PAYTKIND                   as paytKind,
+		PERSONALACC                as personalAcc,
+		PERSONALINN                as personalINN,
+		PERSONALKPP                as personalKPP,
+		TRANSKIND                  as transKind,
+		RECEIVERINN                as receiverINN,
+		RECEIVERKPP                as receiverKPP,
+		RECEIVERPLACE              as receiverPlace,
+		RECEIVERPLACETYPE          as receiverPlaceType,
+		RECEIVERBANKCORRACCOUNT    as receiverBankCorrAccount,
+		RECEIVERBANKNAME           as receiverBankName,
+		PAYERPLACE                 as payerPlace,
+		PAYERPLACETYPE             as payerPlaceType,
+		PAYERBANKCORRACCOUNT       as payerBankCorrAccount,
+		PAYERBANKBIC               as payerBankBic,
+		RECEIPTNAME                as receiptName,
+		PERSONALNAME               as personalName,
+		PURPOSE                    as purpose,
+		CBC                        as cbc,
+		DOCDATE                    as docDate,
+		DOCNO                      as docNo,
+		DRAWERSTATUS               as drawerStatus,
+		OKATO                      as okato,
+		PAYTREASON                 as paytReason,
+		TAXPAYTKIND                as taxPaytKind,
+		TAXPERIOD                  as taxPeriod,
+		UIP                        as  uip	
+    }	WHERE DC = 1;
+    
+    define view StatementItemsCred as Select from TStatementItems{
+    	RESPONSEID				   as responseid,
+    	EXTID                      as extId,
+		BANK                       as bank,
+		CORRACC                    as corrAcc,
+		DC                         as dc,
+		DOCNUM                     as _docNum,
+		DOCSUM                     as docSum,
+		OPERDATE                   as operDate,
+		PAYMENTORDER               as paymentOrder,
+		PAYTKIND                   as paytKind,
+		PERSONALACC                as personalAcc,
+		PERSONALINN                as personalINN,
+		PERSONALKPP                as personalKPP,
+		TRANSKIND                  as transKind,
+		RECEIVERINN                as receiverINN,
+		RECEIVERKPP                as receiverKPP,
+		RECEIVERPLACE              as receiverPlace,
+		RECEIVERPLACETYPE          as receiverPlaceType,
+		RECEIVERBANKCORRACCOUNT    as receiverBankCorrAccount,
+		RECEIVERBANKNAME           as receiverBankName,
+		PAYERPLACE                 as payerPlace,
+		PAYERPLACETYPE             as payerPlaceType,
+		PAYERBANKCORRACCOUNT       as payerBankCorrAccount,
+		PAYERBANKBIC               as payerBankBic,
+		RECEIPTNAME                as receiptName,
+		PERSONALNAME               as personalName,
+		PURPOSE                    as purpose,
+		CBC                        as cbc,
+		DOCDATE                    as docDate,
+		DOCNO                      as docNo,
+		DRAWERSTATUS               as drawerStatus,
+		OKATO                      as okato,
+		PAYTREASON                 as paytReason,
+		TAXPAYTKIND                as taxPaytKind,
+		TAXPERIOD                  as taxPeriod,
+		UIP                        as  uip	
+    }	WHERE DC = 2;
     
 };       
