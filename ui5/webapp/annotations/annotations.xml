@@ -109,10 +109,14 @@
 						<PropertyPath>docDate</PropertyPath>
 						<PropertyPath>payerBankName</PropertyPath>
 						<PropertyPath>payeeBankCorrespAcc</PropertyPath>
+						<PropertyPath>status</PropertyPath>
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="status"/>
+						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 						</Record>
@@ -209,6 +213,36 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="requestId"/>
 						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="payeeUip"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="drawerStatus"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="cbc"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="okato"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="paytReason"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="taxPeriod"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="depDocNo"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="depDocDate"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="taxPaytKind"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="signType"/>
+						</Record>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Платежное поручение"/>
@@ -255,6 +289,112 @@
 			<Annotations Target="Metadata.PaymentOrderType/payeeBankName">
 				<Annotation Term="Common.QuickInfo" String="Наименование банка получателя"/>
 				<Annotation Term="Common.Label" String="Наименование банка получателя"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/status">
+				<Annotation Term="Common.QuickInfo" String="Статус"/>
+				<Annotation Term="Common.Label" String="Статус"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/drawerStatus">
+				<Annotation Term="Common.QuickInfo" String="Показатель статуса налогоплательщика"/>
+				<Annotation Term="Common.Label" String="Показатель статуса налогоплательщика"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/cbc">
+				<Annotation Term="Common.QuickInfo" String="КБК"/>
+				<Annotation Term="Common.Label" String="КБК"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/okato">
+				<Annotation Term="Common.QuickInfo" String="Код ОКАТО"/>
+				<Annotation Term="Common.Label" String="Код ОКАТО"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/paytReason">
+				<Annotation Term="Common.QuickInfo" String="Показатель основания платежа"/>
+				<Annotation Term="Common.Label" String="Показатель основания платежа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/taxPeriod">
+				<Annotation Term="Common.QuickInfo" String="Налоговый период / Код таможенного органа"/>
+				<Annotation Term="Common.Label" String="Налоговый период / Код таможенного органа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/depDocNo">
+				<Annotation Term="Common.QuickInfo" String="Номер налогового документа"/>
+				<Annotation Term="Common.Label" String="Номер налогового документа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/depDocDate">
+				<Annotation Term="Common.QuickInfo" String="Дата налогового документа"/>
+				<Annotation Term="Common.Label" String="Дата налогового документа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/taxPaytKind">
+				<Annotation Term="Common.QuickInfo" String="Тип налогового платежа"/>
+				<Annotation Term="Common.Label" String="Тип налогового платежа"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/signType">
+				<Annotation Term="Common.QuickInfo" String="Тип подписи"/>
+				<Annotation Term="Common.Label" String="Тип подписи"/>
+			</Annotations>
+			<Annotations Target="Metadata.PaymentOrderType/payeeUip">
+				<Annotation Term="Common.QuickInfo" String="Уникальный Идентификатора Платежа"/>
+				<Annotation Term="Common.Label" String="Уникальный Идентификатора Платежа"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType">
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="bic"/>
+							<PropertyValue Property="Label" String="БИК"/>
+							<Annotation Term="Common.QuickInfo" String="БИК"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="responseId"/>
+							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
+							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
+						</Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.SelectionFields">
+					<Collection>
+						<PropertyPath>bic</PropertyPath>
+						<PropertyPath>docTime</PropertyPath>
+						<PropertyPath>docNum</PropertyPath>
+						<PropertyPath>enterBal</PropertyPath>
+					</Collection>
+				</Annotation>
+				<Annotation Term="Common.Label" String="Выписка"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementItemsCredType">
+				<Annotation Term="Common.Label" String="Кредит"/>
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docDate"/>
+							<PropertyValue Property="Label" String="Дата документа"/>
+							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="responseId"/>
+							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
+							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
+						</Record>
+						
+						
+						
+					</Collection>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="Metadata.StatementItemsDebType">
+				<Annotation Term="Common.Label" String="Дебет"/>
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docDate"/>
+							<PropertyValue Property="Label" String="Дата документа"/>
+							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="responseId"/>
+							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
+							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
+						</Record>
+					</Collection>
+				</Annotation>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>

@@ -26,29 +26,56 @@ sap.ui.define([
 		},
 		
 		onUploadToSap: function (oEvent) {
-			MessageToast.show(evt.getSource().getId() + " Pressed");
+			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
 		
 		onCheckSign: function (oEvent) {
-			MessageToast.show(evt.getSource().getId() + " Pressed");
+			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
 		
 		onAttachment: function (oEvent) {
-			MessageToast.show(evt.getSource().getId() + " Pressed");
+			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
 		
 		onPrint_1: function (oEvent) {
-			MessageToast.show(evt.getSource().getId() + " Pressed");
+			MessageToast.show(oEvent.getSource().getId() + " Pressed");
+		},
+		onPrint_D: function (oEvent) {
+			MessageToast.show(oEvent.getSource().getId() + " Pressed");
+		},
+		onPrint_C: function (oEvent) {
+			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
 		
 		onJournal_1: function (oEvent) {
-			MessageToast.show(evt.getSource().getId() + " Pressed");
+			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
 		
 		onPDF: function (oEvent) {
-			MessageToast.show(evt.getSource().getId() + " Pressed");
+			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-
+        
+        onChoseStatement: function (oEvent) {
+			//debugger;
+			var src = oEvent.getSource();
+			var ctx = src.getBindingContext();
+			var path = ctx.getPath();
+			var obj = src.getModel().getProperty(path);
+			var oFilter = new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, obj.responseId);
+			
+			var oSmartTable_D = this.byId("SmartTable_D");
+            oSmartTable_D.getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+            //oSmartTable_D.setEntitySet(path);
+			//oSmartTable_D.setTableBindingPath("ItemsDeb");
+            //oSmartTable_D.rebindTable();
+			
+			var oSmartTable_С = this.byId("SmartTable_C");
+			 oSmartTable_D.getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+			//oSmartTable_С.setEntitySet(path);
+			//oSmartTable_С.setTableBindingPath("ItemsCred");
+			//oSmartTable_С.rebindTable();
+		},
+        
 		// test event for dev
 		onPress: function (oEvent) {
 			MessageToast.show(evt.getSource().getId() + " Pressed");
@@ -57,7 +84,7 @@ sap.ui.define([
 		//////////////////
 		// фикс размер колонок по заголовкам table
 		onDataReceived: function () {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+//			var oSmartTable = this.byId("LineItemsSmartTable");
 // 			var i = 0;
 // 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
 // 				oLine.setWidth("100%");

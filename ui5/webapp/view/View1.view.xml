@@ -12,7 +12,7 @@
 					</layoutData>
 				</Button>
 				<HBox>
-					<Image press="onHomePress" src="./images/logo2.png" height="40px" ariaLabeledBy="logo" class="itsk-logo-image"/>
+					<Image press="onHomePress" src="./images/logo2.png" height="40px" alt="logo" class="itsk-logo-image"/>
 				</HBox>
 				<HBox class="bankbutton">
 					<!--<Image press="onHomePress" src="./images/rai2.png" height="30px" class="bank-logo"/>-->
@@ -85,7 +85,7 @@
 				<pages>
 					<ScrollContainer id="page1" horizontal="false" vertical="false" height="100%">
 						<VBox fitContainer="true">
-							<smartFilterBar:SmartFilterBar id="smartFilterBar_1" entitySet="PaymentOrder" persistencyKey="SmartFilter_Explored_1">
+							<smartFilterBar:SmartFilterBar id="smartFilterBar_1" entitySet="Statement" persistencyKey="SmartFilter_Explored_1">
 								<smartFilterBar:layoutData>
 									<FlexItemData shrinkFactor="0"/>
 								</smartFilterBar:layoutData>
@@ -111,18 +111,18 @@
 									<t:rowActionTemplate>
 										<t:RowAction>
 											<t:items>
-												<t:RowActionItem type="Navigation" press="onDetailDialog"></t:RowActionItem>
+												<t:RowActionItem type="Navigation" press="onChoseStatement"></t:RowActionItem>
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
 								</t:Table>
-								<!--<Table id="innerUi5Table" growing="true" mode="SingleSelect">-->
-								<!--<ColumnListItem type="Navigation" press="onDetailDialog" highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>-->
-								<!--</Table>-->
 							</smartTable:SmartTable>
 							<HBox>
-								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="Statement" tableBindingPath="StatementItemsCred" smartFilterId="smartFilterBar_1" useExportToExcel="true"
-									useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
+							    <!--entitySet="StatementItemsDeb"-->
+							    <!--Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')/ItemsDeb-->
+							    <!--entitySet="Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')" tableBindingPath="ItemsDeb"-->
+								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true"
+									useVariantManagement="true" useTablePersonalisation="true" header="Дебет" showRowCount="true"
 									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
 										<Toolbar>
@@ -130,12 +130,12 @@
 											<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_D" class="btn btn-bordered" enabled="fasle"/>
 										</Toolbar>
 									</smartTable:customToolbar>
-									<t:Table rowHeight="20" >
+									<t:Table rowHeight="20" selectionMode="None">
 								    </t:Table>
 								</smartTable:SmartTable>
-								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="Statement" smartFilterId="smartFilterBar_1" useExportToExcel="true"
-									useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
-									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad1">
+								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="StatementItemsCred" useExportToExcel="true"
+									useVariantManagement="true" useTablePersonalisation="true" header="Кредит" showRowCount="true" 
+									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="false" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
 										<Toolbar>
 											<ToolbarSpacer/>
@@ -148,6 +148,7 @@
 							</HBox>
 						</VBox>
 					</ScrollContainer>
+					
 					<ScrollContainer id="page2" horizontal="false" vertical="false" height="100%">
 						<VBox fitContainer="true">
 							<!--https://blogs.sap.com/2019/08/13/configuring-filters-area-of-an-analytical-list-page-alp-application/-->
@@ -166,7 +167,7 @@
 								</smartFilterBar:layoutData>
 							</smartFilterBar:SmartFilterBar>
 							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable" initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true" tableBindingPath="StatementItemsDeb"
+							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
 								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
 								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
 								class="sapUiResponsiveContentPadding">
