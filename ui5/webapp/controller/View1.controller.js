@@ -16,27 +16,27 @@ sap.ui.define([
 			//var oModel = new sap.ui.model.odata.ODataModel(url);
 			var userModel = this.getOwnerComponent().getModel();
 			this.getView().setModel(userModel);
-            
+
 			//this.byId("pageContainer").to(this.getView().createId("page2"));
 		},
-		
-		onItemSelect : function(oEvent) {
+
+		onItemSelect: function (oEvent) {
 			var item = oEvent.getParameter('item');
 			this.byId("pageContainer").to(this.getView().createId(item.getKey()));
 		},
-		
+
 		onUploadToSap: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-		
+
 		onCheckSign: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-		
+
 		onAttachment: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-		
+
 		onPrint_1: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
@@ -46,36 +46,36 @@ sap.ui.define([
 		onPrint_C: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-		
+
 		onJournal_1: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-		
+
 		onPDF: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-        
-        onChoseStatement: function (oEvent) {
+
+		onChoseStatement: function (oEvent) {
 			//debugger;
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var path = ctx.getPath();
 			var obj = src.getModel().getProperty(path);
 			var oFilter = new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, obj.responseId);
-			
+
 			var oSmartTable_D = this.byId("SmartTable_D");
-            oSmartTable_D.getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
-            //oSmartTable_D.setEntitySet(path);
+			//oSmartTable_D.setEntitySet("StatementItemsDeb");
 			//oSmartTable_D.setTableBindingPath("ItemsDeb");
-            //oSmartTable_D.rebindTable();
-			
+			//oSmartTable_D.rebindTable();
+			oSmartTable_D.getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+
 			var oSmartTable_С = this.byId("SmartTable_C");
-			 oSmartTable_D.getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
-			//oSmartTable_С.setEntitySet(path);
+			//oSmartTable_С.setEntitySet("StatementItemsCred");
 			//oSmartTable_С.setTableBindingPath("ItemsCred");
 			//oSmartTable_С.rebindTable();
+			oSmartTable_D.getTable().bindRows("/StatementItemsCred", null, null, oFilter);
 		},
-        
+
 		// test event for dev
 		onPress: function (oEvent) {
 			MessageToast.show(evt.getSource().getId() + " Pressed");
@@ -84,13 +84,13 @@ sap.ui.define([
 		//////////////////
 		// фикс размер колонок по заголовкам table
 		onDataReceived: function () {
-//			var oSmartTable = this.byId("LineItemsSmartTable");
-// 			var i = 0;
-// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
-// 				oLine.setWidth("100%");
-// 				oLine.getParent().autoResizeColumn(i);
-// 				i++;
-// 			});
+			//			var oSmartTable = this.byId("LineItemsSmartTable");
+			// 			var i = 0;
+			// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
+			// 				oLine.setWidth("100%");
+			// 				oLine.getParent().autoResizeColumn(i);
+			// 				i++;
+			// 			});
 			//oSmartTable.getTable().rerender();
 			//oSmartTable.getTable().setFirstVisibleRow(1)
 		},
@@ -136,21 +136,21 @@ sap.ui.define([
 			var path = ctx.getPath();
 			var obj = oModel.getProperty(path);
 
-// 			var oEntry = {};
-// 			oEntry.docExtId = obj.docExtId;
-// 			oEntry.priority = obj.priority;
-// 			oModel.setHeaders({
-// 				"X-Requested-With": "XMLHttpRequest",
-// 				"Content-Type": "application/json",
-// 				"X-CSRF-Token": "Fetch"
-// 			});
-// 			var mParams = {};
-// 			mParams.success = function () {
-// 				MessageToast.show("Сохранено");
-// 				this.detailDialog.close();
-// 			};
-// 			mParams.error = this._onErrorCall;
-//          oModel.update("/PaymentOrder", oEntry, mParams);
+			// 			var oEntry = {};
+			// 			oEntry.docExtId = obj.docExtId;
+			// 			oEntry.priority = obj.priority;
+			// 			oModel.setHeaders({
+			// 				"X-Requested-With": "XMLHttpRequest",
+			// 				"Content-Type": "application/json",
+			// 				"X-CSRF-Token": "Fetch"
+			// 			});
+			// 			var mParams = {};
+			// 			mParams.success = function () {
+			// 				MessageToast.show("Сохранено");
+			// 				this.detailDialog.close();
+			// 			};
+			// 			mParams.error = this._onErrorCall;
+			//          oModel.update("/PaymentOrder", oEntry, mParams);
 
 			oModel.setProperty(path + "/priority", obj.priority);
 			oModel.submitChanges({
@@ -343,9 +343,138 @@ sap.ui.define([
 			}
 		},
 
-		OnFileSelected: function (oEvent) {
-			MessageToast.show("Файлы ожидают загрузки ");
+		// upload выписка в json
+		OnUploadSttmntDialog: function (oEvent) {
+			var oView = this.getView();
+			if (!this.addDialogStmnt) {
+				this.addDialogStmnt = sap.ui.xmlfragment("addDialogStmnt", "h2h.ui5.view.addDialogStmnt", this).addStyleClass("sapUiSizeCompact");
+				oView.addDependent(this.addDialogStmnt);
+			}
+			this.addDialogStmnt.open();
 		},
+		addDialogStmntClose: function (oEvent) {
+			this.addDialogStmnt.close();
+		},
+		addStmntUpload: function () {
+			//var oFileUpload = this.getView().byId("fileUploader");
+			var oFileUpload = sap.ui.core.Fragment.byId("addDialogStmnt", "fileUploader_2");
+			var domRef = oFileUpload.getFocusDomRef();
+			var file = domRef.files[0];
+			var fileName = file.name;
+			var fileType = file.type;
+
+			if (fileName === "") {
+				return MessageToast.show("Please choose File.");
+			} else {
+				var oModel = this.getOwnerComponent().getModel();
+				var reader = new FileReader();
+				var that = this;
+				reader.onload = function (oEvent) {
+					var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
+					//var vContent = oEvent.currentTarget.result.replace("data:text/xml;base64,", "");
+					debugger;
+
+					var yourXmlString = window.atob(vContent);
+
+					var XmlNode = new DOMParser().parseFromString(yourXmlString, 'text/xml');
+					var ContentJson = that.xmlToJson(XmlNode);
+					var sContentJson = JSON.stringify(ContentJson);
+					var bContentJson = window.btoa(sContentJson);
+
+// 					var binaryLen = bContentJson.length;
+// 					var bytes = new Uint8Array(binaryLen);
+// 					for (var i = 0; i < binaryLen; i++) {
+// 						var ascii = ContentJson.charCodeAt(i);
+// 						bytes[i] = ascii;
+// 					}
+// 					var blob = new Blob([bytes], {
+// 						type: file.fileType
+// 					});
+
+					var oEntry = {};
+					//oEntry.requestId = "";
+					oEntry.fileBody = bContentJson;
+					oEntry.fileName = file.name;
+					oEntry.fileType = file.type;
+					oEntry.fileSize = file.size;
+
+					oModel.setHeaders({
+						"X-Requested-With": "XMLHttpRequest",
+						"Content-Type": "application/json",
+						"X-CSRF-Token": "Fetch"
+					});
+					var mParams = {};
+					mParams.success = function () {
+						//var oSmartTable = that.byId("LineItemsSmartTable");
+						//oSmartTable.rebindTable();
+						that.addDialogStmnt.close();
+					};
+					mParams.error = that._onErrorCall;
+					oModel.create("/Files", oEntry, mParams);
+				};
+				reader.readAsDataURL(file);
+			}
+		},
+		//. upload выписка в json
+
+		xmlToJson: function (xml) {
+			// Create the return object
+			var obj = {};
+
+			if (xml.nodeType == 1) {
+				// element
+				// do attributes
+				if (xml.attributes.length > 0) {
+					obj["@attributes"] = {};
+					for (var j = 0; j < xml.attributes.length; j++) {
+						var attribute = xml.attributes.item(j);
+						obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+					}
+				}
+			} else if (xml.nodeType == 3) {
+				// text
+				obj = xml.nodeValue;
+			}
+
+			// do children
+			// If all text nodes inside, get concatenated text from them.
+			var textNodes = [].slice.call(xml.childNodes).filter(function (node) {
+				return node.nodeType === 3;
+			});
+			if (xml.hasChildNodes() && xml.childNodes.length === textNodes.length) {
+				obj = [].slice.call(xml.childNodes).reduce(function (text, node) {
+					return text + node.nodeValue;
+				}, "");
+			} else if (xml.hasChildNodes()) {
+				for (var i = 0; i < xml.childNodes.length; i++) {
+					var item = xml.childNodes.item(i);
+					var nodeName = item.nodeName;
+					if (typeof obj[nodeName] == "undefined") {
+						obj[nodeName] = this.xmlToJson(item);
+					} else {
+						if (typeof obj[nodeName].push == "undefined") {
+							var old = obj[nodeName];
+							obj[nodeName] = [];
+							obj[nodeName].push(old);
+						}
+						obj[nodeName].push(this.xmlToJson(item));
+					}
+				}
+			}
+			return obj;
+		},
+
+		/*
+		Usage:
+		1. If you have an XML file URL:
+		const response = await fetch('file_url');
+		const xmlString = await response.text();
+		var XmlNode = new DOMParser().parseFromString(xmlString, 'text/xml');
+		xmlToJson(XmlNode);
+		2. If you have an XML as string:
+		var XmlNode = new DOMParser().parseFromString(yourXmlString, 'text/xml');
+		xmlToJson(XmlNode);
+		*/
 
 		handleUploadComplete: function (oEvent) {
 			MessageToast.show("ПП загружены ");

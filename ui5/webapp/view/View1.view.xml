@@ -96,6 +96,7 @@
 								<smartTable:customToolbar>
 									<Toolbar>
 										<ToolbarSpacer/>
+										<Button icon="sap-icon://upload-to-cloud" text="Выписки в XML" tooltip="Загрузить Выписки" class="btn btn-bordered" press="OnUploadSttmntDialog"/>
 										<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_1" class="btn btn-bordered" enabled="fasle"/>
 										<Button icon="sap-icon://attachment" tooltip="Приложения" class="btn btn-bordered" press="onAttachment"/>
 										<Button icon="sap-icon://documents" tooltip="Журнал" class="btn btn-bordered" press="onJournal_1" enabled="true"/>
@@ -133,9 +134,10 @@
 									<t:Table rowHeight="20" selectionMode="None">
 								    </t:Table>
 								</smartTable:SmartTable>
+								<!--entitySet="StatementItemsCred" -->
 								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="StatementItemsCred" useExportToExcel="true"
 									useVariantManagement="true" useTablePersonalisation="true" header="Кредит" showRowCount="true" 
-									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="false" showFullScreenButton="true" class="hostPad1">
+									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
 										<Toolbar>
 											<ToolbarSpacer/>
