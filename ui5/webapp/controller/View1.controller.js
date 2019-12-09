@@ -374,38 +374,37 @@ sap.ui.define([
 					var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
 					debugger;
 				// 	var yourXmlString = window.atob(vContent);
-					
+
 				// 	var binaryLen = yourXmlString.length;
 				// 	var bytes = new Uint8Array(binaryLen);
 				// 	for (var i = 0; i < binaryLen; i++) {
 				// 		var ascii = yourXmlString.charCodeAt(i);
 				// 		bytes[i] = ascii;
 				// 	}
-                    
-                    // convert bytes to string // encoding can be specfied, defaults to utf-8 which is ascii.
-                   // var str = new TextDecoder().decode(bytes); 
-    				// 	var blob = new Blob([bytes], {
-    				// 		type: file.type
-    				// 	});
-					
+
+				// 	// convert bytes to string // encoding can be specfied, defaults to utf-8 which is ascii.
+				// 	var str = new TextDecoder().decode(bytes);
+
 				// 	var XmlNode = new DOMParser().parseFromString(str, 'text/xml');
 				// 	var ContentJson = that.xmlToJson(XmlNode);
+
 				// 	var sContentJson = JSON.stringify(ContentJson);
-				// 	var bContentJson = window.btoa(sContentJson);
+				// 	//var bContentJson = window.btoa(sContentJson);
+				// 	var bContentJson = window.btoa(unescape(encodeURIComponent(sContentJson)));
 
 					var oEntry = {};
 					//oEntry.requestId = "";
 					oEntry.fileBody = vContent;
 					oEntry.fileName = file.name;
-					oEntry.fileType = file.type;
+					oEntry.fileType = file.type; // "text/json"; 
 					oEntry.fileSize = file.size;
 					oEntry.docType = 2; // для бека - определять тип файла
 
-					oModel.setHeaders({
-						"X-Requested-With": "XMLHttpRequest",
-						"Content-Type": "application/json",
-						"X-CSRF-Token": "Fetch"
-					});
+					// 	oModel.setHeaders({
+					// 		"X-Requested-With": "XMLHttpRequest",
+					// 		"Content-Type": "application/json",
+					// 		"X-CSRF-Token": "Fetch"
+					// 	});
 					var mParams = {};
 					mParams.success = function () {
 						//var oSmartTable = that.byId("LineItemsSmartTable");
@@ -414,6 +413,24 @@ sap.ui.define([
 					};
 					mParams.error = that._onErrorCall;
 					oModel.create("/Files", oEntry, mParams);
+
+					// 	oModel.request({
+					// 			headers: {
+					// 				"accept": "application/json"
+					// 			},
+					// 			requestUri: "../services/service.xsodata/myTable",
+					// 			method: "POST",
+					// 			data: data
+					// 		},
+
+					// 		function (data, response) {
+					// 			console.log(data);
+					// 		},
+					// 		function (err) {
+					// 			console.log(err);
+					// 		}
+					// 	);
+
 				};
 				reader.readAsDataURL(file);
 			}
@@ -582,7 +599,7 @@ sap.ui.define([
 				SubjectName: "CN=Алексей, E=kleale@kleale.ru",
 				Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
 				ValidToDate: "2020-02-06T11:56:17.000Z",
-			}
+			};
 			var result =
 				"MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
 			this._sendSign(result, objSign);
@@ -617,6 +634,7 @@ sap.ui.define([
 
 		// Получаем сертификаты пользователя
 		// return mySerts=[{}]
+		/*
 		_getUserCertificates: function (oEvent) {
 			var mySerts = []; // сюда сложим все найденные сертификаты юзера
 			var CADESCOM_CADES_BES = 1;
@@ -667,7 +685,7 @@ sap.ui.define([
 				}, resolve, reject);
 			});
 		},
-
+        */
 		// выбрали подпись в окне выбора
 		onUseSign: function (oEvent) {
 			var src = oEvent.getSource();
@@ -789,7 +807,7 @@ sap.ui.define([
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
 			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; //	Возвращает сертификаты соответствующие указанному хэшу SHA1.
-
+            /*
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
 					try {
@@ -826,6 +844,7 @@ sap.ui.define([
 					}
 				}, Thumbprint, dataToSign, resolve, reject);
 			});
+			*/
 		},
 
 		// форматтер для подсветки строки в таблице
