@@ -445,10 +445,10 @@ sap.ui.define([
 				// element
 				// do attributes
 				if (xml.attributes.length > 0) {
-					obj["@attributes"] = {};
+					obj["$"] = {};
 					for (var j = 0; j < xml.attributes.length; j++) {
 						var attribute = xml.attributes.item(j);
-						obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+						obj["$"][attribute.nodeName] = attribute.nodeValue;
 					}
 				}
 			} else if (xml.nodeType == 3) {
