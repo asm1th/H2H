@@ -324,7 +324,7 @@ sap.ui.define([
 					oEntry.fileName = file.name;
 					oEntry.fileType = file.type;
 					oEntry.fileSize = file.size;
-					oEntry.docType = "1"; // для бека - определять тип файла
+					oEntry.docType = 1; // для бека - определять тип файла
 
 					oModel.setHeaders({
 						"X-Requested-With": "XMLHttpRequest",
@@ -399,7 +399,7 @@ sap.ui.define([
 					oEntry.fileName = file.name;
 					oEntry.fileType = file.type;
 					oEntry.fileSize = file.size;
-					oEntry.docType = "2"; // для бека - определять тип файла
+					oEntry.docType = 2; // для бека - определять тип файла
 
 					oModel.setHeaders({
 						"X-Requested-With": "XMLHttpRequest",
