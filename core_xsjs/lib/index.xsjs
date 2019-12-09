@@ -8,6 +8,7 @@ function guid() {
     s4() + '-' + s4() + s4() + s4();
 }
 
-var uuid = guid() ;
+// var uuid = guid() ;
+var uuid = createUuid()
 $.response.contentType = "text/html";
 $.response.setBody( uuid ); 
