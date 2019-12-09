@@ -1,4 +1,4 @@
-@OData.publish : true
+using H2H;
 
 context RaiffeisenBank {
     type t_uuid : String(37);
@@ -40,11 +40,13 @@ context RaiffeisenBank {
     
     entity TFile{
     	key	REQUESTID : t_uuid ;
+			DOCTYPEID : t_int;   	
     		FILENAME  : t_str;
     		FILETYPE  : t_str;
     		FILESIZE  : t_int;
     		FILEBODY  : t_file;
-    		_REQUEST : association[1] to TRequest	on _REQUEST.REQUESTID	= REQUESTID;
+    		_REQUEST  : association[1] to TRequest			on _REQUEST.REQUESTID	= REQUESTID;
+    		_DOCTYPE  : association[1] to H2H.TDocumentType	on _DOCTYPE.ID			= DOCTYPEID; 
     };
 
     @Comment : 'Платёжное поручение рублёвое'
@@ -438,11 +440,12 @@ context RaiffeisenBank {
     };
     
     define view Files as Select from TFile{
-    	REQUESTID as requestId,
-    	FILENAME  as fileName,
-    	FILETYPE  as fileType,
-    	FILESIZE  as fileSize,
-    	FILEBODY  as fileBody
+    	REQUESTID		as requestId,
+    	_DOCTYPE.NAME	as docType,
+    	FILENAME		as fileName,
+    	FILETYPE		as fileType,
+    	FILESIZE		as fileSize,
+    	FILEBODY		as fileBody
     };
     
     define view PayDocRu as Select from TPayDocRu{

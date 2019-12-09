@@ -22,6 +22,11 @@ function errAdd(param, errType, errVal1, errVal2, errVal3, errVal4 ){
 		case 'errSingUnknownAcc':
 			action = 'Signing';
 			errText = "Ошибка подписания. Неизвестный контрагент " + errVal2;
+			break;
+		case 'errInsertEntity':
+			action = 'Inserting';
+			errText = "Ошибка вставки Entity -" + errVal1;
+			break;
 	}
 	if(errText != ''){
 		errMessage.push(errText);
@@ -165,18 +170,61 @@ function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFi
 		pStmt.close();
 		return '';
 	} catch (e) {
+		errAdd(param, 'errInsertEntity', entityName);
 		return e.toString();
 	}
 	return sql;
 }
 
-function createPaymentOrder(param) {
+function binToString(binArray)
+{
+    var str = "";
+    for (var i = 0; i < binArray.length; i++) {
+        str += String.fromCharCode(parseInt(binArray[i]));
+    }
+    return str
+}
+
+function fileUpload(param)
+{
+	var after = param.afterTableName;
+	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
+	rs = null;
+	rs = pStmt.executeQuery();
+	var fileBody = null;
+	while (rs.next()) {
+		var docType  = rs.getInt(2)
+		var fileName = rs.getString(3);
+    	var fileType = rs.getString(4);
+    	var fileSize = rs.getInt(5);
+		var array = new Uint8Array(rs.getBlob(6));
+		
+		content = binToString(array);
+		
+		// var encodedString = String.fromCharCode.apply(null,array),
+		// 	decodedString = decodeURIComponent(escape(encodedString));
+		// 	content = decodedString;
+		fileBody = $.util.codec.encodeBase64(rs.getBlob(6));
+	}
+	pStmt.close();
+	
+	switch (docType) {
+		case 1:
+			createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBody, content);
+			break;
+		case 2: 
+			createStatment(param, docType, fileName, fileType, fileSize, fileBody, content);
+		default:
+	}
+	
+	
+}
+
+function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBody, content) {
 	try {
 		var rs = null;
 		var raif = {};
 		var mappingField		= new Map();
-		// var mappingEntity		= new Map();
-		// var mappingFieldType	= new Map();
 		var destinatonFieldOpt  = new Map();
 		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\",\"OBLIGATORY\" From \"H2H.TMapping\" Where \"BANKID\" = 1 and \"DOCUMENTTYPEID\" = 1");
 		rs = null;
@@ -248,23 +296,28 @@ function createPaymentOrder(param) {
 			}
 		}
 		
-		var after = param.afterTableName;
-	    var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
-	    rs = null;
-		rs = pStmt.executeQuery();
-		var fileBody = null;
-		while (rs.next()) {
-			var fileName = rs.getString(2);
-    		var fileType = rs.getString(3);
-    		var fileSize = rs.getInt(4);
-			var array = new Uint8Array(rs.getBlob(5));
-			var encodedString = String.fromCharCode.apply(null,array),
-				decodedString = decodeURIComponent(escape(encodedString));
-				content = decodedString;
-			fileBody = $.util.codec.encodeBase64(rs.getBlob(5));
-			var fileRows = content.split(/\r\n|\n/);
-		}
-		pStmt.close();
+		// var after = param.afterTableName;
+	 //   var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
+	 //   rs = null;
+		// rs = pStmt.executeQuery();
+		// var fileBody = null;
+		// while (rs.next()) {
+		// 	var fileName = rs.getString(2);
+  //  		var fileType = rs.getString(3);
+  //  		var fileSize = rs.getInt(4);
+		// 	var array = new Uint8Array(rs.getBlob(5));
+			
+		// 	content = binToString(array);
+			
+		// 	// var encodedString = String.fromCharCode.apply(null,array),
+		// 	// 	decodedString = decodeURIComponent(escape(encodedString));
+		// 	// 	content = decodedString;
+		// 	fileBody = $.util.codec.encodeBase64(rs.getBlob(5));
+		// 	var fileRows = content.split(/\r\n|\n/);
+		// }
+		// pStmt.close();
+		
+		var fileRows = content.split(/\r\n|\n/);
 		
 		var requestID = guid();
 		raif.Request = [];
@@ -377,6 +430,96 @@ function createPaymentOrder(param) {
 	}	
 }
 
+
+function createStatment(param, docType, fileName, fileType, fileSize, fileBody, content)
+{
+	var json = JSON.parse(content);
+	var statementData = {};
+	statementData.Statement = {};
+	statementData.StatementItems = {};
+	var responseID = guid();
+
+	statementData.Statement = getMapping(1, 2, 'Statement');
+	statementData.StatementItems = getMapping(1, 2, 'StatementItems');
+
+	statementData.Statement.data = [];
+	statementData.StatementItems.data = [];
+
+	json.Response.StatementsRaif.forEach(function(statements){
+		statements.StatementRaif.forEach(function(statement){
+			var StatementRaif = new Map();
+			StatementRaif.set('RESPONSEID',responseID);
+			StatementRaif.set('BIC',statement.$.bic);
+			StatementRaif.set('DEBETSUM',statement.$.debetSum);
+			StatementRaif.set('CREDITSUM',statement.$.creditSum);
+			StatementRaif.set('CURRCODE',statement.$.currCode);
+			StatementRaif.set('DOCTIME',statement.$.docTime);
+			StatementRaif.set('OUTBAL',statement.$.outBal);
+			StatementRaif.set('STMTDATE',statement.$.stmtDate);
+			StatementRaif.set('ENTERBAL',statement.$.enterBal);
+			StatementRaif.set('DOCNUM',statement.$.docNum);
+			statementData.Statement.data.push(StatementRaif);
+			
+			statement.Docs.forEach(function(docs){
+				docs.TransInfo.forEach(function(doc){
+					var StatementItemsRaif = new Map();
+					StatementItemsRaif.set('RESPONSEID',				responseID);
+					StatementItemsRaif.set('EXTID',						doc.$.extId);
+					StatementItemsRaif.set('BANK',						doc.$.bank);
+					StatementItemsRaif.set('CORRACC',					doc.$.corrAcc);
+					StatementItemsRaif.set('DC',						doc.$.dc);
+					StatementItemsRaif.set('DOCNUM',					doc.$.docNum);
+						StatementItemsRaif.set('DOCSUM',					doc.$.docSum);
+						StatementItemsRaif.set('OPERDATE',					doc.$.operDate);
+						StatementItemsRaif.set('PAYMENTORDER',				doc.$.paymentOrder);
+						StatementItemsRaif.set('PAYTKIND',					doc.$.paytKind);
+						StatementItemsRaif.set('PERSONALACC',				doc.$.personalAcc);
+						StatementItemsRaif.set('PERSONALINN',				doc.$.personalINN);
+						StatementItemsRaif.set('PERSONALKPP',				doc.$.personalKPP);
+						StatementItemsRaif.set('TRANSKIND',					doc.$.transKind);
+						StatementItemsRaif.set('RECEIVERINN',				doc.$.receiverINN);
+						StatementItemsRaif.set('RECEIVERKPP',				doc.$.receiverKPP);
+						StatementItemsRaif.set('RECEIVERPLACE',				doc.$.receiverPlace);
+						StatementItemsRaif.set('RECEIVERPLACETYPE',			doc.$.receiverPlaceType);
+						StatementItemsRaif.set('RECEIVERBANKCORRACCOUNT',	doc.$.receiverBankCorrAccount);
+						StatementItemsRaif.set('RECEIVERBANKNAME',			doc.$.receiverBankName);
+						StatementItemsRaif.set('PAYERPLACE',				doc.$.payerPlace);
+						StatementItemsRaif.set('PAYERPLACETYPE',			doc.$.payerPlaceType);
+						StatementItemsRaif.set('PAYERBANKCORRACCOUNT',		doc.$.payerBankCorrAccount);
+						StatementItemsRaif.set('PAYERBANKBIC',				doc.$.payerBankBic);
+						StatementItemsRaif.set('RECEIPTNAME',				doc.$.receiptName);
+						StatementItemsRaif.set('PERSONALNAME',				doc.PersonalName[0]);
+						StatementItemsRaif.set('PURPOSE',					doc.Purpose[0]);
+						StatementItemsRaif.set('CBC',						doc.DepartmentalInfo[0].$.cbc);
+						StatementItemsRaif.set('DOCDATE',					doc.DepartmentalInfo[0].$.docDate);
+						StatementItemsRaif.set('DOCNO',						doc.DepartmentalInfo[0].$.docNo);
+						StatementItemsRaif.set('DRAWERSTATUS',				doc.DepartmentalInfo[0].$.drawerStatus);
+						StatementItemsRaif.set('OKATO',						doc.DepartmentalInfo[0].$.okato);
+						StatementItemsRaif.set('PAYTREASON',				doc.DepartmentalInfo[0].$.paytReason);
+						StatementItemsRaif.set('TAXPAYTKIND',				doc.DepartmentalInfo[0].$.taxPaytKind);
+						StatementItemsRaif.set('TAXPERIOD',					doc.DepartmentalInfo[0].$.taxPeriod);
+						StatementItemsRaif.set('UIP',						doc.DepartmentalInfo[0].$.uip);
+						statementData.StatementItems.data.push(StatementItemsRaif);
+					});
+				});
+				
+		});
+	});	
+	
+	
+	insertEntity(	statementData.Statement.entityName, 
+					statementData.Statement.data, 
+					statementData.Statement.fields, 
+					statementData.Statement.destinatonFieldOpt
+				);
+	
+	insertEntity(	statementData.StatementItems.entityName, 
+					statementData.StatementItems.data, 
+					statementData.StatementItems.fields, 
+					statementData.StatementItems.destinatonFieldOpt
+				);
+		
+}
 
 function createSing(param){
 	var after = param.afterTableName;
