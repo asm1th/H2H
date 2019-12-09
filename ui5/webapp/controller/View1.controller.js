@@ -371,32 +371,32 @@ sap.ui.define([
 				var reader = new FileReader();
 				var that = this;
 				reader.onload = function (oEvent) {
-					var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
+                    var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
 					debugger;
-				// 	var yourXmlString = window.atob(vContent);
+					var yourXmlString = window.atob(vContent);
 
-				// 	var binaryLen = yourXmlString.length;
-				// 	var bytes = new Uint8Array(binaryLen);
-				// 	for (var i = 0; i < binaryLen; i++) {
-				// 		var ascii = yourXmlString.charCodeAt(i);
-				// 		bytes[i] = ascii;
-				// 	}
+					var binaryLen = yourXmlString.length;
+					var bytes = new Uint8Array(binaryLen);
+					for (var i = 0; i < binaryLen; i++) {
+						var ascii = yourXmlString.charCodeAt(i);
+						bytes[i] = ascii;
+					}
 
-				// 	// convert bytes to string // encoding can be specfied, defaults to utf-8 which is ascii.
-				// 	var str = new TextDecoder().decode(bytes);
+					// convert bytes to string // encoding can be specfied, defaults to utf-8 which is ascii.
+					var str = new TextDecoder().decode(bytes);
 
-				// 	var XmlNode = new DOMParser().parseFromString(str, 'text/xml');
-				// 	var ContentJson = that.xmlToJson(XmlNode);
+					var XmlNode = new DOMParser().parseFromString(str, 'text/xml');
+					var ContentJson = that.xmlToJson(XmlNode);
 
-				// 	var sContentJson = JSON.stringify(ContentJson);
-				// 	//var bContentJson = window.btoa(sContentJson);
-				// 	var bContentJson = window.btoa(unescape(encodeURIComponent(sContentJson)));
+					var sContentJson = JSON.stringify(ContentJson);
+					//var bContentJson = window.btoa(sContentJson);
+					var bContentJson = window.btoa(unescape(encodeURIComponent(sContentJson)));
 
 					var oEntry = {};
 					//oEntry.requestId = "";
-					oEntry.fileBody = vContent;
+					oEntry.fileBody = bContentJson;
 					oEntry.fileName = file.name;
-					oEntry.fileType = file.type; // "text/json"; 
+					oEntry.fileType = "text/json"; //file.type;
 					oEntry.fileSize = file.size;
 					oEntry.docType = 2; // для бека - определять тип файла
 

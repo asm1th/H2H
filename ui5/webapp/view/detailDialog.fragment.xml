@@ -76,8 +76,8 @@
 							<Input id="PayerBankBic" value="{PayerBankBic}" editable="false"/>
 							<Label text="Счет №"/>
 							<Input id="PayerBankCorrespAcc" value="{PayerBankCorrespAcc}" editable="false"/>
-							<Label text="НДС"/>
-							<Input id="vatRate" value="{vatRate}" editable="false"/>
+							<!--<Label text="НДС"/>-->
+							<!--<Input id="vatRate" value="{vatRate}" editable="false"/>-->
 						</form:content>
 					</form:SimpleForm>
 				</VBox>
