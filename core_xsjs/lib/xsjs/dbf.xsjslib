@@ -245,6 +245,8 @@ function fileUpload(param)
 		var array = new Uint8Array(rs.getBlob(6));
 		
 		content = binToString(array);
+		var decodedString = decodeURIComponent(escape(content));
+		var obj = JSON.parse(decodedString);
 		
 		// var encodedString = String.fromCharCode.apply(null,array),
 		// 	decodedString = decodeURIComponent(escape(encodedString));
@@ -479,9 +481,9 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 
 function createStatment(param, docType, fileName, fileType, fileSize, fileBody, content)
 {
-	var xmlNode = new DOMParser().parseFromString(content, 'text/xml');
-    var contentJson = xmlToJson(XmlNode);
-	var json = JSON.parse(contentJson);
+	//var xmlNode = new DOMParser().parseFromString(content, 'text/xml');
+    //var contentJson = xmlToJson(XmlNode);
+	var json = JSON.parse(content);
 	var statementData = {};
 	statementData.Statement = {};
 	statementData.StatementItems = {};
