@@ -324,6 +324,7 @@ sap.ui.define([
 					oEntry.fileName = file.name;
 					oEntry.fileType = file.type;
 					oEntry.fileSize = file.size;
+					oEntry.docType = "1"; // для бека - определять тип файла
 
 					oModel.setHeaders({
 						"X-Requested-With": "XMLHttpRequest",
@@ -371,32 +372,34 @@ sap.ui.define([
 				var that = this;
 				reader.onload = function (oEvent) {
 					var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
-					//var vContent = oEvent.currentTarget.result.replace("data:text/xml;base64,", "");
 					debugger;
-
-					var yourXmlString = window.atob(vContent);
-
-					var XmlNode = new DOMParser().parseFromString(yourXmlString, 'text/xml');
-					var ContentJson = that.xmlToJson(XmlNode);
-					var sContentJson = JSON.stringify(ContentJson);
-					var bContentJson = window.btoa(sContentJson);
-
-// 					var binaryLen = bContentJson.length;
-// 					var bytes = new Uint8Array(binaryLen);
-// 					for (var i = 0; i < binaryLen; i++) {
-// 						var ascii = ContentJson.charCodeAt(i);
-// 						bytes[i] = ascii;
-// 					}
-// 					var blob = new Blob([bytes], {
-// 						type: file.fileType
-// 					});
+				// 	var yourXmlString = window.atob(vContent);
+					
+				// 	var binaryLen = yourXmlString.length;
+				// 	var bytes = new Uint8Array(binaryLen);
+				// 	for (var i = 0; i < binaryLen; i++) {
+				// 		var ascii = yourXmlString.charCodeAt(i);
+				// 		bytes[i] = ascii;
+				// 	}
+                    
+                    // convert bytes to string // encoding can be specfied, defaults to utf-8 which is ascii.
+                   // var str = new TextDecoder().decode(bytes); 
+    				// 	var blob = new Blob([bytes], {
+    				// 		type: file.type
+    				// 	});
+					
+				// 	var XmlNode = new DOMParser().parseFromString(str, 'text/xml');
+				// 	var ContentJson = that.xmlToJson(XmlNode);
+				// 	var sContentJson = JSON.stringify(ContentJson);
+				// 	var bContentJson = window.btoa(sContentJson);
 
 					var oEntry = {};
 					//oEntry.requestId = "";
-					oEntry.fileBody = bContentJson;
+					oEntry.fileBody = vContent;
 					oEntry.fileName = file.name;
 					oEntry.fileType = file.type;
 					oEntry.fileSize = file.size;
+					oEntry.docType = "2"; // для бека - определять тип файла
 
 					oModel.setHeaders({
 						"X-Requested-With": "XMLHttpRequest",
