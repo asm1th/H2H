@@ -367,8 +367,13 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 					if (AccDoc.size > 0) {
 						AccDoc.set('DOCEXTID', docExtID);
 						var purpose = AccDoc.get('PURPOSE');
-						if(purpose.search('\{VO[0-9]{5}\}')>=0){
+						if(purpose.search('\{VO[0-9]{5}\}') >= 0){
 							AccDoc.set('CODEVO', purpose.substr(purpose.search('\{VO[0-9]{5}\}')+3, 5));
+						}
+						
+						var docDate = AccDoc.get('DOCDATE');
+						if(docDate.search('[0-9]{2}\.[0-9]{2}\.[0-9]{4}' >= 0)){
+							AccDoc.set('DOCDATE',docDate.substr(6,4) + docDate.substr(3,2) + docDate.substr(0,2));
 						}
 						raif.AccDoc.push(AccDoc);
 					}
