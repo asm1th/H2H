@@ -125,7 +125,9 @@
 .sapUiCompFilterBarNonPhone.sapUiRespGrid.sapUiRespGridHSpace0 {
     padding: .5rem 1rem;
 }
-
+.sapUiRespGridMedia-Std-Tablet.sapUiRespGridHSpace0>.sapUiRespGridSpanM11 {
+    width: 100%;
+}
 
 
 
@@ -317,8 +319,8 @@ html.sap-desktop .sapContrast .sapMFooter-CTX .btn-delete .sapMBtnInner.sapMBtnR
 /*** btn-bordered ****/
 .btn-bordered .sapMBtnInner,
 .sapMTB-Transparent-CTX .btn-bordered .sapMBtnInner{
-    /*border-color: #e4e4e4;*/
-    border-color: transparent;
+    border-color: #e4e4e4;
+    /*border-color: transparent;*/
     background: transparent;
     color: #2378d9;
     font-family: Tahoma, "72",Arial,Helvetica,sans-serif;
