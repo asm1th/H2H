@@ -1,5 +1,5 @@
 using H2H;
-
+@OData.publish : true
 context RaiffeisenBank {
     type t_uuid : String(37);
     type t_str : String(255);

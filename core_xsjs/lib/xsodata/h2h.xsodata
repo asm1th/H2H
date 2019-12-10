@@ -21,9 +21,10 @@ service {
 																			
 	"RaiffeisenBank.Statement"		as "Statement"		key ("responseId")					navigates ( "Statement_ItemsCred" as "ItemsCred",
 																										"Statement_ItemsDeb"  as "ItemsDeb"
-																										from principal);
-	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId");																
-	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId");																		
+																										from principal) aggregates always ( SUM of "debetSum", 
+																																			SUM of "creditSum");
+	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId") aggregates always (SUM of "docSum");																
+	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId") aggregates always (SUM of "docSum");																		
 																										
 	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("requestId")						multiplicity "1";
 	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("docExtId")						multiplicity "*";
