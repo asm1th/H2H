@@ -131,6 +131,7 @@
 <PropertyRef Name="requestId"/>
 </Key>
 <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="docType" Type="Edm.String" MaxLength="255"/>
 <Property Name="fileName" Type="Edm.String" MaxLength="255"/>
 <Property Name="fileType" Type="Edm.String" MaxLength="255"/>
 <Property Name="fileSize" Type="Edm.Int32"/>

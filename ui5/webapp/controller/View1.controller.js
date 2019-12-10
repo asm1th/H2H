@@ -292,6 +292,9 @@ sap.ui.define([
 			if (!this.addDialog) {
 				this.addDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.addDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialog);
+			} else {
+			    var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
+			    oFileUpload.clear();
 			}
 			this.addDialog.open();
 		},
@@ -302,12 +305,13 @@ sap.ui.define([
 
 		// загрузка пп - file upload
 		OnUpload: function () {
-			//var oFileUpload = this.getView().byId("fileUploader");
+			this.addDialog.setBusy(true);
 			var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
 			var domRef = oFileUpload.getFocusDomRef();
 			var file = domRef.files[0];
 			var fileName = file.name;
 			var fileType = file.type;
+			var fileSize = file.size;
 
 			if (fileName === "") {
 				return MessageToast.show("Please choose File.");
@@ -317,15 +321,13 @@ sap.ui.define([
 				var that = this;
 				reader.onload = function (oEvent) {
 					var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
-
 					var oEntry = {};
 					//oEntry.requestId = "";
 					oEntry.fileBody = vContent;
-					oEntry.fileName = file.name;
-					oEntry.fileType = file.type;
-					oEntry.fileSize = file.size;
+					oEntry.fileName = fileType;
+					oEntry.fileType = fileType;
+					oEntry.fileSize = fileSize;
 					oEntry.docType = 1; // для бека - определять тип файла
-
 					oModel.setHeaders({
 						"X-Requested-With": "XMLHttpRequest",
 						"Content-Type": "application/json",
@@ -336,8 +338,12 @@ sap.ui.define([
 						var oSmartTable = that.byId("LineItemsSmartTable");
 						oSmartTable.rebindTable();
 						that.addDialog.close();
+						that.addDialog.setBusy(false);
 					};
-					mParams.error = that._onErrorCall;
+					mParams.error = function (oError) {
+					    that.addDialog.setBusy(false);
+						that._onErrorCall(oError);
+					};
 					oModel.create("/Files", oEntry, mParams);
 				};
 				reader.readAsDataURL(file);
@@ -350,19 +356,26 @@ sap.ui.define([
 			if (!this.addDialogStmnt) {
 				this.addDialogStmnt = sap.ui.xmlfragment("addDialogStmnt", "h2h.ui5.view.addDialogStmnt", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialogStmnt);
+			} else {
+			    var oFileUpload = sap.ui.core.Fragment.byId("addDialogStmnt", "fileUploader_2");
+			    oFileUpload.clear();
 			}
 			this.addDialogStmnt.open();
 		},
+		
 		addDialogStmntClose: function (oEvent) {
 			this.addDialogStmnt.close();
 		},
+		
 		addStmntUpload: function () {
 			//var oFileUpload = this.getView().byId("fileUploader");
+			this.addDialogStmnt.setBusy(true);
 			var oFileUpload = sap.ui.core.Fragment.byId("addDialogStmnt", "fileUploader_2");
 			var domRef = oFileUpload.getFocusDomRef();
 			var file = domRef.files[0];
 			var fileName = file.name;
 			var fileType = file.type;
+			var fileSize = file.size;
 
 			if (fileName === "") {
 				return MessageToast.show("Please choose File.");
@@ -371,10 +384,8 @@ sap.ui.define([
 				var reader = new FileReader();
 				var that = this;
 				reader.onload = function (oEvent) {
-                    var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
-					debugger;
+					var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
 					var yourXmlString = window.atob(vContent);
-
 					var binaryLen = yourXmlString.length;
 					var bytes = new Uint8Array(binaryLen);
 					for (var i = 0; i < binaryLen; i++) {
@@ -386,7 +397,7 @@ sap.ui.define([
 					var str = new TextDecoder().decode(bytes);
 
 					var XmlNode = new DOMParser().parseFromString(str, 'text/xml');
-					var ContentJson = that.xmlToJson(XmlNode);
+					var ContentJson = that._xmlToJson(XmlNode);
 
 					var sContentJson = JSON.stringify(ContentJson);
 					//var bContentJson = window.btoa(sContentJson);
@@ -395,9 +406,9 @@ sap.ui.define([
 					var oEntry = {};
 					//oEntry.requestId = "";
 					oEntry.fileBody = bContentJson;
-					oEntry.fileName = file.name;
+					oEntry.fileName = fileName;
 					oEntry.fileType = "text/json"; //file.type;
-					oEntry.fileSize = file.size;
+					oEntry.fileSize = fileSize;
 					oEntry.docType = 2; // для бека - определять тип файла
 
 					// 	oModel.setHeaders({
@@ -407,41 +418,39 @@ sap.ui.define([
 					// 	});
 					var mParams = {};
 					mParams.success = function () {
-						//var oSmartTable = that.byId("LineItemsSmartTable");
-						//oSmartTable.rebindTable();
+						var oSmartTable = that.byId("SmartTableStatements");
+						oSmartTable.rebindTable();
 						that.addDialogStmnt.close();
+						that.addDialogStmnt.setBusy(false);
 					};
-					mParams.error = that._onErrorCall;
+					mParams.error =  function (oError) {
+					    that.addDialogStmnt.setBusy(false);
+						that._onErrorCall(oError);
+					};
 					oModel.create("/Files", oEntry, mParams);
-
-					// 	oModel.request({
-					// 			headers: {
-					// 				"accept": "application/json"
-					// 			},
-					// 			requestUri: "../services/service.xsodata/myTable",
-					// 			method: "POST",
-					// 			data: data
-					// 		},
-
-					// 		function (data, response) {
-					// 			console.log(data);
-					// 		},
-					// 		function (err) {
-					// 			console.log(err);
-					// 		}
-					// 	);
-
 				};
 				reader.readAsDataURL(file);
 			}
 		},
 		//. upload выписка в json
 
-		xmlToJson: function (xml) {
+		// используем при загрузке XML - парсим в JSON и отправляем на сервер
+		/*
+		Usage:
+		1. If you have an XML file URL:
+		const response = await fetch('file_url');
+		const xmlString = await response.text();
+		var XmlNode = new DOMParser().parseFromString(xmlString, 'text/xml');
+		xmlToJson(XmlNode);
+		2. If you have an XML as string:
+		var XmlNode = new DOMParser().parseFromString(yourXmlString, 'text/xml');
+		xmlToJson(XmlNode);
+		*/
+		_xmlToJson: function (xml) {
 			// Create the return object
 			var obj = {};
 
-			if (xml.nodeType == 1) {
+			if (xml.nodeType === 1) {
 				// element
 				// do attributes
 				if (xml.attributes.length > 0) {
@@ -451,7 +460,7 @@ sap.ui.define([
 						obj["$"][attribute.nodeName] = attribute.nodeValue;
 					}
 				}
-			} else if (xml.nodeType == 3) {
+			} else if (xml.nodeType === 3) {
 				// text
 				obj = xml.nodeValue;
 			}
@@ -469,35 +478,23 @@ sap.ui.define([
 				for (var i = 0; i < xml.childNodes.length; i++) {
 					var item = xml.childNodes.item(i);
 					var nodeName = item.nodeName;
-					if (typeof obj[nodeName] == "undefined") {
-						obj[nodeName] = this.xmlToJson(item);
+					if (typeof obj[nodeName] === "undefined") {
+						obj[nodeName] = this._xmlToJson(item);
 					} else {
-						if (typeof obj[nodeName].push == "undefined") {
+						if (typeof obj[nodeName].push === "undefined") {
 							var old = obj[nodeName];
 							obj[nodeName] = [];
 							obj[nodeName].push(old);
 						}
-						obj[nodeName].push(this.xmlToJson(item));
+						obj[nodeName].push(this._xmlToJson(item));
 					}
 				}
 			}
 			return obj;
 		},
 
-		/*
-		Usage:
-		1. If you have an XML file URL:
-		const response = await fetch('file_url');
-		const xmlString = await response.text();
-		var XmlNode = new DOMParser().parseFromString(xmlString, 'text/xml');
-		xmlToJson(XmlNode);
-		2. If you have an XML as string:
-		var XmlNode = new DOMParser().parseFromString(yourXmlString, 'text/xml');
-		xmlToJson(XmlNode);
-		*/
-
 		handleUploadComplete: function (oEvent) {
-			MessageToast.show("ПП загружены ");
+			MessageToast.show("Файл загружен");
 		},
 
 		// обработка ошибки и вывод при загрузке
@@ -554,20 +551,19 @@ sap.ui.define([
 
 		// выбрали подпись в окне выбора
 		onUndoThisSign: function (oEvent) {
-			var src = oEvent.getSource();
-			var ctx = src.getBindingContext();
-			var objSign = src.getModel().getProperty(ctx.getPath());
-			var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
+			//var src = oEvent.getSource();
+			//var ctx = src.getBindingContext();
+			//var objSign = src.getModel().getProperty(ctx.getPath());
+			//var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
 			var docExtId = this._getDocExtId();
 
 			var oEntry = {};
 			oEntry.docExtId = docExtId[0];
-			// 			oEntry.Value = Sign;
-			// 			oEntry.SN = objSign.SerialNumber;
-			// 			oEntry.Issuer = objSign.IssuerName;
-			// 			oEntry.Fio = objSign.SubjectName;
-
-			debugger;
+			// oEntry.Value = Sign;
+			// oEntry.SN = objSign.SerialNumber;
+			// oEntry.Issuer = objSign.IssuerName;
+			// oEntry.Fio = objSign.SubjectName;
+			//debugger;
 			var oModel = this.getOwnerComponent().getModel();
 			oModel.setHeaders({
 				"X-Requested-With": "XMLHttpRequest",
@@ -592,17 +588,17 @@ sap.ui.define([
 
 		// журнал
 		onJournal: function (oEvent) {
-			// тест
-			var objSign = {
-				IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru",
-				SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07",
-				SubjectName: "CN=Алексей, E=kleale@kleale.ru",
-				Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
-				ValidToDate: "2020-02-06T11:56:17.000Z",
-			};
-			var result =
-				"MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
-			this._sendSign(result, objSign);
+			// тест подписи
+// 			var objSign = {
+// 				IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru",
+// 				SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07",
+// 				SubjectName: "CN=Алексей, E=kleale@kleale.ru",
+// 				Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
+// 				ValidToDate: "2020-02-06T11:56:17.000Z"
+// 			};
+// 			var result =
+// 				"MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
+// 			this._sendSign(result, objSign);
 		},
 
 		//////
@@ -634,14 +630,14 @@ sap.ui.define([
 
 		// Получаем сертификаты пользователя
 		// return mySerts=[{}]
-		/*
+		
 		_getUserCertificates: function (oEvent) {
 			var mySerts = []; // сюда сложим все найденные сертификаты юзера
 			var CADESCOM_CADES_BES = 1;
 			var CAPICOM_CURRENT_USER_STORE = 2;
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
-
+            /*
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
 					try {
@@ -684,8 +680,9 @@ sap.ui.define([
 					args[0](mySerts);
 				}, resolve, reject);
 			});
+			*/
 		},
-        */
+        
 		// выбрали подпись в окне выбора
 		onUseSign: function (oEvent) {
 			var src = oEvent.getSource();
@@ -694,7 +691,7 @@ sap.ui.define([
 			var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
 
 			//var oModel = this.getView().getModel();
-			var oModel = this.getOwnerComponent().getModel();
+			//var oModel = this.getOwnerComponent().getModel();
 			//var that = this;
 			var dataToSign = "Digest";
 			var docExtId = this._getDocExtId();
@@ -731,7 +728,8 @@ sap.ui.define([
 					console.warn(result);
 				});
 		},
-
+        
+        // функция получения DocExtId из таблицы LineItemsSmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
 		_getDocExtId: function () {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
@@ -765,10 +763,10 @@ sap.ui.define([
 			var oEntry = {};
 			oEntry.docExtId = docExtId[0];
 			// убираем переносы строк /r/ в SIgn
-			//var Sign2 = Sign.replace("/r/", "");
-			//oEntry.Value = Sign2.replace(" ", "");
+			// var Sign2 = Sign.replace("/r/", "");
+			// oEntry.Value = Sign2.replace(" ", "");
+			
 			oEntry.Value = Sign;
-			//debugger;
 			oEntry.SN = objSign.SerialNumber;
 			oEntry.Issuer = objSign.IssuerName;
 			oEntry.Fio = objSign.SubjectName;
@@ -788,8 +786,6 @@ sap.ui.define([
 			};
 			mParams.error = this._onErrorCall;
 			oModel.create("/Sign", oEntry, mParams);
-
-			//this.signDialog.close();
 		},
 
 		//закрыли signDialog
@@ -807,7 +803,7 @@ sap.ui.define([
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
 			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; //	Возвращает сертификаты соответствующие указанному хэшу SHA1.
-            /*
+			/*
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
 					try {
