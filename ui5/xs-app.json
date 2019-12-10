@@ -7,6 +7,6 @@
 		"destination": "core-xsjs-backend"
 	}, {
 		"source": "(.*)(.xsodata)",
-		"destination": "core-xsjs-backend"
+		"destination": "xsodata"
 	}]
 }
