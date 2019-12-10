@@ -139,9 +139,9 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docSum"/>
 						</Record>
-						<!--<Record Type="UI.DataField">-->
-						<!--	<PropertyValue Property="Value" Path="vat"/>-->
-						<!--</Record>-->
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="vat"/>
+						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="vatRate"/>
 						</Record>
@@ -433,7 +433,7 @@
 					</Record>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Кредит"/>
-				<Annotation Term="UI.LineItem">
+					<Annotation Term="UI.LineItem">
 					<Collection>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
@@ -511,12 +511,12 @@
 							<Annotation Term="Common.QuickInfo" String="КПП получателя"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payerPlace"/>
+							<PropertyValue Property="Value" Path="receiverPlace"/>
 							<PropertyValue Property="Label" String="Населенный пункт"/>
 							<Annotation Term="Common.QuickInfo" String="Населенный пункт"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="receiverPlace"/>
+							<PropertyValue Property="Value" Path="receiverPlaceType"/>
 							<PropertyValue Property="Label" String="Тип населенного пункта"/>
 							<Annotation Term="Common.QuickInfo" String="Тип населенного пункта"/>
 						</Record>
@@ -615,11 +615,11 @@
 							<PropertyValue Property="Label" String="Идентификатор выписки в ELBRUS"/>
 							<Annotation Term="Common.QuickInfo" String="Идентификатор выписки в ELBRUS"/>
 						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="responseId"/>
-							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
-							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="responseId"/>-->
+						<!--	<PropertyValue Property="Label" String="Уникальный идентификатор"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>-->
+						<!--</Record>-->
 					</Collection>
 				</Annotation>
 			</Annotations>
@@ -816,11 +816,11 @@
 							<PropertyValue Property="Label" String="Идентификатор выписки в ELBRUS"/>
 							<Annotation Term="Common.QuickInfo" String="Идентификатор выписки в ELBRUS"/>
 						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="responseId"/>
-							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
-							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="responseId"/>-->
+						<!--	<PropertyValue Property="Label" String="Уникальный идентификатор"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>-->
+						<!--</Record>-->
 					</Collection>
 				</Annotation>
 			</Annotations>
