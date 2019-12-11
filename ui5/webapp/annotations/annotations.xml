@@ -126,7 +126,7 @@
 				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-					    <Record Type="UI.DataField">
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docNum"/>
 						</Record>
 						<Record Type="UI.DataField">
@@ -355,6 +355,12 @@
 								<PropertyPath>responseId</PropertyPath>
 							</Collection>
 						</PropertyValue>
+						<PropertyValue Property="GroupBy">
+							<Collection>
+								<PropertyPath>debetSum</PropertyPath>
+								<PropertyPath>docNum</PropertyPath>
+							</Collection>
+						</PropertyValue>
 					</Record>
 				</Annotation>
 				<Annotation Term="UI.LineItem">
@@ -417,7 +423,7 @@
 					<Collection>
 						<PropertyPath>bic</PropertyPath>
 						<PropertyPath>docNum</PropertyPath>
-						<PropertyPath>enterBal</PropertyPath>
+						<PropertyPath>stmtDate</PropertyPath>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Выписка"/>
@@ -433,8 +439,13 @@
 					</Record>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Кредит"/>
-					<Annotation Term="UI.LineItem">
+				<Annotation Term="UI.LineItem">
 					<Collection>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="responseId"/>-->
+						<!--	<PropertyValue Property="Label" String="Уникальный идентификатор"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 							<PropertyValue Property="Label" String="Дата документа"/>
@@ -615,11 +626,6 @@
 							<PropertyValue Property="Label" String="Идентификатор выписки в ELBRUS"/>
 							<Annotation Term="Common.QuickInfo" String="Идентификатор выписки в ELBRUS"/>
 						</Record>
-						<!--<Record Type="UI.DataField">-->
-						<!--	<PropertyValue Property="Value" Path="responseId"/>-->
-						<!--	<PropertyValue Property="Label" String="Уникальный идентификатор"/>-->
-						<!--	<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>-->
-						<!--</Record>-->
 					</Collection>
 				</Annotation>
 			</Annotations>
@@ -636,6 +642,11 @@
 				<Annotation Term="Common.Label" String="Дебет"/>
 				<Annotation Term="UI.LineItem">
 					<Collection>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="responseId"/>-->
+						<!--	<PropertyValue Property="Label" String="Уникальный идентификатор"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 							<PropertyValue Property="Label" String="Дата документа"/>
@@ -816,13 +827,20 @@
 							<PropertyValue Property="Label" String="Идентификатор выписки в ELBRUS"/>
 							<Annotation Term="Common.QuickInfo" String="Идентификатор выписки в ELBRUS"/>
 						</Record>
-						<!--<Record Type="UI.DataField">-->
-						<!--	<PropertyValue Property="Value" Path="responseId"/>-->
-						<!--	<PropertyValue Property="Label" String="Уникальный идентификатор"/>-->
-						<!--	<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>-->
-						<!--</Record>-->
 					</Collection>
 				</Annotation>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/bic">
+				<Annotation Term="Common.Label" String="БИК банка"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/docNum">
+				<Annotation Term="Common.Label" String="Номер документа"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/stmtDate">
+				<Annotation Term="Common.Label" String="Дата выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/enterBal">
+				<Annotation Term="Common.Label" String="Входящий остаток"/>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>
