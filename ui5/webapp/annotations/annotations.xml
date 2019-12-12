@@ -348,21 +348,6 @@
 				<Annotation Term="Common.Label" String="Уникальный Идентификатора Платежа"/>
 			</Annotations>
 			<Annotations Target="Metadata.StatementType">
-				<Annotation Term="UI.PresentationVariant">
-					<Record Type="UI.PresentationVariantType">
-						<PropertyValue Property="RequestAtLeast">
-							<Collection>
-								<PropertyPath>responseId</PropertyPath>
-							</Collection>
-						</PropertyValue>
-						<PropertyValue Property="GroupBy">
-							<Collection>
-								<PropertyPath>debetSum</PropertyPath>
-								<PropertyPath>docNum</PropertyPath>
-							</Collection>
-						</PropertyValue>
-					</Record>
-				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
 						<Record Type="UI.DataField">
@@ -441,12 +426,7 @@
 				<Annotation Term="Common.Label" String="Кредит"/>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-						<!--<Record Type="UI.DataField">-->
-						<!--	<PropertyValue Property="Value" Path="responseId"/>-->
-						<!--	<PropertyValue Property="Label" String="Уникальный идентификатор"/>-->
-						<!--	<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>-->
-						<!--</Record>-->
-						<Record Type="UI.DataField">
+					    <Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 							<PropertyValue Property="Label" String="Дата документа"/>
 							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
@@ -625,29 +605,20 @@
 							<PropertyValue Property="Value" Path="extId"/>
 							<PropertyValue Property="Label" String="Идентификатор выписки в ELBRUS"/>
 							<Annotation Term="Common.QuickInfo" String="Идентификатор выписки в ELBRUS"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="responseId"/>
+							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
+							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
 						</Record>
 					</Collection>
 				</Annotation>
 			</Annotations>
 			<Annotations Target="Metadata.StatementItemsDebType">
-				<Annotation Term="UI.PresentationVariant">
-					<Record Type="UI.PresentationVariantType">
-						<PropertyValue Property="RequestAtLeast">
-							<Collection>
-								<PropertyPath>responseId</PropertyPath>
-							</Collection>
-						</PropertyValue>
-					</Record>
-				</Annotation>
 				<Annotation Term="Common.Label" String="Дебет"/>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-						<!--<Record Type="UI.DataField">-->
-						<!--	<PropertyValue Property="Value" Path="responseId"/>-->
-						<!--	<PropertyValue Property="Label" String="Уникальный идентификатор"/>-->
-						<!--	<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>-->
-						<!--</Record>-->
-						<Record Type="UI.DataField">
+					    <Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 							<PropertyValue Property="Label" String="Дата документа"/>
 							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
@@ -826,6 +797,11 @@
 							<PropertyValue Property="Value" Path="extId"/>
 							<PropertyValue Property="Label" String="Идентификатор выписки в ELBRUS"/>
 							<Annotation Term="Common.QuickInfo" String="Идентификатор выписки в ELBRUS"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="responseId"/>
+							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
+							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
 						</Record>
 					</Collection>
 				</Annotation>

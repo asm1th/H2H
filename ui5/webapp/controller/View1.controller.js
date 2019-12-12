@@ -5,10 +5,31 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
+	'sap/m/MessagePopover',
+	'sap/m/MessageItem',
 	"h2h/ui5/js/cadesplugin_api",
 	"sap/ui/codeeditor/CodeEditor"
-], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, cadesplugin, CodeEditor) {
+], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, MessagePopover, MessageItem, cadesplugin, CodeEditor) {
 	"use strict";
+
+	var oMessageTemplate = new MessageItem({
+		type: '{type}',
+		title: '{title}',
+		activeTitle: "{active}",
+		description: '{description}',
+		subtitle: '{subtitle}',
+		counter: '{counter}'
+	});
+
+	var oMessagePopover = new MessagePopover({
+		items: {
+			path: '/',
+			template: oMessageTemplate
+		},
+		activeTitlePress: function () {
+			MessageToast.show('Нажали на title');
+		}
+	});
 
 	return BaseController.extend("h2h.ui5.controller.View1", {
 		onInit: function () {
@@ -17,7 +38,100 @@ sap.ui.define([
 			var userModel = this.getOwnerComponent().getModel();
 			this.getView().setModel(userModel);
 
-			//this.byId("pageContainer").to(this.getView().createId("page2"));
+			//messages
+			var sErrorDescription = 'Полный текст длинного сообщения. \n' +
+				'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod' +
+				'tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,' +
+				'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo' +
+				'consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse' +
+				'cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non' +
+				'proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+
+			var aMockMessages = [{
+				type: 'Error',
+				title: 'Сообщение о ошибке',
+				active: true,
+				description: sErrorDescription,
+				subtitle: 'Заголовок сообщения',
+				counter: 1
+			}, {
+				type: 'Warning',
+				title: 'Сообщение о проблеме',
+				description: ''
+			}, {
+				type: 'Success',
+				title: 'Сообщение об успехе',
+				description: 'Описание сообщения',
+				subtitle: 'Заголовок сообщения',
+				counter: 1
+			}, {
+				type: 'Error',
+				title: 'Сообщение о ошибке',
+				description: 'Описание сообщения',
+				subtitle: 'Заголовок сообщения',
+				counter: 2
+			}, {
+				type: 'Information',
+				title: 'Information message',
+				description: 'Описание сообщения',
+				subtitle: 'Заголовок сообщения',
+				counter: 1
+			}];
+
+			var oModel = new JSONModel(aMockMessages);
+			var viewModel = new JSONModel();
+			viewModel.setData({
+				messagesLength: aMockMessages.length + ''
+			});
+			this.getView().setModel("viewModel", viewModel);
+			oMessagePopover.setModel(oModel);
+		},
+
+		handleMessagePopoverPress: function (oEvent) {
+			oMessagePopover.toggle(oEvent.getSource());
+		},
+
+		test: function (oEvent) {
+			var url = "https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde";
+			var data = {
+				"name": "sample",
+				"time": "Wed, 21 Oct 2015 18:27:50 GMT"
+			};
+			var USERNAME = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
+			var PASSWORD = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: data,
+				dataType: "xml",
+				//dataType: 'json',
+                  headers: {
+                    "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
+                  },
+				success: function (data) {
+					MessageBox.alert("Удачно отправлено");
+					alert("Удачно отправлено");
+					console.log("Response: ", data);
+				},
+				error: function (oError) {
+					MessageBox.error(oError.responseText);
+					alert("oError");
+					console.warn(oError);
+				}
+			});
+			
+			// вар 2
+            // var response = await fetch('https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde', {
+            //   method: "POST",
+            //   headers: {
+            //     //'Content-Type': 'application/json;charset=utf-8',
+            //     "Content-type: text/xml;charset=utf-8"
+            //     "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
+            //   },
+            //   body: JSON.stringify(data);
+            // });
+            // var result = await response.json();
+            // alert(result.message);
 		},
 
 		onItemSelect: function (oEvent) {
@@ -54,7 +168,26 @@ sap.ui.define([
 		onPDF: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
+        
+        onSelStatement: function () {
+			var oSmartTable = this.byId("SmartTableStatements");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var sPath;
+			var that = this;
 
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					sPath = Context.sPath;
+				});
+				var data = oTable.getModel().getProperty(sPath);
+				var oFilter = new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId);
+				that.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+				that.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);;
+			}
+		},
+        
 		onChoseStatement: function (oEvent) {
 			//debugger;
 			var src = oEvent.getSource();
@@ -73,7 +206,7 @@ sap.ui.define([
 			//oSmartTable_С.setEntitySet("StatementItemsCred");
 			//oSmartTable_С.setTableBindingPath("ItemsCred");
 			//oSmartTable_С.rebindTable();
-			oSmartTable_D.getTable().bindRows("/StatementItemsCred", null, null, oFilter);
+			oSmartTable_С.getTable().bindRows("/StatementItemsCred", null, null, oFilter);
 		},
 
 		// test event for dev
@@ -131,7 +264,7 @@ sap.ui.define([
 			var src = oEvent.getSource().getParent();
 			var ctx = this.detailDialog.getBindingContext();
 
-			debugger;
+			//debugger;
 			var oModel = this.getOwnerComponent().getModel();
 			var path = ctx.getPath();
 			var obj = oModel.getProperty(path);
@@ -193,7 +326,7 @@ sap.ui.define([
 			//var url = '/xsodata';
 			//var oModel = new sap.ui.model.odata.ODataModel(url);
 			var oModel = this.getView().getModel();
-			var that = this;
+			//var that = this;
 
 			oModel.read("/Files('" + requestId[0] + "')", {
 				success: function (file) {
@@ -231,9 +364,9 @@ sap.ui.define([
 		//////////////////
 		// просмотр платежки загружаемой в банк
 		onShowXml: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
-			var oTable = oSmartTable.getTable();
-			var iIndex = oTable.getSelectedIndices();
+			//var oSmartTable = this.byId("LineItemsSmartTable");
+			//var oTable = oSmartTable.getTable();
+			//var iIndex = oTable.getSelectedIndices();
 			var docExtId = this._getDocExtId();
 
 			// Get file
@@ -262,7 +395,7 @@ sap.ui.define([
 						box, {
 							icon: sap.m.MessageBox.Icon.INFORMATION,
 							title: "Платежное поручение для загрузки в банк",
-							styleClass: 'MessageBoxLarge',
+							styleClass: "MessageBoxLarge",
 							actions: [sap.m.MessageBox.Action.YES], //[sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO]
 							onClose: function (oAction) {
 								// if (oAction === sap.m.MessageBox.Action.YES) {
@@ -293,8 +426,8 @@ sap.ui.define([
 				this.addDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.addDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialog);
 			} else {
-			    var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
-			    oFileUpload.clear();
+				var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
+				oFileUpload.clear();
 			}
 			this.addDialog.open();
 		},
@@ -341,7 +474,7 @@ sap.ui.define([
 						that.addDialog.setBusy(false);
 					};
 					mParams.error = function (oError) {
-					    that.addDialog.setBusy(false);
+						that.addDialog.setBusy(false);
 						that._onErrorCall(oError);
 					};
 					oModel.create("/Files", oEntry, mParams);
@@ -357,16 +490,16 @@ sap.ui.define([
 				this.addDialogStmnt = sap.ui.xmlfragment("addDialogStmnt", "h2h.ui5.view.addDialogStmnt", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialogStmnt);
 			} else {
-			    var oFileUpload = sap.ui.core.Fragment.byId("addDialogStmnt", "fileUploader_2");
-			    oFileUpload.clear();
+				var oFileUpload = sap.ui.core.Fragment.byId("addDialogStmnt", "fileUploader_2");
+				oFileUpload.clear();
 			}
 			this.addDialogStmnt.open();
 		},
-		
+
 		addDialogStmntClose: function (oEvent) {
 			this.addDialogStmnt.close();
 		},
-		
+
 		addStmntUpload: function () {
 			//var oFileUpload = this.getView().byId("fileUploader");
 			this.addDialogStmnt.setBusy(true);
@@ -423,8 +556,8 @@ sap.ui.define([
 						that.addDialogStmnt.close();
 						that.addDialogStmnt.setBusy(false);
 					};
-					mParams.error =  function (oError) {
-					    that.addDialogStmnt.setBusy(false);
+					mParams.error = function (oError) {
+						that.addDialogStmnt.setBusy(false);
 						that._onErrorCall(oError);
 					};
 					oModel.create("/Files", oEntry, mParams);
@@ -589,16 +722,16 @@ sap.ui.define([
 		// журнал
 		onJournal: function (oEvent) {
 			// тест подписи
-// 			var objSign = {
-// 				IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru",
-// 				SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07",
-// 				SubjectName: "CN=Алексей, E=kleale@kleale.ru",
-// 				Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
-// 				ValidToDate: "2020-02-06T11:56:17.000Z"
-// 			};
-// 			var result =
-// 				"MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
-// 			this._sendSign(result, objSign);
+			// 			var objSign = {
+			// 				IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru",
+			// 				SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07",
+			// 				SubjectName: "CN=Алексей, E=kleale@kleale.ru",
+			// 				Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
+			// 				ValidToDate: "2020-02-06T11:56:17.000Z"
+			// 			};
+			// 			var result =
+			// 				"MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
+			// 			this._sendSign(result, objSign);
 		},
 
 		//////
@@ -630,14 +763,14 @@ sap.ui.define([
 
 		// Получаем сертификаты пользователя
 		// return mySerts=[{}]
-		
+
 		_getUserCertificates: function (oEvent) {
 			var mySerts = []; // сюда сложим все найденные сертификаты юзера
 			var CADESCOM_CADES_BES = 1;
 			var CAPICOM_CURRENT_USER_STORE = 2;
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
-            /*
+
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
 					try {
@@ -680,9 +813,9 @@ sap.ui.define([
 					args[0](mySerts);
 				}, resolve, reject);
 			});
-			*/
+
 		},
-        
+
 		// выбрали подпись в окне выбора
 		onUseSign: function (oEvent) {
 			var src = oEvent.getSource();
@@ -728,8 +861,8 @@ sap.ui.define([
 					console.warn(result);
 				});
 		},
-        
-        // функция получения DocExtId из таблицы LineItemsSmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
+
+		// функция получения DocExtId из таблицы LineItemsSmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
 		_getDocExtId: function () {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
@@ -765,7 +898,7 @@ sap.ui.define([
 			// убираем переносы строк /r/ в SIgn
 			// var Sign2 = Sign.replace("/r/", "");
 			// oEntry.Value = Sign2.replace(" ", "");
-			
+
 			oEntry.Value = Sign;
 			oEntry.SN = objSign.SerialNumber;
 			oEntry.Issuer = objSign.IssuerName;
@@ -803,7 +936,7 @@ sap.ui.define([
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
 			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; //	Возвращает сертификаты соответствующие указанному хэшу SHA1.
-			/*
+
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
 					try {
@@ -840,7 +973,7 @@ sap.ui.define([
 					}
 				}, Thumbprint, dataToSign, resolve, reject);
 			});
-			*/
+
 		},
 
 		// форматтер для подсветки строки в таблице

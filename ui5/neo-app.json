@@ -23,7 +23,7 @@
       "description": "xsjs description",
       "target": {
         "type": "destination",
-        "name": "core-xsjs-backend"
+        "name": "xsodata"
       }
     }
   ],
