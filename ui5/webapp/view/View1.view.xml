@@ -38,7 +38,7 @@
 				<!--<Text class="tntHeadTxt" text="Настройки"/>-->
 				<ToolbarSpacer/>
 				<!--<Button icon="sap-icon://search" type="Transparent"/>-->
-				<Button icon="sap-icon://message-popup" type="Transparent" tooltip="Сообщения" text="{/messagesLength}" press="handleMessagePopoverPress"/>
+				<Button id="messagePopup" icon="sap-icon://bell" type="Transparent" tooltip="Сообщения" text=" {/messagesLength}" press="handleMessagePopoverPress"/>
 				<!--<Button icon="sap-icon://message-popup" type="Transparent" press="test"/>-->
 				<!--<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"/>-->
 				<!--src="./profile2.jpg"-->

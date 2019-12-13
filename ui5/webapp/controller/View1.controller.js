@@ -49,7 +49,7 @@ sap.ui.define([
 
 			var aMockMessages = [{
 				type: 'Error',
-				title: 'Сообщение о ошибке',
+				title: 'Сообщение об ошибке',
 				active: true,
 				description: sErrorDescription,
 				subtitle: 'Заголовок сообщения',
@@ -66,13 +66,13 @@ sap.ui.define([
 				counter: 1
 			}, {
 				type: 'Error',
-				title: 'Сообщение о ошибке',
+				title: 'Сообщение об ошибке',
 				description: 'Описание сообщения',
 				subtitle: 'Заголовок сообщения',
 				counter: 2
 			}, {
 				type: 'Information',
-				title: 'Information message',
+				title: 'Информация',
 				description: 'Описание сообщения',
 				subtitle: 'Заголовок сообщения',
 				counter: 1
@@ -80,10 +80,8 @@ sap.ui.define([
 
 			var oModel = new JSONModel(aMockMessages);
 			var viewModel = new JSONModel();
-			viewModel.setData({
-				messagesLength: aMockMessages.length + ''
-			});
-			this.getView().setModel("viewModel", viewModel);
+			viewModel.setData({messagesLength: aMockMessages.length + ''});
+			this.byId("messagePopup").setModel(viewModel);
 			oMessagePopover.setModel(oModel);
 		},
 
