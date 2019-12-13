@@ -101,16 +101,19 @@
 										<ToolbarSpacer/>
 										<Button icon="sap-icon://upload-to-cloud" text="Выписки в XML" tooltip="Загрузить Выписки" class="btn btn-bordered"
 											press="OnUploadSttmntDialog"/>
+											<Button text="Выписки в XML" tooltip="Экспорт Выписки" class="ddd"
+											press="OnExportStmnt"/>
 										<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_1" class="btn btn-bordered" enabled="fasle"/>
 										<Button icon="sap-icon://attachment" tooltip="Приложения" class="btn btn-bordered" press="onAttachment" enabled="fasle"/>
 										<Button icon="sap-icon://documents" tooltip="Журнал" class="btn btn-bordered" press="onJournal_1" enabled="fasle"/>
 										<Button icon="sap-icon://pdf-attachment" tooltip="PDF" class="btn btn-bordered" press="onPDF" enabled="fasle"/>
-										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Загрузить в SAP" class="btn btn-bordered" press="onUploadToSap"
-											enabled="fasle"/>
+										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAll" enabled="true"/>
+										<!--<Button icon="sap-icon://paper-plane" type="Default" tooltip="Загрузить в SAP" class="btn btn-bordered" press="onUploadToSap"-->
+										<!--	enabled="fasle"/>-->
 										<Button icon="sap-icon://signature" type="Accept" text="Проверить ЭЦП" class="btn btn-bordered" press="onCheckSign" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:AnalyticalTable id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" visibleRowCount="10" rowActionCount="1"
+								<t:AnalyticalTable id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" visibleRowCount="10" rowActionCount="2"
 									rowSelectionChange="onSelStatement">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="None"/>
@@ -119,6 +122,7 @@
 										<t:RowAction>
 											<t:items>
 												<t:RowActionItem type="Navigation" press="onChoseStatement"></t:RowActionItem>
+												<t:RowActionItem type="Delete" press="onDelete"></t:RowActionItem>
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>

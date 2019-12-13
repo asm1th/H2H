@@ -31,11 +31,11 @@
 							</HBox>
 							<HBox width="40%" class="pad05 labelFull">
 								<Label text="ИНН:" class="label2"/>
-								<Input id="PayerInn" value="{PayerInn}" editable="false"/>
+								<Input id="PayerInn" value="{payerInn}" editable="false"/>
 							</HBox>
 							<HBox width="40%" class="pad05 labelFull">
 								<Label text="КПП:" class="label2"/>
-								<Input id="PayerKpp" value="{PayerKpp}" editable="false"/>
+								<Input id="PayerKpp" value="{payerKpp}" editable="false"/>
 							</HBox>
 						</HBox>
 					</HBox>
@@ -44,7 +44,7 @@
 							<Label text="Наименование Плательщика:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="PayerName" value="{PayerName}" editable="false"/>
+							<Input id="PayerName" value="{payerName}" editable="false"/>
 						</HBox>
 					</HBox>
 					<HBox width="100%">
@@ -52,7 +52,7 @@
 							<Label text="Наименование Банка Плательщика:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="PayerBankName" value="{PayerBankName}" editable="false"/>
+							<Input id="PayerBankName" value="{payerBankName}" editable="false"/>
 						</HBox>
 					</HBox>
 					<HBox width="100%">
@@ -60,7 +60,7 @@
 							<Label text="Город Банка Плательщика:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="PayerBankBankCity" value="{PayerBankBankCity}" editable="false"/>
+							<Input id="PayerBankBankCity" value="{payerBankBankCity}" editable="false"/>
 						</HBox>
 					</HBox>
 				</VBox>
@@ -71,11 +71,11 @@
 							<Label text="Сумма"/>
 							<Input id="docSum" value="{docSum}" editable="false"/>
 							<Label text="Счет №"/>
-							<Input id="PayerPersonalAcc" value="{PayerPersonalAcc}" editable="false"/>
+							<Input id="PayerPersonalAcc" value="{payerPersonalAcc}" editable="false"/>
 							<Label text="БИК"/>
-							<Input id="PayerBankBic" value="{PayerBankBic}" editable="false"/>
+							<Input id="PayerBankBic" value="{payerBankBic}" editable="false"/>
 							<Label text="Счет №"/>
-							<Input id="PayerBankCorrespAcc" value="{PayerBankCorrespAcc}" editable="false"/>
+							<Input id="PayerBankCorrespAcc" value="{payerBankCorrespAcc}" editable="false"/>
 							<!--<Label text="НДС"/>-->
 							<!--<Input id="vatRate" value="{vatRate}" editable="false"/>-->
 						</form:content>
@@ -92,7 +92,7 @@
 							<Label text="Наименование Банка Получателя:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="PayeeBankName" value="{PayeeBankName}" editable="false"/>
+							<Input id="PayeeBankName" value="{payeeBankName}" editable="false"/>
 						</HBox>
 					</HBox>
 					<HBox width="100%">
@@ -100,7 +100,7 @@
 							<Label text="Город Банка Получателя:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="PayeeBankBankCity" value="{PayeeBankBankCity}" editable="false"/>
+							<Input id="PayeeBankBankCity" value="{payeeBankBankCity}" editable="false"/>
 						</HBox>
 					</HBox>
 					<HBox width="100%">
@@ -110,11 +110,11 @@
 						<HBox width="60%">
 							<HBox width="50%" class="pad05 labelFull">
 								<Label text="ИНН:" class="label2"/>
-								<Input id="PayeeInn" value="{PayeeInn}" editable="false"/>
+								<Input id="PayeeInn" value="{payeeInn}" editable="false"/>
 							</HBox>
 							<HBox width="50%" class="pad05 labelFull">
 								<Label text="КПП:" class="label2"/>
-								<Input id="PayeeKpp" value="{PayeeKpp}" editable="false"/>
+								<Input id="PayeeKpp" value="{payeeKpp}" editable="false"/>
 							</HBox>
 						</HBox>
 					</HBox>
@@ -123,7 +123,7 @@
 							<Label text="Наименование Получателя:"/>
 						</HBox>
 						<HBox width="60%" class="formInput">
-							<Input id="PayeeName" value="{PayeeName}" editable="false"/>
+							<Input id="PayeeName" value="{payeeName}" editable="false"/>
 						</HBox>
 					</HBox>
 				</VBox>
@@ -132,11 +132,11 @@
 						adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" singleContainerFullSize="false">
 						<form:content>
 						    <Label text="КСчет №"/>
-							<Input id="PayeeBankCorrespAcc" value="{PayeeBankCorrespAcc}" editable="false"/>
+							<Input id="PayeeBankCorrespAcc" value="{payeeBankCorrespAcc}" editable="false"/>
 							<Label text="БИК"/>
-							<Input id="PayeeBankBic" value="{PayeeBankBic}" editable="false"/>
+							<Input id="PayeeBankBic" value="{payeeBankBic}" editable="false"/>
 							<Label text="Счет №"/>
-							<Input id="PayeePersonalAcc" value="{PayeePersonalAcc}" editable="false"/>
+							<Input id="PayeePersonalAcc" value="{payeePersonalAcc}" editable="false"/>
 						</form:content>
 					</form:SimpleForm>
 				</VBox>
@@ -166,7 +166,7 @@
 					<t:Column width="15%">
 						<Label text="КБК" />
 						<t:template>
-							<Text text="{Name}" wrapping="false" />
+							<Text text="{cbc}" wrapping="false" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
@@ -178,37 +178,37 @@
 					<t:Column width="15%">
 						<Label text="Осн. пл." />
 						<t:template>
-							<Text text="{Quantity}" />
+							<Text text="{paytReason}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Налоговый период" />
 						<t:template>
-							<Text text="{Quantity}" />
+							<Text text="{taxPeriod}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Номер документа" />
 						<t:template>
-							<Text text="{Quantity}" />
+							<Text text="{quantity}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Дата документа" />
 						<t:template>
-							<Text text="{Quantity}" />
+							<Text text="{docDate}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Тип платежа" />
 						<t:template>
-							<Text text="{Quantity}" />
+							<Text text="{taxPaytKind}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Код УИН" />
 						<t:template>
-							<Text text="{Quantity}" />
+							<Text text="{payeeUip}" />
 						</t:template>
 					</t:Column>
 				</t:columns>

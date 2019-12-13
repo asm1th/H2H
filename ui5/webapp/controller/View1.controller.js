@@ -131,6 +131,14 @@ sap.ui.define([
             // var result = await response.json();
             // alert(result.message);
 		},
+		
+		onDelete: function (oEvent) {
+			
+		},
+		
+		onDeleteAll: function (oEvent) {
+			
+		},
 
 		onItemSelect: function (oEvent) {
 			var item = oEvent.getParameter('item');
@@ -487,9 +495,10 @@ sap.ui.define([
 			if (!this.addDialogStmnt) {
 				this.addDialogStmnt = sap.ui.xmlfragment("addDialogStmnt", "h2h.ui5.view.addDialogStmnt", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialogStmnt);
+				
 			} else {
-				var oFileUpload = sap.ui.core.Fragment.byId("addDialogStmnt", "fileUploader_2");
-				oFileUpload.clear();
+				//var oFileUpload = sap.ui.core.Fragment.byId("addDialogStmnt", "fileUploader_2");
+				//oFileUpload.clear();
 			}
 			this.addDialogStmnt.open();
 		},
@@ -911,9 +920,10 @@ sap.ui.define([
 				"X-CSRF-Token": "Fetch"
 			});
 			var mParams = {};
+			var that = this; 
 			mParams.success = function () {
 				MessageToast.show("ПП подписана");
-				this.signDialog.close();
+				that.signDialog.close();
 			};
 			mParams.error = this._onErrorCall;
 			oModel.create("/Sign", oEntry, mParams);

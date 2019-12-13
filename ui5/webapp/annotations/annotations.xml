@@ -117,6 +117,7 @@
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
 						<PropertyPath>docDate</PropertyPath>
+						<PropertyPath>docNum</PropertyPath>
 						<PropertyPath>payerBankName</PropertyPath>
 						<PropertyPath>payeeBankCorrespAcc</PropertyPath>
 						<PropertyPath>payerName</PropertyPath>
@@ -426,7 +427,7 @@
 				<Annotation Term="Common.Label" String="Кредит"/>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-					    <Record Type="UI.DataField">
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 							<PropertyValue Property="Label" String="Дата документа"/>
 							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
@@ -610,6 +611,11 @@
 							<PropertyValue Property="Value" Path="responseId"/>
 							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
 							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="ddocDate"/>
+							<PropertyValue Property="Label" String="Дата документа"/>
+							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
 						</Record>
 					</Collection>
 				</Annotation>
@@ -618,7 +624,7 @@
 				<Annotation Term="Common.Label" String="Дебет"/>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-					    <Record Type="UI.DataField">
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 							<PropertyValue Property="Label" String="Дата документа"/>
 							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
@@ -802,6 +808,11 @@
 							<PropertyValue Property="Value" Path="responseId"/>
 							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
 							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="ddocDate"/>
+							<PropertyValue Property="Label" String="Дата документа"/>
+							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
 						</Record>
 					</Collection>
 				</Annotation>

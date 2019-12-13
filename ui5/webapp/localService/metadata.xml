@@ -153,23 +153,23 @@
 </EntityType>
 <EntityType Name="StatementType" sap:semantics="aggregate">
 <Key>
-<PropertyRef Name="ID"/>
+<PropertyRef Name="GENERATED_ID"/>
 </Key>
-<Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
-<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-<Property Name="bic" Type="Edm.String" MaxLength="9"/>
-<Property Name="debetSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:filterable="false"/>
-<Property Name="creditSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:filterable="false"/>
-<Property Name="currCode" Type="Edm.String" MaxLength="3"/>
-<Property Name="docTime" Type="Edm.String" MaxLength="8"/>
-<Property Name="outBal" Type="Edm.Decimal" Precision="13" Scale="2"/>
-<Property Name="stmtDate" Type="Edm.DateTime" sap:display-format="Date"/>
-<Property Name="enterBal" Type="Edm.Decimal" Precision="13" Scale="2"/>
-<Property Name="docNum" Type="Edm.String" MaxLength="6"/>
+<Property Name="GENERATED_ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
+<Property Name="responseId" Type="Edm.String" MaxLength="37" sap:label="Уникальный идентификатор" sap:aggregation-role="dimension"/>
+<Property Name="bic" Type="Edm.String" MaxLength="9" sap:label="БИК банка клиента" sap:aggregation-role="dimension"/>
+<Property Name="currCode" Type="Edm.String" MaxLength="3" sap:label="Код валюты выписки" sap:aggregation-role="dimension"/>
+<Property Name="docTime" Type="Edm.String" MaxLength="8" sap:label="Данные актуальны на (время)" sap:aggregation-role="dimension"/>
+<Property Name="stmtDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="Дата выписки" sap:aggregation-role="dimension"/>
+<Property Name="docNum" Type="Edm.String" MaxLength="6" sap:label="Номер документа" sap:aggregation-role="dimension"/>
+<Property Name="debetSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="Итого оборотов по кредиту" sap:aggregation-role="measure" sap:filterable="false"/>
+<Property Name="creditSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="Итого оборотов по кредиту" sap:aggregation-role="measure" sap:filterable="false"/>
+<Property Name="outBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="Исходящий остаток" sap:aggregation-role="measure" sap:filterable="false"/>
+<Property Name="enterBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="Входящий остаток" sap:aggregation-role="measure" sap:filterable="false"/>
 <NavigationProperty Name="ItemsCred" Relationship="default.Statement_ItemsCredType" FromRole="StatementPrincipal" ToRole="StatementItemsCredDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="ItemsDeb" Relationship="default.Statement_ItemsDebType" FromRole="StatementPrincipal" ToRole="StatementItemsDebDependent" sap:creatable="false" sap:filterable="false"/>
 </EntityType>
-<EntityType Name="StatementItemsCredType" sap:semantics="aggregate">
+<EntityType Name="StatementItemsCredType">
 <Key>
 <PropertyRef Name="responseId"/>
 </Key>
@@ -178,8 +178,9 @@
 <Property Name="bank" Type="Edm.String" MaxLength="80"/>
 <Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>
 <Property Name="dc" Type="Edm.Int32" Nullable="false"/>
+<Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date"/>
 <Property Name="docNum" Type="Edm.String" MaxLength="6"/>
-<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:filterable="false"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
 <Property Name="operDate" Type="Edm.String" MaxLength="10"/>
 <Property Name="paymentOrder" Type="Edm.String" MaxLength="2"/>
 <Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
@@ -201,7 +202,7 @@
 <Property Name="personalName" Type="Edm.String" MaxLength="160"/>
 <Property Name="purpose" Type="Edm.String" MaxLength="210"/>
 <Property Name="cbc" Type="Edm.String" MaxLength="20"/>
-<Property Name="docDate" Type="Edm.String" MaxLength="10"/>
+<Property Name="ddocDate" Type="Edm.DateTime" sap:display-format="Date"/>
 <Property Name="docNo" Type="Edm.String" MaxLength="15"/>
 <Property Name="drawerStatus" Type="Edm.String" MaxLength="2"/>
 <Property Name="okato" Type="Edm.String" MaxLength="11"/>
@@ -210,7 +211,7 @@
 <Property Name="taxPeriod" Type="Edm.String" MaxLength="10"/>
 <Property Name="uip" Type="Edm.String" MaxLength="25"/>
 </EntityType>
-<EntityType Name="StatementItemsDebType" sap:semantics="aggregate">
+<EntityType Name="StatementItemsDebType">
 <Key>
 <PropertyRef Name="responseId"/>
 </Key>
@@ -219,8 +220,9 @@
 <Property Name="bank" Type="Edm.String" MaxLength="80"/>
 <Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>
 <Property Name="dc" Type="Edm.Int32" Nullable="false"/>
+<Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date"/>
 <Property Name="docNum" Type="Edm.String" MaxLength="6"/>
-<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:filterable="false"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
 <Property Name="operDate" Type="Edm.String" MaxLength="10"/>
 <Property Name="paymentOrder" Type="Edm.String" MaxLength="2"/>
 <Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
@@ -242,7 +244,7 @@
 <Property Name="personalName" Type="Edm.String" MaxLength="160"/>
 <Property Name="purpose" Type="Edm.String" MaxLength="210"/>
 <Property Name="cbc" Type="Edm.String" MaxLength="20"/>
-<Property Name="docDate" Type="Edm.String" MaxLength="10"/>
+<Property Name="ddocDate" Type="Edm.DateTime" sap:display-format="Date"/>
 <Property Name="docNo" Type="Edm.String" MaxLength="15"/>
 <Property Name="drawerStatus" Type="Edm.String" MaxLength="2"/>
 <Property Name="okato" Type="Edm.String" MaxLength="11"/>
@@ -300,7 +302,7 @@
 <EntitySet Name="Payee" EntityType="default.PayeeType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="Files" EntityType="default.FilesType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="Sign" EntityType="default.SignType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
-<EntitySet Name="Statement" EntityType="default.StatementType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="Statement" EntityType="default.StatementType" sap:addressable="false" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="StatementItemsCred" EntityType="default.StatementItemsCredType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="StatementItemsDeb" EntityType="default.StatementItemsDebType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <AssociationSet Name="PaymentOrder_Files" Association="default.PaymentOrder_FilesType">
