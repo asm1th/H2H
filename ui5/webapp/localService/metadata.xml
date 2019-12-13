@@ -10,7 +10,7 @@
 <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
 <Property Name="status" Type="Edm.String" MaxLength="25"/>
 <Property Name="purpose" Type="Edm.String" MaxLength="210"/>
-<Property Name="docDate" Type="Edm.String" MaxLength="255"/>
+<Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date"/>
 <Property Name="docNum" Type="Edm.String" MaxLength="6"/>
 <Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
 <Property Name="vatSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
@@ -82,7 +82,7 @@
 </Key>
 <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
 <Property Name="purpose" Type="Edm.String" MaxLength="210"/>
-<Property Name="docDate" Type="Edm.String" MaxLength="255"/>
+<Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date"/>
 <Property Name="docNum" Type="Edm.String" Nullable="false" MaxLength="6"/>
 <Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
 <Property Name="vatSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
@@ -131,6 +131,7 @@
 <PropertyRef Name="requestId"/>
 </Key>
 <Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="docType" Type="Edm.String" MaxLength="255"/>
 <Property Name="fileName" Type="Edm.String" MaxLength="255"/>
 <Property Name="fileType" Type="Edm.String" MaxLength="255"/>
 <Property Name="fileSize" Type="Edm.Int32"/>
@@ -150,14 +151,15 @@
 <Property Name="Fio" Type="Edm.String" MaxLength="255"/>
 <Property Name="Position" Type="Edm.String" MaxLength="255"/>
 </EntityType>
-<EntityType Name="StatementType">
+<EntityType Name="StatementType" sap:semantics="aggregate">
 <Key>
-<PropertyRef Name="responseId"/>
+<PropertyRef Name="ID"/>
 </Key>
+<Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
 <Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="37"/>
 <Property Name="bic" Type="Edm.String" MaxLength="9"/>
-<Property Name="debetSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
-<Property Name="creditSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="debetSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:filterable="false"/>
+<Property Name="creditSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:filterable="false"/>
 <Property Name="currCode" Type="Edm.String" MaxLength="3"/>
 <Property Name="docTime" Type="Edm.String" MaxLength="8"/>
 <Property Name="outBal" Type="Edm.Decimal" Precision="13" Scale="2"/>
@@ -167,7 +169,7 @@
 <NavigationProperty Name="ItemsCred" Relationship="default.Statement_ItemsCredType" FromRole="StatementPrincipal" ToRole="StatementItemsCredDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="ItemsDeb" Relationship="default.Statement_ItemsDebType" FromRole="StatementPrincipal" ToRole="StatementItemsDebDependent" sap:creatable="false" sap:filterable="false"/>
 </EntityType>
-<EntityType Name="StatementItemsCredType">
+<EntityType Name="StatementItemsCredType" sap:semantics="aggregate">
 <Key>
 <PropertyRef Name="responseId"/>
 </Key>
@@ -177,7 +179,7 @@
 <Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>
 <Property Name="dc" Type="Edm.Int32" Nullable="false"/>
 <Property Name="docNum" Type="Edm.String" MaxLength="6"/>
-<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:filterable="false"/>
 <Property Name="operDate" Type="Edm.String" MaxLength="10"/>
 <Property Name="paymentOrder" Type="Edm.String" MaxLength="2"/>
 <Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
@@ -208,7 +210,7 @@
 <Property Name="taxPeriod" Type="Edm.String" MaxLength="10"/>
 <Property Name="uip" Type="Edm.String" MaxLength="25"/>
 </EntityType>
-<EntityType Name="StatementItemsDebType">
+<EntityType Name="StatementItemsDebType" sap:semantics="aggregate">
 <Key>
 <PropertyRef Name="responseId"/>
 </Key>
@@ -218,7 +220,7 @@
 <Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>
 <Property Name="dc" Type="Edm.Int32" Nullable="false"/>
 <Property Name="docNum" Type="Edm.String" MaxLength="6"/>
-<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:filterable="false"/>
 <Property Name="operDate" Type="Edm.String" MaxLength="10"/>
 <Property Name="paymentOrder" Type="Edm.String" MaxLength="2"/>
 <Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
