@@ -458,6 +458,7 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 		StatementItemsRaif.set('BANK',							doc.bank);
 		StatementItemsRaif.set('CORRACC',						doc.corrAcc);
 		StatementItemsRaif.set('DC',							doc.dc);
+		StatementItemsRaif.set('DOCDATE',						doc.docDate);
 		StatementItemsRaif.set('DOCNUM',						doc.docNum);
 		StatementItemsRaif.set('DOCSUM',						doc.docSum);
 		StatementItemsRaif.set('OPERDATE',						doc.operDate);
@@ -481,7 +482,7 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 		StatementItemsRaif.set('PERSONALNAME',					docs.PersonalName);
 		StatementItemsRaif.set('PURPOSE',						docs.Purpose);
 		StatementItemsRaif.set('CBC',							docs.DepartmentalInfo.$.cbc);
-		StatementItemsRaif.set('DOCDATE',						docs.DepartmentalInfo.$.docDate);
+		StatementItemsRaif.set('DDOCDATE',						docs.DepartmentalInfo.$.docDate);
 		StatementItemsRaif.set('DOCNO',							docs.DepartmentalInfo.$.docNo);
 		StatementItemsRaif.set('DRAWERSTATUS',					docs.DepartmentalInfo.$.drawerStatus);
 		StatementItemsRaif.set('OKATO',							docs.DepartmentalInfo.$.okato);

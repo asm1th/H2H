@@ -254,7 +254,7 @@ context RaiffeisenBank {
 		    @Comment : 'Исходящий остаток'
 		    OUTBAL          : t_sum;
 		    @Comment : 'Дата выписки'
-		    STMTDATE        : LocalDate;
+		    STMTDATE        : t_date;
 		    @Comment : 'Входящий остаток'
 		    ENTERBAL        : t_sum;
 		    @Comment : 'Номер документа'
@@ -273,6 +273,8 @@ context RaiffeisenBank {
     		CORRACC                 : String(20);
     		@Comment : 'признак дебета/кредита. Если 1-дебет, 2-кредит'
     		DC                      : t_int;
+    		@Comment : 'Дата документа'
+    		DOCDATE                 : t_date;
     		@Comment : 'Номер документа'
     		DOCNUM                  : t_str_6;
     		@Comment : 'Сумма документа'
@@ -320,7 +322,7 @@ context RaiffeisenBank {
     		@Comment : 'КБК'
     		CBC                     : String(20);
     		@Comment : 'Дата документа'
-    		DOCDATE                 : String(10);
+    		DDOCDATE                 : t_date;
     		@Comment : 'Номер налогового документа'
     		DOCNO                   : t_str_15;
     		@Comment : 'Статус составителя документа'
@@ -540,6 +542,7 @@ context RaiffeisenBank {
 		BANK                       as bank,
 		CORRACC                    as corrAcc,
 		DC                         as dc,
+		DOCDATE                    as docDate,
 		DOCNUM                     as docNum,
 		DOCSUM                     as docSum,
 		OPERDATE                   as operDate,
@@ -563,7 +566,7 @@ context RaiffeisenBank {
 		PERSONALNAME               as personalName,
 		PURPOSE                    as purpose,
 		CBC                        as cbc,
-		DOCDATE                    as docDate,
+		DOCDATE                    as ddocDate,
 		DOCNO                      as docNo,
 		DRAWERSTATUS               as drawerStatus,
 		OKATO                      as okato,
@@ -579,6 +582,7 @@ context RaiffeisenBank {
 		BANK                       as bank,
 		CORRACC                    as corrAcc,
 		DC                         as dc,
+		DOCDATE                    as docDate,
 		DOCNUM                     as docNum,
 		DOCSUM                     as docSum,
 		OPERDATE                   as operDate,
@@ -602,7 +606,7 @@ context RaiffeisenBank {
 		PERSONALNAME               as personalName,
 		PURPOSE                    as purpose,
 		CBC                        as cbc,
-		DOCDATE                    as docDate,
+		DDOCDATE                   as ddocDate,
 		DOCNO                      as docNo,
 		DRAWERSTATUS               as drawerStatus,
 		OKATO                      as okato,
