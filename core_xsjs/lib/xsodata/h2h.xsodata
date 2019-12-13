@@ -21,9 +21,9 @@ service {
 																			
 	"cv_statement"		as "Statement"		keys generate local "GENERATED_ID" 	navigates ( "Statement_ItemsCred" as "ItemsCred",
 																										"Statement_ItemsDeb"  as "ItemsDeb"
-																										from principal) aggregates always ;
-	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId") aggregates always (SUM of "docSum");																
-	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId") aggregates always (SUM of "docSum");	
+																										from principal) aggregates always;
+	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId");																
+	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId");
 																										
 	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("requestId")						multiplicity "1";
 	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("docExtId")						multiplicity "*";
