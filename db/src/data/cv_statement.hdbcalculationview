@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cv_statement" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="cv_statement"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="RaiffeisenBank.TStatement">
+    <resourceUri>RaiffeisenBank.TStatement</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews/>
+<logicalModel id="RaiffeisenBank.TStatement">
+  <attributes>
+    <attribute id="responseId" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Уникальный идентификатор"/>
+      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="RESPONSEID"/>
+    </attribute>
+    <attribute id="bic" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="БИК банка клиента"/>
+      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="BIC"/>
+    </attribute>
+    <attribute id="currCode" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Код валюты выписки"/>
+      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="CURRCODE"/>
+    </attribute>
+    <attribute id="docTime" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Данные актуальны на (время)"/>
+      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="DOCTIME"/>
+    </attribute>
+    <attribute id="stmtDate" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Дата выписки"/>
+      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="STMTDATE"/>
+    </attribute>
+    <attribute id="docNum" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Номер документа"/>
+      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="DOCNUM"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="debetSum" order="3" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Итого оборотов по кредиту"/>
+      <measureMapping columnObjectName="RaiffeisenBank.TStatement" columnName="DEBETSUM"/>
+    </measure>
+    <measure id="creditSum" order="4" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Итого оборотов по кредиту"/>
+      <measureMapping columnObjectName="RaiffeisenBank.TStatement" columnName="CREDITSUM"/>
+    </measure>
+    <measure id="outBal" order="7" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Исходящий остаток"/>
+      <measureMapping columnObjectName="RaiffeisenBank.TStatement" columnName="OUTBAL"/>
+    </measure>
+    <measure id="enterBal" order="9" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Входящий остаток"/>
+      <measureMapping columnObjectName="RaiffeisenBank.TStatement" columnName="ENTERBAL"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

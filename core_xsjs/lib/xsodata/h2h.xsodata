@@ -19,10 +19,9 @@ service {
 	"RaiffeisenBank.Sign"			as "Sign"			key ("docExtId")	create using "xsjs:dbf.xsjslib::createSing"
 																			delete using "xsjs:dbf.xsjslib::deletSing";			
 																			
-	"RaiffeisenBank.Statement"		as "Statement"		key ("responseId")					navigates ( "Statement_ItemsCred" as "ItemsCred",
+	"cv_statement"		as "Statement"		keys generate local "GENERATED_ID" 	navigates ( "Statement_ItemsCred" as "ItemsCred",
 																										"Statement_ItemsDeb"  as "ItemsDeb"
-																										from principal) aggregates always ( SUM of "debetSum", 
-																																			SUM of "creditSum");
+																										from principal) aggregates always ;
 	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId") aggregates always (SUM of "docSum");																
 	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId") aggregates always (SUM of "docSum");	
 																										
