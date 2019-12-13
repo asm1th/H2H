@@ -22,9 +22,18 @@ function getSettlementType(conn, bic){
 		pStmt.close();
 }
 
+function str2ab(str) {
+  var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
+  var bufView = new Uint8Array(buf);
+  for (var i = 0, strLen = str.length; i < strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+}
+
 var docExtId = $.request.parameters.get("docExtId");
 var conn = $.db.getConnection();
-var sql = "Select \"REQUESTID\",\"DOCEXTID\",\"XMLNS\",\"VERSION\",\"PURPOSE\",TO_VARCHAR(TO_DATE(\"DOCDATE\", 'DD.MM.YYYY'), 'YYYY-MM-DD'),\"DOCNUM\",\"DOCSUM\",\"VATSUM\",\"VATRATE\",\"VAT\",";
+var sql = "Select \"REQUESTID\",\"DOCEXTID\",\"XMLNS\",\"VERSION\",\"PURPOSE\",\"DOCDATE\",\"DOCNUM\",\"DOCSUM\",\"VATSUM\",\"VATRATE\",\"VAT\",";
 sql += "\"TRANSKIND\",\"PAYTKIND\",\"PAYTCODE\",\"PRIORITY\",\"CODEVO\",\"NODOCS\",\"PAYERINN\",\"PAYERKPP\",\"PAYERPERSONALACC\",\"PAYERNAME\",";
 sql += "\"PAYERBANKBIC\",\"PAYERBANKCORRESPACC\",\"PAYERBANKNAME\",\"PAYERBANKBANKCITY\",\"PAYERBANKSETTLEMENTTYPE\",\"PAYEEINN\",\"PAYEEKPP\",";
 sql += "\"PAYEEPERSONALACC\",\"PAYEEUIP\",\"PAYEENAME\",\"PAYEEBANKBIC\",\"PAYEEBANKCORRESPACC\",\"PAYEEBANKNAME\",\"PAYEEBANKBANKCITY\",\"PAYEEBANKSETTLEMENTTYPE\",";
@@ -212,9 +221,64 @@ if(signs.length > 0){
 
 xml += '</Request>';
 
-$.response.status = $.net.http.OK;
-$.response.contentType = "application/xml";
-$.response.setBody(xml);
+var request = $.require('request');
+var fileBoby = $.util.codec.encodeBase64(str2ab(xml));
+url = "http://www.example.com";
+username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
+password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
+// url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/TestService";
+url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
+auth = "Basic " + username + " " + password;
+
+// request.post(	{	url: url, 
+// 					headers: {	"Authorization": auth,
+// 								"fileBody": fileBoby
+//         					}
+// 				},
+// 				function optionalCallback(err, httpResponse, body) {
+// 				  if (err) {
+// 				    $.net.http.INTERNAL_SERVER_ERROR;
+// 				    $.response.setBody(body);
+// 				  }
+// 				  $.response.status = $.net.http.OK;
+// 				  $.response.setBody(body);
+// 				}
+// 			);
+			
+request({
+  method: 'PUT',
+  uri: url,
+  authorization: auth,
+  multipart: [
+    {
+      'content-type': 'application/json',
+      'body': JSON.stringify({
+        _attachments: {
+          'data.xml': {
+            follows: true,
+            length: fileBoby.length,
+            'content_type': 'application/xml'
+           }
+         }
+       })
+    },
+    { body: fileBoby }
+  ]
+}, function (error, response, body) {
+				  if (error) {
+				    $.net.http.INTERNAL_SERVER_ERROR;
+				    $.response.setBody(body);
+				  }
+				  $.response.status = $.net.http.OK;
+				  $.response.setBody(body);
+				}
+);			
+			
+			
+
+// $.response.status = $.net.http.OK;
+// $.response.contentType = "application/xml";
+// $.response.setBody(xml);
 
 }else{
 	// $.response.status = $.net.http.INTERNAL_SERVER_ERROR;
