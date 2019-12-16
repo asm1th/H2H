@@ -757,7 +757,8 @@ sap.ui.define([
 				this.undoSignDialog.close();
 			};
 			mParams.error = this._onErrorCall;
-			oModel.remove("/Sign", oEntry, mParams);
+			var Path = "/Sign(docExtId='"+docExtId+"')";
+			oModel.remove(Path, mParams);
 
 			this.undoSignDialog.close();
 		},
@@ -1031,14 +1032,14 @@ sap.ui.define([
 		// форматтер для подсветки строки в таблице
 		formatRowHighlight: function (oValue) {
 			// Your logic for rowHighlight goes here
-			if (oValue < 6) {
+			if (oValue === "Подписан I") {
 				return "Information";
-			} else if (oValue < 3) {
+			} else if (oValue === "Подписан II") {
 				return "Warning";
-			} else if (oValue < 5) {
+			} else if (oValue === "Импортирован") {
 				return "None";
 			}
-			return "Error";
+			return "None";
 		},
 
 		// печать выбранной ПП

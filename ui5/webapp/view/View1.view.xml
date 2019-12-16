@@ -38,9 +38,9 @@
 				<!--<Text class="tntHeadTxt" text="Настройки"/>-->
 				<ToolbarSpacer/>
 				<!--<Button icon="sap-icon://search" type="Transparent"/>-->
-				<Button id="messagePopup" icon="sap-icon://bell" type="Transparent" tooltip="Сообщения" text=" {/messagesLength}" press="handleMessagePopoverPress"/>
+				<Button id="messagePopup" icon="sap-icon://bell" type="Transparent" tooltip="Сообщения" text=" {/messagesLength}"
+					press="handleMessagePopoverPress"/>
 				<Button icon="sap-icon://lab" type="Transparent" press="test"/>
-				
 				<!--<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"/>-->
 				<!--src="./profile2.jpg"-->
 				<!--<MenuButton type="Transparent">-->
@@ -102,8 +102,7 @@
 										<ToolbarSpacer/>
 										<Button icon="sap-icon://upload-to-cloud" text="Выписки в XML" tooltip="Загрузить Выписки" class="btn btn-bordered"
 											press="OnUploadSttmntDialog"/>
-											<Button text="Выписки в XML" tooltip="Экспорт Выписки" class="ddd"
-											press="OnExportStmnt"/>
+										<Button text="Выписки в XML" tooltip="Экспорт Выписки" class="ddd" press="OnExportStmnt"/>
 										<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_1" class="btn btn-bordered" enabled="fasle"/>
 										<Button icon="sap-icon://attachment" tooltip="Приложения" class="btn btn-bordered" press="onAttachment" enabled="fasle"/>
 										<Button icon="sap-icon://documents" tooltip="Журнал" class="btn btn-bordered" press="onJournal_1" enabled="fasle"/>
@@ -134,8 +133,8 @@
 								<!--Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')/ItemsDeb-->
 								<!--entitySet="Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')" tableBindingPath="ItemsDeb"-->
 								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true" useVariantManagement="false"
-									useTablePersonalisation="true" header="Дебет" showRowCount="false" persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="false"
-									showFullScreenButton="true" class="hostPad1">
+									useTablePersonalisation="true" header="Дебет" showRowCount="false" persistencyKey="SmartTableAnalytical_Explored_1"
+									enableAutoBinding="false" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
 										<Toolbar>
 											<ToolbarSpacer/>
@@ -144,7 +143,7 @@
 									</smartTable:customToolbar>
 									<t:Table rowHeight="20" selectionMode="None" visibleRowCount="20">
 										<t:rowSettingsTemplate>
-											<t:RowSettings highlight="Warning"/>
+											<t:RowSettings highlight="None"/>
 										</t:rowSettingsTemplate>
 									</t:Table>
 								</smartTable:SmartTable>
@@ -163,8 +162,8 @@
 								<!--</t:Table>-->
 								<!--entitySet="StatementItemsCred" -->
 								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="StatementItemsCred" useExportToExcel="true" useVariantManagement="true"
-									useTablePersonalisation="true" header="Кредит" showRowCount="false" persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="false"
-									showFullScreenButton="true" class="hostPad1">
+									useTablePersonalisation="true" header="Кредит" showRowCount="false" persistencyKey="SmartTableAnalytical_Explored_1"
+									enableAutoBinding="false" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
 										<Toolbar>
 											<ToolbarSpacer/>
@@ -173,7 +172,7 @@
 									</smartTable:customToolbar>
 									<t:Table rowHeight="20" selectionMode="None" visibleRowCount="20">
 										<t:rowSettingsTemplate>
-											<t:RowSettings highlight="Error"/>
+											<t:RowSettings highlight="None"/>
 										</t:rowSettingsTemplate>
 									</t:Table>
 								</smartTable:SmartTable>
@@ -217,23 +216,22 @@
 										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="fasle"/>
 										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>
 										<MenuButton text="Экспорт">
-                                			<menu>
-                                				<Menu>
-                                					<MenuItem text="1C" icon="sap-icon://save" press="onDownload">
-                                					</MenuItem>
-                                					<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML" />
-                                					<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" />
-                                				</Menu>
-                                			</menu>
-                                		</MenuButton>
+											<menu>
+												<Menu>
+													<MenuItem text="1C" icon="sap-icon://save" press="onDownload"></MenuItem>
+													<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML"/>
+													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF"/>
+												</Menu>
+											</menu>
+										</MenuButton>
 										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
-										<Button icon="sap-icon://undo" text="Снять ЭЦП" tooltip="Снять ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="true"/>
+										<Button icon="sap-icon://undo" text="Снять ЭЦП" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" enabled="true"/>
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
 								<t:AnalyticalTable id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1">
 									<t:rowSettingsTemplate>
-										<t:RowSettings highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>
+										<t:RowSettings highlight="{path:'Status', formatter:'.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>
 									<t:rowActionTemplate>
 										<t:RowAction>

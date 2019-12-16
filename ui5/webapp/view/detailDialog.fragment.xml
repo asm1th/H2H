@@ -170,9 +170,9 @@
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
-						<Label text="ОКТМО" />
+						<Label text="ОКАТО" />
 						<t:template>
-							<Text text="{ProductId}"/>
+							<Text text="{okato}"/>
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
@@ -188,15 +188,15 @@
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
-						<Label text="Номер документа" />
+						<Label text="Номер нал. документа" />
 						<t:template>
-							<Text text="{quantity}" />
+							<Text text="{depDocNo}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
-						<Label text="Дата документа" />
+						<Label text="Дата нал. документа" />
 						<t:template>
-							<Text text="{docDate}" />
+							<Text text="{depDocDate}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
