@@ -1,5 +1,5 @@
 service {
-	"cvPaymentOrder"						as "PaymentOrder"		key ("requestId", "docExtId")	navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
+	"cvPaymentOrder"						as "PaymentOrder"		keys generate local "ID"		navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
 																												"PaymentOrder_Sign"				as "PaymentOrderSign"	from principal) 
 																												aggregates always
 																												update using "xsjs:dbf.xsjslib::updateAccDoc"
