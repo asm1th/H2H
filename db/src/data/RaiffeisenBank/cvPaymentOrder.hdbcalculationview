@@ -164,23 +164,26 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="depDocDate" source="DEPDOCDATE"/>
     </input>
   </calculationView>
-  <calculationView xsi:type="Calculation:NonEquiJoinView" id="NonEquiJoin_1" cardinality="C1_1" joinType="leftOuter">
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="C1_1" joinType="leftOuter">
     <viewAttributes>
       <viewAttribute id="requestId"/>
       <viewAttribute id="docExtId"/>
       <viewAttribute id="status"/>
+      <viewAttribute hidden="true" id="JOIN$statusId$id"/>
     </viewAttributes>
     <calculatedViewAttributes/>
     <input node="_PayDocRu">
       <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$statusId$id" source="statusId"/>
     </input>
     <input node="_Status">
       <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$statusId$id" source="id"/>
     </input>
-    <joinAttribute leftColumn="statusId" rightColumn="id" operator="NE"/>
+    <joinAttribute name="JOIN$statusId$id"/>
   </calculationView>
-  <calculationView xsi:type="Calculation:NonEquiJoinView" id="NonEquiJoin_2" cardinality="C1_N" joinType="leftOuter">
+  <calculationView xsi:type="Calculation:JoinView" id="Join_2" cardinality="CN_N" joinType="leftOuter">
     <viewAttributes>
       <viewAttribute id="requestId"/>
       <viewAttribute id="docExtId"/>
@@ -200,7 +203,7 @@
       <viewAttribute id="nodocs" aggregationType="sum"/>
     </viewAttributes>
     <calculatedViewAttributes/>
-    <input node="NonEquiJoin_1">
+    <input node="Join_1">
       <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
@@ -219,10 +222,11 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="priority" source="priority"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="codeVO" source="codeVO"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="nodocs" source="nodocs"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
     </input>
-    <joinAttribute leftColumn="docExtId" rightColumn="docExtId" operator="NE"/>
+    <joinAttribute name="docExtId"/>
   </calculationView>
-  <calculationView xsi:type="Calculation:NonEquiJoinView" id="NonEquiJoin_3" cardinality="C1_1" joinType="leftOuter">
+  <calculationView xsi:type="Calculation:JoinView" id="Join_3" cardinality="C1_1" joinType="leftOuter">
     <viewAttributes>
       <viewAttribute id="requestId"/>
       <viewAttribute id="docExtId"/>
@@ -251,7 +255,7 @@
       <viewAttribute id="payerBankSettlementType"/>
     </viewAttributes>
     <calculatedViewAttributes/>
-    <input node="NonEquiJoin_2">
+    <input node="Join_2">
       <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
@@ -279,10 +283,11 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="payerBankName" source="payerBankName"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBankCity" source="payerBankBankCity"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="payerBankSettlementType" source="payerBankSettlementType"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
     </input>
-    <joinAttribute leftColumn="docExtId" rightColumn="docExtId" operator="NE"/>
+    <joinAttribute name="docExtId"/>
   </calculationView>
-  <calculationView xsi:type="Calculation:NonEquiJoinView" id="NonEquiJoin_4" cardinality="C1_1" joinType="leftOuter">
+  <calculationView xsi:type="Calculation:JoinView" id="Join_4" cardinality="C1_1" joinType="leftOuter">
     <viewAttributes>
       <viewAttribute id="requestId"/>
       <viewAttribute id="docExtId"/>
@@ -321,7 +326,7 @@
       <viewAttribute id="payeeBankSettlementType"/>
     </viewAttributes>
     <calculatedViewAttributes/>
-    <input node="NonEquiJoin_3">
+    <input node="Join_3">
       <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
@@ -359,10 +364,11 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankName" source="payeeBankName"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankBankCity" source="payeeBankBankCity"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankSettlementType" source="payeeBankSettlementType"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
     </input>
-    <joinAttribute leftColumn="docExtId" rightColumn="docExtId" operator="NE"/>
+    <joinAttribute name="docExtId"/>
   </calculationView>
-  <calculationView xsi:type="Calculation:NonEquiJoinView" id="NonEquiJoin_5" cardinality="C1_1" joinType="leftOuter">
+  <calculationView xsi:type="Calculation:JoinView" id="Join_5" cardinality="C1_1" joinType="leftOuter">
     <viewAttributes>
       <viewAttribute id="requestId"/>
       <viewAttribute id="docExtId"/>
@@ -409,7 +415,7 @@
       <viewAttribute id="depDocDate"/>
     </viewAttributes>
     <calculatedViewAttributes/>
-    <input node="NonEquiJoin_4">
+    <input node="Join_4">
       <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
@@ -455,186 +461,187 @@
       <mapping xsi:type="Calculation:AttributeMapping" target="taxPaytKind" source="taxPaytKind"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="depDocNo" source="depDocNo"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="depDocDate" source="depDocDate"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
     </input>
-    <joinAttribute leftColumn="docExtId" rightColumn="docExtId" operator="NE"/>
+    <joinAttribute name="docExtId"/>
   </calculationView>
 </calculationViews>
-<logicalModel id="NonEquiJoin_5">
+<logicalModel id="Join_5">
   <attributes>
     <attribute id="requestId" order="1" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="REQUESTID"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="requestId"/>
+      <descriptions defaultDescription="requestId"/>
+      <keyMapping columnObjectName="Join_5" columnName="requestId"/>
     </attribute>
     <attribute id="docExtId" order="2" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Идентификатор документа в УС (в оффлайн клиенте)"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="docExtId"/>
+      <descriptions defaultDescription="docExtId"/>
+      <keyMapping columnObjectName="Join_5" columnName="docExtId"/>
     </attribute>
     <attribute id="status" order="3" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="DESCRIPTION"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="status"/>
+      <descriptions defaultDescription="status"/>
+      <keyMapping columnObjectName="Join_5" columnName="status"/>
     </attribute>
     <attribute id="purpose" order="4" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Назначение платежа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="purpose"/>
+      <descriptions defaultDescription="purpose"/>
+      <keyMapping columnObjectName="Join_5" columnName="purpose"/>
     </attribute>
     <attribute id="docDate" order="5" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Дата составления документа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="docDate"/>
+      <descriptions defaultDescription="docDate"/>
+      <keyMapping columnObjectName="Join_5" columnName="docDate"/>
     </attribute>
     <attribute id="docNum" order="6" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Номер документа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="docNum"/>
+      <descriptions defaultDescription="docNum"/>
+      <keyMapping columnObjectName="Join_5" columnName="docNum"/>
     </attribute>
     <attribute id="vatRate" order="9" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="% НДС"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="vatRate"/>
+      <descriptions defaultDescription="vatRate"/>
+      <keyMapping columnObjectName="Join_5" columnName="vatRate"/>
     </attribute>
     <attribute id="vat" order="10" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Указывается способ расчета НДС согласно перечню: Vat1 «Расчет по % (1)»	Vat2 «Расчет по % (2)» VatAdd «Расчет по % (+)» VatZero «НДС не облаг.» VatManualRate «Ввод НДС» VatManualAll «Ручной ввод»"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="vat"/>
+      <descriptions defaultDescription="vat"/>
+      <keyMapping columnObjectName="Join_5" columnName="vat"/>
     </attribute>
     <attribute id="transKind" order="11" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Вид операции"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="transKind"/>
+      <descriptions defaultDescription="transKind"/>
+      <keyMapping columnObjectName="Join_5" columnName="transKind"/>
     </attribute>
     <attribute id="paytKind" order="12" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Вид платежа Возможные значения: «почтой», «электронно», «телеграфом» («срочно» временно недоступно). Если не указано, заполняется: «0»"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="paytKind"/>
+      <descriptions defaultDescription="paytKind"/>
+      <keyMapping columnObjectName="Join_5" columnName="paytKind"/>
     </attribute>
     <attribute id="paytCode" order="13" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Код вида платежа Возможные значения: «0», «1», «2», «3», «4»."/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="paytCode"/>
+      <descriptions defaultDescription="paytCode"/>
+      <keyMapping columnObjectName="Join_5" columnName="paytCode"/>
     </attribute>
     <attribute id="priority" order="14" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Очерёдность платежа: число от 1 до 6"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="priority"/>
+      <descriptions defaultDescription="priority"/>
+      <keyMapping columnObjectName="Join_5" columnName="priority"/>
     </attribute>
     <attribute id="codeVO" order="15" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Код вида валютной операции"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="codeVO"/>
+      <descriptions defaultDescription="codeVO"/>
+      <keyMapping columnObjectName="Join_5" columnName="codeVO"/>
     </attribute>
     <attribute id="nodocs" order="16" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Документы не требуются"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="nodocs"/>
+      <descriptions defaultDescription="nodocs"/>
+      <keyMapping columnObjectName="Join_5" columnName="nodocs"/>
     </attribute>
     <attribute id="payerInn" order="17" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="ИНН (до 12)"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerInn"/>
+      <descriptions defaultDescription="payerInn"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerInn"/>
     </attribute>
     <attribute id="payerKpp" order="18" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="КПП (до 9)"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerKpp"/>
+      <descriptions defaultDescription="payerKpp"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerKpp"/>
     </attribute>
     <attribute id="payerPersonalAcc" order="19" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Номер счёта"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerPersonalAcc"/>
+      <descriptions defaultDescription="payerPersonalAcc"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerPersonalAcc"/>
     </attribute>
     <attribute id="payerName" order="20" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Наименование плательщика"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerName"/>
+      <descriptions defaultDescription="payerName"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerName"/>
     </attribute>
     <attribute id="payerBankBic" order="21" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="БИК"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerBankBic"/>
+      <descriptions defaultDescription="payerBankBic"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerBankBic"/>
     </attribute>
     <attribute id="payerBankCorrespAcc" order="22" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Номер корр. счёта банка"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerBankCorrespAcc"/>
+      <descriptions defaultDescription="payerBankCorrespAcc"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerBankCorrespAcc"/>
     </attribute>
     <attribute id="payerBankName" order="23" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Наименование банка"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerBankName"/>
+      <descriptions defaultDescription="payerBankName"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerBankName"/>
     </attribute>
     <attribute id="payerBankBankCity" order="24" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Название населённого пункта банка"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerBankBankCity"/>
+      <descriptions defaultDescription="payerBankBankCity"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerBankBankCity"/>
     </attribute>
     <attribute id="payerBankSettlementType" order="25" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Тип населённого пункта банка"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payerBankSettlementType"/>
+      <descriptions defaultDescription="payerBankSettlementType"/>
+      <keyMapping columnObjectName="Join_5" columnName="payerBankSettlementType"/>
     </attribute>
     <attribute id="payeeInn" order="26" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="ИНН (до 12)"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeInn"/>
+      <descriptions defaultDescription="payeeInn"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeInn"/>
     </attribute>
     <attribute id="payeeKpp" order="27" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="КПП (до 9)"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeKpp"/>
+      <descriptions defaultDescription="payeeKpp"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeKpp"/>
     </attribute>
     <attribute id="payeePersonalAcc" order="28" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Номер счёта"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeePersonalAcc"/>
+      <descriptions defaultDescription="payeePersonalAcc"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeePersonalAcc"/>
     </attribute>
     <attribute id="payeeUip" order="29" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Уникальный Идентификатора Платежа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeUip"/>
+      <descriptions defaultDescription="payeeUip"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeUip"/>
     </attribute>
     <attribute id="payeeName" order="30" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Наименование плательщика"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeName"/>
+      <descriptions defaultDescription="payeeName"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeName"/>
     </attribute>
     <attribute id="payeeBankBic" order="31" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="БИК"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeBankBic"/>
+      <descriptions defaultDescription="payeeBankBic"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeBankBic"/>
     </attribute>
     <attribute id="payeeBankCorrespAcc" order="32" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Номер корр. счёта банка"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeBankCorrespAcc"/>
+      <descriptions defaultDescription="payeeBankCorrespAcc"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeBankCorrespAcc"/>
     </attribute>
     <attribute id="payeeBankName" order="33" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Наименование банка"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeBankName"/>
+      <descriptions defaultDescription="payeeBankName"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeBankName"/>
     </attribute>
     <attribute id="payeeBankBankCity" order="34" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Название населённого пункта банка"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeBankBankCity"/>
+      <descriptions defaultDescription="payeeBankBankCity"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeBankBankCity"/>
     </attribute>
     <attribute id="payeeBankSettlementType" order="35" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Тип населённого пункта банка"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="payeeBankSettlementType"/>
+      <descriptions defaultDescription="payeeBankSettlementType"/>
+      <keyMapping columnObjectName="Join_5" columnName="payeeBankSettlementType"/>
     </attribute>
     <attribute id="drawerStatus" order="36" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Показатель статуса налогоплательщика"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="drawerStatus"/>
+      <descriptions defaultDescription="drawerStatus"/>
+      <keyMapping columnObjectName="Join_5" columnName="drawerStatus"/>
     </attribute>
     <attribute id="cbc" order="37" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Код бюджетной классификации"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="cbc"/>
+      <descriptions defaultDescription="cbc"/>
+      <keyMapping columnObjectName="Join_5" columnName="cbc"/>
     </attribute>
     <attribute id="okato" order="38" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Код ОКАТО"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="okato"/>
+      <descriptions defaultDescription="okato"/>
+      <keyMapping columnObjectName="Join_5" columnName="okato"/>
     </attribute>
     <attribute id="paytReason" order="39" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Показатель основания платежа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="paytReason"/>
+      <descriptions defaultDescription="paytReason"/>
+      <keyMapping columnObjectName="Join_5" columnName="paytReason"/>
     </attribute>
     <attribute id="taxPeriod" order="40" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Налоговый период / Код таможенного органа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="taxPeriod"/>
+      <descriptions defaultDescription="taxPeriod"/>
+      <keyMapping columnObjectName="Join_5" columnName="taxPeriod"/>
     </attribute>
     <attribute id="taxPaytKind" order="41" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Тип налогового платежа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="taxPaytKind"/>
+      <descriptions defaultDescription="taxPaytKind"/>
+      <keyMapping columnObjectName="Join_5" columnName="taxPaytKind"/>
     </attribute>
     <attribute id="depDocNo" order="42" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Номер налогового документа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="depDocNo"/>
+      <descriptions defaultDescription="depDocNo"/>
+      <keyMapping columnObjectName="Join_5" columnName="depDocNo"/>
     </attribute>
     <attribute id="depDocDate" order="43" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Дата налогового документа"/>
-      <keyMapping columnObjectName="NonEquiJoin_5" columnName="depDocDate"/>
+      <descriptions defaultDescription="depDocDate"/>
+      <keyMapping columnObjectName="Join_5" columnName="depDocDate"/>
     </attribute>
   </attributes>
   <calculatedAttributes/>
   <baseMeasures>
     <measure id="docSum" order="7" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="Сумма платежа"/>
-      <measureMapping columnObjectName="NonEquiJoin_5" columnName="docSum"/>
+      <descriptions defaultDescription="docSum"/>
+      <measureMapping columnObjectName="Join_5" columnName="docSum"/>
     </measure>
     <measure id="vatSum" order="8" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="Сумма НДС"/>
-      <measureMapping columnObjectName="NonEquiJoin_5" columnName="vatSum"/>
+      <descriptions defaultDescription="vatSum"/>
+      <measureMapping columnObjectName="Join_5" columnName="vatSum"/>
     </measure>
   </baseMeasures>
   <calculatedMeasures/>
@@ -644,90 +651,92 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="40" y="85"/>
+      <upperLeftCorner x="660.3038801290666" y="112"/>
+    
+      <rectangleSize width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="_PayDocRu" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="282" y="442"/>
+      <upperLeftCorner x="91.99999999999997" y="1016.9999940395355"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="_Status" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="468" y="444"/>
+      <upperLeftCorner x="302.00000000000006" y="1016.9999940395355"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="_AccDoc" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="286" y="548"/>
+      <upperLeftCorner x="380.18794682697023" y="856.9999952316284"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="_Payer" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="286" y="412"/>
+      <upperLeftCorner x="474.7983235081821" y="696.9999964237213"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="_Payee" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="286" y="501"/>
+      <upperLeftCorner x="584.5795303100989" y="536.9999976158142"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="_DepartmentalInfo" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="286" y="381"/>
+      <upperLeftCorner x="708.3361339234377" y="376.9999988079071"/>
       <rectangleSize height="30" width="160"/>
     </shape>
-    <shape expanded="true" modelObjectName="NonEquiJoin_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="100" y="548"/>
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118.6666666666666" y="856.9999952316284"/>
       <rectangleSize height="30" width="160"/>
     </shape>
-    <shape modelObjectName="_PayDocRu" modelObjectNameSpace="NonEquiJoin_1" modelObjectType="JoinNodeInput">
+    <shape modelObjectName="_PayDocRu" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="150.173828125"/>
+      <rectangleSize width="131.86376953125"/>
     </shape>
-    <shape modelObjectName="_Status" modelObjectNameSpace="NonEquiJoin_1" modelObjectType="JoinNodeInput">
+    <shape modelObjectName="_Status" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="127.76025390625"/>
+      <rectangleSize width="115.34765625"/>
     </shape>
-    <shape expanded="true" modelObjectName="NonEquiJoin_2" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="100" y="412"/>
+    <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="145.33333333333337" y="696.9999964237213"/>
       <rectangleSize height="30" width="160"/>
     </shape>
-    <shape modelObjectName="NonEquiJoin_1" modelObjectNameSpace="NonEquiJoin_2" modelObjectType="JoinNodeInput">
+    <shape modelObjectName="Join_1" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="151.33984375"/>
+      <rectangleSize width="131.86376953125"/>
     </shape>
-    <shape modelObjectName="_AccDoc" modelObjectNameSpace="NonEquiJoin_2" modelObjectType="JoinNodeInput">
+    <shape modelObjectName="_AccDoc" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
       <rectangleSize width="133.08837890625"/>
     </shape>
-    <shape expanded="true" modelObjectName="NonEquiJoin_3" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="100" y="501"/>
+    <shape expanded="true" modelObjectName="Join_3" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="172" y="536.9999976158142"/>
       <rectangleSize height="30" width="160"/>
     </shape>
-    <shape modelObjectName="NonEquiJoin_2" modelObjectNameSpace="NonEquiJoin_3" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="151.33984375"/>
-    </shape>
-    <shape modelObjectName="_Payer" modelObjectNameSpace="NonEquiJoin_3" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="103.369140625"/>
-    </shape>
-    <shape expanded="true" modelObjectName="NonEquiJoin_4" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="100" y="381"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape modelObjectName="NonEquiJoin_3" modelObjectNameSpace="NonEquiJoin_4" modelObjectType="JoinNodeInput">
+    <shape modelObjectName="Join_2" modelObjectNameSpace="Join_3" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
       <rectangleSize width="250"/>
     </shape>
-    <shape modelObjectName="_Payee" modelObjectNameSpace="NonEquiJoin_4" modelObjectType="JoinNodeInput">
+    <shape modelObjectName="_Payer" modelObjectNameSpace="Join_3" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
       <rectangleSize width="250"/>
     </shape>
-    <shape expanded="true" modelObjectName="NonEquiJoin_5" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="100" y="211"/>
+    <shape expanded="true" modelObjectName="Join_4" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="198.66666666666663" y="376.9999988079071"/>
       <rectangleSize height="30" width="160"/>
     </shape>
-    <shape modelObjectName="NonEquiJoin_4" modelObjectNameSpace="NonEquiJoin_5" modelObjectType="JoinNodeInput">
+    <shape modelObjectName="Join_3" modelObjectNameSpace="Join_4" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="_Payee" modelObjectNameSpace="Join_4" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_5" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="660.3038801290664" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Join_4" modelObjectNameSpace="Join_5" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="20" y="30"/>
       <rectangleSize width="175.267578125"/>
     </shape>
-    <shape modelObjectName="_DepartmentalInfo" modelObjectNameSpace="NonEquiJoin_5" modelObjectType="JoinNodeInput">
+    <shape modelObjectName="_DepartmentalInfo" modelObjectNameSpace="Join_5" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
       <rectangleSize width="169.3515625"/>
     </shape>
