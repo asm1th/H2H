@@ -526,15 +526,15 @@ context RaiffeisenBank {
     define view Statement as Select from TStatement{
     	RESPONSEID		as responseId,
 		BIC				as bic,
-		DEBETSUM		as debetSum,
-		CREDITSUM		as creditSum,
+		sum(DEBETSUM)	as debetSum,
+		sum(CREDITSUM)	as creditSum,
 		CURRCODE		as currCode,
 		DOCTIME			as docTime,
 		OUTBAL			as outBal,
 		STMTDATE		as stmtDate,
 		ENTERBAL		as enterBal,
 		DOCNUM			as docNum
-    };
+    }group by RESPONSEID, BIC, CURRCODE, DOCTIME, OUTBAL, STMTDATE, ENTERBAL, ENTERBAL, DOCNUM;
     
     define view StatementItemsDeb as Select from TStatementItems{
     	RESPONSEID				   as responseId,

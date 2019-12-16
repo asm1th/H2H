@@ -244,35 +244,55 @@ auth = "Basic " + username + " " + password;
 // 				  $.response.setBody(body);
 // 				}
 // 			);
+		
+// var rGet = request.get(url:url, auth=(username, password), function (error, response, body) {
+// 				  if (error) {
+// 				    $.net.http.INTERNAL_SERVER_ERROR;
+// 				    $.response.setBody(body);
+// 				  }
+// 				  $.response.status = $.net.http.OK;
+// 				  $.response.setBody(body);
+// 				});		
+
+// const options = {
+//     url: 'https://www.reddit.com/r/funny.json',
+//     method: 'GET',
+//     headers: {
+//         'Accept': 'application/json',
+//         'Accept-Charset': 'utf-8',
+//         'User-Agent': 'my-reddit-client'
+//     }
+// };
+		
 			
-request({
-  method: 'PUT',
-  uri: url,
-  authorization: auth,
-  multipart: [
-    {
-      'content-type': 'application/json',
-      'body': JSON.stringify({
-        _attachments: {
-          'data.xml': {
-            follows: true,
-            length: fileBoby.length,
-            'content_type': 'application/xml'
-           }
-         }
-       })
-    },
-    { body: fileBoby }
-  ]
-}, function (error, response, body) {
-				  if (error) {
-				    $.net.http.INTERNAL_SERVER_ERROR;
-				    $.response.setBody(body);
-				  }
-				  $.response.status = $.net.http.OK;
-				  $.response.setBody(body);
-				}
-);			
+// request({
+//   method: 'PUT',
+//   uri: url,
+//   authorization: auth,
+//   multipart: [
+//     {
+//       'content-type': 'application/json',
+//       'body': JSON.stringify({
+//         _attachments: {
+//           'data.xml': {
+//             follows: true,
+//             length: fileBoby.length,
+//             'content_type': 'application/xml'
+//           }
+//          }
+//       })
+//     },
+//     { body: fileBoby }
+//   ]
+// }, function (error, response, body) {
+// 				  if (error) {
+// 				    $.net.http.INTERNAL_SERVER_ERROR;
+// 				    $.response.setBody(body);
+// 				  }
+// 				  $.response.status = $.net.http.OK;
+// 				  $.response.setBody(body);
+// 				}
+// );			
 			
 			
 
