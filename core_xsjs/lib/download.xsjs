@@ -221,14 +221,14 @@ if(signs.length > 0){
 
 xml += '</Request>';
 
-var request = $.require('request');
-var fileBoby = $.util.codec.encodeBase64(str2ab(xml));
-url = "http://www.example.com";
-username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
-password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
-// url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/TestService";
-url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
-auth = "Basic " + username + " " + password;
+// var request = $.require('request');
+// var fileBoby = $.util.codec.encodeBase64(str2ab(xml));
+// url = "http://www.example.com";
+// username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
+// password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
+// // url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/TestService";
+// url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
+// auth = "Basic " + username + " " + password;
 
 // request.post(	{	url: url, 
 // 					headers: {	"Authorization": auth,
@@ -296,11 +296,11 @@ auth = "Basic " + username + " " + password;
 			
 			
 
-// $.response.status = $.net.http.OK;
-// $.response.contentType = "application/xml";
-// $.response.setBody(xml);
+$.response.status = $.net.http.OK;
+$.response.contentType = "application/xml";
+$.response.setBody(xml);
 
 }else{
-	// $.response.status = $.net.http.INTERNAL_SERVER_ERROR;
-	// $.response.setBody(errMsg);
+	$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
+	$.response.setBody(errMsg);
 }

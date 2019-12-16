@@ -663,3 +663,51 @@ function deletSing(param){
 	    pStmt.close();
 	}
 }
+
+function deletPaymentOrder(param){
+	var after = param.afterTableName;
+	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
+	rs = null;
+	rs = pStmt.executeQuery();
+	var fileBody = null;
+	var PaymentOrder = {};
+	while (rs.next()) {
+		PaymentOrder.docExtId = 		rs.getString(2);
+	}
+	pStmt.close();
+	var salesOrderId = '';
+	pStmt = param.connection.prepareStatement("select \"DOCEXTID\" from \"RaiffeisenBank.TRequest\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+	rs = pStmt.executeQuery();
+	while(rs.next()){
+		docExtId = rs.getString(1);
+	}
+	pStmt.close();
+	
+	if(docExtId === ''){
+		throw new error("Invalid Sales Order ID.");
+	}else{
+	    pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TRequest\" where \"DOCEXTID\" = '"+sign.docExtId+"'");
+		pStmt.executeUpdate();
+	    
+	    pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TPayDocRu\" = '"+sign.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TAccDoc\" = '"+sign.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TPayer\" = '"+sign.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TPayee\" = '"+sign.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TDepartmentalInfo\" = '"+sign.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TSign\" = '"+sign.docExtId+"'");
+		pStmt.executeUpdate();
+	    
+	    conn.commit();
+	    pStmt.close();
+	}
+}
