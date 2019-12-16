@@ -2,7 +2,8 @@ service {
 	"cvPaymentOrder"						as "PaymentOrder"		key ("requestId", "docExtId")	navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
 																												"PaymentOrder_Sign"				as "PaymentOrderSign"	from principal) 
 																												aggregates always
-																												update using "xsjs:dbf.xsjslib::updateAccDoc";
+																												update using "xsjs:dbf.xsjslib::updateAccDoc"
+																												delete using "xsjs:dbf.xsjslib::deletPaymentOrder";
 	"RaiffeisenBank.Request"				as "Request" 			key ("requestId")				navigates (	"Request_PayDoc"				as "RequestPayDoc"		from principal);	
 	"RaiffeisenBank.PayDocRu"				as "PayDocRu"			key ("requestId", "docExtId")	navigates (	"PayDocRu_AccDoc"				as "PayDocRuAccDoc",
 																												"PayDocRu_Payer"				as "PayDocRuPayer",
