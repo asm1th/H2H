@@ -80,7 +80,9 @@ sap.ui.define([
 
 			var oModel = new JSONModel(aMockMessages);
 			var viewModel = new JSONModel();
-			viewModel.setData({messagesLength: aMockMessages.length + ''});
+			viewModel.setData({
+				messagesLength: aMockMessages.length + ''
+			});
 			this.byId("messagePopup").setModel(viewModel);
 			oMessagePopover.setModel(oModel);
 		},
@@ -90,50 +92,49 @@ sap.ui.define([
 		},
 
 		test: function (oEvent) {
-		    
+
 			var url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
 			var data = {
 				"name": "sample",
 				"time": "Wed, 21 Oct 2015 18:27:50 GMT"
 			};
-			var data2 = '<?xml version="1.0" encoding="utf-8"?><Request xmlns="http://bssys.com/upg/request" requestId="00505680-4cfa-1ed9-bcaf-1a48313fd85d" version="0.1"></Request>';
+			var data2 =
+				'<?xml version="1.0" encoding="utf-8"?><Request xmlns="http://bssys.com/upg/request" requestId="00505680-4cfa-1ed9-bcaf-1a48313fd85d" version="0.1"></Request>';
 			var username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
 			var password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
 			var auth = "Basic " + username + " " + password;
-			
-			
+
 			$.ajax({
-                xhrFields: {
-                    withCredentials: true
-                },
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username+':'+password));
-                },
-                url: url,
-                type: "GET",
-                dataType: "xml",
-                data: data2,
-                
-                success: function (data) {
+				xhrFields: {
+					withCredentials: true
+				},
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
+				},
+				url: url,
+				type: "POST",
+				dataType: "xml",
+				data: data2,
+
+				success: function (data) {
 					alert("Удачно отправлено");
 					console.log("Response: ", data);
-    				},
-    				error: function (oError) {
-    					//MessageBox.error(oError.responseText);
-    					alert("oError");
-    					console.warn(oError);
-    				}
-            });
+				},
+				error: function (oError) {
+					//MessageBox.error(oError.responseText);
+					alert("oError");
+					console.warn(oError);
+				}
+			});
 
-			
-// 			var xhr = new XMLHttpRequest();
-//             xhr.open("POST", url, true);
-//             xhr.withCredentials = true;
-//             xhr.setRequestHeader("Authorization", 'Basic ' + btoa(username+':'+password));
-//             xhr.onload = function () {
-//                 console.log(xhr.responseText);
-//             };
-//             xhr.send();
+			// 			var xhr = new XMLHttpRequest();
+			//             xhr.open("POST", url, true);
+			//             xhr.withCredentials = true;
+			//             xhr.setRequestHeader("Authorization", 'Basic ' + btoa(username+':'+password));
+			//             xhr.onload = function () {
+			//                 console.log(xhr.responseText);
+			//             };
+			//             xhr.send();
 			/*
 			$.ajax({
 				type: "POST",
@@ -158,25 +159,25 @@ sap.ui.define([
 			});
 			*/
 			// вар 2
-            // var response = await fetch('https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde', {
-            //   method: "POST",
-            //   headers: {
-            //     //'Content-Type': 'application/json;charset=utf-8',
-            //     "Content-type: text/xml;charset=utf-8"
-            //     "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
-            //   },
-            //   body: JSON.stringify(data);
-            // });
-            // var result = await response.json();
-            // alert(result.message);
+			// var response = await fetch('https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde', {
+			//   method: "POST",
+			//   headers: {
+			//     //'Content-Type': 'application/json;charset=utf-8',
+			//     "Content-type: text/xml;charset=utf-8"
+			//     "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
+			//   },
+			//   body: JSON.stringify(data);
+			// });
+			// var result = await response.json();
+			// alert(result.message);
 		},
-		
+
 		onDelete: function (oEvent) {
-			
+
 		},
-		
+
 		onDeleteAll: function (oEvent) {
-			
+
 		},
 
 		onItemSelect: function (oEvent) {
@@ -213,8 +214,8 @@ sap.ui.define([
 		onPDF: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-        
-        onSelStatement: function () {
+
+		onSelStatement: function () {
 			var oSmartTable = this.byId("SmartTableStatements");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
@@ -232,7 +233,7 @@ sap.ui.define([
 				that.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);;
 			}
 		},
-        
+
 		onChoseStatement: function (oEvent) {
 			//debugger;
 			var src = oEvent.getSource();
@@ -534,7 +535,7 @@ sap.ui.define([
 			if (!this.addDialogStmnt) {
 				this.addDialogStmnt = sap.ui.xmlfragment("addDialogStmnt", "h2h.ui5.view.addDialogStmnt", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialogStmnt);
-				
+
 			} else {
 				//var oFileUpload = sap.ui.core.Fragment.byId("addDialogStmnt", "fileUploader_2");
 				//oFileUpload.clear();
@@ -959,7 +960,7 @@ sap.ui.define([
 				"X-CSRF-Token": "Fetch"
 			});
 			var mParams = {};
-			var that = this; 
+			var that = this;
 			mParams.success = function () {
 				MessageToast.show("ПП подписана");
 				that.signDialog.close();
