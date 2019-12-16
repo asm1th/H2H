@@ -216,13 +216,22 @@
 										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="fasle"/>
 										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="fasle"/>
 										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>
-										<Button icon="sap-icon://download" text="ПП" tooltip="Скачать" class="btn btn-bordered" press="onDownload" enabled="true"/>
+										<MenuButton text="Экспорт">
+                                			<menu>
+                                				<Menu>
+                                					<MenuItem text="1C" icon="sap-icon://save" press="onDownload">
+                                					</MenuItem>
+                                					<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML" />
+                                					<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" />
+                                				</Menu>
+                                			</menu>
+                                		</MenuButton>
 										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
 										<Button icon="sap-icon://undo" text="Снять ЭЦП" tooltip="Снять ЭЦП" class="btn btn-bordered" press="onUndoSign" enabled="true"/>
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:Table id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1">
+								<t:AnalyticalTable id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>
@@ -233,20 +242,9 @@
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
-									<!--<t:columns>-->
-									<!--	<t:Column>-->
-									<!--		<t:template></t:template>-->
-									<!--	</t:Column>-->
-									<!--</t:columns>-->
-								</t:Table>
-								<!--<Table id="innerUi5Table" growing="true" mode="SingleSelect">-->
-								<!--                			<ColumnListItem type="Navigation" press="onDetailDialog" highlight="{path:'priority', formatter:'.formatRowHighlight'}"/>-->
-								<!--                		</Table>-->
+								</t:AnalyticalTable>
 							</smartTable:SmartTable>
 						</VBox>
-						<!--</ScrollContainer>-->
-						<!--<ScrollContainer id="page2" horizontal="false" vertical="true" height="100%">-->
-						<!--	<Text text="This is the dsfsfsdfsdf page"></Text>-->
 					</ScrollContainer>
 				</pages>
 			</NavContainer>

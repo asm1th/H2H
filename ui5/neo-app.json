@@ -12,7 +12,7 @@
     },
     {
       "path": "xsodata",
-      "description": "xsodata description",
+      "description": "xsodata Resources",
       "target": {
         "type": "destination",
         "name": "xsodata"
@@ -20,10 +20,10 @@
     },
     {
       "path": "xsjs",
-      "description": "xsjs description",
+      "description": "xsjs Resources",
       "target": {
         "type": "destination",
-        "name": "xsodata"
+        "name": "core-xsjs-backend"
       }
     }
   ],
