@@ -39,7 +39,8 @@
 				<ToolbarSpacer/>
 				<!--<Button icon="sap-icon://search" type="Transparent"/>-->
 				<Button id="messagePopup" icon="sap-icon://bell" type="Transparent" tooltip="Сообщения" text=" {/messagesLength}" press="handleMessagePopoverPress"/>
-				<!--<Button icon="sap-icon://message-popup" type="Transparent" press="test"/>-->
+				<Button icon="sap-icon://lab" type="Transparent" press="test"/>
+				
 				<!--<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"/>-->
 				<!--src="./profile2.jpg"-->
 				<!--<MenuButton type="Transparent">-->
