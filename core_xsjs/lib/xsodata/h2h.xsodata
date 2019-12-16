@@ -1,27 +1,24 @@
 service {
-	"RaiffeisenBank.PaymentOrder"	as "PaymentOrder"		key ("requestId", "docExtId")	navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
-																										"PaymentOrder_Sign"				as "PaymentOrderSign"
-																										from principal) 
-																										update using "xsjs:dbf.xsjslib::updateAccDoc";
-	"RaiffeisenBank.Request"		as "Request" 			key ("requestId")				navigates (	"Request_PayDoc"				as "RequestPayDoc"
-																										from principal);	
-	"RaiffeisenBank.PayDocRu"		as "PayDocRu"			key ("requestId", "docExtId")	navigates (	"PayDocRu_AccDoc"	as "PayDocRuAccDoc",
-																										"PayDocRu_Payer"	as "PayDocRuPayer",
-																										"PayDocRu_Payee"	as "PayDocRuPayee",
-																										"PayDocRu_File"		as "PayDocRuFile",
-																										"PayDocRu_Sign" 	as "PayDocRuSign"
-																										from principal); 					
+	"cvPaymentOrder"						as "PaymentOrder"		key ("requestId", "docExtId")	navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
+																												"PaymentOrder_Sign"				as "PaymentOrderSign"	from principal) 
+																												aggregates always
+																												update using "xsjs:dbf.xsjslib::updateAccDoc";
+	"RaiffeisenBank.Request"				as "Request" 			key ("requestId")				navigates (	"Request_PayDoc"				as "RequestPayDoc"		from principal);	
+	"RaiffeisenBank.PayDocRu"				as "PayDocRu"			key ("requestId", "docExtId")	navigates (	"PayDocRu_AccDoc"				as "PayDocRuAccDoc",
+																												"PayDocRu_Payer"				as "PayDocRuPayer",
+																												"PayDocRu_Payee"				as "PayDocRuPayee",
+																												"PayDocRu_File"					as "PayDocRuFile",
+																												"PayDocRu_Sign" 				as "PayDocRuSign"		from principal); 					
 																											
-	"RaiffeisenBank.AccDoc"			as "AccDoc"			key ("docExtId");
-	"RaiffeisenBank.Payer"			as "Payer"			key ("docExtId");
-	"RaiffeisenBank.Payee"			as "Payee"			key ("docExtId");
-	"RaiffeisenBank.Files"			as "Files"			key ("requestId")	create using "xsjs:dbf.xsjslib::fileUpload";
-	"RaiffeisenBank.Sign"			as "Sign"			key ("docExtId")	create using "xsjs:dbf.xsjslib::createSing"
-																			delete using "xsjs:dbf.xsjslib::deletSing";			
+	"RaiffeisenBank.AccDoc"					as "AccDoc"				key ("docExtId");
+	"RaiffeisenBank.Payer"					as "Payer"				key ("docExtId");
+	"RaiffeisenBank.Payee"					as "Payee"				key ("docExtId");
+	"RaiffeisenBank.Files"					as "Files"				key ("requestId")	create using "xsjs:dbf.xsjslib::fileUpload";
+	"RaiffeisenBank.Sign"					as "Sign"				key ("docExtId")	create using "xsjs:dbf.xsjslib::createSing"
+																						delete using "xsjs:dbf.xsjslib::deletSing";			
 																			
-	"cv_statement"		as "Statement"		keys generate local "GENERATED_ID" 	navigates ( "Statement_ItemsCred" as "ItemsCred",
-																										"Statement_ItemsDeb"  as "ItemsDeb"
-																										from principal) aggregates always;
+	"cvStatement"							as "Statement"			keys generate local "ID" 	navigates ( "Statement_ItemsCred" as "ItemsCred",
+																								"Statement_ItemsDeb"  as "ItemsDeb" from principal) aggregates always;
 	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId");																
 	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId");
 																										
