@@ -90,21 +90,60 @@ sap.ui.define([
 		},
 
 		test: function (oEvent) {
-			var url = "https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde";
+		    
+			var url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
 			var data = {
 				"name": "sample",
 				"time": "Wed, 21 Oct 2015 18:27:50 GMT"
 			};
-			var USERNAME = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
-			var PASSWORD = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
+			var data2 = '<?xml version="1.0" encoding="utf-8"?><Request xmlns="http://bssys.com/upg/request" requestId="00505680-4cfa-1ed9-bcaf-1a48313fd85d" version="0.1"></Request>';
+			var username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
+			var password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
+			var auth = "Basic " + username + " " + password;
+			
+			
+			$.ajax({
+                xhrFields: {
+                    withCredentials: true
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username+':'+password));
+                },
+                url: url,
+                type: "GET",
+                dataType: "xml",
+                data: data2,
+                
+                success: function (data) {
+					alert("Удачно отправлено");
+					console.log("Response: ", data);
+    				},
+    				error: function (oError) {
+    					//MessageBox.error(oError.responseText);
+    					alert("oError");
+    					console.warn(oError);
+    				}
+            });
+
+			
+// 			var xhr = new XMLHttpRequest();
+//             xhr.open("POST", url, true);
+//             xhr.withCredentials = true;
+//             xhr.setRequestHeader("Authorization", 'Basic ' + btoa(username+':'+password));
+//             xhr.onload = function () {
+//                 console.log(xhr.responseText);
+//             };
+//             xhr.send();
+			/*
 			$.ajax({
 				type: "POST",
 				url: url,
 				data: data,
-				dataType: "xml",
-				//dataType: 'json',
+				//dataType: "xml",
+				dataType: 'json',
                   headers: {
-                    "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
+                    //"Authorization": "Basic " + btoa(username + ":" + password)
+                    "Authorization": auth
                   },
 				success: function (data) {
 					MessageBox.alert("Удачно отправлено");
@@ -117,7 +156,7 @@ sap.ui.define([
 					console.warn(oError);
 				}
 			});
-			
+			*/
 			// вар 2
             // var response = await fetch('https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde', {
             //   method: "POST",
