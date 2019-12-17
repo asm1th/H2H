@@ -665,49 +665,38 @@ function deletSing(param){
 }
 
 function deletPaymentOrder(param){
-	var after = param.afterTableName;
-	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
+	var before = param.beforeTableName;
+	var pStmt = param.connection.prepareStatement("select * from \"" + before + "\"");
 	rs = null;
 	rs = pStmt.executeQuery();
 	var fileBody = null;
 	var PaymentOrder = {};
 	while (rs.next()) {
-		PaymentOrder.docExtId = 		rs.getString(1);
+		PaymentOrder.docExtId = 		rs.getString(2);
 	}
 	pStmt.close();
-	var salesOrderId = '';
-	pStmt = param.connection.prepareStatement("select \"DOCEXTID\" from \"RaiffeisenBank.TRequest\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
-	rs = pStmt.executeQuery();
-	while(rs.next()){
-		docExtId = rs.getString(1);
-	}
-	pStmt.close();
-	
-	if(docExtId === ''){
-		throw new error("Invalid Sales Order ID.");
+	if(PaymentOrder.docExtId === ''){
+		throw new error("Invalid docExtId.");
 	}else{
-	    pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TRequest\" where \"DOCEXTID\" = '"+sign.docExtId+"'");
+	    pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayDocRu\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TAccDoc\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayer\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayee\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TDepartmentalInfo\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TSign\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
 		pStmt.executeUpdate();
 	    
-	    pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TPayDocRu\" = '"+sign.docExtId+"'");
-		pStmt.executeUpdate();
-		
-		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TAccDoc\" = '"+sign.docExtId+"'");
-		pStmt.executeUpdate();
-		
-		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TPayer\" = '"+sign.docExtId+"'");
-		pStmt.executeUpdate();
-		
-		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TPayee\" = '"+sign.docExtId+"'");
-		pStmt.executeUpdate();
-		
-		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TDepartmentalInfo\" = '"+sign.docExtId+"'");
-		pStmt.executeUpdate();
-		
-		pStmt = conn.prepareStatement("delete from \"RaiffeisenBank.TSign\" = '"+sign.docExtId+"'");
-		pStmt.executeUpdate();
-	    
-	    conn.commit();
+	    param.connection.commit();
 	    pStmt.close();
 	}
 }

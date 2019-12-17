@@ -241,9 +241,20 @@ if (errMessage.length == 0) {
 		"fileUID": raif.PayDocRu.docExtId,
 	};
 
+	var formData = {
+		file: {
+			value: jsb64.base64encode(xml),
+			options: {
+				filename: raif.PayDocRu.docExtId + '.xml',
+				contentType: 'application/xml'
+			}
+		}
+	};
+
 	var options = {
 		method: 'POST',
 		body: data,
+		formData: formData,
 		json: true,
 		uri: 'https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder',
 		headers: {
