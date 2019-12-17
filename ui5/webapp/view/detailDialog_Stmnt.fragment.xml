@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" class="sapUiSizeCompact">
+	<Dialog id="detailDialog_Stmnt" title="Выписка" resizable="true" contentWidth="1024px">
+		<content>
+			<form:SimpleForm editable="false" layout="ResponsiveGridLayout" class="ppform" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
+				adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" singleContainerFullSize="false">
+				<form:content>
+					<Label text="{bic/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="docSum" value="{bic}" editable="false"/>
+				</form:content>
+			</form:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="Закрыть" press="detailDialog_StmntClose"></Button>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

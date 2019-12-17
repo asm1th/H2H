@@ -100,20 +100,27 @@
 								<smartTable:customToolbar>
 									<Toolbar>
 										<ToolbarSpacer/>
-										<Button icon="sap-icon://upload-to-cloud" text="Выписки в XML" tooltip="Загрузить Выписки" class="btn btn-bordered"
+										<Button icon="sap-icon://upload-to-cloud" tooltip="Загрузить выписки чеорез XML в обалко" class="btn btn-bordered"
 											press="OnUploadSttmntDialog"/>
-										<Button text="Выписки в XML" tooltip="Экспорт Выписки" class="ddd" press="OnExportStmnt"/>
-										<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_1" class="btn btn-bordered" enabled="fasle"/>
+										<Button icon="sap-icon://documents" tooltip="Журнал" class="btn btn-bordered" press="onJournal_Stmnt" enabled="true"/>
 										<Button icon="sap-icon://attachment" tooltip="Приложения" class="btn btn-bordered" press="onAttachment" enabled="fasle"/>
-										<Button icon="sap-icon://documents" tooltip="Журнал" class="btn btn-bordered" press="onJournal_1" enabled="fasle"/>
 										<Button icon="sap-icon://pdf-attachment" tooltip="PDF" class="btn btn-bordered" press="onPDF" enabled="fasle"/>
-										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAll" enabled="true"/>
-										<!--<Button icon="sap-icon://paper-plane" type="Default" tooltip="Загрузить в SAP" class="btn btn-bordered" press="onUploadToSap"-->
+										<!--<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAll" enabled="true"/>-->
 										<!--	enabled="fasle"/>-->
-										<Button icon="sap-icon://signature" type="Accept" text="Проверить ЭЦП" class="btn btn-bordered" press="onCheckSign" enabled="true"/>
+										<MenuButton icon="sap-icon://print" tooltip="Печать выписки">
+											<menu>
+												<Menu>
+													<MenuItem text="Печать выписки" icon="sap-icon://print" press="" enabled="fasle"></MenuItem>
+													<MenuItem text="Печать ПП" icon="sap-icon://print" press="" enabled="fasle"/>
+													<MenuItem text="Печать мемор. ордеров" icon="sap-icon://print" press="" enabled="fasle"/>
+												</Menu>
+											</menu>
+										</MenuButton>
+										<Button icon="sap-icon://inspection" type="Accept" text="Проверить ЭЦП" class="btn btn-bordered" press="onCheckSign" enabled="fasle"/>
+										<Button icon="sap-icon://paper-plane" type="Accept" tooltip="Отправить в SAP" class="btn btn-bordered" press="onSendStetement" enabled="fasle"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:AnalyticalTable id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" visibleRowCount="10" rowActionCount="2"
+								<t:AnalyticalTable id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" visibleRowCount="10" rowActionCount="1"
 									rowSelectionChange="onSelStatement">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="None"/>
@@ -121,8 +128,8 @@
 									<t:rowActionTemplate>
 										<t:RowAction>
 											<t:items>
-												<t:RowActionItem type="Navigation" press="onChoseStatement"></t:RowActionItem>
-												<t:RowActionItem type="Delete" press="onDelete"></t:RowActionItem>
+												<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onChoseStatement"></t:RowActionItem>
+												<!--<t:RowActionItem type="Delete" press="onDelete"></t:RowActionItem>-->
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
@@ -133,7 +140,7 @@
 								<!--Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')/ItemsDeb-->
 								<!--entitySet="Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')" tableBindingPath="ItemsDeb"-->
 								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true" useVariantManagement="false"
-									useTablePersonalisation="true" header="Дебет" showRowCount="false" persistencyKey="SmartTableAnalytical_Explored_1"
+									useTablePersonalisation="true" header="Дебет" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1"
 									enableAutoBinding="false" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
 										<Toolbar>
@@ -141,10 +148,17 @@
 											<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_D" class="btn btn-bordered" enabled="fasle"/>
 										</Toolbar>
 									</smartTable:customToolbar>
-									<t:Table rowHeight="20" selectionMode="None" visibleRowCount="20">
+									<t:Table id="Table_D" rowHeight="20" selectionMode="None" visibleRowCount="20"  rowActionCount="1">
 										<t:rowSettingsTemplate>
 											<t:RowSettings highlight="None"/>
 										</t:rowSettingsTemplate>
+										<t:rowActionTemplate>
+    										<t:RowAction>
+    											<t:items>
+    												<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>
+    											</t:items>
+    										</t:RowAction>
+    									</t:rowActionTemplate>
 									</t:Table>
 								</smartTable:SmartTable>
 								<!--<t:Table id="TableDeb" class="tablestyle" rowHeight="20" selectionMode="None" enableCellFilter="true" showColumnVisibilityMenu="true">-->
@@ -162,7 +176,7 @@
 								<!--</t:Table>-->
 								<!--entitySet="StatementItemsCred" -->
 								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="StatementItemsCred" useExportToExcel="true" useVariantManagement="true"
-									useTablePersonalisation="true" header="Кредит" showRowCount="false" persistencyKey="SmartTableAnalytical_Explored_1"
+									useTablePersonalisation="true" header="Кредит" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1"
 									enableAutoBinding="false" showFullScreenButton="true" class="hostPad1">
 									<smartTable:customToolbar>
 										<Toolbar>
@@ -170,10 +184,17 @@
 											<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_C" class="btn btn-bordered" enabled="fasle"/>
 										</Toolbar>
 									</smartTable:customToolbar>
-									<t:Table rowHeight="20" selectionMode="None" visibleRowCount="20">
+									<t:Table id="Table_C" rowHeight="20" selectionMode="None" visibleRowCount="20" rowActionCount="1">
 										<t:rowSettingsTemplate>
 											<t:RowSettings highlight="None"/>
 										</t:rowSettingsTemplate>
+										<t:rowActionTemplate>
+    										<t:RowAction>
+    											<t:items>
+    												<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>
+    											</t:items>
+    										</t:RowAction>
+    									</t:rowActionTemplate>
 									</t:Table>
 								</smartTable:SmartTable>
 							</HBox>
@@ -212,24 +233,25 @@
 										<!--<ToolbarSeparator/>-->
 										<!--<Button icon="sap-icon://synchronize" tooltip="Обновить" press="onTableRefresh" enabled="fasle"/>-->
 										<Button icon="sap-icon://print" tooltip="Печать" id="print" press="onPrint" class="btn btn-bordered" enabled="fasle"/>
-										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="fasle"/>
-										<Button icon="sap-icon://paper-plane" type="Default" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="fasle"/>
+										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="true"/>
 										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Загрузить" class="btn btn-bordered" press="OnUploadDialog"/>
+										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllPP" enabled="true"/>
 										<MenuButton text="Экспорт">
 											<menu>
 												<Menu>
 													<MenuItem text="1C" icon="sap-icon://save" press="onDownload"></MenuItem>
-													<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML"/>
-													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF"/>
+													<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML" enabled="fasle"/>
+													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" enabled="fasle"/>
 												</Menu>
 											</menu>
 										</MenuButton>
 										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
 										<Button icon="sap-icon://undo" text="Снять ЭЦП" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" enabled="true"/>
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
+									    <Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:AnalyticalTable id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1">
+								<t:AnalyticalTable id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="2">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="{path:'Status', formatter:'.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>

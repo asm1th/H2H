@@ -154,7 +154,7 @@
 			    <Label text="Код вида ВО:"/>
 			    <Input id="sm4" value="{codeVO}" editable="false"/>
 			    <Label text="Код валюты ISO:"/>
-			    <Input id="sm5" value="" editable="false"/>
+			    <Input id="sm5" value="{currCode}" editable="false"/>
 			</HBox>
 			<!-- -->	
 			

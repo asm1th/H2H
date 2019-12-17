@@ -1,55 +1,54 @@
 <edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
 <edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
 <Schema xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="default">
-<EntityType Name="PaymentOrderType">
+<EntityType Name="PaymentOrderType" sap:semantics="aggregate">
 <Key>
 <PropertyRef Name="requestId"/>
 <PropertyRef Name="docExtId"/>
 </Key>
-<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-<Property Name="status" Type="Edm.String" MaxLength="25"/>
-<Property Name="purpose" Type="Edm.String" MaxLength="210"/>
-<Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date"/>
-<Property Name="docNum" Type="Edm.String" MaxLength="6"/>
-<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
-<Property Name="vatSum" Type="Edm.Decimal" Precision="13" Scale="2"/>
-<Property Name="vatRate" Type="Edm.Decimal" Precision="13" Scale="2"/>
-<Property Name="vat" Type="Edm.String" MaxLength="255"/>
-<Property Name="transKind" Type="Edm.String" MaxLength="2"/>
-<Property Name="paytKind" Type="Edm.String" MaxLength="15"/>
-<Property Name="paytCode" Type="Edm.String" MaxLength="1"/>
-<Property Name="priority" Type="Edm.Int32"/>
-<Property Name="codeVO" Type="Edm.String" MaxLength="5"/>
-<Property Name="nodocs" Type="Edm.Int32"/>
-<Property Name="payerInn" Type="Edm.String" MaxLength="12"/>
-<Property Name="payerKpp" Type="Edm.String" MaxLength="9"/>
-<Property Name="payerPersonalAcc" Type="Edm.String" MaxLength="20"/>
-<Property Name="payerName" Type="Edm.String" MaxLength="160"/>
-<Property Name="payerBankBic" Type="Edm.String" MaxLength="9"/>
-<Property Name="payerBankCorrespAcc" Type="Edm.String" MaxLength="20"/>
-<Property Name="payerBankName" Type="Edm.String" MaxLength="80"/>
-<Property Name="payerBankBankCity" Type="Edm.String" MaxLength="30"/>
-<Property Name="payerBankSettlementType" Type="Edm.String" MaxLength="20"/>
-<Property Name="payeeInn" Type="Edm.String" MaxLength="12"/>
-<Property Name="payeeKpp" Type="Edm.String" MaxLength="9"/>
-<Property Name="payeePersonalAcc" Type="Edm.String" MaxLength="20"/>
-<Property Name="payeeUip" Type="Edm.String" MaxLength="25"/>
-<Property Name="payeeName" Type="Edm.String" MaxLength="160"/>
-<Property Name="payeeBankBic" Type="Edm.String" MaxLength="9"/>
-<Property Name="payeeBankCorrespAcc" Type="Edm.String" MaxLength="20"/>
-<Property Name="payeeBankName" Type="Edm.String" MaxLength="80"/>
-<Property Name="payeeBankBankCity" Type="Edm.String" MaxLength="30"/>
-<Property Name="payeeBankSettlementType" Type="Edm.String" MaxLength="20"/>
-<Property Name="drawerStatus" Type="Edm.String" MaxLength="2"/>
-<Property Name="cbc" Type="Edm.String" MaxLength="20"/>
-<Property Name="okato" Type="Edm.String" MaxLength="11"/>
-<Property Name="paytReason" Type="Edm.String" MaxLength="2"/>
-<Property Name="taxPeriod" Type="Edm.String" MaxLength="10"/>
-<Property Name="depDocNo" Type="Edm.String" MaxLength="15"/>
-<Property Name="depDocDate" Type="Edm.String" MaxLength="10"/>
-<Property Name="taxPaytKind" Type="Edm.String" MaxLength="2"/>
-<Property Name="signType" Type="Edm.String" MaxLength="255"/>
+<Property Name="requestId" Type="Edm.String" MaxLength="37" sap:label="requestId" sap:aggregation-role="dimension"/>
+<Property Name="docExtId" Type="Edm.String" MaxLength="37" sap:label="docExtId" sap:aggregation-role="dimension"/>
+<Property Name="status" Type="Edm.String" MaxLength="25" sap:label="status" sap:aggregation-role="dimension"/>
+<Property Name="purpose" Type="Edm.String" MaxLength="210" sap:label="purpose" sap:aggregation-role="dimension"/>
+<Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="docDate" sap:aggregation-role="dimension"/>
+<Property Name="docNum" Type="Edm.String" MaxLength="6" sap:label="docNum" sap:aggregation-role="dimension"/>
+<Property Name="vatRate" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="vatRate" sap:aggregation-role="dimension"/>
+<Property Name="vat" Type="Edm.String" MaxLength="255" sap:label="vat" sap:aggregation-role="dimension"/>
+<Property Name="transKind" Type="Edm.String" MaxLength="2" sap:label="transKind" sap:aggregation-role="dimension"/>
+<Property Name="paytKind" Type="Edm.String" MaxLength="15" sap:label="paytKind" sap:aggregation-role="dimension"/>
+<Property Name="paytCode" Type="Edm.String" MaxLength="1" sap:label="paytCode" sap:aggregation-role="dimension"/>
+<Property Name="priority" Type="Edm.Int32" sap:label="priority" sap:aggregation-role="dimension"/>
+<Property Name="codeVO" Type="Edm.String" MaxLength="5" sap:label="codeVO" sap:aggregation-role="dimension"/>
+<Property Name="nodocs" Type="Edm.Int32" sap:label="nodocs" sap:aggregation-role="dimension"/>
+<Property Name="payerInn" Type="Edm.String" MaxLength="12" sap:label="payerInn" sap:aggregation-role="dimension"/>
+<Property Name="payerKpp" Type="Edm.String" MaxLength="9" sap:label="payerKpp" sap:aggregation-role="dimension"/>
+<Property Name="payerPersonalAcc" Type="Edm.String" MaxLength="20" sap:label="payerPersonalAcc" sap:aggregation-role="dimension"/>
+<Property Name="payerName" Type="Edm.String" MaxLength="160" sap:label="payerName" sap:aggregation-role="dimension"/>
+<Property Name="payerBankBic" Type="Edm.String" MaxLength="9" sap:label="payerBankBic" sap:aggregation-role="dimension"/>
+<Property Name="payerBankCorrespAcc" Type="Edm.String" MaxLength="20" sap:label="payerBankCorrespAcc" sap:aggregation-role="dimension"/>
+<Property Name="payerBankName" Type="Edm.String" MaxLength="80" sap:label="payerBankName" sap:aggregation-role="dimension"/>
+<Property Name="payerBankBankCity" Type="Edm.String" MaxLength="30" sap:label="payerBankBankCity" sap:aggregation-role="dimension"/>
+<Property Name="payerBankSettlementType" Type="Edm.String" MaxLength="20" sap:label="payerBankSettlementType" sap:aggregation-role="dimension"/>
+<Property Name="payeeInn" Type="Edm.String" MaxLength="12" sap:label="payeeInn" sap:aggregation-role="dimension"/>
+<Property Name="payeeKpp" Type="Edm.String" MaxLength="9" sap:label="payeeKpp" sap:aggregation-role="dimension"/>
+<Property Name="payeePersonalAcc" Type="Edm.String" MaxLength="20" sap:label="payeePersonalAcc" sap:aggregation-role="dimension"/>
+<Property Name="payeeUip" Type="Edm.String" MaxLength="25" sap:label="payeeUip" sap:aggregation-role="dimension"/>
+<Property Name="payeeName" Type="Edm.String" MaxLength="160" sap:label="payeeName" sap:aggregation-role="dimension"/>
+<Property Name="payeeBankBic" Type="Edm.String" MaxLength="9" sap:label="payeeBankBic" sap:aggregation-role="dimension"/>
+<Property Name="payeeBankCorrespAcc" Type="Edm.String" MaxLength="20" sap:label="payeeBankCorrespAcc" sap:aggregation-role="dimension"/>
+<Property Name="payeeBankName" Type="Edm.String" MaxLength="80" sap:label="payeeBankName" sap:aggregation-role="dimension"/>
+<Property Name="payeeBankBankCity" Type="Edm.String" MaxLength="30" sap:label="payeeBankBankCity" sap:aggregation-role="dimension"/>
+<Property Name="payeeBankSettlementType" Type="Edm.String" MaxLength="20" sap:label="payeeBankSettlementType" sap:aggregation-role="dimension"/>
+<Property Name="drawerStatus" Type="Edm.String" MaxLength="2" sap:label="drawerStatus" sap:aggregation-role="dimension"/>
+<Property Name="cbc" Type="Edm.String" MaxLength="20" sap:label="cbc" sap:aggregation-role="dimension"/>
+<Property Name="okato" Type="Edm.String" MaxLength="11" sap:label="okato" sap:aggregation-role="dimension"/>
+<Property Name="paytReason" Type="Edm.String" MaxLength="2" sap:label="paytReason" sap:aggregation-role="dimension"/>
+<Property Name="taxPeriod" Type="Edm.String" MaxLength="10" sap:label="taxPeriod" sap:aggregation-role="dimension"/>
+<Property Name="taxPaytKind" Type="Edm.String" MaxLength="2" sap:label="taxPaytKind" sap:aggregation-role="dimension"/>
+<Property Name="depDocNo" Type="Edm.String" MaxLength="15" sap:label="depDocNo" sap:aggregation-role="dimension"/>
+<Property Name="depDocDate" Type="Edm.String" MaxLength="10" sap:label="depDocDate" sap:aggregation-role="dimension"/>
+<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="docSum" sap:aggregation-role="measure" sap:filterable="false"/>
+<Property Name="vatSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="vatSum" sap:aggregation-role="measure" sap:filterable="false"/>
 <NavigationProperty Name="PaymentOrderFile" Relationship="default.PaymentOrder_FilesType" FromRole="PaymentOrderPrincipal" ToRole="FilesDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="PaymentOrderSign" Relationship="default.PaymentOrder_SignType" FromRole="PaymentOrderPrincipal" ToRole="SignDependent" sap:creatable="false" sap:filterable="false"/>
 </EntityType>
@@ -153,9 +152,9 @@
 </EntityType>
 <EntityType Name="StatementType" sap:semantics="aggregate">
 <Key>
-<PropertyRef Name="GENERATED_ID"/>
+<PropertyRef Name="ID"/>
 </Key>
-<Property Name="GENERATED_ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
+<Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
 <Property Name="responseId" Type="Edm.String" MaxLength="37" sap:label="Уникальный идентификатор" sap:aggregation-role="dimension"/>
 <Property Name="bic" Type="Edm.String" MaxLength="9" sap:label="БИК банка клиента" sap:aggregation-role="dimension"/>
 <Property Name="currCode" Type="Edm.String" MaxLength="3" sap:label="Код валюты выписки" sap:aggregation-role="dimension"/>
@@ -294,7 +293,7 @@
 <End Type="default.StatementItemsDebType" Role="StatementItemsDebDependent" Multiplicity="*"/>
 </Association>
 <EntityContainer Name="v2" m:IsDefaultEntityContainer="true">
-<EntitySet Name="PaymentOrder" EntityType="default.PaymentOrderType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="PaymentOrder" EntityType="default.PaymentOrderType" sap:addressable="false" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="Request" EntityType="default.RequestType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="PayDocRu" EntityType="default.PayDocRuType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="AccDoc" EntityType="default.AccDocType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>

@@ -87,6 +87,15 @@ sap.ui.define([
 			oMessagePopover.setModel(oModel);
 		},
 
+		onAfterRendering: function (oEvent) {
+			// 			$(".Table_D").on('scroll', function () {
+			//                   $(".Table_C").scrollTop($(this).scrollTop());
+			//             });
+			//             $(".Table_C").on('scroll', function () {
+			//                   $(".Table_D").scrollTop($(this).scrollTop());
+			//             });
+		},
+
 		handleMessagePopoverPress: function (oEvent) {
 			oMessagePopover.toggle(oEvent.getSource());
 		},
@@ -104,28 +113,28 @@ sap.ui.define([
 			var password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
 			var auth = "Basic " + username + " " + password;
 
-// 			$.ajax({
-// 				xhrFields: {
-// 					withCredentials: true
-// 				},
-// 				beforeSend: function (xhr) {
-// 					xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
-// 				},
-// 				url: url,
-// 				type: "POST",
-// 				dataType: "json",
-// 				data: data,
+			// 			$.ajax({
+			// 				xhrFields: {
+			// 					withCredentials: true
+			// 				},
+			// 				beforeSend: function (xhr) {
+			// 					xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
+			// 				},
+			// 				url: url,
+			// 				type: "POST",
+			// 				dataType: "json",
+			// 				data: data,
 
-// 				success: function (data) {
-// 					alert("Удачно отправлено");
-// 					console.log("Response: ", data);
-// 				},
-// 				error: function (oError) {
-// 					//MessageBox.error(oError.responseText);
-// 					alert("oError");
-// 					console.warn(oError);
-// 				}
-// 			});
+			// 				success: function (data) {
+			// 					alert("Удачно отправлено");
+			// 					console.log("Response: ", data);
+			// 				},
+			// 				error: function (oError) {
+			// 					//MessageBox.error(oError.responseText);
+			// 					alert("oError");
+			// 					console.warn(oError);
+			// 				}
+			// 			});
 
 			// 			var xhr = new XMLHttpRequest();
 			//             xhr.open("POST", url, true);
@@ -135,16 +144,17 @@ sap.ui.define([
 			//                 console.log(xhr.responseText);
 			//             };
 			//             xhr.send();
-			
+
 			$.ajax({
 				type: "POST",
 				url: url,
 				data: data,
 				//dataType: "xml",
 				dataType: 'json',
-                  headers: {
-                    "Authorization": "Basic " + "c2ItNzMxMTgwNDEtMzVjYS00M2UyLWI3NjgtNzBiNjNlMTA1NWQ0IWIzMTU5M3xpdC1ydC1oMmhpbiFiMTYwNzc6b3gyYUFMcVo5SFdadUc5WVowMkdSZm5sVExrPQ=="
-                  },
+				headers: {
+					"Authorization": "Basic " +
+						"c2ItNzMxMTgwNDEtMzVjYS00M2UyLWI3NjgtNzBiNjNlMTA1NWQ0IWIzMTU5M3xpdC1ydC1oMmhpbiFiMTYwNzc6b3gyYUFMcVo5SFdadUc5WVowMkdSZm5sVExrPQ=="
+				},
 				success: function (data) {
 					alert("Удачно отправлено");
 					console.log("Response: ", data);
@@ -154,7 +164,7 @@ sap.ui.define([
 					console.warn(oError);
 				}
 			});
-			
+
 			// вар 2
 			// var response = await fetch('https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde', {
 			//   method: "POST",
@@ -170,11 +180,74 @@ sap.ui.define([
 		},
 
 		onDelete: function (oEvent) {
+			var src = oEvent.getSource();
+			var ctx = src.getBindingContext();
+			var sPath = ctx.getPath();
+			var oSmartTable = this.byId("SmartTableStatements");
+			var oTable = oSmartTable.getTable();
+			var data = oTable.getModel().getProperty(sPath);
+			this._delStmnt(data);
+		},
 
+		_delStmnt: function (data) {
+			var oModel = this.getOwnerComponent().getModel();
+			var mParams = {};
+			var that = this;
+			mParams.success = function () {
+				MessageToast.show("Выписка удалена");
+			};
+			mParams.error = function (oError) {
+				that._onErrorCall(oError);
+			};
+			var Path = "/Statements(responseId='" + data.responseId + "')";
+			oModel.remove(Path, mParams);
 		},
 
 		onDeleteAll: function (oEvent) {
+			var oSmartTable = this.byId("SmartTableStatements");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var sPath;
+			var that = this;
 
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					sPath = Context.sPath;
+					var data = oTable.getModel().getProperty(sPath);
+					that._delStmnt(data);
+				});
+			}
+		},
+
+		onDeleteAllPP: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var sPath;
+			var that = this;
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					sPath = Context.sPath;
+					var data = oTable.getModel().getProperty(sPath);
+					that._delPP(data);
+				});
+			}
+		},
+		_delPP: function (data) {
+			var oModel = this.getOwnerComponent().getModel();
+			var mParams = {};
+			var that = this;
+			mParams.success = function () {
+				MessageToast.show("ПП удалено");
+			};
+			mParams.error = function (oError) {
+				that._onErrorCall(oError);
+			};
+			var Path = "/PaymentOrder(requestId='" + data.requestId + "',docExtId='" + data.docExtId + "')";
+			oModel.remove(Path, mParams);
 		},
 
 		onItemSelect: function (oEvent) {
@@ -187,16 +260,13 @@ sap.ui.define([
 		},
 
 		onCheckSign: function (oEvent) {
-			MessageToast.show(oEvent.getSource().getId() + " Pressed");
+			MessageToast.show("В разработке");
 		},
 
 		onAttachment: function (oEvent) {
-			MessageToast.show(oEvent.getSource().getId() + " Pressed");
+			MessageToast.show("В разработке");
 		},
 
-		onPrint_1: function (oEvent) {
-			MessageToast.show(oEvent.getSource().getId() + " Pressed");
-		},
 		onPrint_D: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
@@ -204,8 +274,68 @@ sap.ui.define([
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
 
-		onJournal_1: function (oEvent) {
-			MessageToast.show(oEvent.getSource().getId() + " Pressed");
+		onJournal_Stmnt: function (oEvent) {
+			var that = this;
+			if (!this.journalDialog_Stmnt) {
+				this.journalDialog_Stmnt = sap.ui.xmlfragment("journalDialog_Stmnt", "h2h.ui5.view.journalDialog", this);
+
+				var oSmartTable = this.byId("SmartTableStatements");
+				var oTable = oSmartTable.getTable();
+				var iIndex = oTable.getSelectedIndices();
+				var sPath;
+				var that = this;
+				var oFilter = [];
+				if (iIndex.length > 0) {
+					iIndex.forEach(function (item, i) {
+						var Context = oTable.getContextByIndex(item);
+						sPath = Context.sPath;
+						var data = oTable.getModel().getProperty(sPath);
+						oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId));
+					});
+				} else {
+					return MessageBox.alert("Выберите хотя бы одну строку в таблице");
+				}
+
+				var oModel = this.getOwnerComponent().getModel();
+
+				oModel.read("/Logs", {
+					filters: oFilter,
+					success: function (data) {
+						console.log(data);
+						var oModel = new JSONModel(data);
+						that.journalDialog_Stmnt.setModel(oModel);
+						that.journalDialog_Stmnt.open();
+					},
+					error: function (oError) {
+						//MessageBox.error(oError.responseText);
+						console.log("error: " + oError);
+						// test model
+						// 		var data = [{
+						// 		    param1: '02:51:56',
+						// 		    param2: '03.12.2019',
+						// 		    param3: 'C_H_DPO_RFB',
+						// 		    param4: 'S',
+						// 		    param5: '38',
+						// 		    param6: '296',
+						// 		    param7: '40702810800001400002',
+						// 		    param8: '044525700',
+						// 		    param9: '02.12.2019',
+						// 		    param10: 'RFC01',
+						// 		    param11: '1000',
+						// 		    param12: 'Выписка успешно принята 02.12.2019 БЕ 1000 БИК 044525700 расч.счет 40702810800001400002'
+						// 		}];
+						// 		var oModel = new JSONModel(data);
+						// 		that.journalDialog.setModel(oModel);
+						that.journalDialog_Stmnt.open();
+					}
+				});
+			} else {
+				this.journalDialog_Stmnt.open();
+			}
+		},
+
+		OnExportStmnt: function (oEvent) {
+			MessageToast.show("В разработке");
 		},
 
 		onPDF: function (oEvent) {
@@ -218,38 +348,62 @@ sap.ui.define([
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
 			var that = this;
-
+			var oFilter = [];
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
 					var Context = oTable.getContextByIndex(item);
 					sPath = Context.sPath;
+					var data = oTable.getModel().getProperty(sPath);
+					oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId));
 				});
-				var data = oTable.getModel().getProperty(sPath);
-				var oFilter = new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId);
-				that.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
-				that.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);;
 			}
+			that.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+			that.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
 		},
 
 		onChoseStatement: function (oEvent) {
 			//debugger;
+			// 			var src = oEvent.getSource();
+			// 			var ctx = src.getBindingContext();
+			// 			var path = ctx.getPath();
+			// 			var obj = src.getModel().getProperty(path);
+			// 			var oFilter = new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, obj.responseId);
+			// 			var oSmartTable_D = this.byId("SmartTable_D");
+			// 			oSmartTable_D.getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+			// 			var oSmartTable_С = this.byId("SmartTable_C");
+			// 			oSmartTable_С.getTable().bindRows("/StatementItemsCred", null, null, oFilter);
+
+			var oView = this.getView();
+			if (!this.detailDialog_Stmnt) {
+				this.detailDialog_Stmnt = sap.ui.xmlfragment("detailDialog_Stmnt", "h2h.ui5.view.detailDialog_Stmnt", this).addStyleClass(
+					"sapUiSizeCompact");
+				oView.addDependent(this.detailDialog_Stmnt);
+			}
+
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
-			var path = ctx.getPath();
-			var obj = src.getModel().getProperty(path);
-			var oFilter = new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, obj.responseId);
+			//var path = ctx.getPath();
+			this.detailDialog_Stmnt.setBindingContext(ctx);
+			this.detailDialog_Stmnt.open();
+		},
 
-			var oSmartTable_D = this.byId("SmartTable_D");
-			//oSmartTable_D.setEntitySet("StatementItemsDeb");
-			//oSmartTable_D.setTableBindingPath("ItemsDeb");
-			//oSmartTable_D.rebindTable();
-			oSmartTable_D.getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+		detailDialog_StmntClose: function () {
+			this.detailDialog_Stmnt.close();
+		},
 
-			var oSmartTable_С = this.byId("SmartTable_C");
-			//oSmartTable_С.setEntitySet("StatementItemsCred");
-			//oSmartTable_С.setTableBindingPath("ItemsCred");
-			//oSmartTable_С.rebindTable();
-			oSmartTable_С.getTable().bindRows("/StatementItemsCred", null, null, oFilter);
+		onChoseCreditDebit: function (oEvent) {
+			var oView = this.getView();
+			if (!this.detailDialog_CD) {
+				this.detailDialog_CD = sap.ui.xmlfragment("detailDialog_CD", "h2h.ui5.view.detailDialog_CD", this).addStyleClass(
+					"sapUiSizeCompact");
+				oView.addDependent(this.detailDialog_CD);
+			}
+
+			var src = oEvent.getSource();
+			var ctx = src.getBindingContext();
+			//var path = ctx.getPath();
+			this.detailDialog_CD.setBindingContext(ctx);
+			this.detailDialog_CD.open();
 		},
 
 		// test event for dev
@@ -698,7 +852,12 @@ sap.ui.define([
 				}
 				return;
 			} else {
-				MessageBox.alert(oError.response.statusText);
+				if (oError.response.statusText) {
+					MessageBox.alert(oError.response.statusText);
+				} else {
+					MessageBox.alert(JSON.stringify(oError.response));
+				}
+
 				return;
 			}
 		},
@@ -757,7 +916,7 @@ sap.ui.define([
 				this.undoSignDialog.close();
 			};
 			mParams.error = this._onErrorCall;
-			var Path = "/Sign(docExtId='"+docExtId+"')";
+			var Path = "/Sign(docExtId='" + docExtId + "')";
 			oModel.remove(Path, mParams);
 
 			this.undoSignDialog.close();
@@ -768,19 +927,84 @@ sap.ui.define([
 			this.undoSignDialog.close();
 		},
 
+		// тест подписи
+		// 			var objSign = {
+		// 				IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru",
+		// 				SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07",
+		// 				SubjectName: "CN=Алексей, E=kleale@kleale.ru",
+		// 				Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
+		// 				ValidToDate: "2020-02-06T11:56:17.000Z"
+		// 			};
+		// 			var result =
+		// 				"MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
+		// 			this._sendSign(result, objSign);
+
 		// журнал
 		onJournal: function (oEvent) {
-			// тест подписи
-			// 			var objSign = {
-			// 				IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru",
-			// 				SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07",
-			// 				SubjectName: "CN=Алексей, E=kleale@kleale.ru",
-			// 				Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
-			// 				ValidToDate: "2020-02-06T11:56:17.000Z"
-			// 			};
-			// 			var result =
-			// 				"MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
-			// 			this._sendSign(result, objSign);
+			var that = this;
+			if (!this.journalDialog) {
+				this.journalDialog = sap.ui.xmlfragment("journalDialog", "h2h.ui5.view.journalDialog", this);
+				//var docExtId = this._getDocExtId();
+				var oSmartTable = this.byId("LineItemsSmartTable");
+				var oTable = oSmartTable.getTable();
+				var iIndex = oTable.getSelectedIndices();
+				var sPath;
+				var that = this;
+				var oFilter = [];
+				if (iIndex.length > 0) {
+					iIndex.forEach(function (item, i) {
+						var Context = oTable.getContextByIndex(item);
+						sPath = Context.sPath;
+						var data = oTable.getModel().getProperty(sPath);
+						oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId)); //fix filter responseId \ docEtId
+					});
+				} else {
+					return MessageBox.alert("Выберите хотя бы одну строку в таблице");
+				}
+				var oModel = this.getOwnerComponent().getModel();
+				oModel.read("/Logs", {
+					filters: oFilter,
+					success: function (data) {
+						console.log(data);
+						var oModel = new JSONModel(data);
+						that.journalDialog.setModel(oModel);
+						that.journalDialog.open();
+					},
+					error: function (oError) {
+						//MessageBox.error(oError.responseText);
+						console.log("error: " + oError);
+						// test model
+						// 		var data = [{
+						// 		    param1: '02:51:56',
+						// 		    param2: '03.12.2019',
+						// 		    param3: 'C_H_DPO_RFB',
+						// 		    param4: 'S',
+						// 		    param5: '38',
+						// 		    param6: '296',
+						// 		    param7: '40702810800001400002',
+						// 		    param8: '044525700',
+						// 		    param9: '02.12.2019',
+						// 		    param10: 'RFC01',
+						// 		    param11: '1000',
+						// 		    param12: 'Выписка успешно принята 02.12.2019 БЕ 1000 БИК 044525700 расч.счет 40702810800001400002'
+						// 		}];
+						// 		var oModel = new JSONModel(data);
+						// 		that.journalDialog.setModel(oModel);
+						that.journalDialog.open();
+					}
+				});
+			} else {
+				this.journalDialog.open();
+			}
+		},
+
+		journalDialogClose: function (oEvent) {
+			if (this.journalDialog) {
+				this.journalDialog.close();
+			}
+			if (this.journalDialog_Stmnt) {
+				this.journalDialog_Stmnt.close();
+			}
 		},
 
 		//////

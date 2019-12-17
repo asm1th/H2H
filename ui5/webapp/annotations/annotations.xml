@@ -254,9 +254,6 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="taxPaytKind"/>
 						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="signType"/>
-						</Record>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Платежное поручение"/>
@@ -351,6 +348,12 @@
 			<Annotations Target="Metadata.StatementType">
 				<Annotation Term="UI.LineItem">
 					<Collection>
+					    <Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docTime"/>
+							<PropertyValue Property="Label" String="Данные актуальны на (время)"/>
+							<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+							<Annotation Term="Common.QuickInfo" String="Данные актуальны на (время)"/>
+						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docNum"/>
 							<PropertyValue Property="Label" String="Номер документа"/>
@@ -401,15 +404,17 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="responseId"/>
 							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
+							<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/> 
 							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
 						</Record>
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
+					    <PropertyPath>stmtDate</PropertyPath>
 						<PropertyPath>bic</PropertyPath>
 						<PropertyPath>docNum</PropertyPath>
-						<PropertyPath>stmtDate</PropertyPath>
+						<PropertyPath>currCode</PropertyPath>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Выписка"/>
@@ -828,6 +833,9 @@
 			</Annotations>
 			<Annotations Target="Metadata.StatementType/enterBal">
 				<Annotation Term="Common.Label" String="Входящий остаток"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/currCode">
+				<Annotation Term="Common.Label" String="Код валюты выписки"/>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>
