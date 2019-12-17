@@ -2,8 +2,7 @@ service {
 	"cvPaymentOrder"						as "PaymentOrder"		keys generate local "ID"		navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
 																												"PaymentOrder_Sign"				as "PaymentOrderSign"	from principal) 
 																												aggregates always
-																												update using "xsjs:dbf.xsjslib::updateAccDoc"
-																												delete using "xsjs:dbf.xsjslib::deletPaymentOrder";
+																												update using "xsjs:dbf.xsjslib::updateAccDoc";
 	"RaiffeisenBank.Request"				as "Request" 			key ("requestId")				navigates (	"Request_PayDoc"				as "RequestPayDoc"		from principal);	
 	"RaiffeisenBank.PayDocRu"				as "PayDocRu"			key ("requestId", "docExtId")	navigates (	"PayDocRu_AccDoc"				as "PayDocRuAccDoc",
 																												"PayDocRu_Payer"				as "PayDocRuPayer",
@@ -11,7 +10,7 @@ service {
 																												"PayDocRu_File"					as "PayDocRuFile",
 																												"PayDocRu_Sign" 				as "PayDocRuSign"		from principal); 					
 																											
-	"RaiffeisenBank.AccDoc"					as "AccDoc"				key ("docExtId");
+	"RaiffeisenBank.AccDoc"					as "AccDoc"				key ("docExtId");	delete using "xsjs:dbf.xsjslib::deletPaymentOrder"
 	"RaiffeisenBank.Payer"					as "Payer"				key ("docExtId");
 	"RaiffeisenBank.Payee"					as "Payee"				key ("docExtId");
 	"RaiffeisenBank.Files"					as "Files"				key ("requestId")	create using "xsjs:dbf.xsjslib::fileUpload";
