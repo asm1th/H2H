@@ -108,8 +108,50 @@
 					<Record Type="UI.PresentationVariantType">
 						<PropertyValue Property="RequestAtLeast">
 							<Collection>
-								<PropertyPath>docExtId</PropertyPath>
+								<PropertyPath>ID</PropertyPath>
 								<PropertyPath>requestId</PropertyPath>
+								<PropertyPath>docExtId</PropertyPath>
+								<PropertyPath>status</PropertyPath>
+								<PropertyPath>purpose</PropertyPath>
+								<PropertyPath>docDate</PropertyPath>
+								<PropertyPath>docNum</PropertyPath>
+								<PropertyPath>vatRate</PropertyPath>
+								<PropertyPath>vat</PropertyPath>
+								<PropertyPath>transKind</PropertyPath>
+								<PropertyPath>paytKind</PropertyPath>
+								<PropertyPath>paytCode</PropertyPath>
+								<PropertyPath>priority</PropertyPath>
+								<PropertyPath>codeVO</PropertyPath>
+								<PropertyPath>nodocs</PropertyPath>
+								<PropertyPath>payerInn</PropertyPath>
+								<PropertyPath>payerKpp</PropertyPath>
+								<PropertyPath>payerPersonalAcc</PropertyPath>
+								<PropertyPath>payerName</PropertyPath>
+								<PropertyPath>payerBankBic</PropertyPath>
+								<PropertyPath>payerBankCorrespAcc</PropertyPath>
+								<PropertyPath>payerBankName</PropertyPath>
+								<PropertyPath>payerBankBankCity</PropertyPath>
+								<PropertyPath>payerBankSettlementType</PropertyPath>
+								<PropertyPath>payeeInn</PropertyPath>
+								<PropertyPath>payeeKpp</PropertyPath>
+								<PropertyPath>payeePersonalAcc</PropertyPath>
+								<PropertyPath>payeeUip</PropertyPath>
+								<PropertyPath>payeeName</PropertyPath>
+								<PropertyPath>payeeBankBic</PropertyPath>
+								<PropertyPath>payeeBankCorrespAcc</PropertyPath>
+								<PropertyPath>payeeBankName</PropertyPath>
+								<PropertyPath>payeeBankBankCity</PropertyPath>
+								<PropertyPath>payeeBankSettlementType</PropertyPath>
+								<PropertyPath>drawerStatus</PropertyPath>
+								<PropertyPath>cbc</PropertyPath>
+								<PropertyPath>okato</PropertyPath>
+								<PropertyPath>paytReason</PropertyPath>
+								<PropertyPath>taxPeriod</PropertyPath>
+								<PropertyPath>taxPaytKind</PropertyPath>
+								<PropertyPath>depDocNo</PropertyPath>
+								<PropertyPath>depDocDate</PropertyPath>
+								<PropertyPath>docSum</PropertyPath>
+								<PropertyPath>vatSum</PropertyPath>
 							</Collection>
 						</PropertyValue>
 					</Record>
@@ -254,6 +296,9 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="taxPaytKind"/>
 						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="ID"/>
+						</Record>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Платежное поручение"/>
@@ -346,9 +391,28 @@
 				<Annotation Term="Common.Label" String="Уникальный Идентификатора Платежа"/>
 			</Annotations>
 			<Annotations Target="Metadata.StatementType">
+				<Annotation Term="UI.PresentationVariant">
+					<Record Type="UI.PresentationVariantType">
+						<PropertyValue Property="RequestAtLeast">
+							<Collection>
+								<PropertyPath>ID</PropertyPath>
+								<PropertyPath>responseId</PropertyPath>
+								<PropertyPath>bic</PropertyPath>
+								<PropertyPath>currCode</PropertyPath>
+								<PropertyPath>docTime</PropertyPath>
+								<PropertyPath>stmtDate</PropertyPath>
+								<PropertyPath>docNum</PropertyPath>
+								<PropertyPath>debetSum</PropertyPath>
+								<PropertyPath>creditSum</PropertyPath>
+								<PropertyPath>outBal</PropertyPath>
+								<PropertyPath>enterBal</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-					    <Record Type="UI.DataField">
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docTime"/>
 							<PropertyValue Property="Label" String="Данные актуальны на (время)"/>
 							<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
@@ -404,14 +468,17 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="responseId"/>
 							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
-							<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/> 
+							<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
 							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="ID"/>
 						</Record>
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
-					    <PropertyPath>stmtDate</PropertyPath>
+						<PropertyPath>stmtDate</PropertyPath>
 						<PropertyPath>bic</PropertyPath>
 						<PropertyPath>docNum</PropertyPath>
 						<PropertyPath>currCode</PropertyPath>
@@ -425,6 +492,42 @@
 						<PropertyValue Property="RequestAtLeast">
 							<Collection>
 								<PropertyPath>responseId</PropertyPath>
+								<PropertyPath>extId</PropertyPath>
+								<PropertyPath>bank</PropertyPath>
+								<PropertyPath>corrAcc</PropertyPath>
+								<PropertyPath>dc</PropertyPath>
+								<PropertyPath>docDate</PropertyPath>
+								<PropertyPath>docNum</PropertyPath>
+								<PropertyPath>docSum</PropertyPath>
+								<PropertyPath>operDate</PropertyPath>
+								<PropertyPath>paymentOrder</PropertyPath>
+								<PropertyPath>paytKind</PropertyPath>
+								<PropertyPath>personalAcc</PropertyPath>
+								<PropertyPath>personalINN</PropertyPath>
+								<PropertyPath>personalKPP</PropertyPath>
+								<PropertyPath>transKind</PropertyPath>
+								<PropertyPath>receiverINN</PropertyPath>
+								<PropertyPath>receiverKPP</PropertyPath>
+								<PropertyPath>receiverPlace</PropertyPath>
+								<PropertyPath>receiverPlaceType</PropertyPath>
+								<PropertyPath>receiverBankCorrAccount</PropertyPath>
+								<PropertyPath>receiverBankName</PropertyPath>
+								<PropertyPath>payerPlace</PropertyPath>
+								<PropertyPath>payerPlaceType</PropertyPath>
+								<PropertyPath>payerBankCorrAccount</PropertyPath>
+								<PropertyPath>payerBankBic</PropertyPath>
+								<PropertyPath>receiptName</PropertyPath>
+								<PropertyPath>personalName</PropertyPath>
+								<PropertyPath>purpose</PropertyPath>
+								<PropertyPath>cbc</PropertyPath>
+								<PropertyPath>ddocDate</PropertyPath>
+								<PropertyPath>docNo</PropertyPath>
+								<PropertyPath>drawerStatus</PropertyPath>
+								<PropertyPath>okato</PropertyPath>
+								<PropertyPath>paytReason</PropertyPath>
+								<PropertyPath>taxPaytKind</PropertyPath>
+								<PropertyPath>taxPeriod</PropertyPath>
+								<PropertyPath>uip</PropertyPath>
 							</Collection>
 						</PropertyValue>
 					</Record>
@@ -619,14 +722,59 @@
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="ddocDate"/>
-							<PropertyValue Property="Label" String="Дата документа"/>
-							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
+							<PropertyValue Property="Label" String="Дата документа 1"/>
+							<Annotation Term="Common.QuickInfo" String="Дата документа 1"/>
 						</Record>
 					</Collection>
 				</Annotation>
 			</Annotations>
 			<Annotations Target="Metadata.StatementItemsDebType">
 				<Annotation Term="Common.Label" String="Дебет"/>
+				<Annotation Term="UI.PresentationVariant">
+					<Record Type="UI.PresentationVariantType">
+						<PropertyValue Property="RequestAtLeast">
+							<Collection>
+								<PropertyPath>responseId</PropertyPath>
+								<PropertyPath>extId</PropertyPath>
+								<PropertyPath>bank</PropertyPath>
+								<PropertyPath>corrAcc</PropertyPath>
+								<PropertyPath>dc</PropertyPath>
+								<PropertyPath>docDate</PropertyPath>
+								<PropertyPath>docNum</PropertyPath>
+								<PropertyPath>docSum</PropertyPath>
+								<PropertyPath>operDate</PropertyPath>
+								<PropertyPath>paymentOrder</PropertyPath>
+								<PropertyPath>paytKind</PropertyPath>
+								<PropertyPath>personalAcc</PropertyPath>
+								<PropertyPath>personalINN</PropertyPath>
+								<PropertyPath>personalKPP</PropertyPath>
+								<PropertyPath>transKind</PropertyPath>
+								<PropertyPath>receiverINN</PropertyPath>
+								<PropertyPath>receiverKPP</PropertyPath>
+								<PropertyPath>receiverPlace</PropertyPath>
+								<PropertyPath>receiverPlaceType</PropertyPath>
+								<PropertyPath>receiverBankCorrAccount</PropertyPath>
+								<PropertyPath>receiverBankName</PropertyPath>
+								<PropertyPath>payerPlace</PropertyPath>
+								<PropertyPath>payerPlaceType</PropertyPath>
+								<PropertyPath>payerBankCorrAccount</PropertyPath>
+								<PropertyPath>payerBankBic</PropertyPath>
+								<PropertyPath>receiptName</PropertyPath>
+								<PropertyPath>personalName</PropertyPath>
+								<PropertyPath>purpose</PropertyPath>
+								<PropertyPath>cbc</PropertyPath>
+								<PropertyPath>ddocDate</PropertyPath>
+								<PropertyPath>docNo</PropertyPath>
+								<PropertyPath>drawerStatus</PropertyPath>
+								<PropertyPath>okato</PropertyPath>
+								<PropertyPath>paytReason</PropertyPath>
+								<PropertyPath>taxPaytKind</PropertyPath>
+								<PropertyPath>taxPeriod</PropertyPath>
+								<PropertyPath>uip</PropertyPath>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
 						<Record Type="UI.DataField">
@@ -816,8 +964,8 @@
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="ddocDate"/>
-							<PropertyValue Property="Label" String="Дата документа"/>
-							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
+							<PropertyValue Property="Label" String="Дата документа 1"/>
+							<Annotation Term="Common.QuickInfo" String="Дата документа 1"/>
 						</Record>
 					</Collection>
 				</Annotation>

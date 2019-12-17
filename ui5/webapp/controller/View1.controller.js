@@ -246,7 +246,9 @@ sap.ui.define([
 			mParams.error = function (oError) {
 				that._onErrorCall(oError);
 			};
-			var Path = "/AccDoc(docExtId='" + data.docExtId + "')";
+			//var Path = "/AccDoc(docExtId='" + data.docExtId + "')";
+			//var Path = "/PaymentOrder(requestId='" + data.requestId + "',docExtId='" + data.docExtId + "')";
+			var Path = "/PaymentOrder(ID='" + data.ID + "')";
 			oModel.remove(Path, mParams);
 		},
 
@@ -273,6 +275,16 @@ sap.ui.define([
 		onPrint_C: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
+		
+		onRefresh: function (oEvent) {
+		    var oSmartTable = this.byId("LineItemsSmartTable");
+		    oSmartTable.rebindTable();
+	    },
+	    
+		onRefresh_Stmnt: function (oEvent) {
+		    var oSmartTable = this.byId("SmartTableStatements");
+		    oSmartTable.rebindTable();
+	    },
 
 		onJournal_Stmnt: function (oEvent) {
 			var that = this;
@@ -405,7 +417,11 @@ sap.ui.define([
 			this.detailDialog_CD.setBindingContext(ctx);
 			this.detailDialog_CD.open();
 		},
-
+        
+        detailDialog_CDClose: function () {
+			this.detailDialog_CD.close();
+		},
+        
 		// test event for dev
 		onPress: function (oEvent) {
 			MessageToast.show(evt.getSource().getId() + " Pressed");

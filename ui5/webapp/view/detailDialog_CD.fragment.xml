@@ -1,0 +1,123 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" class="sapUiSizeCompact">
+	<Dialog id="detailDialog_Stmnt" title="Выписка" resizable="true" contentWidth="1024px">
+		<content>
+			<form:SimpleForm editable="false" layout="ResponsiveGridLayout" class="ppform" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="4"
+				adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" singleContainerFullSize="false">
+				<form:content>
+					<Label text="Банк плательщика/получателя"/>
+					<Input id="bank" value="{bank}" editable="false"/>
+					<Label text="Счет плательщика"/>
+					<Input id="corrAcc" value="{corrAcc}" editable="false"/>
+					<Label text="признак дебета/кредита."/>
+					<Input id="dc" value="{dc}" editable="false"/>
+					<Label text="Дата документа"/>
+					<Input id="docDate" value="{docDate}" editable="false"/>
+					<Label text="Номер документа"/>
+					<Input id="docNum" value="{docNum}" editable="false"/>
+					<Label text="Сумма документа"/>
+					<Input id="docSum" value="{docSum}" editable="false"/>
+					<Label text="Дата операции"/>
+					<Input id="operDate" value="{operDate}" editable="false"/>
+					<Label text="Очередность платежа"/>
+					<Input id="paymentOrder" value="{paymentOrder}" editable="false"/>
+					<Label text="Вид платежа"/>
+					<Input id="paytKind" value="{paytKind}" editable="false"/>
+					<Label text="Счет плательщика"/>
+					<Input id="personalAcc" value="{personalAcc}" editable="false"/>
+					<Label text="ИНН плательщика"/>
+					<Input id="personalINN" value="{personalINN}" editable="false"/>
+					<Label text="КПП плательщика"/>
+					<Input id="personalKPP" value="{personalKPP}" editable="false"/>
+					<Label text="Тип операции"/>
+					<Input id="transKind" value="{transKind}" editable="false"/>
+					<Label text="ИНН получателя"/>
+					<Input id="receiverINN" value="{receiverINN}" editable="false"/>
+					<Label text="КПП получателя"/>
+					<Input id="receiverKPP" value="{receiverKPP}" editable="false"/>
+					<Label text="Населенный пункт"/>
+					<Input id="receiverPlace" value="{receiverPlace}" editable="false"/>
+					<Label text="Тип населенного пункта"/>
+					<Input id="receiverPlaceType" value="{receiverPlaceType}" editable="false"/>
+					<Label text="Номер корр. счёта банка получателя"/>
+					<Input id="receiverBankCorrAccount" value="{receiverBankCorrAccount}" editable="false"/>
+					<Label text="Наименование банка получателя"/>
+					<Input id="receiverBankName" value="{receiverBankName}" editable="false"/>
+					<Label text="Населенный пункт"/>
+					<Input id="payerPlace" value="{payerPlace}" editable="false"/>
+					<Label text="Тип населенного пункта"/>
+					<Input id="payerPlaceType" value="{payerPlaceType}" editable="false"/>
+					
+					<Label text="Номер корр. счёта банка плательщика"/>
+					<Input id="payerBankCorrAccount" value="{payerBankCorrAccount}" editable="false"/>
+					<Label text="БИК банка плательщика"/>
+					<Input id="payerBankBic" value="{payerBankBic}" editable="false"/>
+					<Label text="Название получателя"/>
+					<Input id="receiptName" value="{receiptName}" editable="false"/>
+					<Label text="Наименование организации клиента"/>
+					<Input id="personalName" value="{personalName}" editable="false"/>
+					<Label text="Назначение платежа"/>
+					<Input id="purpose" value="{purpose}" editable="false"/>
+					<Label text="КБК"/>
+					<Input id="cbc" value="{cbc}" editable="false"/>
+					<Label text="Дата документа."/>
+					<Input id="ddocDate" value="{ddocDate}" editable="false"/>
+					<Label text="Номер налогового документа"/>
+					<Input id="docNo" value="{docNo}" editable="false"/>
+					<Label text="Статус составителя документа"/>
+					<Input id="drawerStatus" value="{drawerStatus}" editable="false"/>
+					<Label text="ОКАТО"/>
+					<Input id="okato" value="{okato}" editable="false"/>
+					<Label text="Показатель основания платежа (106)"/>
+					<Input id="paytReason" value="{paytReason}" editable="false"/>
+					<Label text="Тип налогового платежа (110)"/>
+					<Input id="taxPaytKind" value="{taxPaytKind}" editable="false"/>
+					<Label text="Налоговый период/ Код таможенного органа"/>
+					<Input id="taxPeriod" value="{taxPeriod}" editable="false"/>
+					<Label text="Уникальный Идентификатора Платежа"/>
+					<Input id="uip" value="{uip}" editable="false"/>
+					
+					<!--<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="37"/>-->
+					<!--<Property Name="extId" Type="Edm.String" Nullable="false" MaxLength="37"/>-->
+					<!--<Property Name="bank" Type="Edm.String" MaxLength="80"/>-->
+					<!--<Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>-->
+					<!--<Property Name="dc" Type="Edm.Int32" Nullable="false"/>-->
+					<!--<Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date"/>-->
+					<!--<Property Name="docNum" Type="Edm.String" MaxLength="6"/>-->
+					<!--<Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2"/>-->
+					<!--<Property Name="operDate" Type="Edm.String" MaxLength="10"/>-->
+					<!--<Property Name="paymentOrder" Type="Edm.String" MaxLength="2"/>-->
+					<!--<Property Name="paytKind" Type="Edm.String" MaxLength="15"/>-->
+					<!--<Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>-->
+					<!--<Property Name="personalINN" Type="Edm.String" MaxLength="12"/>-->
+					<!--<Property Name="personalKPP" Type="Edm.String" MaxLength="9"/>-->
+					<!--<Property Name="transKind" Type="Edm.String" MaxLength="2"/>-->
+					<!--<Property Name="receiverINN" Type="Edm.String" MaxLength="12"/>-->
+					<!--<Property Name="receiverKPP" Type="Edm.String" MaxLength="9"/>-->
+					<!--<Property Name="receiverPlace" Type="Edm.String" MaxLength="25"/>-->
+					<!--<Property Name="receiverPlaceType" Type="Edm.String" MaxLength="5"/>-->
+					<!--<Property Name="receiverBankCorrAccount" Type="Edm.String" MaxLength="20"/>-->
+					<!--<Property Name="receiverBankName" Type="Edm.String" MaxLength="80"/>-->
+					<!--<Property Name="payerPlace" Type="Edm.String" MaxLength="25"/>-->
+					<!--<Property Name="payerPlaceType" Type="Edm.String" MaxLength="5"/>-->
+					<!--<Property Name="payerBankCorrAccount" Type="Edm.String" MaxLength="20"/>-->
+					<!--<Property Name="payerBankBic" Type="Edm.String" MaxLength="9"/>-->
+					<!--<Property Name="receiptName" Type="Edm.String" MaxLength="160"/>-->
+					<!--<Property Name="personalName" Type="Edm.String" MaxLength="160"/>-->
+					<!--<Property Name="purpose" Type="Edm.String" MaxLength="210"/>-->
+					<!--<Property Name="cbc" Type="Edm.String" MaxLength="20"/>-->
+					<!--<Property Name="ddocDate" Type="Edm.DateTime" sap:display-format="Date"/>-->
+					<!--<Property Name="docNo" Type="Edm.String" MaxLength="15"/>-->
+					<!--<Property Name="drawerStatus" Type="Edm.String" MaxLength="2"/>-->
+					<!--<Property Name="okato" Type="Edm.String" MaxLength="11"/>-->
+					<!--<Property Name="paytReason" Type="Edm.String" MaxLength="2"/>-->
+					<!--<Property Name="taxPaytKind" Type="Edm.String" MaxLength="2"/>-->
+					<!--<Property Name="taxPeriod" Type="Edm.String" MaxLength="10"/>-->
+					<!--<Property Name="uip" Type="Edm.String" MaxLength="25"/>-->
+				</form:content>
+			</form:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="Закрыть" press="detailDialog_CDClose"></Button>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
