@@ -672,7 +672,7 @@ function deletPaymentOrder(param){
 	var fileBody = null;
 	var PaymentOrder = {};
 	while (rs.next()) {
-		PaymentOrder.docExtId = 		rs.getString(2);
+		PaymentOrder.docExtId = 		rs.getString(1);
 	}
 	pStmt.close();
 	var salesOrderId = '';

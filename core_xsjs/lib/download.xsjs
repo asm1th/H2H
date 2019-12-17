@@ -226,88 +226,19 @@ if (errMessage.length == 0) {
 	xml += '</Request>';
 
 	var request = $.require('request');
-	
+	var jsb64 = $.require('nodejs-base64');
+
 	username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
 	password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
 	// url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/TestService";
 	url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
-	auth = "Basic " + $.util.codec.encodeBase64(str2ab(username + ':' + password));
-	
+	auth = 'Basic ' + jsb64.base64encode(username + ':' + password);
 
-	// var rq = request.get( {
-	//     url : url,
-	//     headers : {
-	//         "Authorization" : auth
-	//     }
-	//   }, function(error, response, body) {
-	//       console.log('body : ', body);
-	//   } );
-
-	// request.post(	{	url: url, 
-	// 					headers: {	"Authorization": auth,
-	// 								"fileBody": fileBoby
-	//         					}
-	// 				},
-	// 				function optionalCallback(err, httpResponse, body) {
-	// 				  if (err) {
-	// 				    $.net.http.INTERNAL_SERVER_ERROR;
-	// 				    $.response.setBody(body);
-	// 				  }
-	// 				  $.response.status = $.net.http.OK;
-	// 				  $.response.setBody(body);
-	// 				}
-	// 			);
-
-	// var rGet = request.get(url:url, auth=(username, password), function (error, response, body) {
-	// 				  if (error) {
-	// 				    $.net.http.INTERNAL_SERVER_ERROR;
-	// 				    $.response.setBody(body);
-	// 				  }
-	// 				  $.response.status = $.net.http.OK;
-	// 				  $.response.setBody(body);
-	// 				});		
-
-	// const options = {
-	//     url: 'https://www.reddit.com/r/funny.json',
-	//     method: 'GET',
-	//     headers: {
-	//         'Accept': 'application/json',
-	//         'Accept-Charset': 'utf-8',
-	//         'User-Agent': 'my-reddit-client'
-	//     }
-	// };
-
-	// var rq = request({
-	// 	method: 'PUT',
-	// 	uri: url,
-	// 	authorization: auth,
-	// 	multipart: [{
-	// 		'content-type': 'application/json',
-	// 		'body': JSON.stringify({
-	// 			_attachments: {
-	// 				'data.xml': {
-	// 					follows: true,
-	// 					length: fileBoby.length,
-	// 					'content_type': 'application/xml'
-	// 				}
-	// 			}
-	// 		})
-	// 	}, {
-	// 		body: fileBoby
-	// 	}]
-	// }, function (error, response, body) {
-	// 	if (error) {
-	// 		$.net.http.INTERNAL_SERVER_ERROR;
-	// 		console.log('body : ', body);
-	// 	}
-	// 	$.response.status = $.net.http.OK;
-	// 	console.log('body : ', body);
-	// });
-	
+	var fileBody = $.util.codec.encodeBase64(str2ab(xml));
 	var data = {
-		"fileBody": $.util.codec.encodeBase64(str2ab(xml)),
+		"file": jsb64.base64encode(xml),
 		"fileType": "application/xml",
-		"fileUID":	raif.PayDocRu.docExtId,
+		"fileUID": raif.PayDocRu.docExtId,
 	};
 
 	var options = {
@@ -316,11 +247,10 @@ if (errMessage.length == 0) {
 		json: true,
 		uri: 'https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder',
 		headers: {
+			'Content-Type': 'application/json',
 			'Authorization': auth
 		}
 	};
-
-	
 
 	request(options, function (error, response, body) {
 		console.log('body : ', body);
