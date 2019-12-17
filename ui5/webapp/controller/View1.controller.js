@@ -100,86 +100,7 @@ sap.ui.define([
 			oMessagePopover.toggle(oEvent.getSource());
 		},
 
-		test: function (oEvent) {
-
-			var url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
-			var data = {
-				"name": "sample",
-				"time": "Wed, 21 Oct 2015 18:27:50 GMT"
-			};
-			var data2 =
-				'<?xml version="1.0" encoding="utf-8"?><Request xmlns="http://bssys.com/upg/request" requestId="00505680-4cfa-1ed9-bcaf-1a48313fd85d" version="0.1"></Request>';
-			var username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
-			var password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
-			var auth = "Basic " + username + " " + password;
-
-			// 			$.ajax({
-			// 				xhrFields: {
-			// 					withCredentials: true
-			// 				},
-			// 				beforeSend: function (xhr) {
-			// 					xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
-			// 				},
-			// 				url: url,
-			// 				type: "POST",
-			// 				dataType: "json",
-			// 				data: data,
-
-			// 				success: function (data) {
-			// 					alert("Удачно отправлено");
-			// 					console.log("Response: ", data);
-			// 				},
-			// 				error: function (oError) {
-			// 					//MessageBox.error(oError.responseText);
-			// 					alert("oError");
-			// 					console.warn(oError);
-			// 				}
-			// 			});
-
-			// 			var xhr = new XMLHttpRequest();
-			//             xhr.open("POST", url, true);
-			//             xhr.withCredentials = true;
-			//             xhr.setRequestHeader("Authorization", 'Basic ' + btoa(username+':'+password));
-			//             xhr.onload = function () {
-			//                 console.log(xhr.responseText);
-			//             };
-			//             xhr.send();
-
-			$.ajax({
-				type: "POST",
-				url: url,
-				data: data,
-				//dataType: "xml",
-				dataType: 'json',
-				headers: {
-					"Authorization": "Basic " +
-						"c2ItNzMxMTgwNDEtMzVjYS00M2UyLWI3NjgtNzBiNjNlMTA1NWQ0IWIzMTU5M3xpdC1ydC1oMmhpbiFiMTYwNzc6b3gyYUFMcVo5SFdadUc5WVowMkdSZm5sVExrPQ=="
-				},
-				success: function (data) {
-					alert("Удачно отправлено");
-					console.log("Response: ", data);
-				},
-				error: function (oError) {
-					alert("oError");
-					console.warn(oError);
-				}
-			});
-
-			// вар 2
-			// var response = await fetch('https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde', {
-			//   method: "POST",
-			//   headers: {
-			//     //'Content-Type': 'application/json;charset=utf-8',
-			//     "Content-type: text/xml;charset=utf-8"
-			//     "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
-			//   },
-			//   body: JSON.stringify(data);
-			// });
-			// var result = await response.json();
-			// alert(result.message);
-		},
-
-		onDelete: function (oEvent) {
+		onDeleteStatement: function (oEvent) {
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var sPath = ctx.getPath();
@@ -203,7 +124,7 @@ sap.ui.define([
 			oModel.remove(Path, mParams);
 		},
 
-		onDeleteAll: function (oEvent) {
+		onDeleteAllStatement: function (oEvent) {
 			var oSmartTable = this.byId("SmartTableStatements");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
@@ -218,6 +139,16 @@ sap.ui.define([
 					that._delStmnt(data);
 				});
 			}
+		},
+
+		onDeletePP: function (oEvent) {
+			var src = oEvent.getSource();
+			var ctx = src.getBindingContext();
+			var sPath = ctx.getPath();
+			var oSmartTable = this.byId("SmartTableStatements");
+			var oTable = oSmartTable.getTable();
+			var data = oTable.getModel().getProperty(sPath);
+			this._delPP(data);
 		},
 
 		onDeleteAllPP: function (oEvent) {
@@ -240,16 +171,36 @@ sap.ui.define([
 			var oModel = this.getOwnerComponent().getModel();
 			var mParams = {};
 			var that = this;
+
+			//var Path = "/PaymentOrder(requestId='" + data.requestId + "',docExtId='" + data.docExtId + "')";
+			//var Path = "/PaymentOrder(ID='" + data.ID + "')";
+			//var Path = "/AccDoc(docExtId='" + data.docExtId + "')";
+
+			var Path = "/PayDocRu(requestId='" + data.requestId + "',docExtId='" + data.docExtId + "')";
+
+			// 			oModel.remove(Path, mParams);
+			// 				mParams.success = function () {
+			// 				MessageToast.show("ПП удалено");
+			// 			};
+			// 			mParams.error = function (oError) {
+			// 				that._onErrorCall(oError);
+			// 			};
+
 			mParams.success = function () {
-				MessageToast.show("ПП удалено");
+				oModel.remove(Path, {
+					success: function (data) {
+						console.log(data);
+						MessageToast.show("++++++++++++");
+					},
+					error: function (oError) {
+						MessageBox.show(oError);
+					}
+				});
 			};
 			mParams.error = function (oError) {
 				that._onErrorCall(oError);
 			};
-			//var Path = "/AccDoc(docExtId='" + data.docExtId + "')";
-			//var Path = "/PaymentOrder(requestId='" + data.requestId + "',docExtId='" + data.docExtId + "')";
-			var Path = "/PaymentOrder(ID='" + data.ID + "')";
-			oModel.remove(Path, mParams);
+			oModel.read(Path, mParams); // КОстыль
 		},
 
 		onItemSelect: function (oEvent) {
@@ -275,16 +226,16 @@ sap.ui.define([
 		onPrint_C: function (oEvent) {
 			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
-		
+
 		onRefresh: function (oEvent) {
-		    var oSmartTable = this.byId("LineItemsSmartTable");
-		    oSmartTable.rebindTable();
-	    },
-	    
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			oSmartTable.rebindTable();
+		},
+
 		onRefresh_Stmnt: function (oEvent) {
-		    var oSmartTable = this.byId("SmartTableStatements");
-		    oSmartTable.rebindTable();
-	    },
+			var oSmartTable = this.byId("SmartTableStatements");
+			oSmartTable.rebindTable();
+		},
 
 		onJournal_Stmnt: function (oEvent) {
 			var that = this;
@@ -417,11 +368,11 @@ sap.ui.define([
 			this.detailDialog_CD.setBindingContext(ctx);
 			this.detailDialog_CD.open();
 		},
-        
-        detailDialog_CDClose: function () {
+
+		detailDialog_CDClose: function () {
 			this.detailDialog_CD.close();
 		},
-        
+
 		// test event for dev
 		onPress: function (oEvent) {
 			MessageToast.show(evt.getSource().getId() + " Pressed");
@@ -515,7 +466,7 @@ sap.ui.define([
 		///////////////////////
 
 		// скачать загруженное ПП в том же формате
-		onDownload: function (oEvent) {
+		onDownload_1C: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
@@ -634,6 +585,7 @@ sap.ui.define([
 		// кнопка отправить
 		onSend: function (oEvent) {
 			this.onShowXml(oEvent);
+			MessageToast.show("Пример отправленного XML файла");
 		},
 
 		//  кнопка загрузки пп

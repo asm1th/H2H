@@ -216,6 +216,9 @@
 							<PropertyValue Property="Value" Path="payeeBankBankCity"/>
 						</Record>
 						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="payeeBankSettlementType"/>
+						</Record>
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payerBankName"/>
 						</Record>
 						<Record Type="UI.DataField">

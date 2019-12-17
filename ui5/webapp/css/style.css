@@ -334,8 +334,8 @@ html.sap-desktop .sapContrast .sapMFooter-CTX .btn-delete .sapMBtnInner.sapMBtnR
     color: #fff;
 }
 
-.btn-bordered.sapMBtn:hover  .sapMBtnIcon {
-    color: #ffffff;
+.btn-bordered.sapMBtn:hover .sapMBtnIcon {
+    /*color: #ffffff;*/
 }
 /*** .btn-bordered ****/
 
