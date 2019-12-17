@@ -246,7 +246,7 @@ sap.ui.define([
 			mParams.error = function (oError) {
 				that._onErrorCall(oError);
 			};
-			var Path = "/PaymentOrder(requestId='" + data.requestId + "',docExtId='" + data.docExtId + "')";
+			var Path = "/AccDoc(docExtId='" + data.docExtId + "')";
 			oModel.remove(Path, mParams);
 		},
 

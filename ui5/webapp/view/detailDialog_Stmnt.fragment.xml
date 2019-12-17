@@ -5,7 +5,32 @@
 				adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" singleContainerFullSize="false">
 				<form:content>
 					<Label text="{bic/##com.sap.vocabularies.Common.v1.Label/String}"/>
-					<Input id="docSum" value="{bic}" editable="false"/>
+					<Input id="bic" value="{bic}" editable="false"/>
+					
+					<Label text="{currCode/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="currCode" value="{currCode}" editable="false"/>
+					
+					<Label text="{docTime/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="docTime" value="{docTime}" editable="false"/>
+					
+					<Label text="{stmtDate/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="stmtDate" value="{stmtDate}" editable="false"/>
+					
+					<Label text="{docNum/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="docNum" value="{docNum}" editable="false"/>
+					
+					<Label text="{debetSum/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="debetSum" value="{debetSum}" editable="false"/>
+					
+					<Label text="{creditSum/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="creditSum" value="{creditSum}" editable="false"/>
+					
+					<Label text="{outBal/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="outBal" value="{outBal}" editable="false"/>
+					
+					<Label text="{enterBal/##com.sap.vocabularies.Common.v1.Label/String}"/>
+					<Input id="enterBal" value="{enterBal}" editable="false"/>
+
 				</form:content>
 			</form:SimpleForm>
 		</content>
