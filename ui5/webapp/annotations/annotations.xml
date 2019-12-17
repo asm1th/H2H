@@ -177,8 +177,18 @@
 							<PropertyValue Property="Label" String="Дата документа"/>
 						</Record>
 						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="payeeBankBic"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="payeePersonalAcc"/>
+						</Record>
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="status"/>
 						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="payerName"/>
+						</Record>
+						
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docSum"/>
 						</Record>
@@ -190,9 +200,6 @@
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="vatSum"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payeeBankBic"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankCorrespAcc"/>
@@ -208,9 +215,6 @@
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeName"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payeePersonalAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankBankCity"/>
@@ -229,9 +233,6 @@
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payerKpp"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payerName"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payerBankBankCity"/>

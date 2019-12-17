@@ -424,7 +424,6 @@ sap.ui.define([
 
 		detailDialogSave: function (oEvent) {
 			//MessageToast.show("Сохраняем очередность платежа");
-
 			var src = oEvent.getSource().getParent();
 			var ctx = this.detailDialog.getBindingContext();
 
@@ -448,7 +447,9 @@ sap.ui.define([
 			// 			};
 			// 			mParams.error = this._onErrorCall;
 			//          oModel.update("/PaymentOrder", oEntry, mParams);
-
+            
+            alert('Исправить запрос');
+            
 			oModel.setProperty(path + "/priority", obj.priority);
 			oModel.submitChanges({
 				success: function () {
