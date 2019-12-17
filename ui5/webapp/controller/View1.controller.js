@@ -104,28 +104,28 @@ sap.ui.define([
 			var password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
 			var auth = "Basic " + username + " " + password;
 
-			$.ajax({
-				xhrFields: {
-					withCredentials: true
-				},
-				beforeSend: function (xhr) {
-					xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
-				},
-				url: url,
-				type: "POST",
-				dataType: "xml",
-				data: data2,
+// 			$.ajax({
+// 				xhrFields: {
+// 					withCredentials: true
+// 				},
+// 				beforeSend: function (xhr) {
+// 					xhr.setRequestHeader('Authorization', 'Basic ' + btoa(username + ':' + password));
+// 				},
+// 				url: url,
+// 				type: "POST",
+// 				dataType: "json",
+// 				data: data,
 
-				success: function (data) {
-					alert("Удачно отправлено");
-					console.log("Response: ", data);
-				},
-				error: function (oError) {
-					//MessageBox.error(oError.responseText);
-					alert("oError");
-					console.warn(oError);
-				}
-			});
+// 				success: function (data) {
+// 					alert("Удачно отправлено");
+// 					console.log("Response: ", data);
+// 				},
+// 				error: function (oError) {
+// 					//MessageBox.error(oError.responseText);
+// 					alert("oError");
+// 					console.warn(oError);
+// 				}
+// 			});
 
 			// 			var xhr = new XMLHttpRequest();
 			//             xhr.open("POST", url, true);
@@ -135,7 +135,7 @@ sap.ui.define([
 			//                 console.log(xhr.responseText);
 			//             };
 			//             xhr.send();
-			/*
+			
 			$.ajax({
 				type: "POST",
 				url: url,
@@ -143,21 +143,18 @@ sap.ui.define([
 				//dataType: "xml",
 				dataType: 'json',
                   headers: {
-                    //"Authorization": "Basic " + btoa(username + ":" + password)
-                    "Authorization": auth
+                    "Authorization": "Basic " + "c2ItNzMxMTgwNDEtMzVjYS00M2UyLWI3NjgtNzBiNjNlMTA1NWQ0IWIzMTU5M3xpdC1ydC1oMmhpbiFiMTYwNzc6b3gyYUFMcVo5SFdadUc5WVowMkdSZm5sVExrPQ=="
                   },
 				success: function (data) {
-					MessageBox.alert("Удачно отправлено");
 					alert("Удачно отправлено");
 					console.log("Response: ", data);
 				},
 				error: function (oError) {
-					MessageBox.error(oError.responseText);
 					alert("oError");
 					console.warn(oError);
 				}
 			});
-			*/
+			
 			// вар 2
 			// var response = await fetch('https://h2hin.it-cpi001.cfapps.eu10.hana.ondemand.com:443/http/SendPaymentOrde', {
 			//   method: "POST",
@@ -356,12 +353,16 @@ sap.ui.define([
 
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
-					var Context = oTable.getContextByIndex(item);
+					/*var Context = oTable.getContextByIndex(item);
 					var sPath = Context.sPath;
 					// sPath = "/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
 					var nov_reg = "requestId='(.*)',";
 					var myAttr = sPath.match(nov_reg);
 					requestId.push(myAttr[1]);
+					*/
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					requestId.push(obj.requestId);
 				});
 			} else {
 				// exit
@@ -756,7 +757,8 @@ sap.ui.define([
 				this.undoSignDialog.close();
 			};
 			mParams.error = this._onErrorCall;
-			oModel.remove("/Sign", oEntry, mParams);
+			var Path = "/Sign(docExtId='"+docExtId+"')";
+			oModel.remove(Path, mParams);
 
 			this.undoSignDialog.close();
 		},
@@ -920,15 +922,16 @@ sap.ui.define([
 				iIndex.forEach(function (item, i) {
 					// не работает так как oData не возвращает скрытые колонки 2==================
 					//var obj = oTable.getModel().getProperty(sPath);
-					//var obj1 = Context.getObject();
-					//requestId = obj.requestId;
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					docExtId.push(obj.docExtId);
 					//===========================
 
-					var Context = oTable.getContextByIndex(item);
-					var sPath = Context.sPath; //"/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
-					var nov_reg = "docExtId='(.*)'";
-					var myAttr = sPath.match(nov_reg);
-					docExtId.push(myAttr[1]);
+					//var Context = oTable.getContextByIndex(item);
+					//var sPath = Context.sPath;
+					//var nov_reg = "docExtId='(.*)'";
+					//var myAttr = sPath.match(nov_reg);
+					//docExtId.push(myAttr[1]);
 				});
 				return docExtId;
 			} else {
@@ -962,8 +965,10 @@ sap.ui.define([
 			var mParams = {};
 			var that = this;
 			mParams.success = function () {
-				MessageToast.show("ПП подписана");
+				var oSmartTable = that.byId("LineItemsSmartTable");
+				oSmartTable.rebindTable();
 				that.signDialog.close();
+				MessageToast.show("ПП подписана");
 			};
 			mParams.error = this._onErrorCall;
 			oModel.create("/Sign", oEntry, mParams);
@@ -1027,14 +1032,14 @@ sap.ui.define([
 		// форматтер для подсветки строки в таблице
 		formatRowHighlight: function (oValue) {
 			// Your logic for rowHighlight goes here
-			if (oValue < 6) {
-				return "Success";
-			} else if (oValue < 3) {
+			if (oValue === "Подписан I") {
+				return "Information";
+			} else if (oValue === "Подписан II") {
 				return "Warning";
-			} else if (oValue < 5) {
+			} else if (oValue === "Импортирован") {
 				return "None";
 			}
-			return "Error";
+			return "None";
 		},
 
 		// печать выбранной ПП
