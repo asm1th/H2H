@@ -137,6 +137,11 @@
 .btn-warning .sapMBtnIcon {
     color: #e9730c !important;
 }
+.btn-warning.sapMBtn:hover>.sapMBtnHoverable.sapMBtnAccept:not(.sapMBtnActive):not(.sapMBtnDisabled):not(.sapMToggleBtnPressed) {
+    background-color: #fdf6f1;
+    border-color: #e9730c;
+    color: #e9730c;
+}
 /*** .btn-warning ****/
 
 

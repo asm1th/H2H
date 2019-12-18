@@ -167,7 +167,7 @@ sap.ui.define([
 				});
 			}
 		},
-		
+
 		_delPP: function (data) {
 			var oModel = this.getOwnerComponent().getModel();
 			var mParams = {};
@@ -192,7 +192,7 @@ sap.ui.define([
 			mParams.success = function () {
 				oModel.remove(Path, {
 					success: function (data) {
-			            var oSmartTable = that.byId("LineItemsSmartTable");
+						var oSmartTable = that.byId("LineItemsSmartTable");
 						oSmartTable.rebindTable();
 						MessageToast.show("Запись удалена");
 					},
@@ -424,7 +424,7 @@ sap.ui.define([
 			this.detailDialog.setBindingContext(ctx);
 
 			// =============== костыль AccDoc из-за generated ID
-			
+
 			var that = this;
 			var oModel = this.getOwnerComponent().getModel();
 			var obj = oModel.getProperty(path);
@@ -432,16 +432,16 @@ sap.ui.define([
 
 			oModel.read(accPath, {
 				success: function (data) {
-                    //var AccModel = new JSONModel();
+					//var AccModel = new JSONModel();
 					//AccModel.setData(data);
 					//oView.setModel(oModel, "AccModel");
 				},
 				error: this._onErrorCall
 			}); // костыль
 			// var ttt = this.detailDialog.getModel("AccModel");
-			
+
 			// =================
-			
+
 			this.detailDialog.open();
 		},
 
@@ -486,17 +486,16 @@ sap.ui.define([
 			var that = this;
 			var mParams = {};
 			var accPath = "/AccDoc(docExtId='" + obj.docExtId + "')";
-			
-			
+
 			mParams.success = function (data) {
-				
+
 				var yyy = oModel.getProperty(accPath + "/priority");
 
 				oModel.setProperty(accPath + "/priority", obj.priority);
 				oModel.setProperty(accPath + "/docSum", "1000");
 
 				debugger;
-				
+
 				console.log(oModel);
 
 				oModel.submitChanges({
@@ -514,7 +513,7 @@ sap.ui.define([
 				that._onErrorCall(oError);
 			};
 			oModel.read(accPath, mParams); // Костыль
-			
+
 		},
 
 		detailDialogClose: function (oEvent) {
@@ -652,9 +651,9 @@ sap.ui.define([
 			if (!this.addDialog) {
 				this.addDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.addDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialog);
-			} 
-            // var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
-            // oFileUpload.clear(); // - не загрузить 2 раз после clear
+			}
+			// var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
+			// oFileUpload.clear(); // - не загрузить 2 раз после clear
 			this.addDialog.open();
 		},
 
@@ -969,58 +968,47 @@ sap.ui.define([
 			var that = this;
 			if (!this.journalDialog) {
 				this.journalDialog = sap.ui.xmlfragment("journalDialog", "h2h.ui5.view.journalDialog", this);
-				//var docExtId = this._getDocExtId();
-				var oSmartTable = this.byId("LineItemsSmartTable");
-				var oTable = oSmartTable.getTable();
-				var iIndex = oTable.getSelectedIndices();
-				var sPath;
-				var that = this;
-				var oFilter = [];
-				if (iIndex.length > 0) {
-					iIndex.forEach(function (item, i) {
-						var Context = oTable.getContextByIndex(item);
-						sPath = Context.sPath;
-						var data = oTable.getModel().getProperty(sPath);
-						oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId)); //fix filter responseId \ docEtId
-					});
-				} else {
-					return MessageBox.alert("Выберите хотя бы одну строку в таблице");
-				}
-				var oModel = this.getOwnerComponent().getModel();
-				oModel.read("/Logs", {
-					filters: oFilter,
-					success: function (data) {
-						console.log(data);
-						var oModel = new JSONModel(data);
-						that.journalDialog.setModel(oModel);
-						that.journalDialog.open();
-					},
-					error: function (oError) {
-						//MessageBox.error(oError.responseText);
-						console.log("error: " + oError);
-						// test model
-						// 		var data = [{
-						// 		    param1: '02:51:56',
-						// 		    param2: '03.12.2019',
-						// 		    param3: 'C_H_DPO_RFB',
-						// 		    param4: 'S',
-						// 		    param5: '38',
-						// 		    param6: '296',
-						// 		    param7: '40702810800001400002',
-						// 		    param8: '044525700',
-						// 		    param9: '02.12.2019',
-						// 		    param10: 'RFC01',
-						// 		    param11: '1000',
-						// 		    param12: 'Выписка успешно принята 02.12.2019 БЕ 1000 БИК 044525700 расч.счет 40702810800001400002'
-						// 		}];
-						// 		var oModel = new JSONModel(data);
-						// 		that.journalDialog.setModel(oModel);
-						that.journalDialog.open();
-					}
-				});
-			} else {
-				this.journalDialog.open();
+				// var oSmartTable = this.byId("LineItemsSmartTable");
+				// var oTable = oSmartTable.getTable();
+				// var iIndex = oTable.getSelectedIndices();
+				// var sPath;
+				// var that = this;
+				// var oFilter = [];
+				// if (iIndex.length > 0) {
+				// 	iIndex.forEach(function (item, i) {
+				// 		var Context = oTable.getContextByIndex(item);
+				// 		sPath = Context.sPath;
+				// 		var data = oTable.getModel().getProperty(sPath);
+				// 		oFilter.push(new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, data.docExtId)); //fix filter responseId \ docEtId
+				// 	});
+				// } else {
+				// 	return MessageBox.alert("Выберите хотя бы одну строку в таблице");
+				// }
 			}
+
+			var docExtId = that._getDocExtId();
+			var oFilter = [];
+			if (docExtId.length > 0) {
+				docExtId.forEach(function (item, i) {
+					oFilter.push(new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, item));
+				});
+			}
+
+			var oModel = this.getOwnerComponent().getModel();
+			oModel.read("/History", {
+				filters: oFilter,
+				success: function (data) {
+					console.log(data);
+					var oModel = new JSONModel(data.results);
+					that.journalDialog.setModel(oModel);
+					that.journalDialog.open();
+				},
+				error: function (oError) {
+					MessageBox.error(JSON.stringify(oError));
+					console.log("error: " + oError);
+					that.journalDialog.open();
+				}
+			});
 		},
 
 		journalDialogClose: function (oEvent) {
@@ -1288,7 +1276,10 @@ sap.ui.define([
 				return "Warning";
 			} else if (oValue === "Импортирован") {
 				return "None";
+			} else if (oValue === "Отправлен") {
+				return "Success";
 			}
+
 			return "None";
 		},
 
