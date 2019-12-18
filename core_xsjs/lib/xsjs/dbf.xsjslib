@@ -4,6 +4,16 @@ var jsb64 = $.require('nodejs-base64');
 
 var errMessage = [];
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 function errAdd(param, docExtId, errType, errVal1, errVal2, errVal3, errVal4 ){
 	var errText = "";
 	var action = "";
@@ -335,7 +345,7 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 		
 		var fileRows = content.split(/\r\n|\n/);
 		
-		var requestID = $.util.createUuid();
+		var requestID = guid();
 		raif.Request = [];
 		Request = new Map();
 		Request.set('BANK','RAIF');
@@ -372,7 +382,7 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 				// var destinationEntity = mappingEntity.get(sourceField);
 				if (destinationField.Field == "START") {
 					startDoc	= true;
-					docExtID	= $.util.createUuid();
+					docExtID	= guid();
 					PayDocRu	= new Map();
 					AccDoc 		= new Map();
 					Payer		= new Map();
@@ -459,7 +469,7 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 	var statementData = {};
 	statementData.Statement = {};
 	statementData.StatementItems = {};
-	var responseID = $.util.createUuid();
+	var responseID = guid();
 
 	statementData.Statement = getMapping(param, 1, 2, 'Statement');
 	statementData.StatementItems = getMapping(param, 1, 2, 'StatementItems');
@@ -726,4 +736,29 @@ function deletPaymentOrder(param){
 	    
 	    historyAdd(param, PaymentOrder.docExtId, 'Deleting', 'success', 'Успешно удален');
 	}
+}
+
+function response(param){
+	var before = param.beforeTableName;
+	var pStmt = param.connection.prepareStatement("select * from \"" + before + "\"");
+	var rs = pStmt.executeQuery();
+	while (rs.next()) {
+		docExtId	= 		rs.getString(1);
+    	status 		=		rs.getString(2);
+    	description	=		rs.getString(3);
+	}
+	pStmt.close();
+	
+	historyAdd(param, docExtId, 'Sending', 'success', 'Доставлен');
+	
+	try {
+			pStmt = param.connection.prepareStatement("Update \"RaiffeisenBank.TPayDocRu\" set \"STATUS\" = ? Where \"DOCEXTID\"='" + docExtId + "'");
+		    pStmt.setInt(1, 8);
+		    pStmt.execute();
+		    pStmt.close();
+		    historyAdd(param, docExtId, 'Sending', 'success', 'Исполнен');
+		} catch (err) {
+			pStmt.close();
+		}
+	
 }

@@ -18,9 +18,11 @@ service {
 																			
 	"cvStatement"							as "Statement"			keys generate local "ID" 	navigates ( "Statement_ItemsCred" as "ItemsCred",
 																								"Statement_ItemsDeb"  as "ItemsDeb" from principal) aggregates always;
-	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId");																
-	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId");
+	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId", "extId");																
+	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId", "extId");
 	"RaiffeisenBank.History"				as "History"			key ("docExtId");
+	"RaiffeisenBank.Response"				as "Response"			key ("docExtId") create using "xsjs:dbf.xsjslib::response";
+	
 																										
 	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("requestId")						multiplicity "1";
 	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("docExtId")						multiplicity "*";
