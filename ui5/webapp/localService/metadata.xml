@@ -3,9 +3,9 @@
 <Schema xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="default">
 <EntityType Name="PaymentOrderType" sap:semantics="aggregate">
 <Key>
-<PropertyRef Name="requestId"/>
-<PropertyRef Name="docExtId"/>
+<PropertyRef Name="ID"/>
 </Key>
+<Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
 <Property Name="requestId" Type="Edm.String" MaxLength="37" sap:label="requestId" sap:aggregation-role="dimension"/>
 <Property Name="docExtId" Type="Edm.String" MaxLength="37" sap:label="docExtId" sap:aggregation-role="dimension"/>
 <Property Name="status" Type="Edm.String" MaxLength="25" sap:label="status" sap:aggregation-role="dimension"/>
@@ -252,6 +252,16 @@
 <Property Name="taxPeriod" Type="Edm.String" MaxLength="10"/>
 <Property Name="uip" Type="Edm.String" MaxLength="25"/>
 </EntityType>
+<EntityType Name="HistoryType">
+<Key>
+<PropertyRef Name="docExtId"/>
+</Key>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="timestamp" Type="Edm.DateTime" Nullable="false"/>
+<Property Name="action" Type="Edm.String" MaxLength="255"/>
+<Property Name="status" Type="Edm.String" MaxLength="15"/>
+<Property Name="description" Type="Edm.String" MaxLength="1024"/>
+</EntityType>
 <Association Name="PaymentOrder_FilesType">
 <End Type="default.PaymentOrderType" Role="PaymentOrderPrincipal" Multiplicity="1"/>
 <End Type="default.FilesType" Role="FilesDependent" Multiplicity="1"/>
@@ -304,6 +314,7 @@
 <EntitySet Name="Statement" EntityType="default.StatementType" sap:addressable="false" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="StatementItemsCred" EntityType="default.StatementItemsCredType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="StatementItemsDeb" EntityType="default.StatementItemsDebType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="History" EntityType="default.HistoryType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <AssociationSet Name="PaymentOrder_Files" Association="default.PaymentOrder_FilesType">
 <End Role="PaymentOrderPrincipal" EntitySet="PaymentOrder"/>
 <End Role="FilesDependent" EntitySet="Files"/>

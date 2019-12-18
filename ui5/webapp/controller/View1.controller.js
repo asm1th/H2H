@@ -297,7 +297,7 @@ sap.ui.define([
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
-			var that = this;
+			//var that = this;
 			var oFilter = [];
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
@@ -307,8 +307,12 @@ sap.ui.define([
 					oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId));
 				});
 			}
-			that.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
-			that.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
+ 			
+ 			this.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+ 			this.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
+			
+			//this.byId("Table_D").bindRows("/StatementItemsDeb", null, null, oFilter);
+			//this.byId("Table_C").bindRows("/StatementItemsCred", null, null, oFilter);
 		},
 
 		onChoseStatement: function (oEvent) {
@@ -471,20 +475,20 @@ sap.ui.define([
 			var accPath = "/AccDoc(docExtId='" + obj.docExtId + "')";
 
 			mParams.success = function (data) {
-
+                
+                var data = data;
+                
 				var yyy = oModel.getProperty(accPath + "/priority");
 
 				oModel.setProperty(accPath + "/priority", obj.priority);
 				oModel.setProperty(accPath + "/docSum", "1000");
-
-				debugger;
-
+				//debugger;
 				console.log(oModel);
 
 				oModel.submitChanges({
 					success: function (data) {
 						console.log(data);
-						MessageToast.show("++++++++++++");
+						MessageToast.show("Изменения сохранены");
 						that.detailDialog.close();
 					},
 					error: function (oError) {

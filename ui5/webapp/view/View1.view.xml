@@ -147,7 +147,7 @@
 								<!--Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')/ItemsDeb-->
 								<!--entitySet="Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')" tableBindingPath="ItemsDeb"-->
 								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true" useVariantManagement="false"
-									useTablePersonalisation="true" header="Дебет" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="false"
+									useTablePersonalisation="true" header="Дебет" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true"
 									showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
 									<smartTable:customToolbar>
 										<Toolbar>
@@ -182,27 +182,25 @@
 								<!--	</t:columns>-->
 								<!--</t:Table>-->
 								<!--entitySet="StatementItemsCred" -->
-								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="StatementItemsCred" useExportToExcel="true" useVariantManagement="true"
-									useTablePersonalisation="true" header="Кредит" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1"
-									enableAutoBinding="false" showFullScreenButton="true" initialNoDataText="Выберите выписку" class="hostPad1">
+								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="StatementItemsCred" enableAutoBinding="true">
 									<smartTable:customToolbar>
 										<Toolbar>
 											<ToolbarSpacer/>
 											<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_C" class="btn btn-bordered" enabled="fasle"/>
 										</Toolbar>
 									</smartTable:customToolbar>
-									<t:Table id="Table_C" rowHeight="20" selectionMode="None" visibleRowCount="20" rowActionCount="1">
-										<t:rowSettingsTemplate>
-											<t:RowSettings highlight="None"/>
-										</t:rowSettingsTemplate>
-										<t:rowActionTemplate>
-											<t:RowAction>
-												<t:items>
-													<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>
-												</t:items>
-											</t:RowAction>
-										</t:rowActionTemplate>
-									</t:Table>
+									<!--<t:Table id="Table_C" rowHeight="20" selectionMode="None" visibleRowCount="20" rowActionCount="1">-->
+									<!--	<t:rowSettingsTemplate>-->
+									<!--		<t:RowSettings highlight="None"/>-->
+									<!--	</t:rowSettingsTemplate>-->
+									<!--	<t:rowActionTemplate>-->
+									<!--		<t:RowAction>-->
+									<!--			<t:items>-->
+									<!--				<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>-->
+									<!--			</t:items>-->
+									<!--		</t:RowAction>-->
+									<!--	</t:rowActionTemplate>-->
+									<!--</t:Table>-->
 								</smartTable:SmartTable>
 							</HBox>
 						</VBox>
