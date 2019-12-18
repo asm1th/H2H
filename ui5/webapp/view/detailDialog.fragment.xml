@@ -9,7 +9,7 @@
 				</VBox>
 				<VBox width="20%" class="pad1">
 					<Label text="Дата:"/>
-					<Input id="docDate" value="{docDate}" editable="false"/>
+					<Input id="docDate" value="{path: 'docDate', type: 'sap.ui.model.type.Date'}" editable="false"/>
 				</VBox>
 				<VBox width="30%" class="pad1"></VBox>
 				<VBox width="30%" class="pad1">

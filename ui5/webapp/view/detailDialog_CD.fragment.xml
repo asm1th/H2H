@@ -11,7 +11,7 @@
 					<Label text="признак дебета/кредита."/>
 					<Input id="dc" value="{dc}" editable="false"/>
 					<Label text="Дата документа"/>
-					<Input id="docDate" value="{docDate}" editable="false"/>
+					<Input id="docDate" value="{path: 'docDate', type: 'sap.ui.model.type.Date'}" editable="false"/>
 					<Label text="Номер документа"/>
 					<Input id="docNum" value="{docNum}" editable="false"/>
 					<Label text="Сумма документа"/>

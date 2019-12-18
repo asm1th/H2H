@@ -142,6 +142,9 @@
     border-color: #e9730c;
     color: #e9730c;
 }
+.btn-warning.sapMBtn:hover>.sapMBtnHoverable.sapMBtnAccept:not(.sapMBtnActive):not(.sapMBtnDisabled):not(.sapMToggleBtnPressed) bdi {
+    color: #e9730c;
+}
 /*** .btn-warning ****/
 
 

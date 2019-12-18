@@ -160,6 +160,7 @@
 					<Collection>
 					    <PropertyPath>payeeBankCorrespAcc</PropertyPath>
 					    <PropertyPath>payeeBankName</PropertyPath>
+						<PropertyPath>codeVO</PropertyPath>
 						<PropertyPath>docDate</PropertyPath>
 						<PropertyPath>docNum</PropertyPath>
 						<PropertyPath>status</PropertyPath>

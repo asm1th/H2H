@@ -265,7 +265,7 @@ sap.ui.define([
 
 				var oModel = this.getOwnerComponent().getModel();
 
-				oModel.read("/Logs", {
+				oModel.read("/History", {
 					filters: oFilter,
 					success: function (data) {
 						console.log(data);
@@ -276,23 +276,6 @@ sap.ui.define([
 					error: function (oError) {
 						//MessageBox.error(oError.responseText);
 						console.log("error: " + oError);
-						// test model
-						// 		var data = [{
-						// 		    param1: '02:51:56',
-						// 		    param2: '03.12.2019',
-						// 		    param3: 'C_H_DPO_RFB',
-						// 		    param4: 'S',
-						// 		    param5: '38',
-						// 		    param6: '296',
-						// 		    param7: '40702810800001400002',
-						// 		    param8: '044525700',
-						// 		    param9: '02.12.2019',
-						// 		    param10: 'RFC01',
-						// 		    param11: '1000',
-						// 		    param12: 'Выписка успешно принята 02.12.2019 БЕ 1000 БИК 044525700 расч.счет 40702810800001400002'
-						// 		}];
-						// 		var oModel = new JSONModel(data);
-						// 		that.journalDialog.setModel(oModel);
 						that.journalDialog_Stmnt.open();
 					}
 				});
