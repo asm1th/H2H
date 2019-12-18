@@ -20,6 +20,7 @@ service {
 																								"Statement_ItemsDeb"  as "ItemsDeb" from principal) aggregates always;
 	"RaiffeisenBank.StatementItemsCred"		as "StatementItemsCred"	key ("responseId");																
 	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId");
+	"RaiffeisenBank.History"				as "History"			key ("docExtId");
 																										
 	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("requestId")						multiplicity "1";
 	association "PaymentOrder_Sign"		principal  "PaymentOrder"("docExtId") 		multiplicity "1" dependent "Sign"("docExtId")						multiplicity "*";
