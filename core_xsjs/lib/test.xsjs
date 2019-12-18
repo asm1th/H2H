@@ -381,11 +381,17 @@
 
 
 
-var date = '18.10.2019';
-var context='';
-context += date.substr(6,4) + '-' + date.substr(3,2) + '-' + date.substr(0,2);
-// .format("yyyy-mm-dd")
-// // var now = new Date();
-$.response.status = $.net.http.INTERNAL_SERVER_ERROR; 
-$.response.contentType = "text/html";
-$.response.setBody(context); 
+// var date = '18.10.2019';
+// var context='';
+// context += date.substr(6,4) + '-' + date.substr(3,2) + '-' + date.substr(0,2);
+// // .format("yyyy-mm-dd")
+// // // var now = new Date();
+// $.response.status = $.net.http.INTERNAL_SERVER_ERROR; 
+// $.response.contentType = "text/html";
+// $.response.setBody(context); 
+
+var jsb64 = $.require('nodejs-base64');
+function str2b64(str){
+	return jsb64.base64encode(str);
+}
+

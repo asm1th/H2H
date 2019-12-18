@@ -23,25 +23,12 @@ function getSettlementType(conn, bic) {
 	pStmt.close();
 }
 
-function str2ab(str) {
-	var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
-	var bufView = new Uint16Array(buf);
-	for (var i = 0, strLen = str.length; i < strLen; i++) {
-		bufView[i] = str.charCodeAt(i);
-	}
-	return buf;
-}
-
 var docExtId = $.request.parameters.get("docExtId");
 var conn = $.db.getConnection();
-var sql =
-	"Select \"REQUESTID\",\"DOCEXTID\",\"XMLNS\",\"VERSION\",\"PURPOSE\",\"DOCDATE\",\"DOCNUM\",\"DOCSUM\",\"VATSUM\",\"VATRATE\",\"VAT\",";
-sql +=
-	"\"TRANSKIND\",\"PAYTKIND\",\"PAYTCODE\",\"PRIORITY\",\"CODEVO\",\"NODOCS\",\"PAYERINN\",\"PAYERKPP\",\"PAYERPERSONALACC\",\"PAYERNAME\",";
-sql +=
-	"\"PAYERBANKBIC\",\"PAYERBANKCORRESPACC\",\"PAYERBANKNAME\",\"PAYERBANKBANKCITY\",\"PAYERBANKSETTLEMENTTYPE\",\"PAYEEINN\",\"PAYEEKPP\",";
-sql +=
-	"\"PAYEEPERSONALACC\",\"PAYEEUIP\",\"PAYEENAME\",\"PAYEEBANKBIC\",\"PAYEEBANKCORRESPACC\",\"PAYEEBANKNAME\",\"PAYEEBANKBANKCITY\",\"PAYEEBANKSETTLEMENTTYPE\",";
+var sql = "Select \"REQUESTID\",\"DOCEXTID\",\"XMLNS\",\"VERSION\",\"PURPOSE\",\"DOCDATE\",\"DOCNUM\",\"DOCSUM\",\"VATSUM\",\"VATRATE\",\"VAT\",";
+sql += "\"TRANSKIND\",\"PAYTKIND\",\"PAYTCODE\",\"PRIORITY\",\"CODEVO\",\"NODOCS\",\"PAYERINN\",\"PAYERKPP\",\"PAYERPERSONALACC\",\"PAYERNAME\",";
+sql += "\"PAYERBANKBIC\",\"PAYERBANKCORRESPACC\",\"PAYERBANKNAME\",\"PAYERBANKBANKCITY\",\"PAYERBANKSETTLEMENTTYPE\",\"PAYEEINN\",\"PAYEEKPP\",";
+sql += "\"PAYEEPERSONALACC\",\"PAYEEUIP\",\"PAYEENAME\",\"PAYEEBANKBIC\",\"PAYEEBANKCORRESPACC\",\"PAYEEBANKNAME\",\"PAYEEBANKBANKCITY\",\"PAYEEBANKSETTLEMENTTYPE\",";
 sql += "\"DRAWERSTATUS\",\"CBC\",\"OKATO\",\"PAYTREASON\",\"TAXPERIOD\",\"DEPDOCNO\",\"DEPDOCDATE\",\"TAXPAYTKIND\" "
 sql += "From \"RaiffeisenBank.Extract\" Where \"DOCEXTID\" = " + docExtId;
 
@@ -140,9 +127,6 @@ if (errMessage.length == 0) {
 	addValue('Filial', getSettlementType(conn, raif.Payer.Bank.bic), true);
 	xml += '</Payer>';
 	xml += '<Payee ';
-	// xml += 'inn="'			+ raif.Payee.inn			+ '" ';
-	// xml += 'kpp="'			+ raif.Payee.kpp			+ '" ';
-	// xml += 'personalAcc="'	+ raif.Payee.personalAcc	+ '" ';
 	addValue('inn', raif.Payee.inn, false);
 	addValue('kpp', raif.Payee.kpp, false);
 	addValue('personalAcc', raif.Payee.personalAcc, false);
@@ -194,6 +178,7 @@ if (errMessage.length == 0) {
 		Sign.SignType = rs.getString(7);
 		signs.push(Sign);
 	}
+	pStmt.close();
 
 	if (signs.length > 0) {
 		xml += '<Signs>';
@@ -208,20 +193,6 @@ if (errMessage.length == 0) {
 
 		xml += '</Signs>';
 	}
-	// <Signs>
-	//         <Sign>
-	//             <SN>D1D9D00DAAA33B643E6FDBE088495B6</SN>
-	//             <Value>MIIDuAYJKoZIhvcNAQcCoIIDqTCCA6UCAQExDjAMBggqhQMHAQECAgUAMAsGCSqGSIb3DQEHATGCA4EwggN9AgEBMIIBKDCCARIxGDAWBgUqhQNkARINMTAyNzczOTMyNjQ0OTEaMBgGCCqFAwOBAwEBEgwwMDc3NDQwMDAzMDIxCzAJBgNVBAYTAlJVMRwwGgYDVQQIDBM3NyDQsy4g0JzQvtGB0LrQstCwMRUwEwYDVQQHDAzQnNC+0YHQutCy0LAxLzAtBgNVBAkMJtGD0LsuINCi0YDQvtC40YbQutCw0Y8g0LQuMTcg0YHRgtGALiAxMQ8wDQYDVQQLDAbQntCY0JExLDAqBgNVBAoMI9CQ0J4gItCg0LDQudGE0YTQsNC50LfQtdC90LHQsNC90LoiMSgwJgYDVQQDDB9SYWlmZmVpc2VuYmFuayBHT1NUIDIwMTIgU3ViIENBAhANHZ0A2qoztkPm/b4IhJW2MAwGCCqFAwcBAQICBQCgggHsMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTAxODA3MjcyM1owLwYJKoZIhvcNAQkEMSIEINUuuGD/e1uZ1wzX16BM5oROWuqGXvNaSuoV7wwoysmPMIIBfwYLKoZIhvcNAQkQAi8xggFuMIIBajCCAWYwggFiMAoGCCqFAwcBAQICBCABEWBC6shQp1s0qDXhzVLBfzylG4WYpr3XWZD2pGAolTCCATAwggEapIIBFjCCARIxGDAWBgUqhQNkARINMTAyNzczOTMyNjQ0OTEaMBgGCCqFAwOBAwEBEgwwMDc3NDQwMDAzMDIxCzAJBgNVBAYTAlJVMRwwGgYDVQQIDBM3NyDQsy4g0JzQvtGB0LrQstCwMRUwEwYDVQQHDAzQnNC+0YHQutCy0LAxLzAtBgNVBAkMJtGD0LsuINCi0YDQvtC40YbQutCw0Y8g0LQuMTcg0YHRgtGALiAxMQ8wDQYDVQQLDAbQntCY0JExLDAqBgNVBAoMI9CQ0J4gItCg0LDQudGE0YTQsNC50LfQtdC90LHQsNC90LoiMSgwJgYDVQQDDB9SYWlmZmVpc2VuYmFuayBHT1NUIDIwMTIgU3ViIENBAhANHZ0A2qoztkPm/b4IhJW2MAwGCCqFAwcBAQEBBQAEQPhwOw/jkQbLsZE+gzv0FiSvwJBbbdW27OQFh/Dw7TeZxSQSDnY+qgKT53ZkyVuEOhGlw0fv0kmKRjMA5g/WWII=</Value>
-	//             <Issuer>C=RU, L=Москва, O=&quot;АО \&quot;Райффайзенбанк\&quot;&quot;, CN=Raiffeisenbank GOST 2012 Sub CA</Issuer>
-	//             <SignType>Первая подпись</SignType>
-	//         </Sign>
-	//         <Sign>
-	//             <SN>1C41F200D9AACD8E4D189E9040B116C8</SN>
-	//             <Value>MIIDuAYJKoZIhvcNAQcCoIIDqTCCA6UCAQExDjAMBggqhQMHAQECAgUAMAsGCSqGSIb3DQEHATGCA4EwggN9AgEBMIIBKDCCARIxGDAWBgUqhQNkARINMTAyNzczOTMyNjQ0OTEaMBgGCCqFAwOBAwEBEgwwMDc3NDQwMDAzMDIxCzAJBgNVBAYTAlJVMRwwGgYDVQQIDBM3NyDQsy4g0JzQvtGB0LrQstCwMRUwEwYDVQQHDAzQnNC+0YHQutCy0LAxLzAtBgNVBAkMJtGD0LsuINCi0YDQvtC40YbQutCw0Y8g0LQuMTcg0YHRgtGALiAxMQ8wDQYDVQQLDAbQntCY0JExLDAqBgNVBAoMI9CQ0J4gItCg0LDQudGE0YTQsNC50LfQtdC90LHQsNC90LoiMSgwJgYDVQQDDB9SYWlmZmVpc2VuYmFuayBHT1NUIDIwMTIgU3ViIENBAhAcQfIA2arNjk0YnpBAsRbIMAwGCCqFAwcBAQICBQCgggHsMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTAxODA3MjczNVowLwYJKoZIhvcNAQkEMSIEINUuuGD/e1uZ1wzX16BM5oROWuqGXvNaSuoV7wwoysmPMIIBfwYLKoZIhvcNAQkQAi8xggFuMIIBajCCAWYwggFiMAoGCCqFAwcBAQICBCAFHsw7hqm35i6HBWTvlshB+VkSKSnfeCbXkbf1xAJJjjCCATAwggEapIIBFjCCARIxGDAWBgUqhQNkARINMTAyNzczOTMyNjQ0OTEaMBgGCCqFAwOBAwEBEgwwMDc3NDQwMDAzMDIxCzAJBgNVBAYTAlJVMRwwGgYDVQQIDBM3NyDQsy4g0JzQvtGB0LrQstCwMRUwEwYDVQQHDAzQnNC+0YHQutCy0LAxLzAtBgNVBAkMJtGD0LsuINCi0YDQvtC40YbQutCw0Y8g0LQuMTcg0YHRgtGALiAxMQ8wDQYDVQQLDAbQntCY0JExLDAqBgNVBAoMI9CQ0J4gItCg0LDQudGE0YTQsNC50LfQtdC90LHQsNC90LoiMSgwJgYDVQQDDB9SYWlmZmVpc2VuYmFuayBHT1NUIDIwMTIgU3ViIENBAhAcQfIA2arNjk0YnpBAsRbIMAwGCCqFAwcBAQEBBQAEQIN+3ZnkS4gFaTShlN3bwahWlDeAkcM28X/7UwUrAeE3LV7HHjQG3ASKk2WBAONNrjMyESwykdRQMBb7onj/1sU=</Value>
-	//             <Issuer>C=RU, L=Москва, O=&quot;АО \&quot;Райффайзенбанк\&quot;&quot;, CN=Raiffeisenbank GOST 2012 Sub CA</Issuer>
-	//             <SignType>Вторая подпись</SignType>
-	//         </Sign>
-	//     </Signs>
 
 	xml += '</Request>';
 
@@ -234,7 +205,6 @@ if (errMessage.length == 0) {
 	url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
 	auth = 'Basic ' + jsb64.base64encode(username + ':' + password);
 
-	var fileBody = $.util.codec.encodeBase64(str2ab(xml));
 	var data = {
 		"file": jsb64.base64encode(xml),
 		"fileType": "application/xml",
@@ -266,6 +236,12 @@ if (errMessage.length == 0) {
 	request(options, function (error, response, body) {
 		console.log('body : ', body);
 	});
+	
+		pStmt = conn.prepareStatement("Update \"RaiffeisenBank.TPayDocRu\" set \"STATUS\" = ? Where \"DOCEXTID\"=" + docExtId);
+    	pStmt.setInt(1, 5); //Отправлен
+    	pStmt.execute();
+    	conn.commit();
+    	pStmt.close();
 
 	$.response.status = $.net.http.OK;
 	$.response.contentType = "application/xml";

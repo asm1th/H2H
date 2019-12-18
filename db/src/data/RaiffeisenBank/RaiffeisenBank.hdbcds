@@ -1,4 +1,5 @@
 using H2H;
+
 @OData.publish : true
 context RaiffeisenBank {
     type t_uuid : String(37);
@@ -12,63 +13,64 @@ context RaiffeisenBank {
     type t_str_210 : String(210);
     type t_date : LocalDate;
     type t_sum : Decimal(13, 2);
-    type t_file: LargeBinary;
+    type t_file : LargeBinary;
     type t_int : Integer;
 
-	entity TRequest {
-    		BANK	  : t_str;
+    entity TRequest {
+            BANK      : t_str;
             XMLNS     : t_str;
-        key	REQUESTID : t_uuid ;
+        key REQUESTID : t_uuid;
             VERSION   : t_str;
-        	_PAYDOCRU : association[1] to TPayDocRu on _PAYDOCRU.REQUESTID	= REQUESTID;
-        	_TFILE	  : association[1] to TFile 	on _TFILE.REQUESTID 	= REQUESTID;
+            _PAYDOCRU : association[1] to TPayDocRu on _PAYDOCRU.REQUESTID = REQUESTID;
+            _TFILE    : association[1] to TFile     on _TFILE.REQUESTID = REQUESTID;
     };
-    
+
     entity THistory {
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
-        key DOCEXTID  : t_uuid;
-        key TIMESTAMP : UTCTimestamp;
-    		ACTION	  : t_str;
-    		STATUS	  : t_str_15;
-    		DESCRIPTION	: t_longstr;
+        key DOCEXTID    : t_uuid;
+        key TIMESTAMP   : UTCTimestamp;
+            ACTION      : t_str;
+            STATUS      : t_str_15;
+            DESCRIPTION : t_longstr;
     }
-    
+
     entity TStatus {
-    	key ID	: t_int;
-    		DESCRIPTION : String(25);
+        key ID          : t_int;
+            DESCRIPTION : String(25);
     }
-    
-    entity TFile{
-    	key	REQUESTID : t_uuid ;
-			DOCTYPEID : t_int;   	
-    		FILENAME  : t_str;
-    		FILETYPE  : t_str;
-    		FILESIZE  : t_int;
-    		FILEBODY  : t_file;
-    		_REQUEST  : association[1] to TRequest			on _REQUEST.REQUESTID	= REQUESTID;
-    		_DOCTYPE  : association[1] to H2H.TDocumentType	on _DOCTYPE.ID			= DOCTYPEID; 
+
+    entity TFile {
+        key REQUESTID : t_uuid;
+            DOCTYPEID : t_int;
+            FILENAME  : t_str;
+            FILETYPE  : t_str;
+            FILESIZE  : t_int;
+            FILEBODY  : t_file;
+            _REQUEST  : association[1] to TRequest          on _REQUEST.REQUESTID = REQUESTID;
+            _DOCTYPE  : association[1] to H2H.TDocumentType on _DOCTYPE.ID = DOCTYPEID;
     };
 
     @Comment : 'Платёжное поручение рублёвое'
     entity TPayDocRu {
         key REQUESTID : t_uuid;
+
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
         key DOCEXTID  : t_uuid;
-        	STATUS	  : t_int;
-        	_REQUEST  : association[1] to TRequest			on _REQUEST.REQUESTID	= REQUESTID;
-        	_ACCDOC   : association[*] to TAccDoc			on _ACCDOC.DOCEXTID		= DOCEXTID;
-            _PAYER    : association[1] to TPayer 			on _PAYER.DOCEXTID 		= DOCEXTID;
-            _PAYEE    : association[1] to TPayee 			on _PAYEE.DOCEXTID 		= DOCEXTID;
-            _FILE	  : association[1] to TFile 			on _FILE.REQUESTID 		= REQUESTID;
-            _DEPART   : association[1] to TDepartmentalInfo on _DEPART.DOCEXTID 	= DOCEXTID;
-            _SIGN	  : association[*] to TSign				on _SIGN.DOCEXTID 		= DOCEXTID;
-            _STATUS	  : association[1] to TStatus			on _STATUS.ID 			= STATUS;
+            STATUS    : t_int;
+            _REQUEST  : association[1] to TRequest          on _REQUEST.REQUESTID = REQUESTID;
+            _ACCDOC   : association[*] to TAccDoc           on _ACCDOC.DOCEXTID = DOCEXTID;
+            _PAYER    : association[1] to TPayer            on _PAYER.DOCEXTID = DOCEXTID;
+            _PAYEE    : association[1] to TPayee            on _PAYEE.DOCEXTID = DOCEXTID;
+            _FILE     : association[1] to TFile             on _FILE.REQUESTID = REQUESTID;
+            _DEPART   : association[1] to TDepartmentalInfo on _DEPART.DOCEXTID = DOCEXTID;
+            _SIGN     : association[*] to TSign             on _SIGN.DOCEXTID = DOCEXTID;
+            _STATUS   : association[1] to TStatus           on _STATUS.ID = STATUS;
     };
-    
+
     @Comment : 'Реквизиты платёжного документа'
     entity TAccDoc {
             @Comment : 'PayDocRu.docExtId'
-        key DOCEXTID  : t_uuid ;
+        key DOCEXTID  : t_uuid;
 
             @Comment : 'Назначение платежа'
             PURPOSE   : t_str_210;
@@ -108,512 +110,607 @@ context RaiffeisenBank {
 
             @Comment : 'Документы не требуются'
             NODOCS    : t_int;
-			
-			_PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
+            _PAYDOCRU : association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
-    
+
     @Comment : 'Реквизиты плательщика'
     entity TPayer {
             @Comment : 'PayDocRu.docExtId'
-        key DOCEXTID  : t_uuid ;
+        key DOCEXTID                : t_uuid;
 
             @Comment : 'ИНН (до 12)'
-            PAYERINN         : String(12);
+            PAYERINN                : String(12);
 
             @Comment : 'КПП (до 9)'
-            PAYERKPP         : String(9);
+            PAYERKPP                : String(9);
 
             @Comment : 'Номер счёта'
-            PAYERPERSONALACC : String(20);
+            PAYERPERSONALACC        : String(20);
 
             @Comment : 'Наименование плательщика'
-            PAYERNAME        : String(160);
-            
+            PAYERNAME               : String(160);
+
             @Comment : 'БИК'
-	        PAYERBANKBIC         : String(9);
-	
-	        @Comment : 'Номер корр. счёта банка'
-	        PAYERBANKCORRESPACC     : String(20);
-	
-	        @Comment : 'Наименование банка'
-	        PAYERBANKNAME           : String(80);
-	
-	        @Comment : 'Название населённого пункта банка'
-	        PAYERBANKCITY       : String(30);
-	
-	        @Comment : 'Тип населённого пункта банка'
-	        PAYERBANKSETTLEMENTTYPE : String(20);
-            
-           _PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
+            PAYERBANKBIC            : String(9);
+
+            @Comment : 'Номер корр. счёта банка'
+            PAYERBANKCORRESPACC     : String(20);
+
+            @Comment : 'Наименование банка'
+            PAYERBANKNAME           : String(80);
+
+            @Comment : 'Название населённого пункта банка'
+            PAYERBANKCITY           : String(30);
+
+            @Comment : 'Тип населённого пункта банка'
+            PAYERBANKSETTLEMENTTYPE : String(20);
+            _PAYDOCRU               : association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
 
     @Comment : 'Реквизиты получателя'
     entity TPayee {
             @Comment : 'PayDocRu.docExtId'
-        key DOCEXTID  : t_uuid ;
+        key DOCEXTID                : t_uuid;
 
             @Comment : 'ИНН (до 12)'
-            PAYEEINN         : String(12);
+            PAYEEINN                : String(12);
 
             @Comment : 'КПП (до 9)'
-            PAYEEKPP         : String(9);
+            PAYEEKPP                : String(9);
 
             @Comment : 'Номер счёта'
-            PAYEEPERSONALACC : String(20);
-            
+            PAYEEPERSONALACC        : String(20);
+
             @Comment : 'Уникальный Идентификатора Платежа'
-			PAYEEUIP		 : String(25);
-			
+            PAYEEUIP                : String(25);
+
             @Comment : 'Наименование плательщика'
-            PAYEENAME        : String(160);
-            
+            PAYEENAME               : String(160);
+
             @Comment : 'БИК'
-	        PAYEEBANKBIC         : String(9);
-	
-	        @Comment : 'Номер корр. счёта банка'
-	        PAYEEBANKCORRESPACC     : String(20);
-	
-	        @Comment : 'Наименование банка'
-	        PAYEEBANKNAME           : String(80);
-	
-	        @Comment : 'Название населённого пункта банка'
-	        PAYEEBANKCITY       : String(30);
-	
-	        @Comment : 'Тип населённого пункта банка'
-	        PAYEEBANKSETTLEMENTTYPE : String(20);
-            
-            _PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
+            PAYEEBANKBIC            : String(9);
+
+            @Comment : 'Номер корр. счёта банка'
+            PAYEEBANKCORRESPACC     : String(20);
+
+            @Comment : 'Наименование банка'
+            PAYEEBANKNAME           : String(80);
+
+            @Comment : 'Название населённого пункта банка'
+            PAYEEBANKCITY           : String(30);
+
+            @Comment : 'Тип населённого пункта банка'
+            PAYEEBANKSETTLEMENTTYPE : String(20);
+            _PAYDOCRU               : association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
-    
-    entity TDepartmentalInfo{
-    	@Comment : 'Ссылка на документ'
-        key DOCEXTID		: t_uuid;
-        
-	    @Comment : 'Показатель статуса налогоплательщика'
-	    DRAWERSTATUS		: t_str_2;
-	    
-		@Comment : 'Код бюджетной классификации'
-		CBC					: String(20);
-		
-		@Comment :  'Код ОКАТО'
-		OKATO				: String(11);
-		
-		@Comment :  'Показатель основания платежа'
-		PAYTREASON			: t_str_2;
-		
-		@Comment :  'Налоговый период / Код таможенного органа'
-		TAXPERIOD			: String(10);
-		
-		@Comment :  'Номер налогового документа'
-		DEPDOCNO			: t_str_15;		
-		
-		@Comment :  'Дата налогового документа'
-		DEPDOCDATE			: String(10);
-		
-		@Comment :  'Тип налогового платежа'
-		TAXPAYTKIND			: t_str_2;
+
+    entity TDepartmentalInfo {
+            @Comment : 'Ссылка на документ'
+        key DOCEXTID     : t_uuid;
+
+            @Comment : 'Показатель статуса налогоплательщика'
+            DRAWERSTATUS : t_str_2;
+
+            @Comment : 'Код бюджетной классификации'
+            CBC          : String(20);
+
+            @Comment : 'Код ОКАТО'
+            OKATO        : String(11);
+
+            @Comment : 'Показатель основания платежа'
+            PAYTREASON   : t_str_2;
+
+            @Comment : 'Налоговый период / Код таможенного органа'
+            TAXPERIOD    : String(10);
+
+            @Comment : 'Номер налогового документа'
+            DEPDOCNO     : t_str_15;
+
+            @Comment : 'Дата налогового документа'
+            DEPDOCDATE   : String(10);
+
+            @Comment : 'Тип налогового платежа'
+            TAXPAYTKIND  : t_str_2;
     }
 
-    
-     entity TSign {
+    entity TSign {
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
-        key DOCEXTID		: t_uuid;
-        	@Comment : 'Серийный номер сертификата'
-        	SN				: t_str;
-        	@Comment : 'Значение ЭП'
-        	VALUE			: t_file;
-        	@Comment : 'Идентификатор поставщика сертификата'
-        	ISSUER  		: t_longstr;
-        	@Comment : 'Имя схемы подписи'
-        	DIGESTNAME		: t_str;
-        	@Comment : 'Версия схемы подписи'
-        	DIGESTVERSION	: t_str;
-        	@Comment : 'Тип подписи'
-        key	SIGNTYPE : t_str;
-        	@Comment : 'ФИО УЛК, наложившего данную подпись.'
-        	FIO				: t_str;
-        	@Comment : 'Должность УЛК, наложившего подпись'
-        	POSITION		: t_str;
-        	_PAYDOCRU: Association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
-    };
-    
-    
-    entity TStatement {
-		    @Comment : 'Уникальный идентификатор'
-		key RESPONSEID		: t_uuid ;
-		    @Comment : 'БИК банка клиента'
-		    BIC             : String(9);
-		    @Comment : 'Итого оборотов по кредиту'
-		    DEBETSUM        : t_sum;
-		    @Comment : 'Итого оборотов по кредиту'
-		    CREDITSUM       : t_sum;
-		    @Comment : 'Код валюты выписки'
-		    CURRCODE        : String(3);
-		    @Comment : 'Данные актуальны на (время)'
-		    DOCTIME         : String(8);
-		    @Comment : 'Исходящий остаток'
-		    OUTBAL          : t_sum;
-		    @Comment : 'Дата выписки'
-		    STMTDATE        : t_date;
-		    @Comment : 'Входящий остаток'
-		    ENTERBAL        : t_sum;
-		    @Comment : 'Номер документа'
-		    DOCNUM          : t_str_6;
-		    _STITEMS : Association[1] to TStatementItems on _STITEMS.RESPONSEID = RESPONSEID;
+        key DOCEXTID      : t_uuid;
+
+            @Comment : 'Серийный номер сертификата'
+            SN            : t_str;
+
+            @Comment : 'Значение ЭП'
+            VALUE         : t_file;
+
+            @Comment : 'Идентификатор поставщика сертификата'
+            ISSUER        : t_longstr;
+
+            @Comment : 'Имя схемы подписи'
+            DIGESTNAME    : t_str;
+
+            @Comment : 'Версия схемы подписи'
+            DIGESTVERSION : t_str;
+
+            @Comment : 'Тип подписи'
+        key SIGNTYPE      : t_str;
+
+            @Comment : 'ФИО УЛК, наложившего данную подпись.'
+            FIO           : t_str;
+
+            @Comment : 'Должность УЛК, наложившего подпись'
+            POSITION      : t_str;
+            _PAYDOCRU     : association[1] to TPayDocRu on _PAYDOCRU.DOCEXTID = DOCEXTID;
     };
 
-	entity TStatementItems {
-    		@Comment : 'Уникальный идентификатор'
-    	key RESPONSEID          	: t_uuid ;
-    		@Comment : 'Идентификатор выписки в ELBRUS'
-    	key EXTID               	: t_uuid ;
-    		@Comment : 'Банк плательщика/получателя'
-    		BANK                    : String(80);
-    		@Comment : 'Счет плательщика'
-    		CORRACC                 : String(20);
-    		@Comment : 'признак дебета/кредита. Если 1-дебет, 2-кредит'
-    		DC                      : t_int;
-    		@Comment : 'Дата документа'
-    		DOCDATE                 : t_date;
-    		@Comment : 'Номер документа'
-    		DOCNUM                  : t_str_6;
-    		@Comment : 'Сумма документа'
-    		DOCSUM                  : t_sum;
-    		@Comment : 'Дата операции'
-    		OPERDATE                : String(10);
-    		@Comment : 'Очередность платежа'
-    		PAYMENTORDER            : t_str_2;
-    		@Comment : 'Вид платежа'
-    		PAYTKIND                : String(15);
-    		@Comment : 'Счет плательщика'
-    		PERSONALACC             : String(20);
-    		@Comment : 'ИНН плательщика'
-    		PERSONALINN             : String(12);
-    		@Comment : 'КПП плательщика'
-    		PERSONALKPP             : String(9);
-    		@Comment : 'Тип операции'
-    		TRANSKIND               : t_str_2;
-    		@Comment : 'ИНН получателя'
-    		RECEIVERINN             : String(12);
-    		@Comment : 'КПП получателя'
-    		RECEIVERKPP             : String(9);
-    		@Comment : 'Населенный пункт'
-    		RECEIVERPLACE           : String(25);
-    		@Comment : 'Тип населенного пункта'
-    		RECEIVERPLACETYPE       : String(5);
-    		@Comment : 'Номер корр. счёта банка получателя'
-    		RECEIVERBANKCORRACCOUNT : String(20);
-    		@Comment : 'Наименование банка получателя'
-    		RECEIVERBANKNAME        : String(80);
-    		@Comment : 'Населенный пункт'
-    		PAYERPLACE              : String(25);
-    		@Comment : 'Тип населенного пункта'
-    		PAYERPLACETYPE          : String(5);
-    		@Comment : 'Номер корр. счёта банка плательщика'
-    		PAYERBANKCORRACCOUNT    : String(20);
-    		@Comment : 'БИК банка плательщика'
-    		PAYERBANKBIC            : String(9);
-    		@Comment : 'Название получателя'
-    		RECEIPTNAME             : String(160);
-    		@Comment : 'Наименование организации клиента'
-    		PERSONALNAME            : String(160);
-    		@Comment : 'Назначение платежа'
-    		PURPOSE                 : t_str_210;
-    		@Comment : 'КБК'
-    		CBC                     : String(20);
-    		@Comment : 'Дата документа'
-    		DDOCDATE                 : t_date;
-    		@Comment : 'Номер налогового документа'
-    		DOCNO                   : t_str_15;
-    		@Comment : 'Статус составителя документа'
-    		DRAWERSTATUS            : t_str_2;
-    		@Comment : 'ОКАТО'
-    		OKATO                   : String(11);
-    		@Comment : 'Показатель основания платежа (106)'
-    		PAYTREASON              : t_str_2;
-    		@Comment : 'Тип налогового платежа (110)'
-    		TAXPAYTKIND             : t_str_2;
-    		@Comment : 'Налоговый период/ Код таможенного органа'
-    		TAXPERIOD               : String(10);
-    		@Comment : 'Уникальный Идентификатора Платежа'
-    		UIP                     : String(25);
-	};
-    
-    
-    define view PaymentOrder as Select from TPayDocRu{
-    	REQUESTID						as requestId,
-     	DOCEXTID						as docExtId,
-     	_STATUS.DESCRIPTION				as status,
-		_ACCDOC.PURPOSE					as purpose,
-		_ACCDOC.DOCDATE					as docDate,
-		_ACCDOC.DOCNUM					as docNum,
-		_ACCDOC.DOCSUM					as docSum,
-		_ACCDOC.VATSUM					as vatSum,
-		_ACCDOC.VATRATE					as vatRate,
-		_ACCDOC.VAT						as vat,
-		_ACCDOC.TRANSKIND				as transKind,
-		_ACCDOC.PAYTKIND 				as paytKind,
-		_ACCDOC.PAYTCODE 				as paytCode,
-		_ACCDOC.PRIORITY 				as priority,
-		_ACCDOC.CODEVO					as codeVO,
-		_ACCDOC.NODOCS					as nodocs,
-		_PAYER.PAYERINN      			as payerInn,
-        _PAYER.PAYERKPP      			as payerKpp,
-        _PAYER.PAYERPERSONALACC			as payerPersonalAcc,
-        _PAYER.PAYERNAME				as payerName,
-        _PAYER.PAYERBANKBIC				as payerBankBic,
-		_PAYER.PAYERBANKCORRESPACC		as payerBankCorrespAcc,
-		_PAYER.PAYERBANKNAME 			as payerBankName,
-		_PAYER.PAYERBANKCITY 			as payerBankBankCity,
-		_PAYER.PAYERBANKSETTLEMENTTYPE	as payerBankSettlementType,
-		_PAYEE.PAYEEINN      			as payeeInn,
-        _PAYEE.PAYEEKPP      			as payeeKpp,
-        _PAYEE.PAYEEPERSONALACC			as payeePersonalAcc,
-        _PAYEE.PAYEEUIP					as payeeUip,
-        _PAYEE.PAYEENAME				as payeeName,
-        _PAYEE.PAYEEBANKBIC				as payeeBankBic,
-		_PAYEE.PAYEEBANKCORRESPACC		as payeeBankCorrespAcc,
-		_PAYEE.PAYEEBANKNAME 			as payeeBankName,
-		_PAYEE.PAYEEBANKCITY 			as payeeBankBankCity,
-		_PAYEE.PAYEEBANKSETTLEMENTTYPE	as payeeBankSettlementType,
-		_DEPART.DRAWERSTATUS			as drawerStatus,
-		_DEPART.CBC 					as cbc,
-		_DEPART.OKATO					as okato,
-		_DEPART.PAYTREASON				as paytReason,
-		_DEPART.TAXPERIOD				as taxPeriod,
-		_DEPART.DEPDOCNO				as depDocNo,
-		_DEPART.DEPDOCDATE				as depDocDate,
-		_DEPART.TAXPAYTKIND 			as taxPaytKind,
-		_SIGN.SIGNTYPE					as signType
-     };
-    
-    define view Extract as Select from TPayDocRu{
-    	REQUESTID						as REQUESTID,
-     	DOCEXTID						as DOCEXTID,
-     	_REQUEST.XMLNS					as XMLNS,
-        _REQUEST.VERSION				as VERSION,
-		_ACCDOC.PURPOSE					as PURPOSE,
-		_ACCDOC.DOCDATE					as DOCDATE,
-		_ACCDOC.DOCNUM					as DOCNUM,
-		_ACCDOC.DOCSUM					as DOCSUM,
-		_ACCDOC.VATSUM					as VATSUM,
-		_ACCDOC.VATRATE					as VATRATE,
-		_ACCDOC.VAT						as VAT,
-		_ACCDOC.TRANSKIND				as TRANSKIND,
-		_ACCDOC.PAYTKIND 				as PAYTKIND,
-		_ACCDOC.PAYTCODE 				as PAYTCODE,
-		_ACCDOC.PRIORITY 				as PRIORITY,
-		_ACCDOC.CODEVO					as CODEVO,
-		_ACCDOC.NODOCS					as NODOCS,
-		_PAYER.PAYERINN      			as PAYERINN,
-        _PAYER.PAYERKPP      			as PAYERKPP,
-        _PAYER.PAYERPERSONALACC			as PAYERPERSONALACC,
-        _PAYER.PAYERNAME				as PAYERNAME,
-        _PAYER.PAYERBANKBIC				as PAYERBANKBIC,
-		_PAYER.PAYERBANKCORRESPACC		as PAYERBANKCORRESPACC,
-		_PAYER.PAYERBANKNAME 			as PAYERBANKNAME,
-		_PAYER.PAYERBANKCITY 			as PAYERBANKBANKCITY,
-		_PAYER.PAYERBANKSETTLEMENTTYPE	as PAYERBANKSETTLEMENTTYPE,
-		_PAYEE.PAYEEINN      			as PAYEEINN,
-        _PAYEE.PAYEEKPP      			as PAYEEKPP,
-        _PAYEE.PAYEEPERSONALACC			as PAYEEPERSONALACC,
-        _PAYEE.PAYEEUIP					as PAYEEUIP,
-        _PAYEE.PAYEENAME				as PAYEENAME,
-        _PAYEE.PAYEEBANKBIC				as PAYEEBANKBIC,
-		_PAYEE.PAYEEBANKCORRESPACC		as PAYEEBANKCORRESPACC,
-		_PAYEE.PAYEEBANKNAME 			as PAYEEBANKNAME,
-		_PAYEE.PAYEEBANKCITY 			as PAYEEBANKBANKCITY,
-		_PAYEE.PAYEEBANKSETTLEMENTTYPE	as PAYEEBANKSETTLEMENTTYPE,
-		_DEPART.DRAWERSTATUS			as DRAWERSTATUS,
-		_DEPART.CBC 					as CBC,
-		_DEPART.OKATO					as OKATO,
-		_DEPART.PAYTREASON				as PAYTREASON,
-		_DEPART.TAXPERIOD				as TAXPERIOD,
-		_DEPART.DEPDOCNO				as DEPDOCNO,
-		_DEPART.DEPDOCDATE				as DEPDOCDATE,
-		_DEPART.TAXPAYTKIND 			as TAXPAYTKIND
-     };
-    
-    define view Request as Select from TRequest{
-    	BANK		as bank,
-        XMLNS		as xmlns,
-        REQUESTID	as requestId,
-        VERSION		as version
+    entity TStatement {
+            @Comment : 'Уникальный идентификатор'
+        key RESPONSEID : t_uuid;
+
+            @Comment : 'БИК банка клиента'
+            BIC        : String(9);
+
+            @Comment : 'Итого оборотов по кредиту'
+            DEBETSUM   : t_sum;
+
+            @Comment : 'Итого оборотов по кредиту'
+            CREDITSUM  : t_sum;
+
+            @Comment : 'Код валюты выписки'
+            CURRCODE   : String(3);
+
+            @Comment : 'Данные актуальны на (время)'
+            DOCTIME    : String(8);
+
+            @Comment : 'Исходящий остаток'
+            OUTBAL     : t_sum;
+
+            @Comment : 'Дата выписки'
+            STMTDATE   : t_date;
+
+            @Comment : 'Входящий остаток'
+            ENTERBAL   : t_sum;
+
+            @Comment : 'Номер документа'
+            DOCNUM     : t_str_6;
+            _STITEMS   : association[1] to TStatementItems on _STITEMS.RESPONSEID = RESPONSEID;
     };
-    
-    define view Files as Select from TFile{
-    	REQUESTID		as requestId,
-    	_DOCTYPE.NAME	as docType,
-    	FILENAME		as fileName,
-    	FILETYPE		as fileType,
-    	FILESIZE		as fileSize,
-    	FILEBODY		as fileBody
+
+    entity TStatementItems {
+            @Comment : 'Уникальный идентификатор'
+        key RESPONSEID              : t_uuid;
+
+            @Comment : 'Идентификатор выписки в ELBRUS'
+        key EXTID                   : t_uuid;
+
+            @Comment : 'Банк плательщика/получателя'
+            BANK                    : String(80);
+
+            @Comment : 'Счет плательщика'
+            CORRACC                 : String(20);
+
+            @Comment : 'признак дебета/кредита. Если 1-дебет, 2-кредит'
+            DC                      : t_int;
+
+            @Comment : 'Дата документа'
+            DOCDATE                 : t_date;
+
+            @Comment : 'Номер документа'
+            DOCNUM                  : t_str_6;
+
+            @Comment : 'Сумма документа'
+            DOCSUM                  : t_sum;
+
+            @Comment : 'Дата операции'
+            OPERDATE                : String(10);
+
+            @Comment : 'Очередность платежа'
+            PAYMENTORDER            : t_str_2;
+
+            @Comment : 'Вид платежа'
+            PAYTKIND                : String(15);
+
+            @Comment : 'Счет плательщика'
+            PERSONALACC             : String(20);
+
+            @Comment : 'ИНН плательщика'
+            PERSONALINN             : String(12);
+
+            @Comment : 'КПП плательщика'
+            PERSONALKPP             : String(9);
+
+            @Comment : 'Тип операции'
+            TRANSKIND               : t_str_2;
+
+            @Comment : 'ИНН получателя'
+            RECEIVERINN             : String(12);
+
+            @Comment : 'КПП получателя'
+            RECEIVERKPP             : String(9);
+
+            @Comment : 'Населенный пункт'
+            RECEIVERPLACE           : String(25);
+
+            @Comment : 'Тип населенного пункта'
+            RECEIVERPLACETYPE       : String(5);
+
+            @Comment : 'Номер корр. счёта банка получателя'
+            RECEIVERBANKCORRACCOUNT : String(20);
+
+            @Comment : 'Наименование банка получателя'
+            RECEIVERBANKNAME        : String(80);
+
+            @Comment : 'Населенный пункт'
+            PAYERPLACE              : String(25);
+
+            @Comment : 'Тип населенного пункта'
+            PAYERPLACETYPE          : String(5);
+
+            @Comment : 'Номер корр. счёта банка плательщика'
+            PAYERBANKCORRACCOUNT    : String(20);
+
+            @Comment : 'БИК банка плательщика'
+            PAYERBANKBIC            : String(9);
+
+            @Comment : 'Название получателя'
+            RECEIPTNAME             : String(160);
+
+            @Comment : 'Наименование организации клиента'
+            PERSONALNAME            : String(160);
+
+            @Comment : 'Назначение платежа'
+            PURPOSE                 : t_str_210;
+
+            @Comment : 'КБК'
+            CBC                     : String(20);
+
+            @Comment : 'Дата документа'
+            DDOCDATE                : t_date;
+
+            @Comment : 'Номер налогового документа'
+            DOCNO                   : t_str_15;
+
+            @Comment : 'Статус составителя документа'
+            DRAWERSTATUS            : t_str_2;
+
+            @Comment : 'ОКАТО'
+            OKATO                   : String(11);
+
+            @Comment : 'Показатель основания платежа (106)'
+            PAYTREASON              : t_str_2;
+
+            @Comment : 'Тип налогового платежа (110)'
+            TAXPAYTKIND             : t_str_2;
+
+            @Comment : 'Налоговый период/ Код таможенного органа'
+            TAXPERIOD               : String(10);
+
+            @Comment : 'Уникальный Идентификатора Платежа'
+            UIP                     : String(25);
     };
-    
-    define view PayDocRu as Select from TPayDocRu{
-    	REQUESTID	as requestId,
-        DOCEXTID	as docExtId
-    };
-    
-    define view AccDoc as Select from TAccDoc{
-    	DOCEXTID 	as docExtId,
-		PURPOSE		as purpose,
-		DOCDATE		as docDate,
-		DOCNUM		as docNum,
-		DOCSUM		as docSum,
-		VATSUM		as vatSum,
-		VATRATE		as vatRate,
-		VAT			as vat,
-		TRANSKIND	as transKind,
-		PAYTKIND 	as paytKind,
-		PAYTCODE 	as paytCode,
-		PRIORITY 	as priority,
-		CODEVO		as codeVO,
-		NODOCS		as nodocs
-    };
-    
-    define view Payer as Select from TPayer{
-        DOCEXTID    			as docExtId,
-        PAYERINN         		as inn,
-        PAYERKPP         		as kpp,
-        PAYERPERSONALACC 		as personalAcc,
-        PAYERNAME        		as Name,
-        PAYERBANKBIC			as BankBic,
-		PAYERBANKCORRESPACC		as BankCorrespAcc,
-		PAYERBANKNAME 			as BankName,
-		PAYERBANKCITY 			as BankBankCity,
-		PAYERBANKSETTLEMENTTYPE	as BankSettlementType
-    };
-    
-    define view Payee as Select from TPayee{
-        DOCEXTID    			as docExtId,
-        PAYEEINN         		as inn,
-        PAYEEKPP         		as kpp,
-        PAYEEPERSONALACC 		as personalAcc,
-        PAYEEUIP				as uip,
-        PAYEENAME        		as Name,
-        PAYEEBANKBIC			as BankBic,
-		PAYEEBANKCORRESPACC		as BankCorrespAcc,
-		PAYEEBANKNAME 			as BankName,
-		PAYEEBANKCITY 			as BankBankCity,
-		PAYEEBANKSETTLEMENTTYPE	as BankSettlementType
-    };
-    
-    
-    define view DepartmentalInfo as Select from TDepartmentalInfo{
-    	DRAWERSTATUS    as drawerStatus,
-		CBC             as cbc,
-		OKATO           as okato,
-		PAYTREASON      as paytReason,
-		TAXPERIOD       as taxPeriod,
-		DEPDOCNO        as docNo,
-		DEPDOCDATE      as docDate,
-		TAXPAYTKIND     as taxPaytKind
-    };
-    
-    define view Sign as Select from TSign {
-		DOCEXTID		as docExtId,
-		SN				as SN,
-		VALUE			as Value,
-		ISSUER  		as Issuer,
-		DIGESTNAME		as DigestName,
-		DIGESTVERSION	as DigestVersion,
-		SIGNTYPE		as SignType,
-		FIO				as Fio,
-		POSITION		as Position
-    };
-    
-    define view Statement as Select from TStatement{
-    	RESPONSEID		as responseId,
-		BIC				as bic,
-		sum(DEBETSUM)	as debetSum,
-		sum(CREDITSUM)	as creditSum,
-		CURRCODE		as currCode,
-		DOCTIME			as docTime,
-		OUTBAL			as outBal,
-		STMTDATE		as stmtDate,
-		ENTERBAL		as enterBal,
-		DOCNUM			as docNum
-    }group by RESPONSEID, BIC, CURRCODE, DOCTIME, OUTBAL, STMTDATE, ENTERBAL, ENTERBAL, DOCNUM;
-    
-    define view StatementItemsDeb as Select from TStatementItems{
-    	RESPONSEID				   as responseId,
-    	EXTID                      as extId,
-		BANK                       as bank,
-		CORRACC                    as corrAcc,
-		DC                         as dc,
-		DOCDATE                    as docDate,
-		DOCNUM                     as docNum,
-		DOCSUM                     as docSum,
-		OPERDATE                   as operDate,
-		PAYMENTORDER               as paymentOrder,
-		PAYTKIND                   as paytKind,
-		PERSONALACC                as personalAcc,
-		PERSONALINN                as personalINN,
-		PERSONALKPP                as personalKPP,
-		TRANSKIND                  as transKind,
-		RECEIVERINN                as receiverINN,
-		RECEIVERKPP                as receiverKPP,
-		RECEIVERPLACE              as receiverPlace,
-		RECEIVERPLACETYPE          as receiverPlaceType,
-		RECEIVERBANKCORRACCOUNT    as receiverBankCorrAccount,
-		RECEIVERBANKNAME           as receiverBankName,
-		PAYERPLACE                 as payerPlace,
-		PAYERPLACETYPE             as payerPlaceType,
-		PAYERBANKCORRACCOUNT       as payerBankCorrAccount,
-		PAYERBANKBIC               as payerBankBic,
-		RECEIPTNAME                as receiptName,
-		PERSONALNAME               as personalName,
-		PURPOSE                    as purpose,
-		CBC                        as cbc,
-		DOCDATE                    as ddocDate,
-		DOCNO                      as docNo,
-		DRAWERSTATUS               as drawerStatus,
-		OKATO                      as okato,
-		PAYTREASON                 as paytReason,
-		TAXPAYTKIND                as taxPaytKind,
-		TAXPERIOD                  as taxPeriod,
-		UIP                        as uip	
-    }	WHERE DC = 1;
-    
-    define view StatementItemsCred as Select from TStatementItems{
-    	RESPONSEID				   as responseId,
-    	EXTID                      as extId,
-		BANK                       as bank,
-		CORRACC                    as corrAcc,
-		DC                         as dc,
-		DOCDATE                    as docDate,
-		DOCNUM                     as docNum,
-		DOCSUM                     as docSum,
-		OPERDATE                   as operDate,
-		PAYMENTORDER               as paymentOrder,
-		PAYTKIND                   as paytKind,
-		PERSONALACC                as personalAcc,
-		PERSONALINN                as personalINN,
-		PERSONALKPP                as personalKPP,
-		TRANSKIND                  as transKind,
-		RECEIVERINN                as receiverINN,
-		RECEIVERKPP                as receiverKPP,
-		RECEIVERPLACE              as receiverPlace,
-		RECEIVERPLACETYPE          as receiverPlaceType,
-		RECEIVERBANKCORRACCOUNT    as receiverBankCorrAccount,
-		RECEIVERBANKNAME           as receiverBankName,
-		PAYERPLACE                 as payerPlace,
-		PAYERPLACETYPE             as payerPlaceType,
-		PAYERBANKCORRACCOUNT       as payerBankCorrAccount,
-		PAYERBANKBIC               as payerBankBic,
-		RECEIPTNAME                as receiptName,
-		PERSONALNAME               as personalName,
-		PURPOSE                    as purpose,
-		CBC                        as cbc,
-		DDOCDATE                   as ddocDate,
-		DOCNO                      as docNo,
-		DRAWERSTATUS               as drawerStatus,
-		OKATO                      as okato,
-		PAYTREASON                 as paytReason,
-		TAXPAYTKIND                as taxPaytKind,
-		TAXPERIOD                  as taxPeriod,
-		UIP                        as uip	
-    }	WHERE DC = 2;
-    
-};       
+
+    define view PaymentOrder as
+        select from TPayDocRu
+        {
+            REQUESTID                      as requestId,
+            DOCEXTID                       as docExtId,
+            _STATUS.DESCRIPTION            as status,
+            _ACCDOC.PURPOSE                as purpose,
+            _ACCDOC.DOCDATE                as docDate,
+            _ACCDOC.DOCNUM                 as docNum,
+            _ACCDOC.DOCSUM                 as docSum,
+            _ACCDOC.VATSUM                 as vatSum,
+            _ACCDOC.VATRATE                as vatRate,
+            _ACCDOC.VAT                    as vat,
+            _ACCDOC.TRANSKIND              as transKind,
+            _ACCDOC.PAYTKIND               as paytKind,
+            _ACCDOC.PAYTCODE               as paytCode,
+            _ACCDOC.PRIORITY               as priority,
+            _ACCDOC.CODEVO                 as codeVO,
+            _ACCDOC.NODOCS                 as nodocs,
+            _PAYER.PAYERINN                as payerInn,
+            _PAYER.PAYERKPP                as payerKpp,
+            _PAYER.PAYERPERSONALACC        as payerPersonalAcc,
+            _PAYER.PAYERNAME               as payerName,
+            _PAYER.PAYERBANKBIC            as payerBankBic,
+            _PAYER.PAYERBANKCORRESPACC     as payerBankCorrespAcc,
+            _PAYER.PAYERBANKNAME           as payerBankName,
+            _PAYER.PAYERBANKCITY           as payerBankBankCity,
+            _PAYER.PAYERBANKSETTLEMENTTYPE as payerBankSettlementType,
+            _PAYEE.PAYEEINN                as payeeInn,
+            _PAYEE.PAYEEKPP                as payeeKpp,
+            _PAYEE.PAYEEPERSONALACC        as payeePersonalAcc,
+            _PAYEE.PAYEEUIP                as payeeUip,
+            _PAYEE.PAYEENAME               as payeeName,
+            _PAYEE.PAYEEBANKBIC            as payeeBankBic,
+            _PAYEE.PAYEEBANKCORRESPACC     as payeeBankCorrespAcc,
+            _PAYEE.PAYEEBANKNAME           as payeeBankName,
+            _PAYEE.PAYEEBANKCITY           as payeeBankBankCity,
+            _PAYEE.PAYEEBANKSETTLEMENTTYPE as payeeBankSettlementType,
+            _DEPART.DRAWERSTATUS           as drawerStatus,
+            _DEPART.CBC                    as cbc,
+            _DEPART.OKATO                  as okato,
+            _DEPART.PAYTREASON             as paytReason,
+            _DEPART.TAXPERIOD              as taxPeriod,
+            _DEPART.DEPDOCNO               as depDocNo,
+            _DEPART.DEPDOCDATE             as depDocDate,
+            _DEPART.TAXPAYTKIND            as taxPaytKind,
+            _SIGN.SIGNTYPE                 as signType
+        };
+
+    define view Extract as
+        select from TPayDocRu
+        {
+            REQUESTID                      as REQUESTID,
+            DOCEXTID                       as DOCEXTID,
+            _REQUEST.XMLNS                 as XMLNS,
+            _REQUEST.VERSION               as VERSION,
+            _ACCDOC.PURPOSE                as PURPOSE,
+            _ACCDOC.DOCDATE                as DOCDATE,
+            _ACCDOC.DOCNUM                 as DOCNUM,
+            _ACCDOC.DOCSUM                 as DOCSUM,
+            _ACCDOC.VATSUM                 as VATSUM,
+            _ACCDOC.VATRATE                as VATRATE,
+            _ACCDOC.VAT                    as VAT,
+            _ACCDOC.TRANSKIND              as TRANSKIND,
+            _ACCDOC.PAYTKIND               as PAYTKIND,
+            _ACCDOC.PAYTCODE               as PAYTCODE,
+            _ACCDOC.PRIORITY               as PRIORITY,
+            _ACCDOC.CODEVO                 as CODEVO,
+            _ACCDOC.NODOCS                 as NODOCS,
+            _PAYER.PAYERINN                as PAYERINN,
+            _PAYER.PAYERKPP                as PAYERKPP,
+            _PAYER.PAYERPERSONALACC        as PAYERPERSONALACC,
+            _PAYER.PAYERNAME               as PAYERNAME,
+            _PAYER.PAYERBANKBIC            as PAYERBANKBIC,
+            _PAYER.PAYERBANKCORRESPACC     as PAYERBANKCORRESPACC,
+            _PAYER.PAYERBANKNAME           as PAYERBANKNAME,
+            _PAYER.PAYERBANKCITY           as PAYERBANKBANKCITY,
+            _PAYER.PAYERBANKSETTLEMENTTYPE as PAYERBANKSETTLEMENTTYPE,
+            _PAYEE.PAYEEINN                as PAYEEINN,
+            _PAYEE.PAYEEKPP                as PAYEEKPP,
+            _PAYEE.PAYEEPERSONALACC        as PAYEEPERSONALACC,
+            _PAYEE.PAYEEUIP                as PAYEEUIP,
+            _PAYEE.PAYEENAME               as PAYEENAME,
+            _PAYEE.PAYEEBANKBIC            as PAYEEBANKBIC,
+            _PAYEE.PAYEEBANKCORRESPACC     as PAYEEBANKCORRESPACC,
+            _PAYEE.PAYEEBANKNAME           as PAYEEBANKNAME,
+            _PAYEE.PAYEEBANKCITY           as PAYEEBANKBANKCITY,
+            _PAYEE.PAYEEBANKSETTLEMENTTYPE as PAYEEBANKSETTLEMENTTYPE,
+            _DEPART.DRAWERSTATUS           as DRAWERSTATUS,
+            _DEPART.CBC                    as CBC,
+            _DEPART.OKATO                  as OKATO,
+            _DEPART.PAYTREASON             as PAYTREASON,
+            _DEPART.TAXPERIOD              as TAXPERIOD,
+            _DEPART.DEPDOCNO               as DEPDOCNO,
+            _DEPART.DEPDOCDATE             as DEPDOCDATE,
+            _DEPART.TAXPAYTKIND            as TAXPAYTKIND
+        };
+
+    define view Request as
+        select from TRequest
+        {
+            BANK      as bank,
+            XMLNS     as xmlns,
+            REQUESTID as requestId,
+            VERSION   as version
+        };
+
+    define view Files as
+        select from TFile
+        {
+            REQUESTID     as requestId,
+            _DOCTYPE.NAME as docType,
+            FILENAME      as fileName,
+            FILETYPE      as fileType,
+            FILESIZE      as fileSize,
+            FILEBODY      as fileBody
+        };
+
+    define view PayDocRu as
+        select from TPayDocRu
+        {
+            REQUESTID as requestId,
+            DOCEXTID  as docExtId
+        };
+
+    define view AccDoc as
+        select from TAccDoc
+        {
+            DOCEXTID  as docExtId,
+            PURPOSE   as purpose,
+            DOCDATE   as docDate,
+            DOCNUM    as docNum,
+            DOCSUM    as docSum,
+            VATSUM    as vatSum,
+            VATRATE   as vatRate,
+            VAT       as vat,
+            TRANSKIND as transKind,
+            PAYTKIND  as paytKind,
+            PAYTCODE  as paytCode,
+            PRIORITY  as priority,
+            CODEVO    as codeVO,
+            NODOCS    as nodocs
+        };
+
+    define view Payer as
+        select from TPayer
+        {
+            DOCEXTID                as docExtId,
+            PAYERINN                as inn,
+            PAYERKPP                as kpp,
+            PAYERPERSONALACC        as personalAcc,
+            PAYERNAME               as Name,
+            PAYERBANKBIC            as BankBic,
+            PAYERBANKCORRESPACC     as BankCorrespAcc,
+            PAYERBANKNAME           as BankName,
+            PAYERBANKCITY           as BankBankCity,
+            PAYERBANKSETTLEMENTTYPE as BankSettlementType
+        };
+
+    define view Payee as
+        select from TPayee
+        {
+            DOCEXTID                as docExtId,
+            PAYEEINN                as inn,
+            PAYEEKPP                as kpp,
+            PAYEEPERSONALACC        as personalAcc,
+            PAYEEUIP                as uip,
+            PAYEENAME               as Name,
+            PAYEEBANKBIC            as BankBic,
+            PAYEEBANKCORRESPACC     as BankCorrespAcc,
+            PAYEEBANKNAME           as BankName,
+            PAYEEBANKCITY           as BankBankCity,
+            PAYEEBANKSETTLEMENTTYPE as BankSettlementType
+        };
+
+    define view DepartmentalInfo as
+        select from TDepartmentalInfo
+        {
+            DRAWERSTATUS as drawerStatus,
+            CBC          as cbc,
+            OKATO        as okato,
+            PAYTREASON   as paytReason,
+            TAXPERIOD    as taxPeriod,
+            DEPDOCNO     as docNo,
+            DEPDOCDATE   as docDate,
+            TAXPAYTKIND  as taxPaytKind
+        };
+
+    define view Sign as
+        select from TSign
+        {
+            DOCEXTID      as docExtId,
+            SN            as SN,
+            VALUE         as Value,
+            ISSUER        as Issuer,
+            DIGESTNAME    as DigestName,
+            DIGESTVERSION as DigestVersion,
+            SIGNTYPE      as SignType,
+            FIO           as Fio,
+            POSITION      as Position
+        };
+
+    define view Statement as
+        select from TStatement
+        {
+            RESPONSEID     as responseId,
+            BIC            as bic,
+            sum(DEBETSUM)  as debetSum,
+            sum(CREDITSUM) as creditSum,
+            CURRCODE       as currCode,
+            DOCTIME        as docTime,
+            OUTBAL         as outBal,
+            STMTDATE       as stmtDate,
+            ENTERBAL       as enterBal,
+            DOCNUM         as docNum
+        }
+        group by
+            RESPONSEID,
+            BIC,
+            CURRCODE,
+            DOCTIME,
+            OUTBAL,
+            STMTDATE,
+            ENTERBAL,
+            ENTERBAL,
+            DOCNUM;
+
+    define view StatementItemsDeb as
+        select from TStatementItems
+        {
+            RESPONSEID              as responseId,
+            EXTID                   as extId,
+            BANK                    as bank,
+            CORRACC                 as corrAcc,
+            DC                      as dc,
+            DOCDATE                 as docDate,
+            DOCNUM                  as docNum,
+            DOCSUM                  as docSum,
+            OPERDATE                as operDate,
+            PAYMENTORDER            as paymentOrder,
+            PAYTKIND                as paytKind,
+            PERSONALACC             as personalAcc,
+            PERSONALINN             as personalINN,
+            PERSONALKPP             as personalKPP,
+            TRANSKIND               as transKind,
+            RECEIVERINN             as receiverINN,
+            RECEIVERKPP             as receiverKPP,
+            RECEIVERPLACE           as receiverPlace,
+            RECEIVERPLACETYPE       as receiverPlaceType,
+            RECEIVERBANKCORRACCOUNT as receiverBankCorrAccount,
+            RECEIVERBANKNAME        as receiverBankName,
+            PAYERPLACE              as payerPlace,
+            PAYERPLACETYPE          as payerPlaceType,
+            PAYERBANKCORRACCOUNT    as payerBankCorrAccount,
+            PAYERBANKBIC            as payerBankBic,
+            RECEIPTNAME             as receiptName,
+            PERSONALNAME            as personalName,
+            PURPOSE                 as purpose,
+            CBC                     as cbc,
+            DOCDATE                 as ddocDate,
+            DOCNO                   as docNo,
+            DRAWERSTATUS            as drawerStatus,
+            OKATO                   as okato,
+            PAYTREASON              as paytReason,
+            TAXPAYTKIND             as taxPaytKind,
+            TAXPERIOD               as taxPeriod,
+            UIP                     as uip
+        }
+        where
+            DC = 1;
+
+    define view StatementItemsCred as
+        select from TStatementItems
+        {
+            RESPONSEID              as responseId,
+            EXTID                   as extId,
+            BANK                    as bank,
+            CORRACC                 as corrAcc,
+            DC                      as dc,
+            DOCDATE                 as docDate,
+            DOCNUM                  as docNum,
+            DOCSUM                  as docSum,
+            OPERDATE                as operDate,
+            PAYMENTORDER            as paymentOrder,
+            PAYTKIND                as paytKind,
+            PERSONALACC             as personalAcc,
+            PERSONALINN             as personalINN,
+            PERSONALKPP             as personalKPP,
+            TRANSKIND               as transKind,
+            RECEIVERINN             as receiverINN,
+            RECEIVERKPP             as receiverKPP,
+            RECEIVERPLACE           as receiverPlace,
+            RECEIVERPLACETYPE       as receiverPlaceType,
+            RECEIVERBANKCORRACCOUNT as receiverBankCorrAccount,
+            RECEIVERBANKNAME        as receiverBankName,
+            PAYERPLACE              as payerPlace,
+            PAYERPLACETYPE          as payerPlaceType,
+            PAYERBANKCORRACCOUNT    as payerBankCorrAccount,
+            PAYERBANKBIC            as payerBankBic,
+            RECEIPTNAME             as receiptName,
+            PERSONALNAME            as personalName,
+            PURPOSE                 as purpose,
+            CBC                     as cbc,
+            DDOCDATE                as ddocDate,
+            DOCNO                   as docNo,
+            DRAWERSTATUS            as drawerStatus,
+            OKATO                   as okato,
+            PAYTREASON              as paytReason,
+            TAXPAYTKIND             as taxPaytKind,
+            TAXPERIOD               as taxPeriod,
+            UIP                     as uip
+        }
+        where
+            DC = 2;
+
+    define view History as
+        select from THistory
+        {
+            DOCEXTID    as docExtId,
+            TIMESTAMP   as timestamp,
+            ACTION      as action,
+            STATUS      as status,
+            DESCRIPTION as description
+        };
+};

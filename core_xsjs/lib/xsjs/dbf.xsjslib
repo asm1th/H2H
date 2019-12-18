@@ -1,6 +1,10 @@
+// $.import("test.xsjs");
+// var str2b64 = $.user.xsjs.str2b64;
+var jsb64 = $.require('nodejs-base64');
+
 var errMessage = [];
 
-function errAdd(param, errType, errVal1, errVal2, errVal3, errVal4 ){
+function errAdd(param, docExtId, errType, errVal1, errVal2, errVal3, errVal4 ){
 	var errText = "";
 	var action = "";
 	var now = new Date();
@@ -14,15 +18,15 @@ function errAdd(param, errType, errVal1, errVal2, errVal3, errVal4 ){
 			errText = "Ошибка подписания. Неизвестный контрагент " + errVal2;
 			break;
 		case 'errInsertEntity':
-			action = 'Inserting';
-			errText = "Ошибка вставки Entity -" + errVal1;
+			action = 'Loading';
+			errText = "Ошибка загрузки Entity -" + errVal1;
 			break;
 	}
 	if(errText != ''){
 		errMessage.push(errText);
 		sql = 'INSERT INTO "RaiffeisenBank.THistory" (DOCEXTID,TIMESTAMP,ACTION,STATUS,DESCRIPTION) VALUES(?,?,?,?,?)';
 		var pStmt = param.connection.prepareStatement(sql);
-		pStmt.setString(1,errVal1);
+		pStmt.setString(1,docExtId, );
 		pStmt.setTimestamp(2,now);
 		pStmt.setString(3,action);
 		pStmt.setString(4,'ERROR');
@@ -39,6 +43,20 @@ function errAdd(param, errType, errVal1, errVal2, errVal3, errVal4 ){
 	}
 }
 
+function historyAdd(param, docExtId, action, status, description){
+	var now = new Date();
+	sql = 'INSERT INTO "RaiffeisenBank.THistory" (DOCEXTID,TIMESTAMP,ACTION,STATUS,DESCRIPTION) VALUES(?,?,?,?,?)';
+	var pStmt = param.connection.prepareStatement(sql);
+	pStmt.setString(1,docExtId);
+	pStmt.setTimestamp(2,now);
+	pStmt.setString(3,action);
+	pStmt.setString(4,status);
+	pStmt.setString(5,description);
+	pStmt.execute();
+	param.connection.commit();
+	pStmt.close();
+}
+
 function getSettlementType(param, bic){
 	var pStmt = param.connection.prepareStatement("Select \"SETTLEMENTTYPE\" From \"H2H.BicInformation\" Where \"BIC\" = '" + bic + "'");
 		rs = null;
@@ -49,17 +67,17 @@ function getSettlementType(param, bic){
 		pStmt.close();
 }
 
-function isNull(destField, srcValue ) {
+function isNull(param, docExtId, destField, srcValue ) {
 	if ((destField.Obligatory == 'X' || destField.Type == "Int") && ( srcValue == null || srcValue == "" || srcValue == undefined) ) {
 		switch (destField.Field) {
 			case 'PURPOSE':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 			case 'DOCDATE':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;	
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;	
 			case 'DOCNUM':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' ); 		return '';				break;		
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' ); 		return '';				break;		
 			case 'DOCSUM':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' ); 		return '';				break;	
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' ); 		return '';				break;	
 			case 'VATSUM':																						return '0.00';			break;
 			case 'VATRATE':																						return '0.00';			break;
 			case 'VAT':																							return 'VatManualAll';	break;
@@ -68,23 +86,23 @@ function isNull(destField, srcValue ) {
 			case 'PRIORITY':																					return '0';				break;
 			case 'NODOCS':																						return '1'; 			break; 
 			case 'PAYERINN' || 'PAYEEINN':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 			case 'PAYERPERSONALACC' || 'PAYEEPERSONALACC':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 			case 'PAYERNAME' || 'PAYEENAME':	
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 			case 'PAYERBANKBIC' || 'PAYEEBANKBIC':	
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;	
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;	
 			case 'PAYERBANKCITY' || 'PAYEEBANKCITY':	
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 			case 'PAYERBANKSETTLEMENTTYPE' || 'PAYEEBANKSETTLEMENTTYPE':										return '';				break;
 			
 			case 'DRAWERSTATUS':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 			case 'CBC':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 			case 'OKATO':
-				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
+				errAdd(param, docExtId, 'errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 			case 'PAYTREASON':																					return '0';				break;
 			case 'TAXPERIOD':																					return '0';				break;
 			case 'DOCNO':																						return '0';				break;
@@ -134,14 +152,19 @@ function getMapping(param, bankId, docType, entityName){
 function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFieldsOptions ){
 	var values = '';
 	var fld = '';
+	var docExtId = '';
 	try {
 		entitySetFields.forEach(function(field, i){ values += i==0 ? '?' : ' ,?';	} );
 		sql = 'INSERT INTO "RaiffeisenBank.T' + entityName + '" (' + entitySetFields.toString() + ') VALUES(' + values + ')';
 		var pStmt = param.connection.prepareStatement(sql);
 		entitySet.forEach(function(entity){ 
+			docExtId = '';
+			if (entity.has('DOCEXTID')){
+				docExtId = entity.get('DOCEXTID');
+			}
 			entitySetFields.forEach(function(field, j){ 
 				fieldOptions = entitySetFieldsOptions.get(field);
-				var fieldValue = isNull(fieldOptions, entity.get(field));
+				var fieldValue = isNull(param, docExtId, fieldOptions, entity.get(field));
 				switch (fieldOptions.Type) {
 						case 'Int':
 							pStmt.setInt(j+1, parseInt(fieldValue)); 
@@ -157,9 +180,17 @@ function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFi
 		pStmt.executeBatch();
 		param.connection.commit();
 		pStmt.close();
-		return '';
+		if (entityName == 'PayDocRu'){
+			entitySet.forEach(function(entity){
+				if (entity.has('DOCEXTID')){
+					historyAdd(param, entity.get('DOCEXTID'), 'Loading', 'success', 'Импортирован');
+				}
+			});
+		}
 	} catch (e) {
-		errAdd(param, 'errInsertEntity', entityName);
+		if(entitySet.length > 0){
+			errAdd(param, docExtId, 'errInsertEntity', entityName);
+		}
 		return e.toString();
 	}
 	return sql;
@@ -192,7 +223,7 @@ function fileUpload(param)
 		fileBody = $.util.codec.encodeBase64(rs.getBlob(6));
 	}
 	pStmt.close();
-	
+
 	switch (docType) {
 		case 1:
 			createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBody, decodedString);
@@ -574,9 +605,8 @@ function createSing(param){
 		raif.Status = rs.getInt(3);
 	}
 	pStmt.close();
-	pStmt.close();
 	if (raif.SignName == undefined || raif.SignName == "") {
-		errAdd(param, 'errSingUnknownAcc', sign.docExtId, raif.payerPersonalAcc, '', '');	
+		errAdd(param, sign.docExtId, 'errSingUnknownAcc', sign.docExtId, raif.payerPersonalAcc, '', '');	
 	}else{
 		Sign = new Map();
 		Sign.set('DOCEXTID', sign.docExtId);
@@ -595,19 +625,14 @@ function createSing(param){
 		    pStmt.setInt(1, raif.Status);
 		    pStmt.execute();
 		    pStmt.close();
+		    historyAdd(param, sign.docExtId, 'Signing', 'success', raif.SignName);
 		} catch (err) {
 			pStmt.close();
 		}
-		pStmt = param.connection.prepareStatement("Update \"RaiffeisenBank.TPayDocRu\" set \"STATUS\" = ? Where \"DOCEXTID\"='" + sign.docExtId + "'");
-    	pStmt.setInt(1, raif.Status);
-    	pStmt.execute();
-    	pStmt.close();
-		// if (errMsg = "") {
-		// 	$.response.status = $.net.http.OK;	
-		// }else{
-		// 	$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
-		// 	 $.response.setBody(errMsg);
-		// }
+		// pStmt = param.connection.prepareStatement("Update \"RaiffeisenBank.TPayDocRu\" set \"STATUS\" = ? Where \"DOCEXTID\"='" + sign.docExtId + "'");
+  //  	pStmt.setInt(1, raif.Status);
+  //  	pStmt.execute();
+  //  	pStmt.close();
 	}
 }
 
@@ -698,5 +723,7 @@ function deletPaymentOrder(param){
 	    
 	    param.connection.commit();
 	    pStmt.close();
+	    
+	    historyAdd(param, PaymentOrder.docExtId, 'Deleting', 'success', 'Успешно удален');
 	}
 }
