@@ -158,12 +158,10 @@
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
+					    <PropertyPath>payeeBankCorrespAcc</PropertyPath>
+					    <PropertyPath>payeeBankName</PropertyPath>
 						<PropertyPath>docDate</PropertyPath>
 						<PropertyPath>docNum</PropertyPath>
-						<PropertyPath>payerBankName</PropertyPath>
-						<PropertyPath>payeeBankCorrespAcc</PropertyPath>
-						<PropertyPath>payerName</PropertyPath>
-						<PropertyPath>payeeName</PropertyPath>
 						<PropertyPath>status</PropertyPath>
 					</Collection>
 				</Annotation>

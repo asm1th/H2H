@@ -9,7 +9,7 @@
    /**/ 
 }
 .hostapp .sapUiSizeCompact .sapTntNavLIItem {
-    height: 3rem;
+    height: 2.5rem;
 }
 .hostapp .sapTntToolPageHeader .bankbutton .sapMBtnInner {
     border: 1px solid #fff;
@@ -129,7 +129,15 @@
     width: 100%;
 }
 
-
+/*** btn-warning ****/
+.btn-warning  span.sapMBtnInner {
+    border-color: #e9730c;
+    color: #e9730c;
+}
+.btn-warning .sapMBtnIcon {
+    color: #e9730c !important;
+}
+/*** .btn-warning ****/
 
 
 

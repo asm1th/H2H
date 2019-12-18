@@ -59,21 +59,22 @@
 				<tnt:NavigationList>
 					<!--<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"/>-->
 					<!--<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"/>-->
-					<tnt:NavigationListItem text="Газпром нефть" icon="sap-icon://building">
+					<tnt:NavigationListItem icon="sap-icon://building" text="Газпром нефть" key="page1">
 						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="page1"/>
 						<tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="page2"/>
 						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="page3" enabled="false"/>
+					</tnt:NavigationListItem>
+					<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false">
+						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType2"/>
+						<tnt:NavigationListItem text="Рублевые платежи" key="subItem4"/>
+						<tnt:NavigationListItem text="Валютные платежи" key="subItem5"/>
 					</tnt:NavigationListItem>
 					<!--<tnt:NavigationListItem text="Газпром нефть БС" icon="sap-icon://building" expanded="false">-->
 					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
 					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
 					<!--	<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>-->
 					<!--</tnt:NavigationListItem>-->
-					<!--<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false">-->
-					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
-					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
-					<!--	<tnt:NavigationListItem text="Валютные платежи" key="subItem3"/>-->
-					<!--</tnt:NavigationListItem>-->
+					
 					<!--<tnt:NavigationListItem text="ГПН Финанс" icon="sap-icon://building" expanded="false">-->
 					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
 					<!--	<tnt:NavigationListItem text="Рублевые платежи" key="subItem2"/>-->
@@ -253,12 +254,12 @@
 										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
 										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" enabled="true"/>
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
-										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered" press="onSend" enabled="true"/>
+										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered btn-warning" press="onSend" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
 								<t:AnalyticalTable id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="2">
 									<t:rowSettingsTemplate>
-										<t:RowSettings highlight="{path:'Status', formatter:'.formatRowHighlight'}"/>
+										<t:RowSettings highlight="{path:'status', formatter:'.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>
 									<t:rowActionTemplate>
 										<t:RowAction>

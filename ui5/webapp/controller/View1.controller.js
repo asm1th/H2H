@@ -167,6 +167,7 @@ sap.ui.define([
 				});
 			}
 		},
+		
 		_delPP: function (data) {
 			var oModel = this.getOwnerComponent().getModel();
 			var mParams = {};
@@ -178,6 +179,7 @@ sap.ui.define([
 
 			var Path = "/PayDocRu(requestId='" + data.requestId + "',docExtId='" + data.docExtId + "')";
 
+			// не костыль
 			// 			oModel.remove(Path, mParams);
 			// 				mParams.success = function () {
 			// 				MessageToast.show("ПП удалено");
@@ -186,11 +188,13 @@ sap.ui.define([
 			// 				that._onErrorCall(oError);
 			// 			};
 
+			// костыль из-за generatedID
 			mParams.success = function () {
 				oModel.remove(Path, {
 					success: function (data) {
-						console.log(data);
-						MessageToast.show("++++++++++++");
+			            var oSmartTable = that.byId("LineItemsSmartTable");
+						oSmartTable.rebindTable();
+						MessageToast.show("Запись удалена");
 					},
 					error: function (oError) {
 						MessageBox.show(oError);
@@ -416,9 +420,28 @@ sap.ui.define([
 
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
-			//var path = ctx.getPath();
+			var path = ctx.getPath();
 			this.detailDialog.setBindingContext(ctx);
 
+			// =============== костыль AccDoc из-за generated ID
+			
+			var that = this;
+			var oModel = this.getOwnerComponent().getModel();
+			var obj = oModel.getProperty(path);
+			var accPath = "/AccDoc(docExtId='" + obj.docExtId + "')";
+
+			oModel.read(accPath, {
+				success: function (data) {
+                    //var AccModel = new JSONModel();
+					//AccModel.setData(data);
+					//oView.setModel(oModel, "AccModel");
+				},
+				error: this._onErrorCall
+			}); // костыль
+			// var ttt = this.detailDialog.getModel("AccModel");
+			
+			// =================
+			
 			this.detailDialog.open();
 		},
 
@@ -447,17 +470,51 @@ sap.ui.define([
 			// 			};
 			// 			mParams.error = this._onErrorCall;
 			//          oModel.update("/PaymentOrder", oEntry, mParams);
-            
-            alert('Исправить запрос');
-            
-			oModel.setProperty(path + "/priority", obj.priority);
-			oModel.submitChanges({
-				success: function () {
-					MessageToast.show("Сохранено");
-					this.detailDialog.close();
-				},
-				error: this._onErrorCall
-			});
+
+			// не костыль
+			// 			oModel.setProperty(path + "/priority", obj.priority);
+			// 			oModel.submitChanges({
+			// 				success: function () {
+			// 					MessageToast.show("Сохранено");
+			// 					this.detailDialog.close();
+			// 				},
+			// 				error: this._onErrorCall
+			// 			});
+
+			// костыль из-за generatedID
+
+			var that = this;
+			var mParams = {};
+			var accPath = "/AccDoc(docExtId='" + obj.docExtId + "')";
+			
+			
+			mParams.success = function (data) {
+				
+				var yyy = oModel.getProperty(accPath + "/priority");
+
+				oModel.setProperty(accPath + "/priority", obj.priority);
+				oModel.setProperty(accPath + "/docSum", "1000");
+
+				debugger;
+				
+				console.log(oModel);
+
+				oModel.submitChanges({
+					success: function (data) {
+						console.log(data);
+						MessageToast.show("++++++++++++");
+						that.detailDialog.close();
+					},
+					error: function (oError) {
+						MessageBox.show(oError);
+					}
+				});
+			};
+			mParams.error = function (oError) {
+				that._onErrorCall(oError);
+			};
+			oModel.read(accPath, mParams); // Костыль
+			
 		},
 
 		detailDialogClose: function (oEvent) {
@@ -595,10 +652,9 @@ sap.ui.define([
 			if (!this.addDialog) {
 				this.addDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.addDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialog);
-			} else {
-				var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
-				oFileUpload.clear();
-			}
+			} 
+            // var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
+            // oFileUpload.clear(); // - не загрузить 2 раз после clear
 			this.addDialog.open();
 		},
 
@@ -1225,9 +1281,10 @@ sap.ui.define([
 		// форматтер для подсветки строки в таблице
 		formatRowHighlight: function (oValue) {
 			// Your logic for rowHighlight goes here
+			// "Success"
 			if (oValue === "Подписан I") {
 				return "Information";
-			} else if (oValue === "Подписан II") {
+			} else if (oValue === "Подписан") {
 				return "Warning";
 			} else if (oValue === "Импортирован") {
 				return "None";
