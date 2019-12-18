@@ -23,6 +23,20 @@ function getSettlementType(conn, bic) {
 	pStmt.close();
 }
 
+function historyAdd(conn, docExtId, action, status, description){
+	var now = new Date();
+	sql = 'INSERT INTO "RaiffeisenBank.THistory" (DOCEXTID,TIMESTAMP,ACTION,STATUS,DESCRIPTION) VALUES(?,?,?,?,?)';
+	var pStmt = conn.prepareStatement(sql);
+	pStmt.setString(1,docExtId);
+	pStmt.setTimestamp(2,now);
+	pStmt.setString(3,action);
+	pStmt.setString(4,status);
+	pStmt.setString(5,description);
+	pStmt.execute();
+	conn.commit();
+	pStmt.close();
+}
+
 var docExtId = $.request.parameters.get("docExtId");
 var conn = $.db.getConnection();
 var sql = "Select \"REQUESTID\",\"DOCEXTID\",\"XMLNS\",\"VERSION\",\"PURPOSE\",\"DOCDATE\",\"DOCNUM\",\"DOCSUM\",\"VATSUM\",\"VATRATE\",\"VAT\",";
@@ -201,8 +215,8 @@ if (errMessage.length == 0) {
 
 	username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
 	password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
-	// url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/TestService";
-	url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
+	url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/TestService";
+	// url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
 	auth = 'Basic ' + jsb64.base64encode(username + ':' + password);
 
 	var data = {
@@ -226,10 +240,11 @@ if (errMessage.length == 0) {
 		body: data,
 		formData: formData,
 		json: true,
-		uri: 'https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder',
+		uri: url,
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': auth
+			'Authorization': auth,
+			'docExtId': docExtId
 		}
 	};
 
@@ -242,6 +257,8 @@ if (errMessage.length == 0) {
     	pStmt.execute();
     	conn.commit();
     	pStmt.close();
+    	
+    	historyAdd(conn, docExtId, 'Sending', 'success', 'Отправлен в банк');
 
 	$.response.status = $.net.http.OK;
 	$.response.contentType = "application/xml";

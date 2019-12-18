@@ -2,7 +2,7 @@ using H2H;
 
 @OData.publish : true
 context RaiffeisenBank {
-    type t_uuid : String(37);
+    type t_uuid : String(38);
     type t_str : String(255);
     type t_longstr : String(1024);
     type t_str_1 : String(1);
@@ -388,6 +388,13 @@ context RaiffeisenBank {
             @Comment : 'Уникальный Идентификатора Платежа'
             UIP                     : String(25);
     };
+    
+    entity TResponse {
+    		@Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
+        key DOCEXTID    : t_uuid;
+        	STATUS      : t_str_15;
+        	DESCRIPTION : String(25);
+    };
 
     define view PaymentOrder as
         select from TPayDocRu
@@ -712,5 +719,12 @@ context RaiffeisenBank {
             ACTION      as action,
             STATUS      as status,
             DESCRIPTION as description
+        };
+        
+    define view Response as
+        select from TResponse{
+        	DOCEXTID    as docExtId,
+        	STATUS      as status,
+        	DESCRIPTION as description
         };
 };
