@@ -1273,7 +1273,15 @@ sap.ui.define([
 		// форматтер для подсветки строки в таблице
 		formatRowHighlight: function (oValue) {
 			// Your logic for rowHighlight goes here
-			// "Success"
+            // 1;Импортирован;
+            // 2;Подписан;
+            // 3;Подписан I;
+            // 4;Подписан II;
+            // 5;Отправлен;
+            // 6;Доставлен;
+            // 7;Принят АБС;
+            // 8;Исполнен;
+            // 9;Отказан АБС;
 			if (oValue === "Исполнен") {
 				return "Success";
 			} else if (oValue === "Подписан") {

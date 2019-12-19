@@ -5,9 +5,6 @@
 .hostapp .bankbutton {
     margin-left: 5.5rem;
 }
-.bank-logo{
-   /**/ 
-}
 .hostapp .sapUiSizeCompact .sapTntNavLIItem {
     height: 2.5rem;
 }
@@ -17,7 +14,10 @@
 }
 .sapUiResponsiveContentPadding{
     height: 100%;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
+}
+.sapMFlexItem.sapUiResponsiveContentPadding {
+    padding: 1rem 1rem 0 1rem;
 }
 .sapMScrollContScroll{
     height: 100%;
@@ -28,7 +28,7 @@
 .sapMDialogSection .FormTitle{
     border-top: 1px solid #ccc;
     font-size: 1rem;
-    padding: .5rem 2rem;
+    padding: 0.5rem 2rem;
     width: 100%;
     color: #333;
 }
@@ -111,15 +111,29 @@
     font-size: 1px;
 }
 .hostPad{
-    padding: 0.5rem 1rem 0;
+    padding: 1rem 1rem 0 1rem;
     height: 100%;
 }
 .hostPad1{
-    padding: 0 0.2rem 0.1rem 1rem;
+    padding: 0;
+    height: 100%;
+}
+.s_table{
+    height: 50rem;
+}
+.cd_tables {
+    height: 100%;
+}
+.c_table {
+    padding: 0 1rem 0 .5rem;
+    height: 100%;
+}
+.d_table {
+    padding: 0 .5rem 0 1rem;
     height: 100%;
 }
 .hostPad2{
-    padding: 0 1rem 0.1rem .2rem;
+    padding: 0 1rem 0.1rem 0.2rem;
     height: 100%;
 }
 .sapUiCompFilterBarNonPhone.sapUiRespGrid.sapUiRespGridHSpace0 {
@@ -937,3 +951,13 @@ div#__xmlview1--FilterBar {
     color: red;
 }
 
+.sapUiTableRowWithAction {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.c_table .sapUiTableRowWithAction,
+.d_table .sapUiTableRowWithAction {
+    right: 10px;
+}
