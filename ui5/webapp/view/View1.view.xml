@@ -60,14 +60,14 @@
 					<!--<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"/>-->
 					<!--<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"/>-->
 					<tnt:NavigationListItem icon="sap-icon://building" text="Газпром нефть" key="page1">
-						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="page1"/>
-						<tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="page2"/>
+					    <tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="page1"/>
+						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="page2"/>
 						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="page3" enabled="false"/>
 					</tnt:NavigationListItem>
-					<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false">
-						<tnt:NavigationListItem text="Выписки" key="PaymentOrderType2"/>
-						<tnt:NavigationListItem text="Рублевые платежи" key="subItem4"/>
-						<tnt:NavigationListItem text="Валютные платежи" key="subItem5"/>
+					<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false" enabled="false">
+					    <tnt:NavigationListItem text="Рублевые платежи" key="subItem1"  enabled="false"/>
+						<tnt:NavigationListItem text="Выписки" key="subItem2"  enabled="false"/>
+						<tnt:NavigationListItem text="Валютные платежи" key="subItem3"  enabled="false"/>
 					</tnt:NavigationListItem>
 					<!--<tnt:NavigationListItem text="Газпром нефть БС" icon="sap-icon://building" expanded="false">-->
 					<!--	<tnt:NavigationListItem text="Выписки" key="PaymentOrderType"/>-->
@@ -87,10 +87,77 @@
 		<tnt:mainContents>
 			<NavContainer id="pageContainer" initialPage="page1">
 				<pages>
+				    <!-- ПП -->
+					<!-- ПП -->
+					<!-- ПП -->
+					<ScrollContainer id="page1" horizontal="false" vertical="false" height="100%">
+						<VBox fitContainer="true">
+							<!--https://blogs.sap.com/2019/08/13/configuring-filters-area-of-an-analytical-list-page-alp-application/-->
+							<!--basicSearchFieldName="docExtId" enableBasicSearch="true"-->
+							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_Explored">
+								<!--<smartFilterBar:controlConfiguration>-->
+								<!--	<smartFilterBar:ControlConfiguration key="docExtId">-->
+								<!--		<smartFilterBar:defaultFilterValues>-->
+								<!--			<smartFilterBar:SelectOption low="23cb2ada-6207-4994-8354-d7f4d78b1f18"></smartFilterBar:SelectOption>-->
+								<!--		</smartFilterBar:defaultFilterValues>-->
+								<!--	</smartFilterBar:ControlConfiguration>-->
+								<!--</smartFilterBar:controlConfiguration>-->
+								<!-- layout data used to make the table growing but the filter bar fixed -->
+								<smartFilterBar:layoutData>
+									<FlexItemData shrinkFactor="0"/>
+								</smartFilterBar:layoutData>
+							</smartFilterBar:SmartFilterBar>
+							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable" initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
+							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
+								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
+								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
+								class="sapUiResponsiveContentPadding">
+								<!--beforeRebindTable="onDataReceived"-->
+								<!-- layout data used to make the table growing but the filter bar fixed -->
+								<smartTable:customToolbar>
+									<Toolbar>
+										<ToolbarSpacer/>
+										<!--<ToolbarSeparator/>-->
+										<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh" enabled="true"/>
+										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="true"/>
+										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Ипорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
+										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllPP" enabled="true"/>
+										<MenuButton icon="sap-icon://print">
+											<menu>
+												<Menu>
+													<MenuItem text="1C" icon="sap-icon://save" press="onDownload_1C"></MenuItem>
+													<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML" enabled="fasle"/>
+													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" enabled="fasle"/>
+												</Menu>
+											</menu>
+										</MenuButton>
+										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
+										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" enabled="false"/>
+										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
+										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered btn-warning" press="onSend" id="onSend" enabled="true"/>
+									</Toolbar>
+								</smartTable:customToolbar>
+								<t:AnalyticalTable id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="2" rowSelectionChange="onSelPaymentOrder">
+									<t:rowSettingsTemplate>
+										<t:RowSettings highlight="{path:'status', formatter:'.formatRowHighlight'}"/>
+									</t:rowSettingsTemplate>
+									<t:rowActionTemplate>
+										<t:RowAction>
+											<t:items>
+												<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onDetailDialog"></t:RowActionItem>
+												<t:RowActionItem icon="sap-icon://delete" type="Delete" press="onDeletePP"></t:RowActionItem>
+											</t:items>
+										</t:RowAction>
+									</t:rowActionTemplate>
+								</t:AnalyticalTable>
+							</smartTable:SmartTable>
+						</VBox>
+					</ScrollContainer>
+					
 					<!--  -->
 					<!-- Выписки -->
 					<!--  -->
-					<ScrollContainer id="page1" horizontal="false" vertical="false" height="100%">
+					<ScrollContainer id="page2" horizontal="false" vertical="false" height="100%">
 						<VBox fitContainer="true">
 							<smartFilterBar:SmartFilterBar id="smartFilterBar_1" entitySet="Statement" persistencyKey="SmartFilter_Explored_1">
 								<smartFilterBar:layoutData>
@@ -147,7 +214,7 @@
 								<!--Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')/ItemsDeb-->
 								<!--entitySet="Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')" tableBindingPath="ItemsDeb"-->
 								<smartTable:SmartTable width="50%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true" useVariantManagement="false"
-									useTablePersonalisation="true" header="Дебет" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true"
+									useTablePersonalisation="true" header="Дебет" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="false"
 									showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
 									<smartTable:customToolbar>
 										<Toolbar>
@@ -182,93 +249,29 @@
 								<!--	</t:columns>-->
 								<!--</t:Table>-->
 								<!--entitySet="StatementItemsCred" -->
-								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="StatementItemsCred" enableAutoBinding="true">
+								<smartTable:SmartTable id="SmartTable_C" width="50%" entitySet="StatementItemsCred" useExportToExcel="true" useVariantManagement="true"
+									useTablePersonalisation="true" header="Кредит" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1"
+									enableAutoBinding="false" showFullScreenButton="true" initialNoDataText="Выберите выписку" class="hostPad1">
 									<smartTable:customToolbar>
 										<Toolbar>
 											<ToolbarSpacer/>
 											<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_C" class="btn btn-bordered" enabled="fasle"/>
 										</Toolbar>
 									</smartTable:customToolbar>
-									<!--<t:Table id="Table_C" rowHeight="20" selectionMode="None" visibleRowCount="20" rowActionCount="1">-->
-									<!--	<t:rowSettingsTemplate>-->
-									<!--		<t:RowSettings highlight="None"/>-->
-									<!--	</t:rowSettingsTemplate>-->
-									<!--	<t:rowActionTemplate>-->
-									<!--		<t:RowAction>-->
-									<!--			<t:items>-->
-									<!--				<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>-->
-									<!--			</t:items>-->
-									<!--		</t:RowAction>-->
-									<!--	</t:rowActionTemplate>-->
-									<!--</t:Table>-->
+									<t:Table id="Table_C" rowHeight="20" selectionMode="None" visibleRowCount="20" rowActionCount="1">
+										<t:rowSettingsTemplate>
+											<t:RowSettings highlight="None"/>
+										</t:rowSettingsTemplate>
+										<t:rowActionTemplate>
+											<t:RowAction>
+												<t:items>
+													<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>
+												</t:items>
+											</t:RowAction>
+										</t:rowActionTemplate>
+									</t:Table>
 								</smartTable:SmartTable>
 							</HBox>
-						</VBox>
-					</ScrollContainer>
-					<!-- ПП -->
-					<!-- ПП -->
-					<!-- ПП -->
-					<ScrollContainer id="page2" horizontal="false" vertical="false" height="100%">
-						<VBox fitContainer="true">
-							<!--https://blogs.sap.com/2019/08/13/configuring-filters-area-of-an-analytical-list-page-alp-application/-->
-							<!--basicSearchFieldName="docExtId" enableBasicSearch="true"-->
-							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_Explored">
-								<!--<smartFilterBar:controlConfiguration>-->
-								<!--	<smartFilterBar:ControlConfiguration key="docExtId">-->
-								<!--		<smartFilterBar:defaultFilterValues>-->
-								<!--			<smartFilterBar:SelectOption low="23cb2ada-6207-4994-8354-d7f4d78b1f18"></smartFilterBar:SelectOption>-->
-								<!--		</smartFilterBar:defaultFilterValues>-->
-								<!--	</smartFilterBar:ControlConfiguration>-->
-								<!--</smartFilterBar:controlConfiguration>-->
-								<!-- layout data used to make the table growing but the filter bar fixed -->
-								<smartFilterBar:layoutData>
-									<FlexItemData shrinkFactor="0"/>
-								</smartFilterBar:layoutData>
-							</smartFilterBar:SmartFilterBar>
-							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable" initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
-								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
-								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
-								class="sapUiResponsiveContentPadding">
-								<!--beforeRebindTable="onDataReceived"-->
-								<!-- layout data used to make the table growing but the filter bar fixed -->
-								<smartTable:customToolbar>
-									<Toolbar>
-										<ToolbarSpacer/>
-										<!--<ToolbarSeparator/>-->
-										<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh" enabled="true"/>
-										<Button icon="sap-icon://documents" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="true"/>
-										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Ипорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
-										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllPP" enabled="true"/>
-										<MenuButton icon="sap-icon://print">
-											<menu>
-												<Menu>
-													<MenuItem text="1C" icon="sap-icon://save" press="onDownload_1C"></MenuItem>
-													<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML" enabled="fasle"/>
-													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" enabled="fasle"/>
-												</Menu>
-											</menu>
-										</MenuButton>
-										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
-										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" enabled="true"/>
-										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
-										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered btn-warning" press="onSend" enabled="true"/>
-									</Toolbar>
-								</smartTable:customToolbar>
-								<t:AnalyticalTable id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="2">
-									<t:rowSettingsTemplate>
-										<t:RowSettings highlight="{path:'status', formatter:'.formatRowHighlight'}"/>
-									</t:rowSettingsTemplate>
-									<t:rowActionTemplate>
-										<t:RowAction>
-											<t:items>
-												<t:RowActionItem icon="sap-icon://detail-view" type="Navigation" press="onDetailDialog"></t:RowActionItem>
-												<t:RowActionItem icon="sap-icon://delete" type="Delete" press="onDeletePP"></t:RowActionItem>
-											</t:items>
-										</t:RowAction>
-									</t:rowActionTemplate>
-								</t:AnalyticalTable>
-							</smartTable:SmartTable>
 						</VBox>
 					</ScrollContainer>
 				</pages>

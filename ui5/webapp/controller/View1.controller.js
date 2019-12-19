@@ -85,6 +85,9 @@ sap.ui.define([
 			});
 			this.byId("messagePopup").setModel(viewModel);
 			oMessagePopover.setModel(oModel);
+
+			// Активация кнопок
+			this.byId("onSend").setEnabled(false);
 		},
 
 		onAfterRendering: function (oEvent) {
@@ -239,6 +242,11 @@ sap.ui.define([
 		onRefresh_Stmnt: function (oEvent) {
 			var oSmartTable = this.byId("SmartTableStatements");
 			oSmartTable.rebindTable();
+
+			var oSmartTable = this.byId("SmartTable_D");
+			oSmartTable.rebindTable();
+			var oSmartTable = this.byId("SmartTable_C");
+			oSmartTable.rebindTable();
 		},
 
 		onJournal_Stmnt: function (oEvent) {
@@ -307,10 +315,10 @@ sap.ui.define([
 					oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId));
 				});
 			}
- 			
- 			this.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
- 			this.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
-			
+
+			this.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+			this.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
+
 			//this.byId("Table_D").bindRows("/StatementItemsDeb", null, null, oFilter);
 			//this.byId("Table_C").bindRows("/StatementItemsCred", null, null, oFilter);
 		},
@@ -372,7 +380,14 @@ sap.ui.define([
 		//////////////////
 		// фикс размер колонок по заголовкам table
 		onDataReceived: function () {
-			//			var oSmartTable = this.byId("LineItemsSmartTable");
+			// var oSmartTable = this.byId("LineItemsSmartTable");
+			// var oTable = oSmartTable.getTable();
+			// var oTpc = new sap.ui.table.TablePointerExtension(oTable);
+			// var aColumns = oTable.getColumns();
+			// for (var i = 0; i < aColumns.length; i++) {
+			//   oTpc.doAutoResizeColumn(i);
+			// }
+			// 			var oSmartTable = this.byId("LineItemsSmartTable");
 			// 			var i = 0;
 			// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
 			// 				oLine.setWidth("100%");
@@ -380,7 +395,7 @@ sap.ui.define([
 			// 				i++;
 			// 			});
 			//oSmartTable.getTable().rerender();
-			//oSmartTable.getTable().setFirstVisibleRow(1)
+			//oSmartTable.getTable().scrollLeft();
 		},
 
 		//////////////////
@@ -404,31 +419,12 @@ sap.ui.define([
 				this.detailDialog = sap.ui.xmlfragment("detailDialog", "h2h.ui5.view.detailDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.detailDialog);
 			}
-
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var path = ctx.getPath();
 			this.detailDialog.setBindingContext(ctx);
 
-			// =============== костыль AccDoc из-за generated ID
-
-			var that = this;
-			var oModel = this.getOwnerComponent().getModel();
-			var obj = oModel.getProperty(path);
-			var accPath = "/AccDoc(docExtId='" + obj.docExtId + "')";
-
-			oModel.read(accPath, {
-				success: function (data) {
-					//var AccModel = new JSONModel();
-					//AccModel.setData(data);
-					//oView.setModel(oModel, "AccModel");
-				},
-				error: this._onErrorCall
-			}); // костыль
-			// var ttt = this.detailDialog.getModel("AccModel");
-
 			// =================
-
 			this.detailDialog.open();
 		},
 
@@ -442,65 +438,50 @@ sap.ui.define([
 			var path = ctx.getPath();
 			var obj = oModel.getProperty(path);
 
-			// 			var oEntry = {};
-			// 			oEntry.docExtId = obj.docExtId;
-			// 			oEntry.priority = obj.priority;
-			// 			oModel.setHeaders({
-			// 				"X-Requested-With": "XMLHttpRequest",
-			// 				"Content-Type": "application/json",
-			// 				"X-CSRF-Token": "Fetch"
-			// 			});
-			// 			var mParams = {};
-			// 			mParams.success = function () {
-			// 				MessageToast.show("Сохранено");
-			// 				this.detailDialog.close();
-			// 			};
-			// 			mParams.error = this._onErrorCall;
-			//          oModel.update("/PaymentOrder", oEntry, mParams);
-
-			// не костыль
-			// 			oModel.setProperty(path + "/priority", obj.priority);
-			// 			oModel.submitChanges({
-			// 				success: function () {
-			// 					MessageToast.show("Сохранено");
-			// 					this.detailDialog.close();
-			// 				},
-			// 				error: this._onErrorCall
-			// 			});
-
 			// костыль из-за generatedID
 
 			var that = this;
-			var mParams = {};
 			var accPath = "/AccDoc(docExtId='" + obj.docExtId + "')";
 
-			mParams.success = function (data) {
-                
-                var data = data;
-                
-				var yyy = oModel.getProperty(accPath + "/priority");
-
-				oModel.setProperty(accPath + "/priority", obj.priority);
-				oModel.setProperty(accPath + "/docSum", "1000");
-				//debugger;
-				console.log(oModel);
-
-				oModel.submitChanges({
-					success: function (data) {
-						console.log(data);
-						MessageToast.show("Изменения сохранены");
-						that.detailDialog.close();
-					},
-					error: function (oError) {
-						MessageBox.show(oError);
-					}
-				});
-			};
-			mParams.error = function (oError) {
-				that._onErrorCall(oError);
-			};
-			oModel.read(accPath, mParams); // Костыль
-
+			oModel.read(accPath, {
+				success: function (data) {
+					console.log(data);
+					var oEntity = {
+							// new
+							priority: parseInt(obj.priority),
+							// copy
+							docExtId: data.docExtId,
+							purpose: data.purpose,
+							docDate: data.docDate,
+							docNum: data.docNum,
+							docSum: data.docSum,
+							vatSum: data.vatSum,
+							vatRate: data.vatRate,
+							vat: data.vat,
+							transKind: data.transKind,
+							paytKind: data.paytKind,
+							paytCode: data.paytCode,
+							codeVO: data.codeVO,
+							nodocs: data.nodocs
+						};
+						//oModel.update(accPath + "/priority", obj.priority, {
+					oModel.update(accPath, oEntity, {
+						success: function (data) {
+							console.log(data);
+							MessageToast.show("Изменения сохранены");
+							that.detailDialog.close();
+						},
+						error: function (oError) {
+							MessageBox.show(oError);
+							that.detailDialog.close();
+						}
+					});
+				},
+				error: function (oError) {
+					MessageBox.error(JSON.stringify(oError));
+					console.log("error: " + oError);
+				}
+			});
 		},
 
 		detailDialogClose: function (oEvent) {
@@ -576,13 +557,13 @@ sap.ui.define([
 		//////////////////
 		// просмотр платежки загружаемой в банк
 		onShowXml: function (oEvent) {
-			//var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("LineItemsSmartTable");
 			//var oTable = oSmartTable.getTable();
 			//var iIndex = oTable.getSelectedIndices();
 			var docExtId = this._getDocExtId();
+			var oModel = this.getOwnerComponent().getModel();
 
 			// Get file
-			// var url = "https://kl3zn4m1rmf4sssx-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%275a5d2b38-6c01-fcf2-5361-67681e0e043f%27";
 			var url = "/xsjs/download.xsjs";
 			$.ajax({
 				type: "GET",
@@ -610,9 +591,23 @@ sap.ui.define([
 							styleClass: "MessageBoxLarge",
 							actions: [sap.m.MessageBox.Action.YES], //[sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO]
 							onClose: function (oAction) {
-								// if (oAction === sap.m.MessageBox.Action.YES) {
-								// 	sap.m.MessageToast.show(box.getModel().getProperty('/message'));
-								// }
+								if (oAction === sap.m.MessageBox.Action.YES) {
+									var oEntity = {
+										docExtId: docExtId[0],
+										status: '',
+										description: ''
+									};
+									oModel.create("/Response", oEntity, {
+										success: function (data) {
+						                    oSmartTable.rebindTable();
+						                    MessageToast.show("Отправлено в банк");
+										},
+										error: function (oError) {
+											MessageBox.error(JSON.stringify(oError));
+											MessageToast.show("Ошибка отправки в банк");
+										}
+									});
+								}
 							}
 						}
 					);
@@ -626,10 +621,32 @@ sap.ui.define([
 			});
 		},
 
+		// выделение ПП и проверка на статус
+		onSelPaymentOrder: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var sPath;
+			if (iIndex.length > 0) {
+				var StatusEnableButton = true; //все ПП подписаны
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					sPath = Context.sPath;
+					var data = oTable.getModel().getProperty(sPath);
+					if (data.status === "Подписан") {} else {
+						StatusEnableButton = false; // хоть одна ПП не подписана
+					}
+				});
+				this.byId("onSend").setEnabled(StatusEnableButton);
+			} else {
+				this.byId("onSend").setEnabled(false);
+			}
+		},
+
 		// кнопка отправить
 		onSend: function (oEvent) {
 			this.onShowXml(oEvent);
-			MessageToast.show("Пример отправленного XML файла");
+            // MessageToast.show("Пример отправленного XML файла");
 		},
 
 		//  кнопка загрузки пп
@@ -916,11 +933,11 @@ sap.ui.define([
 			// oEntry.Fio = objSign.SubjectName;
 			//debugger;
 			var oModel = this.getOwnerComponent().getModel();
-			oModel.setHeaders({
-				"X-Requested-With": "XMLHttpRequest",
-				"Content-Type": "application/json",
-				"X-CSRF-Token": "Fetch"
-			});
+			// 			oModel.setHeaders({
+			// 				"X-Requested-With": "XMLHttpRequest",
+			// 				"Content-Type": "application/json",
+			// 				"X-CSRF-Token": "Fetch"
+			// 			});
 			var mParams = {};
 			mParams.success = function () {
 				MessageToast.show("Подпись снята");
@@ -1257,14 +1274,14 @@ sap.ui.define([
 		formatRowHighlight: function (oValue) {
 			// Your logic for rowHighlight goes here
 			// "Success"
-			if (oValue === "Подписан I") {
-				return "Information";
+			if (oValue === "Исполнен") {
+				return "Success";
 			} else if (oValue === "Подписан") {
-				return "Warning";
+				return "Information";
 			} else if (oValue === "Импортирован") {
 				return "None";
 			} else if (oValue === "Отправлен") {
-				return "Success";
+				return "Warning";
 			}
 
 			return "None";

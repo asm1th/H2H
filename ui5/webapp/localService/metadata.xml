@@ -6,8 +6,8 @@
 <PropertyRef Name="ID"/>
 </Key>
 <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
-<Property Name="requestId" Type="Edm.String" MaxLength="37" sap:label="requestId" sap:aggregation-role="dimension"/>
-<Property Name="docExtId" Type="Edm.String" MaxLength="37" sap:label="docExtId" sap:aggregation-role="dimension"/>
+<Property Name="requestId" Type="Edm.String" MaxLength="38" sap:label="requestId" sap:aggregation-role="dimension"/>
+<Property Name="docExtId" Type="Edm.String" MaxLength="38" sap:label="docExtId" sap:aggregation-role="dimension"/>
 <Property Name="status" Type="Edm.String" MaxLength="25" sap:label="status" sap:aggregation-role="dimension"/>
 <Property Name="purpose" Type="Edm.String" MaxLength="210" sap:label="purpose" sap:aggregation-role="dimension"/>
 <Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="docDate" sap:aggregation-role="dimension"/>
@@ -58,7 +58,7 @@
 </Key>
 <Property Name="bank" Type="Edm.String" MaxLength="255"/>
 <Property Name="xmlns" Type="Edm.String" MaxLength="255"/>
-<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="version" Type="Edm.String" MaxLength="255"/>
 <NavigationProperty Name="RequestPayDoc" Relationship="default.Request_PayDocType" FromRole="RequestPrincipal" ToRole="PayDocRuDependent" sap:creatable="false" sap:filterable="false"/>
 </EntityType>
@@ -67,8 +67,8 @@
 <PropertyRef Name="requestId"/>
 <PropertyRef Name="docExtId"/>
 </Key>
-<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="38"/>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <NavigationProperty Name="PayDocRuAccDoc" Relationship="default.PayDocRu_AccDocType" FromRole="PayDocRuPrincipal" ToRole="AccDocDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="PayDocRuPayer" Relationship="default.PayDocRu_PayerType" FromRole="PayDocRuPrincipal" ToRole="PayerDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="PayDocRuPayee" Relationship="default.PayDocRu_PayeeType" FromRole="PayDocRuPrincipal" ToRole="PayeeDependent" sap:creatable="false" sap:filterable="false"/>
@@ -79,7 +79,7 @@
 <Key>
 <PropertyRef Name="docExtId"/>
 </Key>
-<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="purpose" Type="Edm.String" MaxLength="210"/>
 <Property Name="docDate" Type="Edm.DateTime" sap:display-format="Date"/>
 <Property Name="docNum" Type="Edm.String" Nullable="false" MaxLength="6"/>
@@ -98,7 +98,7 @@
 <Key>
 <PropertyRef Name="docExtId"/>
 </Key>
-<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="inn" Type="Edm.String" MaxLength="12"/>
 <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
 <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
@@ -113,7 +113,7 @@
 <Key>
 <PropertyRef Name="docExtId"/>
 </Key>
-<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="inn" Type="Edm.String" MaxLength="12"/>
 <Property Name="kpp" Type="Edm.String" MaxLength="9"/>
 <Property Name="personalAcc" Type="Edm.String" MaxLength="20"/>
@@ -129,7 +129,7 @@
 <Key>
 <PropertyRef Name="requestId"/>
 </Key>
-<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="requestId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="docType" Type="Edm.String" MaxLength="255"/>
 <Property Name="fileName" Type="Edm.String" MaxLength="255"/>
 <Property Name="fileType" Type="Edm.String" MaxLength="255"/>
@@ -140,7 +140,7 @@
 <Key>
 <PropertyRef Name="docExtId"/>
 </Key>
-<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="SN" Type="Edm.String" MaxLength="255"/>
 <Property Name="Value" Type="Edm.Binary"/>
 <Property Name="Issuer" Type="Edm.String" MaxLength="1024"/>
@@ -155,7 +155,7 @@
 <PropertyRef Name="ID"/>
 </Key>
 <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
-<Property Name="responseId" Type="Edm.String" MaxLength="37" sap:label="Уникальный идентификатор" sap:aggregation-role="dimension"/>
+<Property Name="responseId" Type="Edm.String" MaxLength="38" sap:label="Уникальный идентификатор" sap:aggregation-role="dimension"/>
 <Property Name="bic" Type="Edm.String" MaxLength="9" sap:label="БИК банка клиента" sap:aggregation-role="dimension"/>
 <Property Name="currCode" Type="Edm.String" MaxLength="3" sap:label="Код валюты выписки" sap:aggregation-role="dimension"/>
 <Property Name="docTime" Type="Edm.String" MaxLength="8" sap:label="Данные актуальны на (время)" sap:aggregation-role="dimension"/>
@@ -171,9 +171,10 @@
 <EntityType Name="StatementItemsCredType">
 <Key>
 <PropertyRef Name="responseId"/>
+<PropertyRef Name="extId"/>
 </Key>
-<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-<Property Name="extId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="38"/>
+<Property Name="extId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="bank" Type="Edm.String" MaxLength="80"/>
 <Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>
 <Property Name="dc" Type="Edm.Int32" Nullable="false"/>
@@ -213,9 +214,10 @@
 <EntityType Name="StatementItemsDebType">
 <Key>
 <PropertyRef Name="responseId"/>
+<PropertyRef Name="extId"/>
 </Key>
-<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="37"/>
-<Property Name="extId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="responseId" Type="Edm.String" Nullable="false" MaxLength="38"/>
+<Property Name="extId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="bank" Type="Edm.String" MaxLength="80"/>
 <Property Name="corrAcc" Type="Edm.String" MaxLength="20"/>
 <Property Name="dc" Type="Edm.Int32" Nullable="false"/>
@@ -256,11 +258,19 @@
 <Key>
 <PropertyRef Name="docExtId"/>
 </Key>
-<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="37"/>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="timestamp" Type="Edm.DateTime" Nullable="false"/>
 <Property Name="action" Type="Edm.String" MaxLength="255"/>
 <Property Name="status" Type="Edm.String" MaxLength="15"/>
 <Property Name="description" Type="Edm.String" MaxLength="1024"/>
+</EntityType>
+<EntityType Name="ResponseType">
+<Key>
+<PropertyRef Name="docExtId"/>
+</Key>
+<Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="38"/>
+<Property Name="status" Type="Edm.String" MaxLength="15"/>
+<Property Name="description" Type="Edm.String" MaxLength="25"/>
 </EntityType>
 <Association Name="PaymentOrder_FilesType">
 <End Type="default.PaymentOrderType" Role="PaymentOrderPrincipal" Multiplicity="1"/>
@@ -315,6 +325,7 @@
 <EntitySet Name="StatementItemsCred" EntityType="default.StatementItemsCredType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="StatementItemsDeb" EntityType="default.StatementItemsDebType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <EntitySet Name="History" EntityType="default.HistoryType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+<EntitySet Name="Response" EntityType="default.ResponseType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 <AssociationSet Name="PaymentOrder_Files" Association="default.PaymentOrder_FilesType">
 <End Role="PaymentOrderPrincipal" EntitySet="PaymentOrder"/>
 <End Role="FilesDependent" EntitySet="Files"/>

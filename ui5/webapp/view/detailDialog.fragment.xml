@@ -150,11 +150,11 @@
 			    <Label text="Вид операции:"/>
 			    <Input id="sm2" value="{transKind}" editable="false"/>
 			    <Label text="Очередность платежа:"/>
-			    <Input id="sm3" value="{priority}" valueState="Information" editable="true"/>
+			    <Input id="sm3" value="{priority}" valueState="Information" editable="true"/> <!-- valueState="Information"-->
 			    <Label text="Код вида ВО:"/>
 			    <Input id="sm4" value="{codeVO}" editable="false"/>
 			    <Label text="Код валюты ISO:"/>
-			    <Input id="sm5" value="{currCode}" editable="false"/>
+			    <Input id="sm5" value="810" editable="false"/> <!--{currCode}-->
 			</HBox>
 			<!-- -->	
 			

@@ -20,15 +20,15 @@ function errAdd(param, docExtId, errType, errVal1, errVal2, errVal3, errVal4 ){
 	var now = new Date();
 	switch (errType) {
 		case 'errLoadEntityOblibatoryFielisNull':
-			action = 'Loading';
+			action = 'Загрузка';
 			errText = "Ошибка загрузки " + errVal2 + ". Обязательное поле " + errVal3 + " не может быть пустам";
 			break;
 		case 'errSingUnknownAcc':
-			action = 'Signing';
+			action = 'Подписание';
 			errText = "Ошибка подписания. Неизвестный контрагент " + errVal2;
 			break;
 		case 'errInsertEntity':
-			action = 'Loading';
+			action = 'Загрузка';
 			errText = "Ошибка загрузки Entity -" + errVal1;
 			break;
 	}
@@ -193,7 +193,7 @@ function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFi
 		if (entityName == 'PayDocRu'){
 			entitySet.forEach(function(entity){
 				if (entity.has('DOCEXTID')){
-					historyAdd(param, entity.get('DOCEXTID'), 'Loading', 'success', 'Импортирован');
+					historyAdd(param, entity.get('DOCEXTID'), 'Загрузка', 'success', 'Импортирован');
 				}
 			});
 		}
@@ -635,7 +635,7 @@ function createSing(param){
 		    pStmt.setInt(1, raif.Status);
 		    pStmt.execute();
 		    pStmt.close();
-		    historyAdd(param, sign.docExtId, 'Signing', 'success', raif.SignName);
+		    historyAdd(param, sign.docExtId, 'Подписание', 'success', raif.SignName);
 		} catch (err) {
 			pStmt.close();
 		}
@@ -739,8 +739,8 @@ function deletPaymentOrder(param){
 }
 
 function response(param){
-	var before = param.beforeTableName;
-	var pStmt = param.connection.prepareStatement("select * from \"" + before + "\"");
+	var after = param.afterTableName;
+	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
 	var rs = pStmt.executeQuery();
 	while (rs.next()) {
 		docExtId	= 		rs.getString(1);
@@ -749,14 +749,16 @@ function response(param){
 	}
 	pStmt.close();
 	
-	historyAdd(param, docExtId, 'Sending', 'success', 'Доставлен');
+	historyAdd(param, docExtId, 'Отправка', 'success', 'Доставлен');
+	historyAdd(param, docExtId, 'Отправка', 'success', 'Принят АБС');
+	
 	
 	try {
 			pStmt = param.connection.prepareStatement("Update \"RaiffeisenBank.TPayDocRu\" set \"STATUS\" = ? Where \"DOCEXTID\"='" + docExtId + "'");
 		    pStmt.setInt(1, 8);
 		    pStmt.execute();
 		    pStmt.close();
-		    historyAdd(param, docExtId, 'Sending', 'success', 'Исполнен');
+		    historyAdd(param, docExtId, 'Отправка', 'success', 'Исполнен');
 		} catch (err) {
 			pStmt.close();
 		}
