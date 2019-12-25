@@ -66,7 +66,7 @@
 						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="page2"/>
 						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="page3" enabled="false"/>
 					</tnt:NavigationListItem>
-					<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false" enabled="false">
+					<tnt:NavigationListItem text="ГПН Инвест" icon="sap-icon://building" expanded="false" enabled="true">
 						<tnt:NavigationListItem text="Рублевые платежи" key="subItem1" enabled="false"/>
 						<tnt:NavigationListItem text="Выписки" key="subItem2" enabled="false"/>
 						<tnt:NavigationListItem text="Валютные платежи" key="subItem3" enabled="false"/>
@@ -215,30 +215,7 @@
 								<!--entitySet="StatementItemsDeb"-->
 								<!--Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')/ItemsDeb-->
 								<!--entitySet="Statement('401a7ace-28d1-6060-a40e-fe4063a08d08')" tableBindingPath="ItemsDeb"-->
-								<VBox width="50%" class="d_table">
-									<smartTable:SmartTable header="Дебет" width="100%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true" useVariantManagement="true"
-										useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1"
-										enableAutoBinding="true" showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
-										<smartTable:customToolbar>
-											<Toolbar>
-												<ToolbarSpacer/>
-												<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_D" class="btn btn-bordered" enabled="fasle"/>
-											</Toolbar>
-										</smartTable:customToolbar>
-										<t:Table id="Table_D" rowHeight="20" selectionMode="None" visibleRowCountMode="Auto" rowActionCount="1">
-											<t:rowSettingsTemplate>
-												<t:RowSettings highlight="None"/>
-											</t:rowSettingsTemplate>
-											<t:rowActionTemplate>
-												<t:RowAction>
-													<t:items>
-														<t:RowActionItem type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>
-													</t:items>
-												</t:RowAction>
-											</t:rowActionTemplate>
-										</t:Table>
-									</smartTable:SmartTable>
-								</VBox>
+								
 								<!--<t:Table id="TableDeb" class="tablestyle" rowHeight="20" selectionMode="None" enableCellFilter="true" showColumnVisibilityMenu="true">-->
 								<!--	<t:rowSettingsTemplate>-->
 								<!--		<t:RowSettings highlight="Warning"/>-->
@@ -254,8 +231,8 @@
 								<!--</t:Table>-->
 								<!--entitySet="StatementItemsCred" -->
 								<VBox width="50%" class="c_table">
-									<smartTable:SmartTable header="Кредит" width="100%" id="SmartTable_C" entitySet="StatementItemsCred" useExportToExcel="true" useVariantManagement="true"
-										useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_1"
+									<smartTable:SmartTable header="Дебет" width="100%" id="SmartTable_C" entitySet="StatementItemsCred" useExportToExcel="true" useVariantManagement="true"
+										useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_2"
 										enableAutoBinding="true" showFullScreenButton="true" initialNoDataText="Выберите выписку" class="hostPad1">
 										<smartTable:customToolbar>
 											<Toolbar>
@@ -264,6 +241,30 @@
 											</Toolbar>
 										</smartTable:customToolbar>
 										<t:Table id="Table_C" rowHeight="20" selectionMode="None" visibleRowCountMode="Auto" rowActionCount="1">
+											<t:rowSettingsTemplate>
+												<t:RowSettings highlight="None"/>
+											</t:rowSettingsTemplate>
+											<t:rowActionTemplate>
+												<t:RowAction>
+													<t:items>
+														<t:RowActionItem type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>
+													</t:items>
+												</t:RowAction>
+											</t:rowActionTemplate>
+										</t:Table>
+									</smartTable:SmartTable>
+								</VBox>
+								<VBox width="50%" class="d_table">
+									<smartTable:SmartTable header="Кредит" width="100%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true" useVariantManagement="true"
+										useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_3"
+										enableAutoBinding="true" showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
+										<smartTable:customToolbar>
+											<Toolbar>
+												<ToolbarSpacer/>
+												<Button icon="sap-icon://print" tooltip="Печать" press="onPrint_D" class="btn btn-bordered" enabled="fasle"/>
+											</Toolbar>
+										</smartTable:customToolbar>
+										<t:Table id="Table_D" rowHeight="20" selectionMode="None" visibleRowCountMode="Auto" rowActionCount="1">
 											<t:rowSettingsTemplate>
 												<t:RowSettings highlight="None"/>
 											</t:rowSettingsTemplate>

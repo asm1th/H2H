@@ -757,18 +757,19 @@ sap.ui.define([
 					}
 
 					// convert bytes to string // encoding can be specfied, defaults to utf-8 which is ascii.
+					
 					var str = new TextDecoder().decode(bytes);
-
 					var XmlNode = new DOMParser().parseFromString(str, 'text/xml');
-					var ContentJson = that._xmlToJson(XmlNode);
-
+					/*var ContentJson = that._xmlToJson(XmlNode);
 					var sContentJson = JSON.stringify(ContentJson);
 					//var bContentJson = window.btoa(sContentJson);
 					var bContentJson = window.btoa(unescape(encodeURIComponent(sContentJson)));
-
+                    */
+                    
 					var oEntry = {};
 					//oEntry.requestId = "";
-					oEntry.fileBody = bContentJson;
+					//oEntry.fileBody = bContentJson;
+					oEntry.fileBody = XmlNode;
 					oEntry.fileName = fileName;
 					oEntry.fileType = "text/json"; //file.type;
 					oEntry.fileSize = fileSize;

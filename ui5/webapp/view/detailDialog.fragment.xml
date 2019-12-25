@@ -27,7 +27,7 @@
 						</HBox>
 						<HBox width="60%">
 							<HBox width="20%" class="pad05">
-								<Input id="aa" value="" editable="false"/>
+								<Input id="aa" value="1000" editable="false"/>
 							</HBox>
 							<HBox width="40%" class="pad05 labelFull">
 								<Label text="ИНН:" class="label2"/>
