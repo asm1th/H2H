@@ -748,7 +748,7 @@ sap.ui.define([
 				var that = this;
 				reader.onload = function (oEvent) {
 					var vContent = oEvent.currentTarget.result.replace("data:" + fileType + ";base64,", "");
-					var yourXmlString = window.atob(vContent);
+					/*var yourXmlString = window.atob(vContent);
 					var binaryLen = yourXmlString.length;
 					var bytes = new Uint8Array(binaryLen);
 					for (var i = 0; i < binaryLen; i++) {
@@ -760,7 +760,7 @@ sap.ui.define([
 					
 					var str = new TextDecoder().decode(bytes);
 					var XmlNode = new DOMParser().parseFromString(str, 'text/xml');
-					/*var ContentJson = that._xmlToJson(XmlNode);
+					var ContentJson = that._xmlToJson(XmlNode);
 					var sContentJson = JSON.stringify(ContentJson);
 					//var bContentJson = window.btoa(sContentJson);
 					var bContentJson = window.btoa(unescape(encodeURIComponent(sContentJson)));
@@ -769,7 +769,8 @@ sap.ui.define([
 					var oEntry = {};
 					//oEntry.requestId = "";
 					//oEntry.fileBody = bContentJson;
-					oEntry.fileBody = XmlNode;
+					//oEntry.fileBody = XmlNode;
+					oEntry.fileName = vContent;
 					oEntry.fileName = fileName;
 					oEntry.fileType = "text/json"; //file.type;
 					oEntry.fileSize = fileSize;
