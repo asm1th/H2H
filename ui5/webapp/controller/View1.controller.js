@@ -770,17 +770,17 @@ sap.ui.define([
 					//oEntry.requestId = "";
 					//oEntry.fileBody = bContentJson;
 					//oEntry.fileBody = XmlNode;
-					oEntry.fileName = vContent;
+					oEntry.fileBody = vContent;
 					oEntry.fileName = fileName;
-					oEntry.fileType = "text/json"; //file.type;
+					oEntry.fileType = file.type;
 					oEntry.fileSize = fileSize;
 					oEntry.docType = 2; // для бека - определять тип файла
 
-					// 	oModel.setHeaders({
-					// 		"X-Requested-With": "XMLHttpRequest",
-					// 		"Content-Type": "application/json",
-					// 		"X-CSRF-Token": "Fetch"
-					// 	});
+					oModel.setHeaders({
+						"X-Requested-With": "XMLHttpRequest",
+						"Content-Type": "application/json",
+						"X-CSRF-Token": "Fetch"
+					});
 					var mParams = {};
 					mParams.success = function () {
 						var oSmartTable = that.byId("SmartTableStatements");
