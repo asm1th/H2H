@@ -1,6 +1,7 @@
 // $.import("test.xsjs");
 // var str2b64 = $.user.xsjs.str2b64;
 var jsb64 = $.require('nodejs-base64');
+var xml2js = $.require('xml2js');
 
 var errMessage = [];
 
@@ -43,12 +44,6 @@ function errAdd(param, docExtId, errType, errVal1, errVal2, errVal3, errVal4 ){
 		pStmt.setString(5,errText);
 		pStmt.execute();
 		param.connection.commit();
-		// var response = $.response.getResponse();
-		// response.contentType = "text/html";
-		// response.setBody(errText);
-		// response.status = $.net.http.INTERNAL_SERVER_ERROR; 
-		
-		
 		pStmt.close();
 	}
 }
@@ -321,28 +316,7 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 					break;	
 			}
 		}
-		
-		// var after = param.afterTableName;
-	 //   var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
-	 //   rs = null;
-		// rs = pStmt.executeQuery();
-		// var fileBody = null;
-		// while (rs.next()) {
-		// 	var fileName = rs.getString(2);
-  //  		var fileType = rs.getString(3);
-  //  		var fileSize = rs.getInt(4);
-		// 	var array = new Uint8Array(rs.getBlob(5));
-			
-		// 	content = binToString(array);
-			
-		// 	// var encodedString = String.fromCharCode.apply(null,array),
-		// 	// 	decodedString = decodeURIComponent(escape(encodedString));
-		// 	// 	content = decodedString;
-		// 	fileBody = $.util.codec.encodeBase64(rs.getBlob(5));
-		// 	var fileRows = content.split(/\r\n|\n/);
-		// }
-		// pStmt.close();
-		
+
 		var fileRows = content.split(/\r\n|\n/);
 		
 		var requestID = guid();
@@ -379,7 +353,6 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 			var _destinationField = mappingField.get(sourceField);
 			if (_destinationField != null) {
 				var destinationField = destinatonFieldOpt.get(_destinationField);
-				// var destinationEntity = mappingEntity.get(sourceField);
 				if (destinationField.Field == "START") {
 					startDoc	= true;
 					docExtID	= guid();
@@ -465,76 +438,99 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 
 function createStatment(param, docType, fileName, fileType, fileSize, fileBody, content)
 {
-	var json = JSON.parse(content);
 	var statementData = {};
 	statementData.Statement = {};
 	statementData.StatementItems = {};
+	statementData.File = {}
 	var responseID = guid();
 
 	statementData.Statement = getMapping(param, 1, 2, 'Statement');
 	statementData.StatementItems = getMapping(param, 1, 2, 'StatementItems');
+	statementData.File = getMapping(param, 1, 1, 'File');
 
 	statementData.Statement.data = [];
 	statementData.StatementItems.data = [];
+	statementData.File.data = [];
+	
+	File = new Map();
+	File.set('REQUESTID', responseID);
+	File.set('DOCTYPEID', docType);
+	File.set('FILENAME',  fileName);
+	File.set('FILETYPE',  fileType);
+	File.set('FILESIZE',  fileSize);
+	File.set('FILEBODY',  fileBody);
+	statementData.File.data.push(File);
+	
+	
+	xml2js.parseString(content, function (err, json) {
 
-	var StatementRaif = new Map();
-	var statement = json.Response.StatementsRaif.StatementRaif.$;                         
-	StatementRaif.set('RESPONSEID',responseID);
-	StatementRaif.set('BIC',statement.bic);
-	StatementRaif.set('DEBETSUM',statement.debetSum);
-	StatementRaif.set('CREDITSUM',statement.creditSum);
-	StatementRaif.set('CURRCODE',statement.currCode);
-	StatementRaif.set('DOCTIME',statement.docTime);
-	StatementRaif.set('OUTBAL',statement.outBal);
-	StatementRaif.set('STMTDATE',statement.stmtDate);
-	StatementRaif.set('ENTERBAL',statement.enterBal);
-	StatementRaif.set('DOCNUM',statement.docNum);
-	statementData.Statement.data.push(StatementRaif);
-	
-	json.Response.StatementsRaif.StatementRaif.Docs.TransInfo.forEach(function(docs){
-		var StatementItemsRaif = new Map();
-		doc = docs.$;
-		StatementItemsRaif.set('RESPONSEID',					responseID);
-		StatementItemsRaif.set('EXTID',							doc.extId);
-		StatementItemsRaif.set('BANK',							doc.bank);
-		StatementItemsRaif.set('CORRACC',						doc.corrAcc);
-		StatementItemsRaif.set('DC',							doc.dc);
-		StatementItemsRaif.set('DOCDATE',						doc.docDate);
-		StatementItemsRaif.set('DOCNUM',						doc.docNum);
-		StatementItemsRaif.set('DOCSUM',						doc.docSum);
-		StatementItemsRaif.set('OPERDATE',						doc.operDate);
-		StatementItemsRaif.set('PAYMENTORDER',					doc.paymentOrder);
-		StatementItemsRaif.set('PAYTKIND',						doc.paytKind);
-		StatementItemsRaif.set('PERSONALACC',					doc.personalAcc);
-		StatementItemsRaif.set('PERSONALINN',					doc.personalINN);
-		StatementItemsRaif.set('PERSONALKPP',					doc.personalKPP);
-		StatementItemsRaif.set('TRANSKIND',						doc.transKind);
-		StatementItemsRaif.set('RECEIVERINN',					doc.receiverINN);
-		StatementItemsRaif.set('RECEIVERKPP',					doc.receiverKPP);
-		StatementItemsRaif.set('RECEIVERPLACE',					doc.receiverPlace);
-		StatementItemsRaif.set('RECEIVERPLACETYPE',				doc.receiverPlaceType);
-		StatementItemsRaif.set('RECEIVERBANKCORRACCOUNT',		doc.receiverBankCorrAccount);
-		StatementItemsRaif.set('RECEIVERBANKNAME',				doc.receiverBankName);
-		StatementItemsRaif.set('PAYERPLACE',					doc.payerPlace);
-		StatementItemsRaif.set('PAYERPLACETYPE',				doc.payerPlaceType);
-		StatementItemsRaif.set('PAYERBANKCORRACCOUNT',			doc.payerBankCorrAccount);
-		StatementItemsRaif.set('PAYERBANKBIC',					doc.payerBankBic);
-		StatementItemsRaif.set('RECEIPTNAME',					doc.receiptName);
-		StatementItemsRaif.set('PERSONALNAME',					docs.PersonalName);
-		StatementItemsRaif.set('PURPOSE',						docs.Purpose);
-		StatementItemsRaif.set('CBC',							docs.DepartmentalInfo.$.cbc);
-		StatementItemsRaif.set('DDOCDATE',						docs.DepartmentalInfo.$.docDate);
-		StatementItemsRaif.set('DOCNO',							docs.DepartmentalInfo.$.docNo);
-		StatementItemsRaif.set('DRAWERSTATUS',					docs.DepartmentalInfo.$.drawerStatus);
-		StatementItemsRaif.set('OKATO',							docs.DepartmentalInfo.$.okato);
-		StatementItemsRaif.set('PAYTREASON',					docs.DepartmentalInfo.$.paytReason);
-		StatementItemsRaif.set('TAXPAYTKIND',					docs.DepartmentalInfo.$.taxPaytKind);
-		StatementItemsRaif.set('TAXPERIOD',						docs.DepartmentalInfo.$.taxPeriod);
-		StatementItemsRaif.set('UIP',							docs.DepartmentalInfo.$.uip);
-		statementData.StatementItems.data.push(StatementItemsRaif);
-	});
-	
-	
+	    json.Response.StatementsRaif.forEach(function(statements){
+		statements.StatementRaif.forEach(function(statement){
+			var StatementRaif = new Map();
+			StatementRaif.set('RESPONSEID',responseID);
+			StatementRaif.set('BIC',statement.$.bic);
+			StatementRaif.set('DEBETSUM',statement.$.debetSum);
+			StatementRaif.set('CREDITSUM',statement.$.creditSum);
+			StatementRaif.set('CURRCODE',statement.$.currCode);
+			StatementRaif.set('DOCTIME',statement.$.docTime);
+			StatementRaif.set('OUTBAL',statement.$.outBal);
+			StatementRaif.set('STMTDATE',statement.$.stmtDate);
+			StatementRaif.set('ENTERBAL',statement.$.enterBal);
+			StatementRaif.set('DOCNUM',statement.$.docNum);
+			statementData.Statement.data.push(StatementRaif);
+			
+			statement.Docs.forEach(function(docs){
+				docs.TransInfo.forEach(function(doc){
+					var StatementItemsRaif = new Map();
+					StatementItemsRaif.set('RESPONSEID',				responseID);
+					StatementItemsRaif.set('EXTID',						doc.$.extId);
+					StatementItemsRaif.set('BANK',						doc.$.bank);
+					StatementItemsRaif.set('CORRACC',					doc.$.corrAcc);
+					StatementItemsRaif.set('DC',						doc.$.dc);
+					StatementItemsRaif.set('DOCNUM',					doc.$.docNum);
+					StatementItemsRaif.set('DOCSUM',					doc.$.docSum);
+					StatementItemsRaif.set('OPERDATE',					doc.$.operDate);
+					StatementItemsRaif.set('PAYMENTORDER',				doc.$.paymentOrder);
+					StatementItemsRaif.set('PAYTKIND',					doc.$.paytKind);
+					StatementItemsRaif.set('PERSONALACC',				doc.$.personalAcc);
+					StatementItemsRaif.set('PERSONALINN',				doc.$.personalINN);
+					StatementItemsRaif.set('PERSONALKPP',				doc.$.personalKPP);
+					StatementItemsRaif.set('TRANSKIND',					doc.$.transKind);
+					StatementItemsRaif.set('RECEIVERINN',				doc.$.receiverINN);
+					StatementItemsRaif.set('RECEIVERKPP',				doc.$.receiverKPP);
+					StatementItemsRaif.set('RECEIVERPLACE',				doc.$.receiverPlace);
+					StatementItemsRaif.set('RECEIVERPLACETYPE',			doc.$.receiverPlaceType);
+					StatementItemsRaif.set('RECEIVERBANKCORRACCOUNT',	doc.$.receiverBankCorrAccount);
+					StatementItemsRaif.set('RECEIVERBANKNAME',			doc.$.receiverBankName);
+					StatementItemsRaif.set('PAYERPLACE',				doc.$.payerPlace);
+					StatementItemsRaif.set('PAYERPLACETYPE',			doc.$.payerPlaceType);
+					StatementItemsRaif.set('PAYERBANKCORRACCOUNT',		doc.$.payerBankCorrAccount);
+					StatementItemsRaif.set('PAYERBANKBIC',				doc.$.payerBankBic);
+					StatementItemsRaif.set('RECEIPTNAME',				doc.$.receiptName);
+					StatementItemsRaif.set('PERSONALNAME',				doc.PersonalName[0]);
+					StatementItemsRaif.set('PURPOSE',					doc.Purpose[0]);
+					StatementItemsRaif.set('CBC',						doc.DepartmentalInfo[0].$.cbc);
+					StatementItemsRaif.set('DOCDATE',					doc.DepartmentalInfo[0].$.docDate);
+					StatementItemsRaif.set('DOCNO',						doc.DepartmentalInfo[0].$.docNo);
+					StatementItemsRaif.set('DRAWERSTATUS',				doc.DepartmentalInfo[0].$.drawerStatus);
+					StatementItemsRaif.set('OKATO',						doc.DepartmentalInfo[0].$.okato);
+					StatementItemsRaif.set('PAYTREASON',				doc.DepartmentalInfo[0].$.paytReason);
+					StatementItemsRaif.set('TAXPAYTKIND',				doc.DepartmentalInfo[0].$.taxPaytKind);
+					StatementItemsRaif.set('TAXPERIOD',					doc.DepartmentalInfo[0].$.taxPeriod);
+					StatementItemsRaif.set('UIP',						doc.DepartmentalInfo[0].$.uip);
+					statementData.StatementItems.data.push(StatementItemsRaif);
+					});
+				});
+			});
+		});
+	});	
+
+	insertEntity(	param,
+					statementData.File.entityName, 
+					statementData.File.data, 
+					statementData.File.fields, 
+					statementData.File.destinatonFieldOpt
+				);
 	
 	insertEntity(	param,
 					statementData.Statement.entityName, 
@@ -639,10 +635,6 @@ function createSing(param){
 		} catch (err) {
 			pStmt.close();
 		}
-		// pStmt = param.connection.prepareStatement("Update \"RaiffeisenBank.TPayDocRu\" set \"STATUS\" = ? Where \"DOCEXTID\"='" + sign.docExtId + "'");
-  //  	pStmt.setInt(1, raif.Status);
-  //  	pStmt.execute();
-  //  	pStmt.close();
 	}
 }
 

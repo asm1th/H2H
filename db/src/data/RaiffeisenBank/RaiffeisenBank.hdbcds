@@ -273,7 +273,8 @@ context RaiffeisenBank {
 
             @Comment : 'Номер документа'
             DOCNUM     : t_str_6;
-            _STITEMS   : association[1] to TStatementItems on _STITEMS.RESPONSEID = RESPONSEID;
+            _STITEMS   : association[1] to TStatementItems on _STITEMS.RESPONSEID	= RESPONSEID;
+            _FILE      : association[1] to TFile           on _FILE.REQUESTID		= RESPONSEID;
     };
 
     entity TStatementItems {
@@ -603,25 +604,15 @@ context RaiffeisenBank {
         {
             RESPONSEID     as responseId,
             BIC            as bic,
-            sum(DEBETSUM)  as debetSum,
-            sum(CREDITSUM) as creditSum,
+            DEBETSUM	   as debetSum,
+            CREDITSUM	   as creditSum,
             CURRCODE       as currCode,
             DOCTIME        as docTime,
             OUTBAL         as outBal,
             STMTDATE       as stmtDate,
             ENTERBAL       as enterBal,
             DOCNUM         as docNum
-        }
-        group by
-            RESPONSEID,
-            BIC,
-            CURRCODE,
-            DOCTIME,
-            OUTBAL,
-            STMTDATE,
-            ENTERBAL,
-            ENTERBAL,
-            DOCNUM;
+        };
 
     define view StatementItemsDeb as
         select from TStatementItems
