@@ -111,15 +111,16 @@
     font-size: 1px;
 }
 .hostPad{
-    padding: 1rem 1rem 0 1rem;
+    padding: 0.5rem 0.5rem 0rem;
     height: 100%;
+    width: 100%;
 }
 .hostPad1{
     padding: 0;
     height: 100%;
 }
 .s_table{
-    height: 50rem;
+    height: 20rem;
 }
 .cd_tables {
     height: 100%;
@@ -950,6 +951,8 @@ div#__xmlview1--FilterBar {
 [data-class="Error"].sapMText {
     color: red;
 }
+
+
 
 .sapUiTableRowWithAction {
     position: absolute;

@@ -42,7 +42,7 @@
 				<Button type="Transparent" press="fixColums_S" tooltip="Вып"/>
 				<Button id="messagePopup" icon="sap-icon://bell" type="Transparent" tooltip="Сообщения" text=" {/messagesLength}"
 					press="handleMessagePopoverPress"/>
-				<!--<Button icon="sap-icon://lab" type="Transparent" press="test"/>-->
+				<Button icon="sap-icon://lab" type="Transparent" press="testStmnt"/>
 				<!--<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"/>-->
 				<!--src="./profile2.jpg"-->
 				<!--<MenuButton type="Transparent">-->
@@ -61,7 +61,7 @@
 				<tnt:NavigationList>
 					<!--<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"/>-->
 					<!--<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"/>-->
-					<tnt:NavigationListItem icon="sap-icon://building" text="Газпром нефть" key="page1">
+					<tnt:NavigationListItem icon="sap-icon://building" text="Газпром нефть" key="page0">
 						<tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="page1"/>
 						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="page2"/>
 						<tnt:NavigationListItem text="Валютные платежи" id="subItem3" key="page3" enabled="false"/>
@@ -95,7 +95,7 @@
 						<VBox fitContainer="true">
 							<!--https://blogs.sap.com/2019/08/13/configuring-filters-area-of-an-analytical-list-page-alp-application/-->
 							<!--basicSearchFieldName="docExtId" enableBasicSearch="true"-->
-							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_Explored">
+							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_0">
 								<!--<smartFilterBar:controlConfiguration>-->
 								<!--	<smartFilterBar:ControlConfiguration key="docExtId">-->
 								<!--		<smartFilterBar:defaultFilterValues>-->
@@ -111,7 +111,7 @@
 							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable" initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
 							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
 								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
-								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" showFullScreenButton="true"
+								beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_0" enableAutoBinding="true" showFullScreenButton="true"
 								class="sapUiResponsiveContentPadding">
 								<!--beforeRebindTable="onDataReceived"-->
 								<!-- layout data used to make the table growing but the filter bar fixed -->
@@ -147,7 +147,7 @@
 										<t:RowAction>
 											<t:items>
 												<t:RowActionItem type="Navigation" press="onDetailDialog"></t:RowActionItem>
-												<!--<t:RowActionItem icon="sap-icon://delete" type="Delete" press="onDeletePP"></t:RowActionItem>-->
+												<!--<t:RowActionItem visible="{path:'status', formatter:'.formatEnableDelPP'}" icon="sap-icon://delete" type="Delete" press="onDeletePP"></t:RowActionItem>-->
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
@@ -160,7 +160,7 @@
 					<!--  -->
 					<ScrollContainer id="page2" horizontal="false" vertical="false" height="100%">
 						<VBox fitContainer="true">
-							<smartFilterBar:SmartFilterBar id="smartFilterBar_1" entitySet="Statement" persistencyKey="SmartFilter_Explored_1">
+							<smartFilterBar:SmartFilterBar id="smartFilterBar_1" entitySet="Statement" persistencyKey="SmartFilter_1">
 								<smartFilterBar:layoutData>
 									<FlexItemData shrinkFactor="0"/>
 								</smartFilterBar:layoutData>
@@ -169,7 +169,7 @@
 							<HBox class="s_table">
 								<smartTable:SmartTable id="SmartTableStatements" entitySet="Statement" smartFilterId="smartFilterBar_1" useExportToExcel="true"
 									useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true"
-									persistencyKey="SmartTableAnalytical_Explored_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad">
+									persistencyKey="SmartTableAnalytical_1" enableAutoBinding="true" showFullScreenButton="true" class="hostPad">
 									<smartTable:customToolbar>
 										<Toolbar>
 											<ToolbarSpacer/>
@@ -194,8 +194,8 @@
 											<!--<Button icon="sap-icon://paper-plane" type="Accept" tooltip="Отправить в SAP" class="btn btn-bordered" press="onSendStetement"-->
 											<!--	enabled="fasle"/>-->
 										</Toolbar>
-									</smartTable:customToolbar>
-									<t:AnalyticalTable id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" rowActionCount="1"
+									</smartTable:customToolbar>   <!-- visibleRowCountMode="Auto" -->
+									<t:AnalyticalTable id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCount="10" rowActionCount="1"
 										rowSelectionChange="onSelStatement">
 										<t:rowSettingsTemplate>
 											<t:RowSettings highlight="None"/>
@@ -232,7 +232,7 @@
 								<!--entitySet="StatementItemsCred" -->
 								<VBox width="50%" class="c_table">
 									<smartTable:SmartTable header="Дебет" width="100%" id="SmartTable_C" entitySet="StatementItemsCred" useExportToExcel="true" useVariantManagement="true"
-										useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_2"
+										useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_2"
 										enableAutoBinding="true" showFullScreenButton="true" initialNoDataText="Выберите выписку" class="hostPad1">
 										<smartTable:customToolbar>
 											<Toolbar>
@@ -256,7 +256,7 @@
 								</VBox>
 								<VBox width="50%" class="d_table">
 									<smartTable:SmartTable header="Кредит" width="100%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true" useVariantManagement="true"
-										useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_Explored_3"
+										useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_3"
 										enableAutoBinding="true" showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
 										<smartTable:customToolbar>
 											<Toolbar>

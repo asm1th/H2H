@@ -88,8 +88,31 @@ sap.ui.define([
 
 			// Активация кнопок
 			this.byId("onSend").setEnabled(false);
+			
 		},
-
+		
+		// remove test after
+		testStmnt: function (oEvent) {
+		    var oModel = this.getOwnerComponent().getModel();
+		    var mParams = {};
+			var that = this;
+			
+		    var aPath = [
+		        '/Statement?$select=debetSum,creditSum,outBal,enterBal&$top=100&$inlinecount=allpages',
+		        '/Statement?$select=docNum,stmtDate,docTime,bic,currCode,responseId,debetSum,creditSum,outBal,enterBal,ID&$top=110&$inlinecount=allpages'
+		    ];
+		    mParams.success = function (data) {
+				//MessageToast.show("Прочитано");
+				console.log(data.results);
+			};
+			mParams.error = function (oError) {
+				this._onErrorCall(oError);
+			};
+			aPath.forEach(function (Path, i) {
+			    oModel.read(Path, that.mParams);
+			});
+        },
+        
 		onAfterRendering: function (oEvent) {
 			// 			$(".Table_D").on('scroll', function () {
 			//                   $(".Table_C").scrollTop($(this).scrollTop());
@@ -151,23 +174,46 @@ sap.ui.define([
 			var oSmartTable = this.byId("SmartTableStatements");
 			var oTable = oSmartTable.getTable();
 			var data = oTable.getModel().getProperty(sPath);
-			this._delPP(data);
+			if (data.status != "Подписан"){
+				this._delPP(data);
+			}
 		},
-
+		
+		formatEnableDelPP: function (oValue) {
+			if (oValue === "Исполнен") {
+				return false;
+			} else if (oValue === "Подписан") {
+				return false;
+			} else if (oValue === "Импортирован") {
+				return true;
+			} else if (oValue === "Отправлен") {
+				return true;
+			}
+			return true;
+		},
+		
 		onDeleteAllPP: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
 			var that = this;
+			var nodeletePP = false;
 
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
 					var Context = oTable.getContextByIndex(item);
 					sPath = Context.sPath;
 					var data = oTable.getModel().getProperty(sPath);
-					that._delPP(data);
+					if (data.status != "Подписан"){
+					    that._delPP(data);
+					} else {
+					    nodeletePP = true;
+					}
 				});
+			}
+			if (nodeletePP) {
+			    MessageBox.show("Одно или более ПП невозможно удалить, так как имеет статус Исполнено или Подписано.");
 			}
 		},
 
@@ -656,8 +702,9 @@ sap.ui.define([
 				this.addDialog = sap.ui.xmlfragment("addDialog", "h2h.ui5.view.addDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.addDialog);
 			}
-			// var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
-			// oFileUpload.clear(); // - не загрузить 2 раз после clear
+			var oFileUpload = sap.ui.core.Fragment.byId("addDialog", "fileUploader");
+			//oFileUpload.clear(); // - не загрузить 2 раз после clear
+			oFileUpload.setValue("");
 			this.addDialog.open();
 		},
 

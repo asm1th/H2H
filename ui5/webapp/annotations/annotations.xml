@@ -158,8 +158,8 @@
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
-					    <PropertyPath>payeePersonalAcc</PropertyPath>
-					    <PropertyPath>payeeBankBic</PropertyPath>
+						<PropertyPath>payeePersonalAcc</PropertyPath>
+						<PropertyPath>payeeBankBic</PropertyPath>
 						<PropertyPath>codeVO</PropertyPath>
 						<PropertyPath>docDate</PropertyPath>
 						<PropertyPath>docNum</PropertyPath>
@@ -357,13 +357,11 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docNum"/>
 							<PropertyValue Property="Label" String="Номер документа"/>
-							<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
 							<Annotation Term="Common.QuickInfo" String="Номер документа"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="stmtDate"/>
 							<PropertyValue Property="Label" String="Дата выписки"/>
-							<Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
 							<Annotation Term="Common.QuickInfo" String="Дата выписки"/>
 						</Record>
 						<Record Type="UI.DataField">
@@ -401,7 +399,6 @@
 							<PropertyValue Property="Label" String="Входящий остаток"/>
 							<Annotation Term="Common.QuickInfo" String="Входящий остаток"/>
 						</Record>
-						
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
@@ -498,7 +495,6 @@
 							<PropertyValue Property="Label" String="Очередность платежа"/>
 							<Annotation Term="Common.QuickInfo" String="Очередность платежа"/>
 						</Record>
-
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="personalAcc"/>
 							<PropertyValue Property="Label" String="Счет плательщика"/>
@@ -894,7 +890,6 @@
 			<Annotations Target="Metadata.StatementType/currCode">
 				<Annotation Term="Common.Label" String="Код валюты выписки"/>
 			</Annotations>
-			
 			<Annotations Target="Metadata.StatementItemsDebType/paytKind">
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>
 				<Annotation Term="Common.Label" String="Вид платежа"/>
@@ -903,7 +898,6 @@
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>
 				<Annotation Term="Common.Label" String="Вид платежа"/>
 			</Annotations>
-			
 			<Annotations Target="Metadata.StatementItemsDebType/dc">
 				<Annotation Term="Common.QuickInfo" String="признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
 				<Annotation Term="Common.Label" String="Признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
@@ -912,7 +906,6 @@
 				<Annotation Term="Common.QuickInfo" String="признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
 				<Annotation Term="Common.Label" String="Признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
 			</Annotations>
-			
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
