@@ -97,8 +97,14 @@
 }
 
 .itsk-logo-image {
-    padding: .3rem 3rem 0 0;
+    padding: .3rem 2rem 0 0;
 }
+
+.hostapp .sapMIBar.sapMTB.sapMTB-Info-CTX>:first-child, .hostapp .sapMIBar.sapMTB.sapMTB-Info-CTX>:last-child {
+    margin: 0;
+    padding: 0 0rem;
+}
+
 .hostapp .bankbutton .sapMFlexItem{
     height: 30px;
 }
