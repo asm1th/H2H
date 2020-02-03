@@ -390,8 +390,127 @@
 // $.response.contentType = "text/html";
 // $.response.setBody(context); 
 
-var jsb64 = $.require('nodejs-base64');
-function str2b64(str){
-	return jsb64.base64encode(str);
-}
+// var jsb64 = $.require('nodejs-base64');
+// function str2b64(str){
+// 	return jsb64.base64encode(str);
+// }
+
+// docx plugin
+// import { Document, Packer, Paragraph, TextRun } from "docx";
+const docx =  $.require("docx");
+const fs =  $.require("fs");
+const doc = new docx.Document();
+doc.addSection({
+    properties: {},
+    children: [
+        new docx.Paragraph({
+            children: [
+                new docx.TextRun("Hello World"),
+                new docx.TextRun({
+                    text: "Foo Bar",
+                    bold: true,
+                }),
+                new docx.TextRun({
+                    text: "\tGithub is the best",
+                    bold: true,
+                }),
+            ],
+        }),
+    ],
+});
+
+
+docx.Packer.toBase64String(doc).then((string) => {
+    console.log(string);
+    
+    
+});
+
+
+
+
+
+// var body = f1();
+// var that = this;
+// docx.Packer.toBase64String(doc).then((string) => {
+//     console.log(string);
+// });
+
+
+///================
+//const docx = $.require("docx");
+//const fs = $.require("fs");
+// function x() {
+//     const doc = new docx.Document();
+// 	// Documents contain sections, you can have multiple sections per document, go here to learn more about sections
+// 	doc.addSection({
+// 	    properties: {},
+// 	    children: [
+// 	        new docx.Paragraph({
+// 	            children: [
+// 	                new docx.TextRun("Hello World"),
+// 	                new docx.TextRun({
+// 	                    text: "Foo Bar",
+// 	                    bold: true,
+// 	                }),
+// 	                new docx.TextRun({
+// 	                    text: "\tGithub is the best",
+// 	                    bold: true,
+// 	                }),
+// 	            ],
+// 	        }),
+// 	    ],
+// 	});
+//     var myVal = docx.Packer.toBase64String(doc);
+//     //console.log(myVal);
+//     return myVal;
+// }
+// var body;
+// async function callX() {
+//     body = await x();
+//     //console.log(body);
+    
+//     $.response.contentType = "application/vnd.ms-excel; charset=utf-16le";
+// $.response.headers.set("Content-Disposition",
+// 		"attachment; filename=Excel.xls");
+// 		$.response.status = $.net.http.OK;
+// $.response.setBody(body);
+    
+//     return body;
+// }
+// body = callX();
+
+// console.log(body);
+
+// $.response.status = $.net.http.OK;
+// $.response.contentType = "text/html";
+// $.response.setBody(body); 
+
+
+
+// fs.watch('/', {encoding: 'buffer'}, (eventType, filename) => {
+//   if (filename)
+//     console.log(filename);
+//     // Prints: <Buffer ...>
+// });
+
+
+
+
+
+// var http = $.require('http');
+
+// var download = function(url, dest, cb) {
+//   var file = fs.createWriteStream(dest);
+//   var request = http.get(url, function(response) {
+//     response.pipe(file);
+//     file.on('finish', function() {
+//       file.close(cb);  // close() is async, call cb after close completes.
+//     });
+//   }).on('error', function(err) { // Handle errors
+//     fs.unlink(dest); // Delete the file async. (But we don't check the result)
+//     if (cb) cb(err.message);
+//   });
+// };
+
 
