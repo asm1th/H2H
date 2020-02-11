@@ -19,6 +19,13 @@ modules:
       - name: hdi_db
       - name: db
       - name: UAA-service
+  - name: myapp
+    type: nodejs
+    path: myapp
+    requires:
+      - name: hdi_db
+      - name: db
+      - name: UAA-service
   - name: ui5
     type: html5
     path: ui5

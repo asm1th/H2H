@@ -5,7 +5,11 @@
 		"source": "(.*)(.xsjs)",
 		"csrfProtection": false,
 		"destination": "core-xsjs-backend"
-	}, {
+	},{
+		"source": "(.*)(.js)",
+		"csrfProtection": false,
+		"destination": "node-js-backend"
+	},{
 		"source": "(.*)(.xsodata)",
 		"destination": "xsodata"
 	}]

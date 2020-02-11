@@ -65,18 +65,16 @@
 // 				content = decodedString;
 // 	}
 // 	rs.close();
-	
+
 // 	// var test = new $.util.codec.encodeBase64(content);
 // 	// encodedString = String.fromCharCode.apply(null,array),
 // 	// decodedString = decodeURIComponent(escape(encodedString));
 // 	// content = decodedString;
-	
+
 // $.response.status = $.net.http.OK;
 // $.response.contentType = "text/plain";
 // $.response.setBody(content);
 
-
-  
 /*eslint no-console: 0, no-unused-vars: 0, no-shadow:0, quotes: 0*/
 //create a new $.util.SAXParser object
 
@@ -136,7 +134,7 @@
 // 			case 'PAYERBANKCITY' || 'PAYEEBANKCITY':	
 // 				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 // 			case 'PAYERBANKSETTLEMENTTYPE' || 'PAYEEBANKSETTLEMENTTYPE':										return '';				break;
-			
+
 // 			case 'DRAWERSTATUS':
 // 				errAdd('errLoadEntityOblibatoryFielisNull', destField.Entity, destField.Field, '', '' );		return '';				break;
 // 			case 'CBC':
@@ -206,7 +204,7 @@
 // 	mapping.destinatonFieldOpt = new Map();
 // 	mapping.mappingField = new Map();
 // 	mapping.entityName = entityName;
-	
+
 // 	while (rs.next()) {
 // 			var entityDestination = rs.getString(1);
 // 			var fildSource = rs.getString(2);
@@ -214,7 +212,7 @@
 // 			var fildDestinationType = rs.getString(4);
 // 			var fildObligatory = rs.getString(5);
 // 			var fieldDestinationOptions = {};
-			
+
 // 			fieldDestinationOptions.Entity = entityDestination;
 // 			fieldDestinationOptions.Field = fieldDestination;
 // 			fieldDestinationOptions.Type = fildDestinationType;
@@ -222,11 +220,11 @@
 
 // 			mapping.destinatonFieldOpt.set(fieldDestination, fieldDestinationOptions);
 // 			mapping.mappingField.set(fildSource, fieldDestination);
-			
+
 // 			if (mapping.fields.indexOf(fieldDestination) < 0) { 
 // 				mapping.fields.push(fieldDestination);
 // 			}
-				
+
 // 	}
 // 	return mapping;
 // }
@@ -279,7 +277,7 @@
 // 		// StatementRaif.enterBal		= statement.$.enterBal;
 // 		// StatementRaif.docNum 		= statement.$.docNum;
 // 		// raif.Statement.push(StatementRaif);
-		
+
 // 		statement.Docs.forEach(function(docs){
 // 			docs.TransInfo.forEach(function(doc){
 // 				var StatementItemsRaif = new Map();
@@ -352,10 +350,9 @@
 // 				// raif.StatementItems.push(StatementItemsRaif);
 // 			});
 // 		});
-		
+
 // 	});
 // });
-
 
 // insertEntity(	statementData.Statement.entityName, 
 // 				statementData.Statement.data, 
@@ -373,13 +370,10 @@
 // var context = "";
 // if(purpose.search('\{VO[0-9]{5}\}')>=0){
 // 	context = purpose.substr(purpose.search('\{VO[0-9]{5}\}')+3, 5);
-	
+
 // }else{
 // 	context = "No";
 // }
-
-
-
 
 // var date = '18.10.2019';
 // var context='';
@@ -395,108 +389,14 @@
 // 	return jsb64.base64encode(str);
 // }
 
-// docx plugin
-// import { Document, Packer, Paragraph, TextRun } from "docx";
-const docx =  $.require("docx");
-const fs =  $.require("fs");
-const doc = new docx.Document();
-doc.addSection({
-    properties: {},
-    children: [
-        new docx.Paragraph({
-            children: [
-                new docx.TextRun("Hello World"),
-                new docx.TextRun({
-                    text: "Foo Bar",
-                    bold: true,
-                }),
-                new docx.TextRun({
-                    text: "\tGithub is the best",
-                    bold: true,
-                }),
-            ],
-        }),
-    ],
-});
-
-
-docx.Packer.toBase64String(doc).then((string) => {
-    console.log(string);
-    
-    
-});
-
-
-
-
-
-// var body = f1();
-// var that = this;
-// docx.Packer.toBase64String(doc).then((string) => {
-//     console.log(string);
-// });
-
-
+// ================
 ///================
-//const docx = $.require("docx");
-//const fs = $.require("fs");
-// function x() {
-//     const doc = new docx.Document();
-// 	// Documents contain sections, you can have multiple sections per document, go here to learn more about sections
-// 	doc.addSection({
-// 	    properties: {},
-// 	    children: [
-// 	        new docx.Paragraph({
-// 	            children: [
-// 	                new docx.TextRun("Hello World"),
-// 	                new docx.TextRun({
-// 	                    text: "Foo Bar",
-// 	                    bold: true,
-// 	                }),
-// 	                new docx.TextRun({
-// 	                    text: "\tGithub is the best",
-// 	                    bold: true,
-// 	                }),
-// 	            ],
-// 	        }),
-// 	    ],
-// 	});
-//     var myVal = docx.Packer.toBase64String(doc);
-//     //console.log(myVal);
-//     return myVal;
-// }
-// var body;
-// async function callX() {
-//     body = await x();
-//     //console.log(body);
-    
-//     $.response.contentType = "application/vnd.ms-excel; charset=utf-16le";
-// $.response.headers.set("Content-Disposition",
-// 		"attachment; filename=Excel.xls");
-// 		$.response.status = $.net.http.OK;
-// $.response.setBody(body);
-    
-//     return body;
-// }
-// body = callX();
-
-// console.log(body);
-
-// $.response.status = $.net.http.OK;
-// $.response.contentType = "text/html";
-// $.response.setBody(body); 
-
-
 
 // fs.watch('/', {encoding: 'buffer'}, (eventType, filename) => {
 //   if (filename)
 //     console.log(filename);
 //     // Prints: <Buffer ...>
 // });
-
-
-
-
 
 // var http = $.require('http');
 
@@ -512,5 +412,3 @@ docx.Packer.toBase64String(doc).then((string) => {
 //     if (cb) cb(err.message);
 //   });
 // };
-
-

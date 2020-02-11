@@ -2,11 +2,11 @@
   "dependencies": {
     "@sap/xsenv": "^2.0.0",
     "@sap/xsjs": "^5.2.0",
+    "@sap/hdbext": "^5.0.0",
+    "@sap/logging": "^4.0.2",
     "request": "^2.88.0",
     "nodejs-base64": "^1.0.3",
-    "xml2js": "^0.4.23",
-    "docx": "^5.0.1",
-    "save-as": "^0.1.8"
+    "xml2js": "^0.4.23"
   },
   "description": "my description",
   "devDependencies": {
