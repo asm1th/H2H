@@ -27,7 +27,7 @@
 		"description": "nodejs Resources",
 		"target": {
 			"type": "destination",
-			"name": "node-js-backend"
+			"name": "core-nodejs-backend"
 		}
 	}],
 	"sendWelcomeFileRedirect": true

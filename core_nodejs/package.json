@@ -14,7 +14,7 @@
   "files": [],
   "main": "start.js",
   "description": "Node app",
-  "name": "myapp",
+  "name": "core_nodejs",
   "scripts": {
     "test": "node node_modules/jest/bin/jest --config jest.json",
     "test-coverage": "node node_modules/jest/bin/jest --coverage --config jest.json",
