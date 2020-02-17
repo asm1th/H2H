@@ -1,34 +1,35 @@
 {
 	"welcomeFile": "/webapp/index.html",
 	"routes": [{
-		"path": "/resources",
-		"target": {
-			"type": "service",
-			"name": "sapui5",
-			"entryPath": "/resources"
+			"path": "/resources",
+			"target": {
+				"type": "service",
+				"name": "sapui5",
+				"entryPath": "/resources"
+			},
+			"description": "SAPUI5 Resources"
+		}, {
+			"path": "/node(.*)",
+			"target": {
+				"type": "destination",
+				"name": "core-xsjs-backend"
+			}
 		},
-		"description": "SAPUI5 Resources"
-	}, {
-		"path": "xsodata",
-		"description": "xsodata Resources",
-		"target": {
-			"type": "destination",
-			"name": "xsodata"
+		{
+			"path": "/xsodata",
+			"description": "xsodata Resources",
+			"target": {
+				"type": "destination",
+				"name": "xsodata"
+			}
+		}, {
+			"path": "xsjs",
+			"description": "xsjs Resources",
+			"target": {
+				"type": "destination",
+				"name": "core-xsjs-backend"
+			}
 		}
-	}, {
-		"path": "xsjs",
-		"description": "xsjs Resources",
-		"target": {
-			"type": "destination",
-			"name": "core-xsjs-backend"
-		}
-	}, {
-		"path": "js",
-		"description": "nodejs Resources",
-		"target": {
-			"type": "destination",
-			"name": "core-nodejs-backend"
-		}
-	}],
+	],
 	"sendWelcomeFileRedirect": true
 }

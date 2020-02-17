@@ -2,6 +2,10 @@
 	"welcomeFile": "/ui5/index.html",
 	"authenticationMethod": "none",
 	"routes": [{
+ 		"source": "/node(.*)",
+ 		"destination": "core-xsjs-backend",
+ 		"csrfProtection": false
+ 	},{
 		"source": "(.*)(.xsjs)",
 		"csrfProtection": false,
 		"destination": "core-xsjs-backend"
@@ -11,6 +15,6 @@
 		"destination": "core-nodejs-backend"
 	},{
 		"source": "(.*)(.xsodata)",
-		"destination": "xsodata"
+		"destination": "core-xsjs-backend"
 	}]
 }

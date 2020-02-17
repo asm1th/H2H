@@ -1,12 +1,20 @@
 {
   "dependencies": {
-    "@sap/xsenv": "^2.0.0",
-    "@sap/xsjs": "^5.2.0",
-    "@sap/hdbext": "^5.0.0",
-    "@sap/logging": "^4.0.2",
+    "@sap/xsjs": "5.2.0",
+    "@sap/xssec": "2.1.16",
+    "@sap/xsenv": "2.0.0",
+    "@sap/hdbext": "6.0.1",
+    "@sap/logging": "5.0.2",
+    "passport": "0.4.1",
+    "express": "^4.17.1",
     "request": "^2.88.0",
     "nodejs-base64": "^1.0.3",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "body-parser": "~1.15.2",
+    "docx": "^5.0.1",
+    "pizzip": "^3.0.6",
+    "docxtemplater": "^3.16.9",
+    "morgan": "^1.9.0"
   },
   "description": "my description",
   "devDependencies": {

@@ -20,7 +20,7 @@ modules:
       - name: db
       - name: UAA-service
     parameters:
-      app-name: core_xsjs
+      app-name: h2h-xsjs
   - name: core_nodejs
     type: nodejs
     path: core_nodejs
@@ -29,7 +29,7 @@ modules:
       - name: db
       - name: UAA-service
     parameters:
-      app-name: core_nodejs
+      app-name: h2h-nodejs
   - name: ui5
     type: html5
     path: ui5
