@@ -54,7 +54,7 @@ modules:
         group: destinations
         properties:
           name: core-nodejs-backend
-          url: 'https://google.com/'
+          url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
           forwardAuthToken: true
       - name: UAA-service
 resources:

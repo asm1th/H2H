@@ -36,7 +36,9 @@ sap.ui.define([
 			//var url = '/xsodata';
 			//var oModel = new sap.ui.model.odata.ODataModel(url);
 			var userModel = this.getOwnerComponent().getModel();
+			//userModel.setUseBatch(true);
 			this.getView().setModel(userModel);
+			//console.log(userModel);
 
 			//messages
 			var sErrorDescription = 'Полный текст длинного сообщения. \n' +

@@ -31,7 +31,7 @@ var services = xsenv.getServices({
 var hdbext = require('@sap/hdbext');
 app.use('/', hdbext.middleware(services.hana));
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.get('/', function (req, res, next) {
+app.get('/node', function (req, res, next) {
 	req.db.exec('SELECT CURRENT_UTCTIMESTAMP FROM DUMMY', function (err, rows) {
 		if (err) {
 			return next(err);
@@ -65,14 +65,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ========================== TEST
 // test file
 var test = require('./lib/test');
-app.use('/test', test);
+app.use('/node/test', test);
 
 // ========================== PDF docx
 var exportfile = require('./lib/exportfile');
-app.use('/exportfile', exportfile);
+app.use('/node/exportfile', exportfile);
 
 var exportBYtemplate = require('./lib/exportBYtemplate');
-app.use('/exportBYtemplate', exportBYtemplate);
+app.use('/node/exportBYtemplate', exportBYtemplate);
 
 // ========================== 
 // LAST SECTION IN FILE errors not found - должна находиться только в конце файла
