@@ -412,3 +412,7 @@
 //     if (cb) cb(err.message);
 //   });
 // };
+
+$.response.status = $.net.http.OK;
+$.response.contentType = "text/plain";
+$.response.setBody("found test");

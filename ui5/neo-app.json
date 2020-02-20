@@ -12,7 +12,7 @@
 			"path": "/node(.*)",
 			"target": {
 				"type": "destination",
-				"name": "core-xsjs-backend"
+				"name": "core-nodejs-backend"
 			}
 		},
 		{

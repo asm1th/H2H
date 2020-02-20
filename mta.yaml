@@ -24,6 +24,10 @@ modules:
   - name: core_nodejs
     type: nodejs
     path: core_nodejs
+    provides:
+      - name: core_nodejs_api
+        properties:
+          url: '${default-url}'
     requires:
       - name: hdi_db
       - name: db
@@ -36,6 +40,7 @@ modules:
     parameters:
       disk-quota: 256M
       memory: 256M
+      app-name: host-to-host
     build-parameters:
       builder: grunt
     requires:
@@ -43,7 +48,13 @@ modules:
         group: destinations
         properties:
           name: core-xsjs-backend
-          url: '~{url}'
+          url: 'https://h2h-xsjs.cfapps.eu10.hana.ondemand.com/'
+          forwardAuthToken: true
+      - name: core_nodejs_api
+        group: destinations
+        properties:
+          name: core-nodejs-backend
+          url: 'https://google.com/'
           forwardAuthToken: true
       - name: UAA-service
 resources:

@@ -1,20 +1,17 @@
 {
-	"welcomeFile": "/ui5/index.html",
+	"welcomeFile": "/webapp/index.html",
 	"authenticationMethod": "none",
 	"routes": [{
- 		"source": "/node(.*)",
- 		"destination": "core-xsjs-backend",
- 		"csrfProtection": false
- 	},{
 		"source": "(.*)(.xsjs)",
 		"csrfProtection": false,
 		"destination": "core-xsjs-backend"
 	},{
-		"source": "(.*)(.js)",
+		"source": "(.*)(.xsodata)",
+		"csrfProtection": false,
+		"destination": "core-xsjs-backend"
+	},{
+		"source": "/node(.*)",
 		"csrfProtection": false,
 		"destination": "core-nodejs-backend"
-	},{
-		"source": "(.*)(.xsodata)",
-		"destination": "core-xsjs-backend"
 	}]
 }
