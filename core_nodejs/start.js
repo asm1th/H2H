@@ -71,8 +71,8 @@ app.use('/node/test', test);
 var exportfile = require('./lib/exportfile');
 app.use('/node/exportfile', exportfile);
 
-var exportBYtemplate = require('./lib/exportBYtemplate');
-app.use('/node/exportBYtemplate', exportBYtemplate);
+var exportbytemplate = require('./lib/exportbytemplate');
+app.use('/node/exportbytemplate', exportbytemplate);
 
 // ========================== 
 // LAST SECTION IN FILE errors not found - должна находиться только в конце файла
