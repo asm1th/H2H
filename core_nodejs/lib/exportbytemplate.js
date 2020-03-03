@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-function makeDoc(Data) {
+function makeDocPdf(Data) {
 	var PizZip = require('pizzip');
 	var Docxtemplater = require('docxtemplater');
 
@@ -53,66 +53,79 @@ function makeDoc(Data) {
 	});
 	return buf;
 };
-
 // buf is a nodejs buffer, you can either write it to a file or do anything else with it.
 //fs.writeFileSync(path.resolve(__dirname, 'output.docx'), buf);
 
+function _getDocSumPropis(Data) {
+	var numberToWordsRu = require('number-to-words-ru');
+	numberToWordsRu.convert(Data, {
+		currency: 'rub',
+		convertMinusSignToWord: true,
+		showNumberParts: {
+			integer: true,
+			fractional: true,
+		},
+		convertNumbertToWords: {
+			integer: true,
+			fractional: false,
+		},
+		showCurrency: {
+			integer: true,
+			fractional: true,
+		},
+	});
+};
+
 router.get('/', function (req, res, next) {
-	var ids = req.query.id.split(',');
-	console.log(ids);
-	
+	// var docExtId = "df5a0424-441a-4731-eabd-19de2794671e"; ec605643-0842-5e1c-49e1-45b5008cfb42
+	// https://host-to-host.cfapps.eu10.hana.ondemand.com/node/exportbytemplate?docExtIds=01b00858-57c0-81ac-6f69-1a2f94e20d86,89625293-3a4f-8437-75e5-079f8003c5e3
+	// var ids = req.body.docExtIds.split(","); //post
+	var ids = req.query.docExtIds.split(","); //get
+	//var type = req.query.type; // DOC \ PDF
+
 	if (ids[0]) {
-		var buffer;
-		// var raif = {
-		// 	docs: []
-		// };
-		
-		//ids.forEach(function(i){
-			// var docExtId = "df5a0424-441a-4731-eabd-19de2794671e"; ec605643-0842-5e1c-49e1-45b5008cfb42
-			//var docExtId = i;
-			var docExtId = JSON.stringify(ids); // '[1,"false",false]'
-			console.log(docExtId);
-			dataString = docExtId.replace(/]|[[]/g, '')
-			console.log(dataString);
+		var idString = '';
+		ids.forEach(function (id) {
+			idString += "'" + id + "',";
+		});
+		idString = idString.substring(0, idString.length - 1);
+		var sql = 'Select * From "cvPaymentOrder" Where "docExtId" IN (' + idString + ')';
+		//var sql = 'Select "DOCEXTID","PURPOSE" From "RaiffeisenBank.TAccDoc" Where "DOCEXTID" IN (' + idString + ')';
+
+		req.db.exec(sql, function (err, rows) {
+			if (err) {
+				console.log(err);
+				return next(err);
+				//print error
+				//res.send(err);
+			}
+
+			rows.forEach(function (row, i) {
+				rows.docSumPropis = _getDocSumPropis(row.docSum);
+			})
+
+			//set the templateVariables
+			var docs = {
+				docs: rows
+			}
+
+			//res.send(rows);
+			//res.json(rows);
+
+			// dummie
+			// var docs = {
+			// 	"docs": [{/payerName: "docs"}, {payerName: "docs2"}]
+			// }
+
+			// EXPORT DOC =================================== 
+			// https://docxtemplater.readthedocs.io/en/latest/tag_types.html#loops
 			
-			var sql = "Select \"requestId\",\"docExtId\",\"status\",\"purpose\",\"docDate\",\"docNum\",\"docSum\",\"vatSum\",\"vatRate\",\"vat\" ";
-			sql +=
-				"\"transKind\",\"paytKind\",\"paytCode\",\"priority\",\"codeVO\",\"nodocs\",\"payerInn\",\"payerKpp\",\"payerPersonalAcc\",\"payerName\",";
-			sql +=
-				"\"payerBankBic\",\"payerBankCorrespAcc\",\"payerBankName\",\"payerBankBankCity\",\"payerBankSettlementType\",\"payeeInn\",\"payeeKpp\",";
-			sql +=
-				"\"payeePersonalAcc\",\"payeeUip\",\"payeeName\",\"payeeBankBic\",\"payeeBankCorrespAcc\",\"payeeBankName\",\"payeeBankBankCity\",\"payeeBankSettlementType\",";
-			sql += "\"drawerStatus\",\"cbc\",\"okato\",\"paytReason\",\"taxPeriod\",\"depDocNo\",\"depDocDate\",\"taxPaytKind\" "
-			//sql += "From \"cvPaymentOrder\" Where \"docExtId\" = '" + docExtId + "'";
-			sql += "From \"cvPaymentOrder\" Where \"docExtId\" IN (" + dataString + ")";
-			//IN ('Smith', 'Godfrey', 'Johnson');  
-			console.log(sql);
-			
-			req.db.exec(sql, function (err, rows) {
-				if (err) {
-					console.log(err);
-					return next(err);
-					//print error
-					res.send(err);
-				}
-				console.log(rows);
-				//set the templateVariables
-				//raif.docs.push(rows[0]);
-				console.log(raif);
-			});
-		//});
-		
-		//https://docxtemplater.readthedocs.io/en/latest/tag_types.html#loops
-		if ( typeof raif.docs[0] !== 'undefined' ) {
-			res.set('Content-Disposition', 'attachment; filename="filename.docx"');
+			res.set('Content-Disposition', 'attachment; filename="download.docx"');
 			res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
-			buffer = makeDoc(raif);
+			var buffer = makeDocPdf(docs);
 			var fileBase64String = buffer.toString('base64');
 			res.end(fileBase64String, 'base64');
-		} else {
-			res.send('нет данных в базе по такому docExtId');
-		}
-
+		});
 	} else {
 		res.send('needed docExtId parametr in url');
 	};

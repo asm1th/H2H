@@ -127,8 +127,8 @@
 											<menu>
 												<Menu>
 													<MenuItem text="1C" icon="sap-icon://save" press="onDownload_1C"></MenuItem>
-													<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML" enabled="fasle"/>
-													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" enabled="fasle"/>
+													<MenuItem text="DOC" icon="sap-icon://save" press="onDownload_DOC"/>
+													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF"/>
 												</Menu>
 											</menu>
 										</MenuButton>

@@ -5,10 +5,6 @@ var express = require('express');
 var path = require('path');
 var app = express();
 
-// app.get('/', function (req, res) {
-//   res.send('Hello World!');
-// });
-
 // BD
 var xsenv = require('@sap/xsenv');
 var services = xsenv.getServices({
@@ -20,11 +16,6 @@ var services = xsenv.getServices({
 // TRACER
 // var logging = require('@sap/logging');
 // var appContext = logging.createAppContext();
-
-// simple app start
-// app.get('/', function (req, res) {
-//   res.send('Using HANA ' + services.hana.host + ':' + services.hana.port);
-// });
 
 //automatic conect to HANA hdbext.middleware
 // hdbext.middleware will connect to SAP HANA automatically on each access to the specified path ( /) in this case. Afterwards the connection is available in req.db. This is the client object of the hdbInformation published on non-SAP site driver. The connection is closed automatically at the end of the request.

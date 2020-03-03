@@ -90,20 +90,20 @@ sap.ui.define([
 
 			// Активация кнопок
 			this.byId("onSend").setEnabled(false);
-			
+
 		},
-		
+
 		// remove test after
 		testStmnt: function (oEvent) {
-		    var oModel = this.getOwnerComponent().getModel();
-		    var mParams = {};
+			var oModel = this.getOwnerComponent().getModel();
+			var mParams = {};
 			var that = this;
-			
-		    var aPath = [
-		        '/Statement?$select=debetSum,creditSum,outBal,enterBal&$top=100&$inlinecount=allpages',
-		        '/Statement?$select=docNum,stmtDate,docTime,bic,currCode,responseId,debetSum,creditSum,outBal,enterBal,ID&$top=110&$inlinecount=allpages'
-		    ];
-		    mParams.success = function (data) {
+
+			var aPath = [
+				'/Statement?$select=debetSum,creditSum,outBal,enterBal&$top=100&$inlinecount=allpages',
+				'/Statement?$select=docNum,stmtDate,docTime,bic,currCode,responseId,debetSum,creditSum,outBal,enterBal,ID&$top=110&$inlinecount=allpages'
+			];
+			mParams.success = function (data) {
 				//MessageToast.show("Прочитано");
 				console.log(data.results);
 			};
@@ -111,10 +111,10 @@ sap.ui.define([
 				this._onErrorCall(oError);
 			};
 			aPath.forEach(function (Path, i) {
-			    oModel.read(Path, that.mParams);
+				oModel.read(Path, that.mParams);
 			});
-        },
-        
+		},
+
 		onAfterRendering: function (oEvent) {
 			// 			$(".Table_D").on('scroll', function () {
 			//                   $(".Table_C").scrollTop($(this).scrollTop());
@@ -176,11 +176,11 @@ sap.ui.define([
 			var oSmartTable = this.byId("SmartTableStatements");
 			var oTable = oSmartTable.getTable();
 			var data = oTable.getModel().getProperty(sPath);
-			if (data.status != "Подписан"){
+			if (data.status != "Подписан") {
 				this._delPP(data);
 			}
 		},
-		
+
 		formatEnableDelPP: function (oValue) {
 			if (oValue === "Исполнен") {
 				return false;
@@ -193,7 +193,7 @@ sap.ui.define([
 			}
 			return true;
 		},
-		
+
 		onDeleteAllPP: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
@@ -207,15 +207,15 @@ sap.ui.define([
 					var Context = oTable.getContextByIndex(item);
 					sPath = Context.sPath;
 					var data = oTable.getModel().getProperty(sPath);
-					if (data.status != "Подписан"){
-					    that._delPP(data);
+					if (data.status != "Подписан") {
+						that._delPP(data);
 					} else {
-					    nodeletePP = true;
+						nodeletePP = true;
 					}
 				});
 			}
 			if (nodeletePP) {
-			    MessageBox.show("Одно или более ПП невозможно удалить, так как имеет статус Исполнено или Подписано.");
+				MessageBox.show("Одно или более ПП невозможно удалить, так как имеет статус Исполнено или Подписано.");
 			}
 		},
 
@@ -495,24 +495,24 @@ sap.ui.define([
 				success: function (data) {
 					console.log(data);
 					var oEntity = {
-							// new
-							priority: parseInt(obj.priority),
-							// copy
-							docExtId: data.docExtId,
-							purpose: data.purpose,
-							docDate: data.docDate,
-							docNum: data.docNum,
-							docSum: data.docSum,
-							vatSum: data.vatSum,
-							vatRate: data.vatRate,
-							vat: data.vat,
-							transKind: data.transKind,
-							paytKind: data.paytKind,
-							paytCode: data.paytCode,
-							codeVO: data.codeVO,
-							nodocs: data.nodocs
-						};
-						//oModel.update(accPath + "/priority", obj.priority, {
+						// new
+						priority: parseInt(obj.priority),
+						// copy
+						docExtId: data.docExtId,
+						purpose: data.purpose,
+						docDate: data.docDate,
+						docNum: data.docNum,
+						docSum: data.docSum,
+						vatSum: data.vatSum,
+						vatRate: data.vatRate,
+						vat: data.vat,
+						transKind: data.transKind,
+						paytKind: data.paytKind,
+						paytCode: data.paytCode,
+						codeVO: data.codeVO,
+						nodocs: data.nodocs
+					};
+					//oModel.update(accPath + "/priority", obj.priority, {
 					oModel.update(accPath, oEntity, {
 						success: function (data) {
 							console.log(data);
@@ -602,6 +602,70 @@ sap.ui.define([
 			});
 		},
 
+		// скачать ПП для печати DOC
+		onDownload_DOC: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var docExtIdsAr = this._getDocExtId();
+			
+			//post
+			// var docExtIds = {
+			// 	"docExtId": docExtIdsAr.join()
+			// };
+
+			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
+			// post if (docExtIdsAr.docExtId[0]) {
+			if (docExtIdsAr[0]) {
+				//this._getPrint(data);
+				$.ajax({
+					type: "GET",
+					url: "/node/exportbytemplate",
+					data: data,
+					//dataType: "xml",
+					success: function (data) {
+						window.location = '/node/exportbytemplate?' + data;
+					},
+					error: function (oError) {
+						MessageBox.error(oError.responseText);
+						console.warn(oError);
+					}
+				});
+			} else {
+				MessageToast.show("ошибка: docExtId строки пуст");
+			}
+		},
+	
+		// скачать ПП для печати PDF
+		onDownload_PDF: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var docExtIdsAr = this._getDocExtId();
+
+			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=PDF';
+			// post if (docExtIdsAr.docExtId[0]) {
+			if (docExtIdsAr[0]) {
+				this._getPrint(data);
+			} else {
+				MessageToast.show("ошибка: docExtId строки пуст");
+			}
+		},
+		
+		
+		//Get PDF file frome node
+		// _getPrint: function (data) {
+		// 	$.ajax({
+		// 			type: "GET",
+		// 			url: "/node/exportbytemplate",
+		// 			data: data,
+		// 			//dataType: "xml",
+		// 			success: function (data) {
+		// 				window.location = '/node/exportbytemplate?' + data;
+		// 			},
+		// 			error: function (oError) {
+		// 				MessageBox.error(oError.responseText);
+		// 				console.warn(oError);
+		// 			}
+		// 		});
+		// },
+
 		//////////////////
 		// просмотр платежки загружаемой в банк
 		onShowXml: function (oEvent) {
@@ -647,8 +711,8 @@ sap.ui.define([
 									};
 									oModel.create("/Response", oEntity, {
 										success: function (data) {
-						                    oSmartTable.rebindTable();
-						                    MessageToast.show("Отправлено в банк");
+											oSmartTable.rebindTable();
+											MessageToast.show("Отправлено в банк");
 										},
 										error: function (oError) {
 											MessageBox.error(JSON.stringify(oError));
@@ -694,7 +758,7 @@ sap.ui.define([
 		// кнопка отправить
 		onSend: function (oEvent) {
 			this.onShowXml(oEvent);
-            // MessageToast.show("Пример отправленного XML файла");
+			// MessageToast.show("Пример отправленного XML файла");
 		},
 
 		//  кнопка загрузки пп
@@ -814,7 +878,7 @@ sap.ui.define([
 					//var bContentJson = window.btoa(sContentJson);
 					var bContentJson = window.btoa(unescape(encodeURIComponent(sContentJson)));
                     */
-                    
+
 					var oEntry = {};
 					//oEntry.requestId = "";
 					//oEntry.fileBody = bContentJson;
@@ -1324,15 +1388,15 @@ sap.ui.define([
 		// форматтер для подсветки строки в таблице
 		formatRowHighlight: function (oValue) {
 			// Your logic for rowHighlight goes here
-            // 1;Импортирован;
-            // 2;Подписан;
-            // 3;Подписан I;
-            // 4;Подписан II;
-            // 5;Отправлен;
-            // 6;Доставлен;
-            // 7;Принят АБС;
-            // 8;Исполнен;
-            // 9;Отказан АБС;
+			// 1;Импортирован;
+			// 2;Подписан;
+			// 3;Подписан I;
+			// 4;Подписан II;
+			// 5;Отправлен;
+			// 6;Доставлен;
+			// 7;Принят АБС;
+			// 8;Исполнен;
+			// 9;Отказан АБС;
 			if (oValue === "Исполнен") {
 				return "Success";
 			} else if (oValue === "Подписан") {

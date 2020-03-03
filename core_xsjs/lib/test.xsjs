@@ -413,6 +413,21 @@
 //   });
 // };
 
+
+var docExtId = '89625293-3a4f-8437-75e5-079f8003c5e3' //$.request.parameters.get("docExtId");
+var conn = $.db.getConnection();
+var sql = "Select \"DOCEXTID\",\"PURPOSE\" ";
+sql += "From \"RaiffeisenBank.TAccDoc\" Where \"DOCEXTID\" = '" + docExtId + "'";
+var pStmt = conn.prepareStatement(sql);
+var rs = null;
+rs = pStmt.executeQuery();
+while (rs.next()) {
+                PURPOSE = rs.getString(2);
+}
 $.response.status = $.net.http.OK;
 $.response.contentType = "text/plain";
-$.response.setBody("found test");
+$.response.setBody(PURPOSE);
+
+// $.response.status = $.net.http.OK;
+// $.response.contentType = "text/plain";
+// $.response.setBody("found test");
