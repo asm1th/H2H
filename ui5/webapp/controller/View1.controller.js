@@ -340,14 +340,6 @@ sap.ui.define([
 			}
 		},
 
-		OnExportStmnt: function (oEvent) {
-			MessageToast.show("В разработке");
-		},
-
-		onPDF: function (oEvent) {
-			MessageToast.show(oEvent.getSource().getId() + " Pressed");
-		},
-
 		onSelStatement: function () {
 			var oSmartTable = this.byId("SmartTableStatements");
 			var oTable = oSmartTable.getTable();
@@ -538,133 +530,7 @@ sap.ui.define([
 		///// окно подробностей
 		///////////////////////
 
-		// скачать загруженное ПП в том же формате
-		onDownload_1C: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
-			var oTable = oSmartTable.getTable();
-			var iIndex = oTable.getSelectedIndices();
-			var requestId = [];
-
-			if (iIndex.length > 0) {
-				iIndex.forEach(function (item, i) {
-					/*var Context = oTable.getContextByIndex(item);
-					var sPath = Context.sPath;
-					// sPath = "/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
-					var nov_reg = "requestId='(.*)',";
-					var myAttr = sPath.match(nov_reg);
-					requestId.push(myAttr[1]);
-					*/
-					var Context = oTable.getContextByIndex(item);
-					var obj = Context.getObject();
-					requestId.push(obj.requestId);
-				});
-			} else {
-				// exit
-				return MessageBox.alert("Выберите одно платежное поручение в таблице");
-			}
-
-			//Get file
-			//var url = '/xsodata';
-			//var oModel = new sap.ui.model.odata.ODataModel(url);
-			var oModel = this.getView().getModel();
-			//var that = this;
-
-			oModel.read("/Files('" + requestId[0] + "')", {
-				success: function (file) {
-					var decodedString = file.fileBody;
-					var decodedString1 = window.atob(decodedString);
-					var decodedString2 = window.atob(decodedString1);
-
-					var binaryLen = decodedString2.length;
-					var bytes = new Uint8Array(binaryLen);
-					for (var i = 0; i < binaryLen; i++) {
-						var ascii = decodedString2.charCodeAt(i);
-						bytes[i] = ascii;
-					}
-
-					// saveByteArray
-					var a = document.createElement("a");
-					document.body.appendChild(a);
-					a.style = "display: none";
-					var blob = new Blob([bytes], {
-						type: file.fileType
-					});
-					var url = window.URL.createObjectURL(blob);
-					a.href = url;
-					a.download = file.fileName;
-					a.click();
-					window.URL.revokeObjectURL(url);
-				},
-				error: function (oError) {
-					MessageBox.error(oError.responseText);
-					console.log("error: " + oError);
-				}
-			});
-		},
-
-		// скачать ПП для печати DOC
-		onDownload_DOC: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
-			var docExtIdsAr = this._getDocExtId();
-			
-			//post
-			// var docExtIds = {
-			// 	"docExtId": docExtIdsAr.join()
-			// };
-
-			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
-			// post if (docExtIdsAr.docExtId[0]) {
-			if (docExtIdsAr[0]) {
-				//this._getPrint(data);
-				$.ajax({
-					type: "GET",
-					url: "/node/exportbytemplate",
-					data: data,
-					//dataType: "xml",
-					success: function (data) {
-						window.location = '/node/exportbytemplate?' + data;
-					},
-					error: function (oError) {
-						MessageBox.error(oError.responseText);
-						console.warn(oError);
-					}
-				});
-			} else {
-				MessageToast.show("ошибка: docExtId строки пуст");
-			}
-		},
-	
-		// скачать ПП для печати PDF
-		onDownload_PDF: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
-			var docExtIdsAr = this._getDocExtId();
-
-			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=PDF';
-			// post if (docExtIdsAr.docExtId[0]) {
-			if (docExtIdsAr[0]) {
-				this._getPrint(data);
-			} else {
-				MessageToast.show("ошибка: docExtId строки пуст");
-			}
-		},
 		
-		
-		//Get PDF file frome node
-		// _getPrint: function (data) {
-		// 	$.ajax({
-		// 			type: "GET",
-		// 			url: "/node/exportbytemplate",
-		// 			data: data,
-		// 			//dataType: "xml",
-		// 			success: function (data) {
-		// 				window.location = '/node/exportbytemplate?' + data;
-		// 			},
-		// 			error: function (oError) {
-		// 				MessageBox.error(oError.responseText);
-		// 				console.warn(oError);
-		// 			}
-		// 		});
-		// },
 
 		//////////////////
 		// просмотр платежки загружаемой в банк
@@ -1408,6 +1274,154 @@ sap.ui.define([
 			}
 
 			return "None";
+		},
+		
+		// скачать загруженное ПП в том же формате
+		onDownload_1C: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var requestId = [];
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					/*var Context = oTable.getContextByIndex(item);
+					var sPath = Context.sPath;
+					// sPath = "/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
+					var nov_reg = "requestId='(.*)',";
+					var myAttr = sPath.match(nov_reg);
+					requestId.push(myAttr[1]);
+					*/
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					requestId.push(obj.requestId);
+				});
+			} else {
+				// exit
+				return MessageBox.alert("Выберите одно платежное поручение в таблице");
+			}
+
+			//Get file
+			//var url = '/xsodata';
+			//var oModel = new sap.ui.model.odata.ODataModel(url);
+			var oModel = this.getView().getModel();
+			//var that = this;
+
+			oModel.read("/Files('" + requestId[0] + "')", {
+				success: function (file) {
+					var decodedString = file.fileBody;
+					var decodedString1 = window.atob(decodedString);
+					var decodedString2 = window.atob(decodedString1);
+
+					var binaryLen = decodedString2.length;
+					var bytes = new Uint8Array(binaryLen);
+					for (var i = 0; i < binaryLen; i++) {
+						var ascii = decodedString2.charCodeAt(i);
+						bytes[i] = ascii;
+					}
+
+					// saveByteArray
+					var a = document.createElement("a");
+					document.body.appendChild(a);
+					a.style = "display: none";
+					var blob = new Blob([bytes], {
+						type: file.fileType
+					});
+					var url = window.URL.createObjectURL(blob);
+					a.href = url;
+					a.download = file.fileName;
+					a.click();
+					window.URL.revokeObjectURL(url);
+				},
+				error: function (oError) {
+					MessageBox.error(oError.responseText);
+					console.log("error: " + oError);
+				}
+			});
+		},
+
+		// скачать ПП для печати DOC
+		onDownload_DOC: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var docExtIdsAr = this._getDocExtId();
+			
+			//post
+			// var docExtIds = {
+			// 	"docExtId": docExtIdsAr.join()
+			// };
+
+			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
+			// post if (docExtIdsAr.docExtId[0]) {
+			if (docExtIdsAr[0]) {
+				//this._getPrint(data);
+				$.ajax({
+					type: "GET",
+					url: "/node/exportbytemplate",
+					data: data,
+					//dataType: "xml",
+					success: function (data) {
+						window.location = '/node/exportbytemplate?' + data;
+					},
+					error: function (oError) {
+						MessageBox.error(oError.responseText);
+						console.warn(oError);
+					}
+				});
+			} else {
+				MessageToast.show("ошибка: docExtId строки пуст");
+			}
+		},
+	
+		// скачать ПП для печати PDF
+		onDownload_PDF: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var docExtIdsAr = this._getDocExtId();
+
+			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=PDF';
+			// post if (docExtIdsAr.docExtId[0]) {
+			if (docExtIdsAr[0]) {
+				this._getPrint(data);
+			} else {
+				MessageToast.show("ошибка: docExtId строки пуст");
+			}
+		},
+		
+		//Get PDF file frome node
+		// _getPrint: function (data) {
+		// 	$.ajax({
+		// 			type: "GET",
+		// 			url: "/node/exportbytemplate",
+		// 			data: data,
+		// 			//dataType: "xml",
+		// 			success: function (data) {
+		// 				window.location = '/node/exportbytemplate?' + data;
+		// 			},
+		// 			error: function (oError) {
+		// 				MessageBox.error(oError.responseText);
+		// 				console.warn(oError);
+		// 			}
+		// 		});
+		// },
+		
+		
+		
+		onDownload_V_1C: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_XML: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_DOC: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_PDF: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_PP: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_MO: function (oEvent) {
+			MessageToast.show("В разработке");
 		},
 
 		// печать выбранной ПП
