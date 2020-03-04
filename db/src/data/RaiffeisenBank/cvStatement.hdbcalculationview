@@ -1,64 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cvStatement" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="cvStatement" applyPrivilegeType="NONE" dataCategory="DIMENSION" schemaVersion="3.0" outputViewType="Projection" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
 <descriptions defaultDescription="Statement"/>
 <localVariables/>
 <variableMappings/>
 <dataSources>
-  <DataSource id="RaiffeisenBank.TStatement">
-    <resourceUri>RaiffeisenBank.TStatement</resourceUri>
+  <DataSource id="RaiffeisenBank.Statement">
+    <resourceUri>RaiffeisenBank.Statement</resourceUri>
   </DataSource>
 </dataSources>
 <calculationViews/>
-<logicalModel id="RaiffeisenBank.TStatement">
+<logicalModel id="RaiffeisenBank.Statement">
   <attributes>
     <attribute id="responseId" order="1" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Уникальный идентификатор"/>
-      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="RESPONSEID"/>
+      <descriptions defaultDescription="responseId"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="responseId"/>
     </attribute>
     <attribute id="bic" order="2" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="БИК банка клиента"/>
-      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="BIC"/>
+      <descriptions defaultDescription="bic"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="bic"/>
+    </attribute>
+    <attribute id="debetSum" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="debetSum"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="debetSum"/>
+    </attribute>
+    <attribute id="creditSum" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="creditSum"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="creditSum"/>
     </attribute>
     <attribute id="currCode" order="5" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Код валюты выписки"/>
-      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="CURRCODE"/>
+      <descriptions defaultDescription="currCode"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="currCode"/>
     </attribute>
     <attribute id="docTime" order="6" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Данные актуальны на (время)"/>
-      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="DOCTIME"/>
+      <descriptions defaultDescription="docTime"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="docTime"/>
+    </attribute>
+    <attribute id="outBal" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="outBal"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="outBal"/>
     </attribute>
     <attribute id="stmtDate" order="8" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Дата выписки"/>
-      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="STMTDATE"/>
+      <descriptions defaultDescription="stmtDate"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="stmtDate"/>
+    </attribute>
+    <attribute id="enterBal" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="enterBal"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="enterBal"/>
     </attribute>
     <attribute id="docNum" order="10" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="Номер документа"/>
-      <keyMapping columnObjectName="RaiffeisenBank.TStatement" columnName="DOCNUM"/>
+      <descriptions defaultDescription="docNum"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="docNum"/>
+    </attribute>
+    <attribute id="stmtType" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="stmtType"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="stmtType"/>
+    </attribute>
+  
+    <attribute id="stmtTypeId" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="stmtTypeId"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="stmtTypeId"/>
     </attribute>
   </attributes>
   <calculatedAttributes/>
-  <baseMeasures>
-    <measure id="debetSum" order="3" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="Итого оборотов по кредиту"/>
-      <measureMapping columnObjectName="RaiffeisenBank.TStatement" columnName="DEBETSUM"/>
-    </measure>
-    <measure id="creditSum" order="4" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="Итого оборотов по кредиту"/>
-      <measureMapping columnObjectName="RaiffeisenBank.TStatement" columnName="CREDITSUM"/>
-    </measure>
-    <measure id="outBal" order="7" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="Исходящий остаток"/>
-      <measureMapping columnObjectName="RaiffeisenBank.TStatement" columnName="OUTBAL"/>
-    </measure>
-    <measure id="enterBal" order="9" aggregationType="sum" measureType="simple">
-      <descriptions defaultDescription="Входящий остаток"/>
-      <measureMapping columnObjectName="RaiffeisenBank.TStatement" columnName="ENTERBAL"/>
-    </measure>
-  </baseMeasures>
+  <baseMeasures/>
   <calculatedMeasures/>
-  <restrictedMeasures/>
-  <localDimensions/>
-</logicalModel>
+  <restrictedMeasures/></logicalModel>
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">

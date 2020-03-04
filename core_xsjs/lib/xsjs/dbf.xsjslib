@@ -166,7 +166,9 @@ function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFi
 			docExtId = '';
 			if (entity.has('DOCEXTID')){
 				docExtId = entity.get('DOCEXTID');
-			}
+			} else if (entity.has('RESPONSEID')){
+				docExtId = entity.has('RESPONSEID');
+			} 
 			entitySetFields.forEach(function(field, j){ 
 				fieldOptions = entitySetFieldsOptions.get(field);
 				var fieldValue = isNull(param, docExtId, fieldOptions, entity.get(field));
@@ -185,13 +187,20 @@ function insertEntity(param, entityName, entitySet, entitySetFields, entitySetFi
 		pStmt.executeBatch();
 		param.connection.commit();
 		pStmt.close();
-		if (entityName == 'PayDocRu'){
-			entitySet.forEach(function(entity){
-				if (entity.has('DOCEXTID')){
-					historyAdd(param, entity.get('DOCEXTID'), 'Загрузка', 'success', 'Импортирован');
-				}
-			});
+		
+		switch(entityName) {
+			case 'PayDocRu':	entitySet.forEach(function(entity){
+									if (entity.has('DOCEXTID')){
+										historyAdd(param, entity.get('DOCEXTID'), 'Загрузка', 'success', 'Импортирован');
+									}
+								});break;
+			case 'Statement' :	entitySet.forEach(function(entity){
+									if (entity.has('RESPONSEID')){
+										historyAdd(param, entity.get('RESPONSEID'), 'Загрузка', 'success', 'Выписка успешно принята');
+									}
+								});break;
 		}
+		
 	} catch (e) {
 		if(entitySet.length > 0){
 			errAdd(param, docExtId, 'errInsertEntity', entityName);
@@ -468,6 +477,7 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 		statements.StatementRaif.forEach(function(statement){
 			var StatementRaif = new Map();
 			StatementRaif.set('RESPONSEID',responseID);
+			StatementRaif.set('ACC',statement.$.acc);
 			StatementRaif.set('BIC',statement.$.bic);
 			StatementRaif.set('DEBETSUM',statement.$.debetSum);
 			StatementRaif.set('CREDITSUM',statement.$.creditSum);
@@ -476,6 +486,15 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 			StatementRaif.set('OUTBAL',statement.$.outBal);
 			StatementRaif.set('STMTDATE',statement.$.stmtDate);
 			StatementRaif.set('ENTERBAL',statement.$.enterBal);
+			
+			DtNow = Date(Date.now());
+			if(Date.parse(statement.$.stmtDate) < DtNow){
+				StatementRaif.set('STMTTYPE',2); //Справка
+			}else{
+				StatementRaif.set('STMTTYPE',1); //Выписка
+			};
+				
+			
 			StatementRaif.set('DOCNUM',statement.$.docNum);
 			statementData.Statement.data.push(StatementRaif);
 			

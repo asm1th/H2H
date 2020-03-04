@@ -246,6 +246,9 @@ context RaiffeisenBank {
     entity TStatement {
             @Comment : 'Уникальный идентификатор'
         key RESPONSEID : t_uuid;
+        
+        	@Comment : 'Счет'
+        	ACC			: String(20);
 
             @Comment : 'БИК банка клиента'
             BIC        : String(9);
@@ -270,10 +273,14 @@ context RaiffeisenBank {
 
             @Comment : 'Входящий остаток'
             ENTERBAL   : t_sum;
+			
+			@Comment : 'Тип выписки'
+			STMTTYPE : String(10);
 
             @Comment : 'Номер документа'
             DOCNUM     : t_str_6;
             _STITEMS   : association[1] to TStatementItems on _STITEMS.RESPONSEID	= RESPONSEID;
+            _STYPE      : association[1] to TStatementType on _STYPE.ID				= STMTTYPE;
             _FILE      : association[1] to TFile           on _FILE.REQUESTID		= RESPONSEID;
     };
 
@@ -388,6 +395,13 @@ context RaiffeisenBank {
 
             @Comment : 'Уникальный Идентификатора Платежа'
             UIP                     : String(25);
+    };
+    
+    entity TStatementType {
+		@Comment : 'Идентификатор'
+    	key ID          : t_int;
+    	@Comment : 'Описание'
+        NAME : String(25);
     };
     
     entity TResponse {
@@ -602,16 +616,18 @@ context RaiffeisenBank {
     define view Statement as
         select from TStatement
         {
-            RESPONSEID     as responseId,
-            BIC            as bic,
-            DEBETSUM	   as debetSum,
-            CREDITSUM	   as creditSum,
-            CURRCODE       as currCode,
-            DOCTIME        as docTime,
-            OUTBAL         as outBal,
-            STMTDATE       as stmtDate,
-            ENTERBAL       as enterBal,
-            DOCNUM         as docNum
+            RESPONSEID  		as responseId,
+            BIC         		as bic,
+            DEBETSUM			as debetSum,
+            CREDITSUM			as creditSum,
+            CURRCODE    		as currCode,
+            DOCTIME     		as docTime,
+            OUTBAL      		as outBal,
+            STMTDATE    		as stmtDate,
+            ENTERBAL    		as enterBal,
+            DOCNUM      		as docNum,
+            _STYPE.ID			as stmtTypeId,
+            _STYPE.NAME			as stmtType
         };
 
     define view StatementItemsDeb as

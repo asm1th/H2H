@@ -70,6 +70,7 @@ BANKID;DOCUMENTTYPEID;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSO
 1;1;"0.1";"Sign";"Str";"FIO";"";"";
 1;1;"0.1";"Sign";"Str";"POSITION";"";"";
 1;2;"0.1";"Statement";"Str";"RESPONSEID";"";"X";
+1;2;"0.1";"Statement";"Str";"ACC";"";"X";
 1;2;"0.1";"Statement";"Str";"BIC";"";"X";
 1;2;"0.1";"Statement";"Str";"DEBETSUM";"";"X";
 1;2;"0.1";"Statement";"Str";"CREDITSUM";"";"X";
@@ -78,6 +79,7 @@ BANKID;DOCUMENTTYPEID;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSO
 1;2;"0.1";"Statement";"Str";"OUTBAL";"";"X";
 1;2;"0.1";"Statement";"Str";"STMTDATE";"";"X";
 1;2;"0.1";"Statement";"Str";"ENTERBAL";"";"X";
+1;2;"0.1";"Statement";"Int";"STMTTYPE";"";"X";
 1;2;"0.1";"Statement";"Str";"DOCNUM";"";"";
 1;2;"0.1";"StatementItems";"Str";"RESPONSEID";"";"X";
 1;2;"0.1";"StatementItems";"Str";"EXTID";"";"X";
