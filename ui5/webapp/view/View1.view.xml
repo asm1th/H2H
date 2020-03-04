@@ -126,9 +126,9 @@
 										<MenuButton icon="sap-icon://print">
 											<menu>
 												<Menu>
-													<MenuItem text="1C" icon="sap-icon://save" press="onDownload_1C"></MenuItem>
-													<MenuItem text="XML" icon="sap-icon://save" press="onDownload_XML" enabled="fasle"/>
-													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" enabled="fasle"/>
+													<MenuItem text="1C" icon="sap-icon://save" press="onDownload_1C"/>
+													<MenuItem text="DOC" icon="sap-icon://save" press="onDownload_DOC"/>
+													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF"/>
 												</Menu>
 											</menu>
 										</MenuButton>
@@ -178,15 +178,25 @@
 												press="OnUploadSttmntDialog"/>
 											<Button icon="sap-icon://documents" tooltip="Журнал" class="btn btn-bordered" press="onJournal_Stmnt" enabled="fasle"/>
 											<Button icon="sap-icon://attachment" tooltip="Приложения" class="btn btn-bordered" press="onAttachment" enabled="fasle"/>
-											<Button icon="sap-icon://pdf-attachment" tooltip="PDF" class="btn btn-bordered" press="onPDF" enabled="fasle"/>
-											<!--<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllStatement" enabled="true"/>-->
-											<!--	enabled="fasle"/>-->
-											<MenuButton icon="sap-icon://print" tooltip="Печать выписки">
+											
+											<MenuButton icon="sap-icon://download" tooltip="Экспорт выписки" class="btn btn-bordered" press="onAttachment" enabled="fasle"/>
 												<menu>
 													<Menu>
-														<MenuItem text="Печать выписки" icon="sap-icon://print" press="press" enabled="fasle"></MenuItem>
-														<MenuItem text="Печать ПП" icon="sap-icon://print" press="press" enabled="fasle"/>
-														<MenuItem text="Печать мемор. ордеров" icon="sap-icon://print" press="press" enabled="fasle"/>
+														<MenuItem text="1C" icon="sap-icon://save" press="onDownload_V_1C"/>
+														<MenuItem text="XML" icon="sap-icon://save" press="onDownload_V_XML"/>
+													</Menu>
+												</menu>
+											</MenuButton>
+											
+											<!--<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllStatement" enabled="true"/>-->
+											<!--	enabled="fasle"/>-->
+											<MenuButton icon="sap-icon://print" tooltip="Печать">
+												<menu>
+													<Menu>
+														<MenuItem text="Печать выписки" icon="sap-icon://doc-attachment" press="onDownload_V_DOC"></MenuItem>
+														<MenuItem text="Печать выписки" icon="sap-icon://pdf-attachment" press="onDownload_V_PDF"></MenuItem>
+														<MenuItem text="Печать ПП" icon="sap-icon://documents" press="onDownload_V_PP" enabled="fasle"/>
+														<MenuItem text="Печать мемор. ордеров" icon="sap-icon://document" press="onDownload_V_MO" enabled="fasle"/>
 													</Menu>
 												</menu>
 											</MenuButton>

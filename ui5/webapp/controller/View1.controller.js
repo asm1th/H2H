@@ -90,20 +90,20 @@ sap.ui.define([
 
 			// Активация кнопок
 			this.byId("onSend").setEnabled(false);
-			
+
 		},
-		
+
 		// remove test after
 		testStmnt: function (oEvent) {
-		    var oModel = this.getOwnerComponent().getModel();
-		    var mParams = {};
+			var oModel = this.getOwnerComponent().getModel();
+			var mParams = {};
 			var that = this;
-			
-		    var aPath = [
-		        '/Statement?$select=debetSum,creditSum,outBal,enterBal&$top=100&$inlinecount=allpages',
-		        '/Statement?$select=docNum,stmtDate,docTime,bic,currCode,responseId,debetSum,creditSum,outBal,enterBal,ID&$top=110&$inlinecount=allpages'
-		    ];
-		    mParams.success = function (data) {
+
+			var aPath = [
+				'/Statement?$select=debetSum,creditSum,outBal,enterBal&$top=100&$inlinecount=allpages',
+				'/Statement?$select=docNum,stmtDate,docTime,bic,currCode,responseId,debetSum,creditSum,outBal,enterBal,ID&$top=110&$inlinecount=allpages'
+			];
+			mParams.success = function (data) {
 				//MessageToast.show("Прочитано");
 				console.log(data.results);
 			};
@@ -111,10 +111,10 @@ sap.ui.define([
 				this._onErrorCall(oError);
 			};
 			aPath.forEach(function (Path, i) {
-			    oModel.read(Path, that.mParams);
+				oModel.read(Path, that.mParams);
 			});
-        },
-        
+		},
+
 		onAfterRendering: function (oEvent) {
 			// 			$(".Table_D").on('scroll', function () {
 			//                   $(".Table_C").scrollTop($(this).scrollTop());
@@ -176,11 +176,11 @@ sap.ui.define([
 			var oSmartTable = this.byId("SmartTableStatements");
 			var oTable = oSmartTable.getTable();
 			var data = oTable.getModel().getProperty(sPath);
-			if (data.status != "Подписан"){
+			if (data.status != "Подписан") {
 				this._delPP(data);
 			}
 		},
-		
+
 		formatEnableDelPP: function (oValue) {
 			if (oValue === "Исполнен") {
 				return false;
@@ -193,7 +193,7 @@ sap.ui.define([
 			}
 			return true;
 		},
-		
+
 		onDeleteAllPP: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var oTable = oSmartTable.getTable();
@@ -207,15 +207,15 @@ sap.ui.define([
 					var Context = oTable.getContextByIndex(item);
 					sPath = Context.sPath;
 					var data = oTable.getModel().getProperty(sPath);
-					if (data.status != "Подписан"){
-					    that._delPP(data);
+					if (data.status != "Подписан") {
+						that._delPP(data);
 					} else {
-					    nodeletePP = true;
+						nodeletePP = true;
 					}
 				});
 			}
 			if (nodeletePP) {
-			    MessageBox.show("Одно или более ПП невозможно удалить, так как имеет статус Исполнено или Подписано.");
+				MessageBox.show("Одно или более ПП невозможно удалить, так как имеет статус Исполнено или Подписано.");
 			}
 		},
 
@@ -338,14 +338,6 @@ sap.ui.define([
 			} else {
 				this.journalDialog_Stmnt.open();
 			}
-		},
-
-		OnExportStmnt: function (oEvent) {
-			MessageToast.show("В разработке");
-		},
-
-		onPDF: function (oEvent) {
-			MessageToast.show(oEvent.getSource().getId() + " Pressed");
 		},
 
 		onSelStatement: function () {
@@ -495,24 +487,24 @@ sap.ui.define([
 				success: function (data) {
 					console.log(data);
 					var oEntity = {
-							// new
-							priority: parseInt(obj.priority),
-							// copy
-							docExtId: data.docExtId,
-							purpose: data.purpose,
-							docDate: data.docDate,
-							docNum: data.docNum,
-							docSum: data.docSum,
-							vatSum: data.vatSum,
-							vatRate: data.vatRate,
-							vat: data.vat,
-							transKind: data.transKind,
-							paytKind: data.paytKind,
-							paytCode: data.paytCode,
-							codeVO: data.codeVO,
-							nodocs: data.nodocs
-						};
-						//oModel.update(accPath + "/priority", obj.priority, {
+						// new
+						priority: parseInt(obj.priority),
+						// copy
+						docExtId: data.docExtId,
+						purpose: data.purpose,
+						docDate: data.docDate,
+						docNum: data.docNum,
+						docSum: data.docSum,
+						vatSum: data.vatSum,
+						vatRate: data.vatRate,
+						vat: data.vat,
+						transKind: data.transKind,
+						paytKind: data.paytKind,
+						paytCode: data.paytCode,
+						codeVO: data.codeVO,
+						nodocs: data.nodocs
+					};
+					//oModel.update(accPath + "/priority", obj.priority, {
 					oModel.update(accPath, oEntity, {
 						success: function (data) {
 							console.log(data);
@@ -538,69 +530,7 @@ sap.ui.define([
 		///// окно подробностей
 		///////////////////////
 
-		// скачать загруженное ПП в том же формате
-		onDownload_1C: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
-			var oTable = oSmartTable.getTable();
-			var iIndex = oTable.getSelectedIndices();
-			var requestId = [];
-
-			if (iIndex.length > 0) {
-				iIndex.forEach(function (item, i) {
-					/*var Context = oTable.getContextByIndex(item);
-					var sPath = Context.sPath;
-					// sPath = "/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
-					var nov_reg = "requestId='(.*)',";
-					var myAttr = sPath.match(nov_reg);
-					requestId.push(myAttr[1]);
-					*/
-					var Context = oTable.getContextByIndex(item);
-					var obj = Context.getObject();
-					requestId.push(obj.requestId);
-				});
-			} else {
-				// exit
-				return MessageBox.alert("Выберите одно платежное поручение в таблице");
-			}
-
-			//Get file
-			//var url = '/xsodata';
-			//var oModel = new sap.ui.model.odata.ODataModel(url);
-			var oModel = this.getView().getModel();
-			//var that = this;
-
-			oModel.read("/Files('" + requestId[0] + "')", {
-				success: function (file) {
-					var decodedString = file.fileBody;
-					var decodedString1 = window.atob(decodedString);
-					var decodedString2 = window.atob(decodedString1);
-
-					var binaryLen = decodedString2.length;
-					var bytes = new Uint8Array(binaryLen);
-					for (var i = 0; i < binaryLen; i++) {
-						var ascii = decodedString2.charCodeAt(i);
-						bytes[i] = ascii;
-					}
-
-					// saveByteArray
-					var a = document.createElement("a");
-					document.body.appendChild(a);
-					a.style = "display: none";
-					var blob = new Blob([bytes], {
-						type: file.fileType
-					});
-					var url = window.URL.createObjectURL(blob);
-					a.href = url;
-					a.download = file.fileName;
-					a.click();
-					window.URL.revokeObjectURL(url);
-				},
-				error: function (oError) {
-					MessageBox.error(oError.responseText);
-					console.log("error: " + oError);
-				}
-			});
-		},
+		
 
 		//////////////////
 		// просмотр платежки загружаемой в банк
@@ -647,8 +577,8 @@ sap.ui.define([
 									};
 									oModel.create("/Response", oEntity, {
 										success: function (data) {
-						                    oSmartTable.rebindTable();
-						                    MessageToast.show("Отправлено в банк");
+											oSmartTable.rebindTable();
+											MessageToast.show("Отправлено в банк");
 										},
 										error: function (oError) {
 											MessageBox.error(JSON.stringify(oError));
@@ -694,7 +624,7 @@ sap.ui.define([
 		// кнопка отправить
 		onSend: function (oEvent) {
 			this.onShowXml(oEvent);
-            // MessageToast.show("Пример отправленного XML файла");
+			// MessageToast.show("Пример отправленного XML файла");
 		},
 
 		//  кнопка загрузки пп
@@ -814,7 +744,7 @@ sap.ui.define([
 					//var bContentJson = window.btoa(sContentJson);
 					var bContentJson = window.btoa(unescape(encodeURIComponent(sContentJson)));
                     */
-                    
+
 					var oEntry = {};
 					//oEntry.requestId = "";
 					//oEntry.fileBody = bContentJson;
@@ -1324,15 +1254,15 @@ sap.ui.define([
 		// форматтер для подсветки строки в таблице
 		formatRowHighlight: function (oValue) {
 			// Your logic for rowHighlight goes here
-            // 1;Импортирован;
-            // 2;Подписан;
-            // 3;Подписан I;
-            // 4;Подписан II;
-            // 5;Отправлен;
-            // 6;Доставлен;
-            // 7;Принят АБС;
-            // 8;Исполнен;
-            // 9;Отказан АБС;
+			// 1;Импортирован;
+			// 2;Подписан;
+			// 3;Подписан I;
+			// 4;Подписан II;
+			// 5;Отправлен;
+			// 6;Доставлен;
+			// 7;Принят АБС;
+			// 8;Исполнен;
+			// 9;Отказан АБС;
 			if (oValue === "Исполнен") {
 				return "Success";
 			} else if (oValue === "Подписан") {
@@ -1344,6 +1274,154 @@ sap.ui.define([
 			}
 
 			return "None";
+		},
+		
+		// скачать загруженное ПП в том же формате
+		onDownload_1C: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var requestId = [];
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					/*var Context = oTable.getContextByIndex(item);
+					var sPath = Context.sPath;
+					// sPath = "/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
+					var nov_reg = "requestId='(.*)',";
+					var myAttr = sPath.match(nov_reg);
+					requestId.push(myAttr[1]);
+					*/
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					requestId.push(obj.requestId);
+				});
+			} else {
+				// exit
+				return MessageBox.alert("Выберите одно платежное поручение в таблице");
+			}
+
+			//Get file
+			//var url = '/xsodata';
+			//var oModel = new sap.ui.model.odata.ODataModel(url);
+			var oModel = this.getView().getModel();
+			//var that = this;
+
+			oModel.read("/Files('" + requestId[0] + "')", {
+				success: function (file) {
+					var decodedString = file.fileBody;
+					var decodedString1 = window.atob(decodedString);
+					var decodedString2 = window.atob(decodedString1);
+
+					var binaryLen = decodedString2.length;
+					var bytes = new Uint8Array(binaryLen);
+					for (var i = 0; i < binaryLen; i++) {
+						var ascii = decodedString2.charCodeAt(i);
+						bytes[i] = ascii;
+					}
+
+					// saveByteArray
+					var a = document.createElement("a");
+					document.body.appendChild(a);
+					a.style = "display: none";
+					var blob = new Blob([bytes], {
+						type: file.fileType
+					});
+					var url = window.URL.createObjectURL(blob);
+					a.href = url;
+					a.download = file.fileName;
+					a.click();
+					window.URL.revokeObjectURL(url);
+				},
+				error: function (oError) {
+					MessageBox.error(oError.responseText);
+					console.log("error: " + oError);
+				}
+			});
+		},
+
+		// скачать ПП для печати DOC
+		onDownload_DOC: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var docExtIdsAr = this._getDocExtId();
+			
+			//post
+			// var docExtIds = {
+			// 	"docExtId": docExtIdsAr.join()
+			// };
+
+			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
+			// post if (docExtIdsAr.docExtId[0]) {
+			if (docExtIdsAr[0]) {
+				//this._getPrint(data);
+				$.ajax({
+					type: "GET",
+					url: "/node/exportbytemplate",
+					data: data,
+					//dataType: "xml",
+					success: function (data) {
+						window.location = '/node/exportbytemplate?' + data;
+					},
+					error: function (oError) {
+						MessageBox.error(oError.responseText);
+						console.warn(oError);
+					}
+				});
+			} else {
+				MessageToast.show("ошибка: docExtId строки пуст");
+			}
+		},
+	
+		// скачать ПП для печати PDF
+		onDownload_PDF: function (oEvent) {
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var docExtIdsAr = this._getDocExtId();
+
+			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=PDF';
+			// post if (docExtIdsAr.docExtId[0]) {
+			if (docExtIdsAr[0]) {
+				this._getPrint(data);
+			} else {
+				MessageToast.show("ошибка: docExtId строки пуст");
+			}
+		},
+		
+		//Get PDF file frome node
+		// _getPrint: function (data) {
+		// 	$.ajax({
+		// 			type: "GET",
+		// 			url: "/node/exportbytemplate",
+		// 			data: data,
+		// 			//dataType: "xml",
+		// 			success: function (data) {
+		// 				window.location = '/node/exportbytemplate?' + data;
+		// 			},
+		// 			error: function (oError) {
+		// 				MessageBox.error(oError.responseText);
+		// 				console.warn(oError);
+		// 			}
+		// 		});
+		// },
+		
+		
+		
+		onDownload_V_1C: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_XML: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_DOC: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_PDF: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_PP: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+		onDownload_V_MO: function (oEvent) {
+			MessageToast.show("В разработке");
 		},
 
 		// печать выбранной ПП
