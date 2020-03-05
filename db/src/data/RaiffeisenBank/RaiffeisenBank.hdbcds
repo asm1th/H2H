@@ -617,6 +617,7 @@ context RaiffeisenBank {
         select from TStatement
         {
             RESPONSEID  		as responseId,
+            ACC					as acc,
             BIC         		as bic,
             DEBETSUM			as debetSum,
             CREDITSUM			as creditSum,
