@@ -16,7 +16,7 @@ function makeDocPdf(Data) {
 	var doc = new Docxtemplater();
 	doc.loadZip(zip);
 
-	console.log(Data);
+	//console.log(Data);
 	doc.setData(Data);
 
 	try {
@@ -58,7 +58,7 @@ function makeDocPdf(Data) {
 
 function _getDocSumPropis(Data) {
 	var numberToWordsRu = require('number-to-words-ru');
-	numberToWordsRu.convert(Data, {
+	const converted = numberToWordsRu.convert(Data, {
 		currency: 'rub',
 		convertMinusSignToWord: true,
 		showNumberParts: {
@@ -67,13 +67,14 @@ function _getDocSumPropis(Data) {
 		},
 		convertNumbertToWords: {
 			integer: true,
-			fractional: false,
+			fractional: true,
 		},
 		showCurrency: {
 			integer: true,
 			fractional: true,
 		},
 	});
+	return converted;
 };
 
 router.get('/', function (req, res, next) {
@@ -81,7 +82,7 @@ router.get('/', function (req, res, next) {
 	// https://host-to-host.cfapps.eu10.hana.ondemand.com/node/exportbytemplate?docExtIds=01b00858-57c0-81ac-6f69-1a2f94e20d86,89625293-3a4f-8437-75e5-079f8003c5e3
 	// var ids = req.body.docExtIds.split(","); //post
 	var ids = req.query.docExtIds.split(","); //get
-	//var type = req.query.type; // DOC \ PDF
+	var type = req.query.type; // DOC / PDF
 
 	if (ids[0]) {
 		var idString = '';
@@ -102,12 +103,15 @@ router.get('/', function (req, res, next) {
 
 			rows.forEach(function (row, i) {
 				rows.docSumPropis = _getDocSumPropis(row.docSum);
+				console.log('docSumPropis ', row.docSum);
+				console.log(rows.docSumPropis);
 			})
 
 			//set the templateVariables
 			var docs = {
 				docs: rows
 			}
+			console.log('docs ',  docs);
 
 			//res.send(rows);
 			//res.json(rows);
@@ -120,11 +124,22 @@ router.get('/', function (req, res, next) {
 			// EXPORT DOC =================================== 
 			// https://docxtemplater.readthedocs.io/en/latest/tag_types.html#loops
 			
-			res.set('Content-Disposition', 'attachment; filename="download.docx"');
-			res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
-			var buffer = makeDocPdf(docs);
-			var fileBase64String = buffer.toString('base64');
-			res.end(fileBase64String, 'base64');
+			if (type == "DOC") {
+				var buffer = makeDocPdf(docs);
+				res.set('Content-Disposition', 'attachment; filename="download.docx"');
+				res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
+				var fileBase64String = buffer.toString('base64');
+				res.end(fileBase64String, 'base64');
+			} else {
+				//res.send('Type error (DOC-PDF)');
+				var buffer = makeDocPdf(docs);
+				
+			    res.set('Content-Disposition', 'attachment; filename="download.pdf"');
+				res.set('Content-Type', 'application/pdf');
+				var fileBase64String = buffer.toString('base64');
+				res.end(fileBase64String, 'base64');
+			}
+			
 		});
 	} else {
 		res.send('needed docExtId parametr in url');

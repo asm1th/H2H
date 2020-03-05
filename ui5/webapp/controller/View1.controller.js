@@ -8,8 +8,9 @@ sap.ui.define([
 	'sap/m/MessagePopover',
 	'sap/m/MessageItem',
 	"h2h/ui5/js/cadesplugin_api",
-	"sap/ui/codeeditor/CodeEditor"
-], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, MessagePopover, MessageItem, cadesplugin, CodeEditor) {
+	"sap/ui/codeeditor/CodeEditor",
+	"h2h/ui5/model/formatter"
+], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, MessagePopover, MessageItem, cadesplugin, CodeEditor, formatter) {
 	"use strict";
 
 	var oMessageTemplate = new MessageItem({
@@ -32,12 +33,19 @@ sap.ui.define([
 	});
 
 	return BaseController.extend("h2h.ui5.controller.View1", {
+		formatter: formatter,
 		onInit: function () {
 			//var url = '/xsodata';
 			//var oModel = new sap.ui.model.odata.ODataModel(url);
-			var userModel = this.getOwnerComponent().getModel();
+			var oModel = this.getOwnerComponent().getModel();
 			//userModel.setUseBatch(true);
-			this.getView().setModel(userModel);
+			this.getView().setModel(oModel);
+			
+			var UIData = {
+				PaymentOrderTotal: 0
+			};
+			var uiModel = new JSONModel(UIData)
+			this.getView().setModel(uiModel, "UIData");
 			//console.log(userModel);
 
 			//messages
@@ -80,17 +88,15 @@ sap.ui.define([
 				counter: 1
 			}];
 
-			var oModel = new JSONModel(aMockMessages);
-			var viewModel = new JSONModel();
-			viewModel.setData({
+			var messageModel = new JSONModel(aMockMessages);
+			var messagePopupModel = new JSONModel({
 				messagesLength: aMockMessages.length + ''
 			});
-			this.byId("messagePopup").setModel(viewModel);
-			oMessagePopover.setModel(oModel);
+			this.byId("messagePopup").setModel(messagePopupModel);
+			oMessagePopover.setModel(messageModel);
 
 			// Активация кнопок
 			this.byId("onSend").setEnabled(false);
-
 		},
 
 		// remove test after
@@ -607,17 +613,23 @@ sap.ui.define([
 			var sPath;
 			if (iIndex.length > 0) {
 				var StatusEnableButton = true; //все ПП подписаны
+				var PaymentOrderTotal = 0;
+				
 				iIndex.forEach(function (item, i) {
 					var Context = oTable.getContextByIndex(item);
 					sPath = Context.sPath;
+					var obj = Context.getObject();
+					PaymentOrderTotal = PaymentOrderTotal + parseFloat(obj.docSum);
 					var data = oTable.getModel().getProperty(sPath);
 					if (data.status === "Подписан") {} else {
 						StatusEnableButton = false; // хоть одна ПП не подписана
 					}
 				});
+				this.getView().getModel("UIData").setProperty("/PaymentOrderTotal", PaymentOrderTotal);
 				this.byId("onSend").setEnabled(StatusEnableButton);
 			} else {
 				this.byId("onSend").setEnabled(false);
+				this.getView().getModel("UIData").setProperty("/PaymentOrderTotal", 0);
 			}
 		},
 
@@ -1350,26 +1362,33 @@ sap.ui.define([
 			// 	"docExtId": docExtIdsAr.join()
 			// };
 
-			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
+			//var dataSend = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
+			//window.location = '/node/pp_exportbytemplate?' + dataSend;
+			var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdsAr.join() + '&type=DOC';
+			var link = document.createElement("a");
+				link.download = "file.docx";
+				link.href = uri;
+				link.click();
+			
 			// post if (docExtIdsAr.docExtId[0]) {
-			if (docExtIdsAr[0]) {
-				//this._getPrint(data);
-				$.ajax({
-					type: "GET",
-					url: "/node/exportbytemplate",
-					data: data,
-					//dataType: "xml",
-					success: function (data) {
-						window.location = '/node/exportbytemplate?' + data;
-					},
-					error: function (oError) {
-						MessageBox.error(oError.responseText);
-						console.warn(oError);
-					}
-				});
-			} else {
-				MessageToast.show("ошибка: docExtId строки пуст");
-			}
+			// if (docExtIdsAr[0]) {
+			// 	//this._getPrint(data);
+			// 	$.ajax({
+			// 		type: "GET",
+			// 		url: "/node/pp_exportbytemplate",
+			// 		data: dataSend,
+			// 		//dataType: "xml",
+			// 		success: function (data) {
+			// 			window.location = '/node/pp_exportbytemplate?' + dataSend;
+			// 		},
+			// 		error: function (oError) {
+			// 			MessageBox.error(oError.responseText);
+			// 			console.warn(oError);
+			// 		}
+			// 	});
+			// } else {
+			// 	MessageToast.show("ошибка: docExtId строки пуст");
+			// }
 		},
 	
 		// скачать ПП для печати PDF
@@ -1403,17 +1422,79 @@ sap.ui.define([
 		// 		});
 		// },
 		
-		
-		
 		onDownload_V_1C: function (oEvent) {
 			MessageToast.show("В разработке");
 		},
 		onDownload_V_XML: function (oEvent) {
-			MessageToast.show("В разработке");
+			MessageToast.show("Обратиться к FILE по RESPONSE ID");
 		},
+		
 		onDownload_V_DOC: function (oEvent) {
-			MessageToast.show("В разработке");
+			var oSmartTable = this.byId("SmartTableStatements");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var responseIdsAr = [];
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					responseIdsAr.push(obj.responseId);
+				});
+			}
+			
+			var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
+			var link = document.createElement("a");
+				link.download = 'file.docx';
+				link.href = uri;
+				link.click();
 		},
+		
+		onPrint_C: function (oEvent) {
+			var oTable = this.byId("Table_C");
+			var iIndex = oTable.getSelectedIndices();
+			var docExtIdAr = [];
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					docExtIdAr.push(obj.extId);
+				});
+			}
+			
+			var uri = '/node/c_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC';
+			var link = document.createElement("a");
+				link.download = 'file.docx';
+				link.href = uri;
+				link.click();
+		},
+		
+		onPrint_D: function (oEvent) {
+			var oTable = this.byId("Table_D");
+			var iIndex = oTable.getSelectedIndices();
+			var docExtIdAr = [];
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					docExtIdAr.push(obj.extId);
+				});
+			}
+			
+			var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC';
+			var link = document.createElement("a");
+				link.download = 'file.docx';
+				link.href = uri;
+				link.click();
+		},
+		
+		
+		
+		
+		
+		
 		onDownload_V_PDF: function (oEvent) {
 			MessageToast.show("В разработке");
 		},

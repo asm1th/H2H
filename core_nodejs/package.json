@@ -10,7 +10,8 @@
     "pizzip": "^3.0.6",
     "docxtemplater": "^3.16.9",
     "morgan": "^1.9.0",
-    "number-to-words-ru": "2.0.1"
+    "number-to-words-ru": "2.0.1",
+    "libreoffice-convert": "1.0.5"
   },
   "files": [],
   "main": "start.js",
