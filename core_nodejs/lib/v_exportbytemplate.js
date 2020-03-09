@@ -84,7 +84,7 @@ router.get('/', function (req, res, next) {
 	var ids = req.query.responseIds.split(","); //get
 	var type = req.query.type; // DOC / PDF
 
-	if (ids[0]) {
+	if (ids.length > 0) {
 		var idString = '';
 		ids.forEach(function (id) {
 			idString += "'" + id + "',";
@@ -100,46 +100,48 @@ router.get('/', function (req, res, next) {
 				//print error
 				//res.send(err);
 			}
+			if (rows.length > 0) {
+				// rows.forEach(function (row, i) {
+				// 	rows.docSumPropis = _getDocSumPropis(row.docSum);
+				// 	console.log('docSumPropis ', row.docSum);
+				// 	console.log(rows.docSumPropis);
+				// })
 
-			// rows.forEach(function (row, i) {
-			// 	rows.docSumPropis = _getDocSumPropis(row.docSum);
-			// 	console.log('docSumPropis ', row.docSum);
-			// 	console.log(rows.docSumPropis);
-			// })
+				//set the templateVariables
+				var docs = {
+					docs: rows
+				}
+				console.log('docs ', docs);
 
-			//set the templateVariables
-			var docs = {
-				docs: rows
-			}
-			console.log('docs ',  docs);
+				//res.send(rows);
+				//res.json(rows);
 
-			//res.send(rows);
-			//res.json(rows);
+				// dummie
+				// var docs = {
+				// 	"docs": [{/payerName: "docs"}, {payerName: "docs2"}]
+				// }
 
-			// dummie
-			// var docs = {
-			// 	"docs": [{/payerName: "docs"}, {payerName: "docs2"}]
-			// }
+				// EXPORT DOC =================================== 
+				// https://docxtemplater.readthedocs.io/en/latest/tag_types.html#loops
 
-			// EXPORT DOC =================================== 
-			// https://docxtemplater.readthedocs.io/en/latest/tag_types.html#loops
-			
-			if (type == "DOC") {
-				var buffer = makeDocPdf(docs);
-				res.set('Content-Disposition', 'attachment; filename="download.docx"');
-				res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
-				var fileBase64String = buffer.toString('base64');
-				res.end(fileBase64String, 'base64');
+				if (type == "DOC") {
+					var buffer = makeDocPdf(docs);
+					res.set('Content-Disposition', 'attachment; filename="Statement.docx"');
+					res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
+					var fileBase64String = buffer.toString('base64');
+					res.end(fileBase64String, 'base64');
+				} else {
+					//res.send('Type error (DOC-PDF)');
+					var buffer = makeDocPdf(docs);
+
+					res.set('Content-Disposition', 'attachment; filename="Statement.pdf"');
+					res.set('Content-Type', 'application/pdf');
+					var fileBase64String = buffer.toString('base64');
+					res.end(fileBase64String, 'base64');
+				}
 			} else {
-				//res.send('Type error (DOC-PDF)');
-				var buffer = makeDocPdf(docs);
-				
-			    res.set('Content-Disposition', 'attachment; filename="download.pdf"');
-				res.set('Content-Type', 'application/pdf');
-				var fileBase64String = buffer.toString('base64');
-				res.end(fileBase64String, 'base64');
+				res.send('Нет данных в БД');
 			}
-			
 		});
 	} else {
 		res.send('needed docExtId parametr in url');

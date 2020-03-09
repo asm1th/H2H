@@ -150,21 +150,24 @@
 <Property Name="Fio" Type="Edm.String" MaxLength="255"/>
 <Property Name="Position" Type="Edm.String" MaxLength="255"/>
 </EntityType>
-<EntityType Name="StatementType" sap:semantics="aggregate">
+<EntityType Name="StatementType">
 <Key>
 <PropertyRef Name="ID"/>
 </Key>
 <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
-<Property Name="responseId" Type="Edm.String" MaxLength="38" sap:label="Уникальный идентификатор" sap:aggregation-role="dimension"/>
-<Property Name="bic" Type="Edm.String" MaxLength="9" sap:label="БИК банка клиента" sap:aggregation-role="dimension"/>
-<Property Name="currCode" Type="Edm.String" MaxLength="3" sap:label="Код валюты выписки" sap:aggregation-role="dimension"/>
-<Property Name="docTime" Type="Edm.String" MaxLength="8" sap:label="Данные актуальны на (время)" sap:aggregation-role="dimension"/>
-<Property Name="stmtDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="Дата выписки" sap:aggregation-role="dimension"/>
-<Property Name="docNum" Type="Edm.String" MaxLength="6" sap:label="Номер документа" sap:aggregation-role="dimension"/>
-<Property Name="debetSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="Итого оборотов по кредиту" sap:aggregation-role="measure" sap:filterable="false"/>
-<Property Name="creditSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="Итого оборотов по кредиту" sap:aggregation-role="measure" sap:filterable="false"/>
-<Property Name="outBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="Исходящий остаток" sap:aggregation-role="measure" sap:filterable="false"/>
-<Property Name="enterBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="Входящий остаток" sap:aggregation-role="measure" sap:filterable="false"/>
+<Property Name="responseId" Type="Edm.String" MaxLength="38" sap:label="responseId"/>
+<Property Name="acc" Type="Edm.String" MaxLength="20" sap:label="acc"/>
+<Property Name="bic" Type="Edm.String" MaxLength="9" sap:label="bic"/>
+<Property Name="debetSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="debetSum"/>
+<Property Name="creditSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="creditSum"/>
+<Property Name="currCode" Type="Edm.String" MaxLength="3" sap:label="currCode"/>
+<Property Name="docTime" Type="Edm.String" MaxLength="8" sap:label="docTime"/>
+<Property Name="outBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="outBal"/>
+<Property Name="stmtDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="stmtDate"/>
+<Property Name="enterBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="enterBal"/>
+<Property Name="docNum" Type="Edm.String" MaxLength="6" sap:label="docNum"/>
+<Property Name="stmtType" Type="Edm.String" MaxLength="25" sap:label="stmtType"/>
+<Property Name="stmtTypeId" Type="Edm.Int32" sap:label="stmtTypeId"/>
 <NavigationProperty Name="ItemsCred" Relationship="default.Statement_ItemsCredType" FromRole="StatementPrincipal" ToRole="StatementItemsCredDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="ItemsDeb" Relationship="default.Statement_ItemsDebType" FromRole="StatementPrincipal" ToRole="StatementItemsDebDependent" sap:creatable="false" sap:filterable="false"/>
 </EntityType>
