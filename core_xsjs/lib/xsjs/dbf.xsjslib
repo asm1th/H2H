@@ -707,11 +707,12 @@ function deletSing(param){
 	}
 	pStmt.close();
 	
-	if(salesOrderId === ''){
+	if(docExtId === ''){
 		throw new error("Invalid Sales Order ID.");
 	}else{
 		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TSign\" where \"DOCEXTID\" = '"+sign.docExtId+"' and \"SN\" = '" + sign.SN + "'");
 	    pStmt.executeUpdate();
+	    param.connection.commit();
 	    pStmt.close();
 	}
 }
