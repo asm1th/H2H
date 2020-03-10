@@ -83,14 +83,22 @@ router.get('/', function (req, res, next) {
 	// var ids = req.body.docExtIds.split(","); //post
 	var ids = req.query.docExtIds.split(","); //get
 	var type = req.query.type; // DOC / PDF
+	var deb_or_cred = req.query.deb_or_cred; // Cred / Deb
 
-	if (ids[0]) {
+	if (ids.length > 0) {
 		var idString = '';
 		ids.forEach(function (id) {
 			idString += "'" + id + "',";
 		});
 		idString = idString.substring(0, idString.length - 1);
-		var sql = 'Select * From "cvPaymentOrder" Where "docExtId" IN (' + idString + ')';
+		
+		if (deb_or_cred == "Cred") {
+			var sql = 'Select * From "RaiffeisenBank.StatementItemsCred" Where "extId" IN (' + idString + ')';
+		} else if (deb_or_cred == "Deb") {
+			var sql = 'Select * From "RaiffeisenBank.StatementItemsDeb" Where "extId" IN (' + idString + ')';
+		} else {
+			var sql = 'Select * From "cvPaymentOrder" Where "docExtId" IN (' + idString + ')';
+		}
 		//var sql = 'Select "DOCEXTID","PURPOSE" From "RaiffeisenBank.TAccDoc" Where "DOCEXTID" IN (' + idString + ')';
 
 		req.db.exec(sql, function (err, rows) {
@@ -100,46 +108,48 @@ router.get('/', function (req, res, next) {
 				//print error
 				//res.send(err);
 			}
-
-			rows.forEach(function (row, i) {
-				rows.docSumPropis = _getDocSumPropis(row.docSum);
-				console.log('docSumPropis ', row.docSum);
-				console.log(rows.docSumPropis);
-			})
-
-			//set the templateVariables
-			var docs = {
-				docs: rows
-			}
-			console.log('docs ',  docs);
-
-			//res.send(rows);
-			//res.json(rows);
-
-			// dummie
-			// var docs = {
-			// 	"docs": [{/payerName: "docs"}, {payerName: "docs2"}]
-			// }
-
-			// EXPORT DOC =================================== 
-			// https://docxtemplater.readthedocs.io/en/latest/tag_types.html#loops
 			
-			if (type == "DOC") {
-				var buffer = makeDocPdf(docs);
-				res.set('Content-Disposition', 'attachment; filename="download.docx"');
-				res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
-				var fileBase64String = buffer.toString('base64');
-				res.end(fileBase64String, 'base64');
-			} else {
-				//res.send('Type error (DOC-PDF)');
-				var buffer = makeDocPdf(docs);
+			if (rows.length > 0) {
+				rows.forEach(function (row, i) {
+					rows[i].docSumPropis = _getDocSumPropis(row.docSum);
+					//console.log('docSumPropis ',rows.docSumPropis);
+				})
+	
+				//set the templateVariables
+				var docs = {
+					docs: rows
+				}
+				console.log('docs ',  docs);
+	
+				//res.send(rows);
+				//res.json(rows);
+	
+				// dummie
+				// var docs = {
+				// 	"docs": [{/payerName: "docs"}, {payerName: "docs2"}]
+				// }
+	
+				// EXPORT DOC =================================== 
+				// https://docxtemplater.readthedocs.io/en/latest/tag_types.html#loops
 				
-			    res.set('Content-Disposition', 'attachment; filename="download.pdf"');
-				res.set('Content-Type', 'application/pdf');
-				var fileBase64String = buffer.toString('base64');
-				res.end(fileBase64String, 'base64');
+				if (type == "DOC") {
+					var buffer = makeDocPdf(docs);
+					res.set('Content-Disposition', 'attachment; filename="PaymentOrder.docx"');
+					res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
+					var fileBase64String = buffer.toString('base64');
+					res.end(fileBase64String, 'base64');
+				} else {
+					//res.send('Type error (DOC-PDF)');
+					var buffer = makeDocPdf(docs);
+					
+				    res.set('Content-Disposition', 'attachment; filename="PaymentOrder.pdf"');
+					res.set('Content-Type', 'application/pdf');
+					var fileBase64String = buffer.toString('base64');
+					res.end(fileBase64String, 'base64');
+				}
+			} else {
+				res.send('Нет данных в БД');
 			}
-			
 		});
 	} else {
 		res.send('needed docExtId parametr in url');

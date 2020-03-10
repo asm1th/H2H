@@ -340,6 +340,7 @@
 								<PropertyPath>ID</PropertyPath>
 								<PropertyPath>responseId</PropertyPath>
 								<PropertyPath>bic</PropertyPath>
+								<PropertyPath>acc</PropertyPath>
 								<PropertyPath>currCode</PropertyPath>
 								<PropertyPath>docTime</PropertyPath>
 								<PropertyPath>stmtDate</PropertyPath>
@@ -348,6 +349,8 @@
 								<PropertyPath>creditSum</PropertyPath>
 								<PropertyPath>outBal</PropertyPath>
 								<PropertyPath>enterBal</PropertyPath>
+								<!--<PropertyPath>stmtType</PropertyPath>-->
+								<!--<PropertyPath>stmtTypeId</PropertyPath>-->
 							</Collection>
 						</PropertyValue>
 					</Record>
@@ -375,6 +378,26 @@
 							<Annotation Term="Common.QuickInfo" String="БИК банка клиента"/>
 						</Record>
 						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="acc"/>
+							<PropertyValue Property="Label" String="Счет клиента"/>
+							<Annotation Term="Common.QuickInfo" String="Счет клиента"/>
+						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="stmtType"/>-->
+						<!--	<PropertyValue Property="Label" String="Тип выписки"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Тип выписки"/>-->
+						<!--</Record>-->
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="stmtTypeId"/>
+							<PropertyValue Property="Label" String="Статус выписки"/>
+							<Annotation Term="Common.QuickInfo" String="Статус выписки"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="currCode"/>
+							<PropertyValue Property="Label" String="Код валюты выписки"/>
+							<Annotation Term="Common.QuickInfo" String="Код валюты выписки"/>
+						</Record>
+						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="debetSum"/>
 							<PropertyValue Property="Label" String="Итого оборотов по дебету"/>
 							<Annotation Term="Common.QuickInfo" String="Итого оборотов по дебету"/>
@@ -383,11 +406,6 @@
 							<PropertyValue Property="Value" Path="creditSum"/>
 							<PropertyValue Property="Label" String="Итого оборотов по кредиту"/>
 							<Annotation Term="Common.QuickInfo" String="Итого оборотов по кредиту"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="currCode"/>
-							<PropertyValue Property="Label" String="Код валюты выписки"/>
-							<Annotation Term="Common.QuickInfo" String="Код валюты выписки"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="outBal"/>
@@ -403,8 +421,10 @@
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
+						<PropertyPath>docNum</PropertyPath>
 						<PropertyPath>stmtDate</PropertyPath>
 						<PropertyPath>bic</PropertyPath>
+						<PropertyPath>acc</PropertyPath>
 						<PropertyPath>docNum</PropertyPath>
 						<PropertyPath>currCode</PropertyPath>
 					</Collection>
@@ -889,6 +909,15 @@
 			</Annotations>
 			<Annotations Target="Metadata.StatementType/currCode">
 				<Annotation Term="Common.Label" String="Код валюты выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/acc">
+				<Annotation Term="Common.Label" String="Счет клиента"/>
+			</Annotations>
+			<!--<Annotations Target="Metadata.StatementType/stmtType">-->
+			<!--	<Annotation Term="Common.Label" String="Тип выписки"/>-->
+			<!--</Annotations>-->
+			<Annotations Target="Metadata.StatementType/stmtTypeId">
+				<Annotation Term="Common.Label" String="Статус выписки"/>
 			</Annotations>
 			<Annotations Target="Metadata.StatementItemsDebType/paytKind">
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>

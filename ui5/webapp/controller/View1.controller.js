@@ -10,7 +10,8 @@ sap.ui.define([
 	"h2h/ui5/js/cadesplugin_api",
 	"sap/ui/codeeditor/CodeEditor",
 	"h2h/ui5/model/formatter"
-], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, MessagePopover, MessageItem, cadesplugin, CodeEditor, formatter) {
+], function (BaseController, jQuery, Filter, JSONModel, MessageToast, MessageBox, MessagePopover, MessageItem, cadesplugin, CodeEditor,
+	formatter) {
 	"use strict";
 
 	var oMessageTemplate = new MessageItem({
@@ -40,7 +41,7 @@ sap.ui.define([
 			var oModel = this.getOwnerComponent().getModel();
 			//userModel.setUseBatch(true);
 			this.getView().setModel(oModel);
-			
+
 			var UIData = {
 				PaymentOrderTotal: 0
 			};
@@ -281,13 +282,6 @@ sap.ui.define([
 			MessageToast.show("В разработке");
 		},
 
-		onPrint_D: function (oEvent) {
-			MessageToast.show(oEvent.getSource().getId() + " Pressed");
-		},
-		onPrint_C: function (oEvent) {
-			MessageToast.show(oEvent.getSource().getId() + " Pressed");
-		},
-
 		onRefresh: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			oSmartTable.rebindTable();
@@ -305,45 +299,42 @@ sap.ui.define([
 
 		onJournal_Stmnt: function (oEvent) {
 			var that = this;
-			if (!this.journalDialog_Stmnt) {
-				this.journalDialog_Stmnt = sap.ui.xmlfragment("journalDialog_Stmnt", "h2h.ui5.view.journalDialog", this);
-
-				var oSmartTable = this.byId("SmartTableStatements");
-				var oTable = oSmartTable.getTable();
-				var iIndex = oTable.getSelectedIndices();
-				var sPath;
-				var that = this;
-				var oFilter = [];
-				if (iIndex.length > 0) {
-					iIndex.forEach(function (item, i) {
-						var Context = oTable.getContextByIndex(item);
-						sPath = Context.sPath;
-						var data = oTable.getModel().getProperty(sPath);
-						oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId));
-					});
-				} else {
-					return MessageBox.alert("Выберите хотя бы одну строку в таблице");
-				}
-
-				var oModel = this.getOwnerComponent().getModel();
-
-				oModel.read("/History", {
-					filters: oFilter,
-					success: function (data) {
-						console.log(data);
-						var oModel = new JSONModel(data);
-						that.journalDialog_Stmnt.setModel(oModel);
-						that.journalDialog_Stmnt.open();
-					},
-					error: function (oError) {
-						//MessageBox.error(oError.responseText);
-						console.log("error: " + oError);
-						that.journalDialog_Stmnt.open();
-					}
+			if (!this.journalDialog) {
+				this.journalDialog = sap.ui.xmlfragment("journalDialog", "h2h.ui5.view.journalDialog", this);
+			}
+			var oSmartTable = this.byId("SmartTableStatements");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var sPath;
+			var that = this;
+			var oFilter = [];
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					sPath = Context.sPath;
+					var data = oTable.getModel().getProperty(sPath);
+					oFilter.push(new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, data.responseId)); // История для Statements: из History где docExtId = Statement.RESPONSEID
 				});
 			} else {
-				this.journalDialog_Stmnt.open();
+				return MessageBox.alert("Выберите хотя бы одну строку в таблице");
 			}
+
+			var oModel = this.getOwnerComponent().getModel();
+
+			oModel.read("/History", {
+				filters: oFilter,
+				success: function (data) {
+					console.log("History", data);
+					var oModel = new JSONModel(data.results);
+					that.journalDialog.setModel(oModel);
+					that.journalDialog.open();
+				},
+				error: function (oError) {
+					//MessageBox.error(oError.responseText);
+					console.log("error: " + oError);
+					that.journalDialog.open();
+				}
+			});
 		},
 
 		onSelStatement: function () {
@@ -536,8 +527,6 @@ sap.ui.define([
 		///// окно подробностей
 		///////////////////////
 
-		
-
 		//////////////////
 		// просмотр платежки загружаемой в банк
 		onShowXml: function (oEvent) {
@@ -614,7 +603,7 @@ sap.ui.define([
 			if (iIndex.length > 0) {
 				var StatusEnableButton = true; //все ПП подписаны
 				var PaymentOrderTotal = 0;
-				
+
 				iIndex.forEach(function (item, i) {
 					var Context = oTable.getContextByIndex(item);
 					sPath = Context.sPath;
@@ -965,22 +954,6 @@ sap.ui.define([
 			var that = this;
 			if (!this.journalDialog) {
 				this.journalDialog = sap.ui.xmlfragment("journalDialog", "h2h.ui5.view.journalDialog", this);
-				// var oSmartTable = this.byId("LineItemsSmartTable");
-				// var oTable = oSmartTable.getTable();
-				// var iIndex = oTable.getSelectedIndices();
-				// var sPath;
-				// var that = this;
-				// var oFilter = [];
-				// if (iIndex.length > 0) {
-				// 	iIndex.forEach(function (item, i) {
-				// 		var Context = oTable.getContextByIndex(item);
-				// 		sPath = Context.sPath;
-				// 		var data = oTable.getModel().getProperty(sPath);
-				// 		oFilter.push(new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, data.docExtId)); //fix filter responseId \ docEtId
-				// 	});
-				// } else {
-				// 	return MessageBox.alert("Выберите хотя бы одну строку в таблице");
-				// }
 			}
 
 			var docExtId = that._getDocExtId();
@@ -1011,9 +984,6 @@ sap.ui.define([
 		journalDialogClose: function (oEvent) {
 			if (this.journalDialog) {
 				this.journalDialog.close();
-			}
-			if (this.journalDialog_Stmnt) {
-				this.journalDialog_Stmnt.close();
 			}
 		},
 
@@ -1263,31 +1233,6 @@ sap.ui.define([
 
 		},
 
-		// форматтер для подсветки строки в таблице
-		formatRowHighlight: function (oValue) {
-			// Your logic for rowHighlight goes here
-			// 1;Импортирован;
-			// 2;Подписан;
-			// 3;Подписан I;
-			// 4;Подписан II;
-			// 5;Отправлен;
-			// 6;Доставлен;
-			// 7;Принят АБС;
-			// 8;Исполнен;
-			// 9;Отказан АБС;
-			if (oValue === "Исполнен") {
-				return "Success";
-			} else if (oValue === "Подписан") {
-				return "Information";
-			} else if (oValue === "Импортирован") {
-				return "None";
-			} else if (oValue === "Отправлен") {
-				return "Warning";
-			}
-
-			return "None";
-		},
-		
 		// скачать загруженное ПП в том же формате
 		onDownload_1C: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
@@ -1356,7 +1301,7 @@ sap.ui.define([
 		onDownload_DOC: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
 			var docExtIdsAr = this._getDocExtId();
-			
+
 			//post
 			// var docExtIds = {
 			// 	"docExtId": docExtIdsAr.join()
@@ -1364,12 +1309,12 @@ sap.ui.define([
 
 			//var dataSend = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
 			//window.location = '/node/pp_exportbytemplate?' + dataSend;
-			var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdsAr.join() + '&type=DOC';
+			var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdsAr.join() + '&type=DOC&deb_or_cred=0';
 			var link = document.createElement("a");
-				link.download = "file.docx";
-				link.href = uri;
-				link.click();
-			
+			link.download = "PaymentOrder.docx";
+			link.href = uri;
+			link.click();
+
 			// post if (docExtIdsAr.docExtId[0]) {
 			// if (docExtIdsAr[0]) {
 			// 	//this._getPrint(data);
@@ -1390,7 +1335,7 @@ sap.ui.define([
 			// 	MessageToast.show("ошибка: docExtId строки пуст");
 			// }
 		},
-	
+
 		// скачать ПП для печати PDF
 		onDownload_PDF: function (oEvent) {
 			var oSmartTable = this.byId("LineItemsSmartTable");
@@ -1404,7 +1349,7 @@ sap.ui.define([
 				MessageToast.show("ошибка: docExtId строки пуст");
 			}
 		},
-		
+
 		//Get PDF file frome node
 		// _getPrint: function (data) {
 		// 	$.ajax({
@@ -1421,14 +1366,14 @@ sap.ui.define([
 		// 			}
 		// 		});
 		// },
-		
+
 		onDownload_V_1C: function (oEvent) {
 			MessageToast.show("В разработке");
 		},
 		onDownload_V_XML: function (oEvent) {
 			MessageToast.show("Обратиться к FILE по RESPONSE ID");
 		},
-		
+
 		onDownload_V_DOC: function (oEvent) {
 			var oSmartTable = this.byId("SmartTableStatements");
 			var oTable = oSmartTable.getTable();
@@ -1441,15 +1386,15 @@ sap.ui.define([
 					var obj = Context.getObject();
 					responseIdsAr.push(obj.responseId);
 				});
-			}
-			
-			var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
-			var link = document.createElement("a");
-				link.download = 'file.docx';
+				
+				var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
+				var link = document.createElement("a");
+				link.download = 'Statements.docx';
 				link.href = uri;
 				link.click();
+			}
 		},
-		
+
 		onPrint_C: function (oEvent) {
 			var oTable = this.byId("Table_C");
 			var iIndex = oTable.getSelectedIndices();
@@ -1461,15 +1406,16 @@ sap.ui.define([
 					var obj = Context.getObject();
 					docExtIdAr.push(obj.extId);
 				});
-			}
-			
-			var uri = '/node/c_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC';
-			var link = document.createElement("a");
-				link.download = 'file.docx';
+				var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC&deb_or_cred=Cred';
+				var link = document.createElement("a");
+				link.download = 'PaymentOrder_credit.docx';
 				link.href = uri;
 				link.click();
+			} else {
+				MessageToast.show("Выделите хотя бы одну ПП в таблице дебета");
+			}
 		},
-		
+
 		onPrint_D: function (oEvent) {
 			var oTable = this.byId("Table_D");
 			var iIndex = oTable.getSelectedIndices();
@@ -1481,20 +1427,16 @@ sap.ui.define([
 					var obj = Context.getObject();
 					docExtIdAr.push(obj.extId);
 				});
-			}
-			
-			var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC';
-			var link = document.createElement("a");
-				link.download = 'file.docx';
+				var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC&deb_or_cred=Deb';
+				var link = document.createElement("a");
+				link.download = 'PaymentOrder_credit.docx';
 				link.href = uri;
 				link.click();
+			} else {
+				MessageToast.show("Выделите хотя бы одну ПП в таблице дебета");
+			}
 		},
-		
-		
-		
-		
-		
-		
+
 		onDownload_V_PDF: function (oEvent) {
 			MessageToast.show("В разработке");
 		},

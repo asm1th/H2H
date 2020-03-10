@@ -13,8 +13,15 @@
 				<!--</smartTable:customToolbar>-->
 				<!-- -->
 				<t:Table selectionMode="None" rows="{/}">
+					<!--<t:extension>-->
+					<!--	<m:OverflowToolbar>-->
+					<!--		<m:Title id="title" text="Записи"/>-->
+					<!--		<m:ToolbarSpacer/>-->
+					<!--		<m:Button icon="sap-icon://print" tooltip="Печать" press="onPrint_1" class="btn btn-bordered" enabled="fasle"/>-->
+					<!--	</m:OverflowToolbar>-->
+					<!--</t:extension>-->
 				    <t:rowSettingsTemplate>
-						<t:RowSettings highlight="{path:'status', formatter:'.formatRowHighlight'}"/>
+						<t:RowSettings highlight="{path:'status', formatter:'.formatter.formatRowHighlight'}"/>
 					</t:rowSettingsTemplate>
 					<t:columns>
 					    <t:Column>
@@ -29,68 +36,6 @@
 							<Label text="Текст сообщения"/>
 							<t:template><Text text="{description}"/></t:template>
 						</t:Column>
-						<!--<t:Column>-->
-						<!--	<Label text="Тип"/>-->
-						<!--	<t:template></t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="Время"/>-->
-						<!--	<t:template>-->
-						<!--		<Text text="{param1}"/>-->
-						<!--	</t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="Имя пользователя"/>-->
-						<!--	<t:template>-->
-						<!--		<Text text="С_Н_"/>-->
-						<!--	</t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="Банк"/>-->
-						<!--	<t:template>-->
-						<!--		<Text text="RAIF"/>-->
-						<!--	</t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="Д/К"/>-->
-						<!--	<t:template>-->
-						<!--		<Text text="S"/>-->
-						<!--	</t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="НомПоз"/>-->
-						<!--	<t:template>-->
-						<!--	    <Text text="38"/>-->
-						<!--	</t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="НомерДок"/>-->
-						<!--	<t:template><Text text="338"/></t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="Расчетный счет"/>-->
-						<!--	<t:template><Text text="4070281080000002"/></t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="Ключ банка"/>-->
-						<!--		<t:template><Text text="04452700"/></t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="Д/проводки"/>-->
-						<!--		<t:template><Text text="02.12.2019"/></t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="СбстБанк"/>-->
-						<!--		<t:template><Text text="RFC01"/></t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="БЕ"/>-->
-						<!--		<t:template><Text text="1000"/></t:template>-->
-						<!--</t:Column>-->
-						<!--<t:Column>-->
-						<!--	<Label text="Текст сообщения"/>-->
-						<!--	<t:template><Text text="Выписка успешно принята 02.12.2019 БЕ 1000 БИК 044525700 расч.счет 40702810800001400002"/></t:template>-->
-						<!--</t:Column>-->
 					</t:columns>
 				</t:Table>
 			<!--</smartTable:SmartTable>-->
