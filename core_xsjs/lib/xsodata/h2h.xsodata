@@ -13,7 +13,7 @@ service {
 	"RaiffeisenBank.Payer"					as "Payer"				key ("docExtId");
 	"RaiffeisenBank.Payee"					as "Payee"				key ("docExtId");
 	"RaiffeisenBank.Files"					as "Files"				key ("requestId")	create using "xsjs:dbf.xsjslib::fileUpload";
-	"RaiffeisenBank.Sign"					as "Sign"				key ("docExtId")	create using "xsjs:dbf.xsjslib::createSing"
+	"RaiffeisenBank.Sign"					as "Sign"				key ("docExtId, SN")	create using "xsjs:dbf.xsjslib::createSing"
 																						delete using "xsjs:dbf.xsjslib::deletSing";			
 																			
 	"cvStatement"							as "Statement"			key ("responseId")				navigates(	"Statement_ItemsCred" as "ItemsCred",

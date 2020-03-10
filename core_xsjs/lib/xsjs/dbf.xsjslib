@@ -485,6 +485,10 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 			StatementRaif.set('DOCTIME',statement.$.docTime);
 			StatementRaif.set('OUTBAL',statement.$.outBal);
 			StatementRaif.set('STMTDATE',statement.$.stmtDate);
+			StatementRaif.set('BEGINDATE',statement.$.beginDate);
+			StatementRaif.set('ENDDATE',statement.$.endDate);
+			StatementRaif.set('LASTMOVETDATE',statement.$.lastMovetDate);
+			StatementRaif.set('LASTSTMTDATE',statement.$.lastStmtDate);
 			StatementRaif.set('ENTERBAL',statement.$.enterBal);
 			
 			DtNow = Date(Date.now());
@@ -508,6 +512,7 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 					StatementItemsRaif.set('DC',						doc.$.dc);
 					StatementItemsRaif.set('DOCNUM',					doc.$.docNum);
 					StatementItemsRaif.set('DOCSUM',					doc.$.docSum);
+					StatementItemsRaif.set('DOCDATE',					doc.$.docDate);
 					StatementItemsRaif.set('OPERDATE',					doc.$.operDate);
 					StatementItemsRaif.set('PAYMENTORDER',				doc.$.paymentOrder);
 					StatementItemsRaif.set('PAYTKIND',					doc.$.paytKind);
@@ -529,7 +534,7 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 					StatementItemsRaif.set('PERSONALNAME',				doc.PersonalName[0]);
 					StatementItemsRaif.set('PURPOSE',					doc.Purpose[0]);
 					StatementItemsRaif.set('CBC',						doc.DepartmentalInfo[0].$.cbc);
-					StatementItemsRaif.set('DOCDATE',					doc.DepartmentalInfo[0].$.docDate);
+					StatementItemsRaif.set('DDOCDATE',					doc.DepartmentalInfo[0].$.docDate);
 					StatementItemsRaif.set('DOCNO',						doc.DepartmentalInfo[0].$.docNo);
 					StatementItemsRaif.set('DRAWERSTATUS',				doc.DepartmentalInfo[0].$.drawerStatus);
 					StatementItemsRaif.set('OKATO',						doc.DepartmentalInfo[0].$.okato);
@@ -687,9 +692,9 @@ function deletSing(param){
   //  	sign.Issuer =			rs.getString(4);
 		// sign.DigestName =		rs.getString(5);
 		// sign.DigestVersion =	rs.getString(6);
-		sign.SignType = 		rs.getString(7);
-		sign.Fio =				rs.getString(8);
-		sign.Position = 		rs.getString(9);
+		// sign.SignType = 		rs.getString(7);
+		// sign.Fio =				rs.getString(8);
+		// sign.Position = 		rs.getString(9);
 	}
 	pStmt.close();
 	var salesOrderId = '';
@@ -724,28 +729,35 @@ function deletPaymentOrder(param){
 	if(PaymentOrder.docExtId === ''){
 		throw new error("Invalid docExtId.");
 	}else{
-	    pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayDocRu\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
-		pStmt.executeUpdate();
+	 //   pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayDocRu\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		// pStmt.executeUpdate();
 		
-		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TAccDoc\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
-		pStmt.executeUpdate();
+		// pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TAccDoc\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		// pStmt.executeUpdate();
 		
-		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayer\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
-		pStmt.executeUpdate();
+		// pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayer\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		// pStmt.executeUpdate();
 		
-		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayee\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
-		pStmt.executeUpdate();
+		// pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayee\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		// pStmt.executeUpdate();
 		
-		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TDepartmentalInfo\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
-		pStmt.executeUpdate();
+		// pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TDepartmentalInfo\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		// pStmt.executeUpdate();
 		
-		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TSign\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
-		pStmt.executeUpdate();
+		// pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TSign\" where \"DOCEXTID\" = '"+PaymentOrder.docExtId+"'");
+		// pStmt.executeUpdate();
 	    
-	    param.connection.commit();
-	    pStmt.close();
-	    
-	    historyAdd(param, PaymentOrder.docExtId, 'Deleting', 'success', 'Успешно удален');
+	 //   param.connection.commit();
+	 //   pStmt.close();
+		try {
+			pStmt = param.connection.prepareStatement("Update \"RaiffeisenBank.TPayDocRu\" set \"STATUS\" = ? Where \"DOCEXTID\"='" + PaymentOrder.docExtId + "'");
+		    pStmt.setInt(1, 99);
+		    pStmt.execute();
+		    pStmt.close();
+		    historyAdd(param, PaymentOrder.docExtId, 'Deleting', 'success', 'Успешно удален');
+		} catch (err) {
+			pStmt.close();
+		}
 	}
 }
 

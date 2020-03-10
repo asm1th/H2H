@@ -78,6 +78,10 @@ BANKID;DOCUMENTTYPEID;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSO
 1;2;"0.1";"Statement";"Str";"DOCTIME";"";"X";
 1;2;"0.1";"Statement";"Str";"OUTBAL";"";"X";
 1;2;"0.1";"Statement";"Str";"STMTDATE";"";"X";
+1;2;"0.1";"Statement";"Str";"BEGINDATE";"";"X";
+1;2;"0.1";"Statement";"Str";"ENDDATE";"";"X";
+1;2;"0.1";"Statement";"Str";"LASTMOVETDATE";"";"X";
+1;2;"0.1";"Statement";"Str";"LASTSTMTDATE";"";"X";
 1;2;"0.1";"Statement";"Str";"ENTERBAL";"";"X";
 1;2;"0.1";"Statement";"Int";"STMTTYPE";"";"X";
 1;2;"0.1";"Statement";"Str";"DOCNUM";"";"";
@@ -88,6 +92,7 @@ BANKID;DOCUMENTTYPEID;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSO
 1;2;"0.1";"StatementItems";"Int";"DC";"";"";
 1;2;"0.1";"StatementItems";"Str";"DOCNUM";"";"";
 1;2;"0.1";"StatementItems";"Str";"DOCSUM";"";"";
+1;2;"0.1";"StatementItems";"Str";"DOCDATE";"";"";
 1;2;"0.1";"StatementItems";"Str";"OPERDATE";"";"";
 1;2;"0.1";"StatementItems";"Str";"PAYMENTORDER";"";"";
 1;2;"0.1";"StatementItems";"Str";"PAYTKIND";"";"";
@@ -109,7 +114,7 @@ BANKID;DOCUMENTTYPEID;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSO
 1;2;"0.1";"StatementItems";"Str";"PERSONALNAME";"";"";
 1;2;"0.1";"StatementItems";"Str";"PURPOSE";"";"";
 1;2;"0.1";"StatementItems";"Str";"CBC";"";"";
-1;2;"0.1";"StatementItems";"Str";"DOCDATE";"";"";
+1;2;"0.1";"StatementItems";"Str";"DDOCDATE";"";"";
 1;2;"0.1";"StatementItems";"Str";"DOCNO";"";"";
 1;2;"0.1";"StatementItems";"Str";"DRAWERSTATUS";"";"";
 1;2;"0.1";"StatementItems";"Str";"OKATO";"";"";

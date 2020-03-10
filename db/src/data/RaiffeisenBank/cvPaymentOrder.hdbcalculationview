@@ -4,644 +4,191 @@
 <localVariables/>
 <variableMappings/>
 <dataSources>
-  <DataSource id="RaiffeisenBank.TPayDocRu">
-    <resourceUri>RaiffeisenBank.TPayDocRu</resourceUri>
-  </DataSource>
-  <DataSource id="RaiffeisenBank.TStatus">
-    <resourceUri>RaiffeisenBank.TStatus</resourceUri>
-  </DataSource>
-  <DataSource id="RaiffeisenBank.TAccDoc">
-    <resourceUri>RaiffeisenBank.TAccDoc</resourceUri>
-  </DataSource>
-  <DataSource id="RaiffeisenBank.TPayer">
-    <resourceUri>RaiffeisenBank.TPayer</resourceUri>
-  </DataSource>
-  <DataSource id="RaiffeisenBank.TPayee">
-    <resourceUri>RaiffeisenBank.TPayee</resourceUri>
-  </DataSource>
-  <DataSource id="RaiffeisenBank.TDepartmentalInfo">
-    <resourceUri>RaiffeisenBank.TDepartmentalInfo</resourceUri>
+  <DataSource id="RaiffeisenBank.PaymentOrder">
+    <resourceUri>RaiffeisenBank.PaymentOrder</resourceUri>
   </DataSource>
 </dataSources>
-<calculationViews>
-  <calculationView xsi:type="Calculation:ProjectionView" id="_PayDocRu">
-    <viewAttributes>
-      <viewAttribute id="requestId"/>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="statusId"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="RaiffeisenBank.TPayDocRu">
-      <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="REQUESTID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="DOCEXTID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="statusId" source="STATUS"/>
-    </input>
-  </calculationView>
-  <calculationView xsi:type="Calculation:ProjectionView" id="_Status">
-    <viewAttributes>
-      <viewAttribute id="id"/>
-      <viewAttribute id="status"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="RaiffeisenBank.TStatus">
-      <mapping xsi:type="Calculation:AttributeMapping" target="id" source="ID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="status" source="DESCRIPTION"/>
-    </input>
-  </calculationView>
-  <calculationView xsi:type="Calculation:ProjectionView" id="_AccDoc">
-    <viewAttributes>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="purpose"/>
-      <viewAttribute id="docDate"/>
-      <viewAttribute id="docNum"/>
-      <viewAttribute id="docSum"/>
-      <viewAttribute id="vatSum"/>
-      <viewAttribute id="vatRate"/>
-      <viewAttribute id="vat"/>
-      <viewAttribute id="transKind"/>
-      <viewAttribute id="paytKind"/>
-      <viewAttribute id="paytCode"/>
-      <viewAttribute id="priority"/>
-      <viewAttribute id="codeVO"/>
-      <viewAttribute id="nodocs"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="RaiffeisenBank.TAccDoc">
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="DOCEXTID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="purpose" source="PURPOSE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docDate" source="DOCDATE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docNum" source="DOCNUM"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docSum" source="DOCSUM"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatSum" source="VATSUM"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatRate" source="VATRATE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vat" source="VAT"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="transKind" source="TRANSKIND"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytKind" source="PAYTKIND"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytCode" source="PAYTCODE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="priority" source="PRIORITY"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="codeVO" source="CODEVO"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="nodocs" source="NODOCS"/>
-    </input>
-  </calculationView>
-  <calculationView xsi:type="Calculation:ProjectionView" id="_Payer">
-    <viewAttributes>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="payerInn"/>
-      <viewAttribute id="payerKpp"/>
-      <viewAttribute id="payerPersonalAcc"/>
-      <viewAttribute id="payerName"/>
-      <viewAttribute id="payerBankBic"/>
-      <viewAttribute id="payerBankCorrespAcc"/>
-      <viewAttribute id="payerBankName"/>
-      <viewAttribute id="payerBankBankCity"/>
-      <viewAttribute id="payerBankSettlementType"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="RaiffeisenBank.TPayer">
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="DOCEXTID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerInn" source="PAYERINN"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerKpp" source="PAYERKPP"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerPersonalAcc" source="PAYERPERSONALACC"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerName" source="PAYERNAME"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBic" source="PAYERBANKBIC"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankCorrespAcc" source="PAYERBANKCORRESPACC"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankName" source="PAYERBANKNAME"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBankCity" source="PAYERBANKCITY"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankSettlementType" source="PAYERBANKSETTLEMENTTYPE"/>
-    </input>
-  </calculationView>
-  <calculationView xsi:type="Calculation:ProjectionView" id="_Payee">
-    <viewAttributes>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="payeeInn"/>
-      <viewAttribute id="payeeKpp"/>
-      <viewAttribute id="payeePersonalAcc"/>
-      <viewAttribute id="payeeUip"/>
-      <viewAttribute id="payeeName"/>
-      <viewAttribute id="payeeBankBic"/>
-      <viewAttribute id="payeeBankCorrespAcc"/>
-      <viewAttribute id="payeeBankName"/>
-      <viewAttribute id="payeeBankBankCity"/>
-      <viewAttribute id="payeeBankSettlementType"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="RaiffeisenBank.TPayee">
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="DOCEXTID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeInn" source="PAYEEINN"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeKpp" source="PAYEEKPP"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeePersonalAcc" source="PAYEEPERSONALACC"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeName" source="PAYEENAME"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankBic" source="PAYEEBANKBIC"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankCorrespAcc" source="PAYEEBANKCORRESPACC"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankName" source="PAYEEBANKNAME"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankBankCity" source="PAYEEBANKCITY"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankSettlementType" source="PAYEEBANKSETTLEMENTTYPE"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeUip" source="PAYEEUIP"/>
-    </input>
-  </calculationView>
-  <calculationView xsi:type="Calculation:ProjectionView" id="_DepartmentalInfo">
-    <viewAttributes>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="drawerStatus"/>
-      <viewAttribute id="cbc"/>
-      <viewAttribute id="okato"/>
-      <viewAttribute id="paytReason"/>
-      <viewAttribute id="taxPeriod"/>
-      <viewAttribute id="taxPaytKind"/>
-      <viewAttribute id="depDocNo"/>
-      <viewAttribute id="depDocDate"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="RaiffeisenBank.TDepartmentalInfo">
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="DOCEXTID"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="drawerStatus" source="DRAWERSTATUS"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="cbc" source="CBC"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="okato" source="OKATO"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytReason" source="PAYTREASON"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="taxPeriod" source="TAXPERIOD"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="taxPaytKind" source="TAXPAYTKIND"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="depDocNo" source="DEPDOCNO"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="depDocDate" source="DEPDOCDATE"/>
-    </input>
-  </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="C1_1" joinType="leftOuter">
-    <viewAttributes>
-      <viewAttribute id="requestId"/>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="status"/>
-      <viewAttribute hidden="true" id="JOIN$statusId$id"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="_PayDocRu">
-      <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$statusId$id" source="statusId"/>
-    </input>
-    <input node="_Status">
-      <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$statusId$id" source="id"/>
-    </input>
-    <joinAttribute name="JOIN$statusId$id"/>
-  </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="Join_2" cardinality="CN_N" joinType="leftOuter">
-    <viewAttributes>
-      <viewAttribute id="requestId"/>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="status"/>
-      <viewAttribute id="purpose"/>
-      <viewAttribute id="docDate"/>
-      <viewAttribute id="docNum"/>
-      <viewAttribute id="docSum" aggregationType="sum"/>
-      <viewAttribute id="vatSum" aggregationType="sum"/>
-      <viewAttribute id="vatRate" aggregationType="sum"/>
-      <viewAttribute id="vat"/>
-      <viewAttribute id="transKind"/>
-      <viewAttribute id="paytKind"/>
-      <viewAttribute id="paytCode"/>
-      <viewAttribute id="priority" aggregationType="sum"/>
-      <viewAttribute id="codeVO"/>
-      <viewAttribute id="nodocs" aggregationType="sum"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="Join_1">
-      <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
-    </input>
-    <input node="_AccDoc">
-      <mapping xsi:type="Calculation:AttributeMapping" target="purpose" source="purpose"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docDate" source="docDate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docNum" source="docNum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docSum" source="docSum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatSum" source="vatSum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatRate" source="vatRate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vat" source="vat"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="transKind" source="transKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytKind" source="paytKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytCode" source="paytCode"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="priority" source="priority"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="codeVO" source="codeVO"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="nodocs" source="nodocs"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-    </input>
-    <joinAttribute name="docExtId"/>
-  </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="Join_3" cardinality="C1_1" joinType="leftOuter">
-    <viewAttributes>
-      <viewAttribute id="requestId"/>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="status"/>
-      <viewAttribute id="purpose"/>
-      <viewAttribute id="docDate"/>
-      <viewAttribute id="docNum"/>
-      <viewAttribute id="docSum" aggregationType="sum"/>
-      <viewAttribute id="vatSum" aggregationType="sum"/>
-      <viewAttribute id="vatRate" aggregationType="sum"/>
-      <viewAttribute id="vat"/>
-      <viewAttribute id="transKind"/>
-      <viewAttribute id="paytKind"/>
-      <viewAttribute id="paytCode"/>
-      <viewAttribute id="priority" aggregationType="sum"/>
-      <viewAttribute id="codeVO"/>
-      <viewAttribute id="nodocs" aggregationType="sum"/>
-      <viewAttribute id="payerInn"/>
-      <viewAttribute id="payerKpp"/>
-      <viewAttribute id="payerPersonalAcc"/>
-      <viewAttribute id="payerName"/>
-      <viewAttribute id="payerBankBic"/>
-      <viewAttribute id="payerBankCorrespAcc"/>
-      <viewAttribute id="payerBankName"/>
-      <viewAttribute id="payerBankBankCity"/>
-      <viewAttribute id="payerBankSettlementType"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="Join_2">
-      <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="purpose" source="purpose"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docDate" source="docDate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docNum" source="docNum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docSum" source="docSum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatSum" source="vatSum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatRate" source="vatRate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vat" source="vat"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="transKind" source="transKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytKind" source="paytKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytCode" source="paytCode"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="priority" source="priority"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="codeVO" source="codeVO"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="nodocs" source="nodocs"/>
-    </input>
-    <input node="_Payer">
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerInn" source="payerInn"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerKpp" source="payerKpp"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerPersonalAcc" source="payerPersonalAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerName" source="payerName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBic" source="payerBankBic"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankCorrespAcc" source="payerBankCorrespAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankName" source="payerBankName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBankCity" source="payerBankBankCity"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankSettlementType" source="payerBankSettlementType"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-    </input>
-    <joinAttribute name="docExtId"/>
-  </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="Join_4" cardinality="C1_1" joinType="leftOuter">
-    <viewAttributes>
-      <viewAttribute id="requestId"/>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="status"/>
-      <viewAttribute id="purpose"/>
-      <viewAttribute id="docDate"/>
-      <viewAttribute id="docNum"/>
-      <viewAttribute id="docSum" aggregationType="sum"/>
-      <viewAttribute id="vatSum" aggregationType="sum"/>
-      <viewAttribute id="vatRate" aggregationType="sum"/>
-      <viewAttribute id="vat"/>
-      <viewAttribute id="transKind"/>
-      <viewAttribute id="paytKind"/>
-      <viewAttribute id="paytCode"/>
-      <viewAttribute id="priority" aggregationType="sum"/>
-      <viewAttribute id="codeVO"/>
-      <viewAttribute id="nodocs" aggregationType="sum"/>
-      <viewAttribute id="payerInn"/>
-      <viewAttribute id="payerKpp"/>
-      <viewAttribute id="payerPersonalAcc"/>
-      <viewAttribute id="payerName"/>
-      <viewAttribute id="payerBankBic"/>
-      <viewAttribute id="payerBankCorrespAcc"/>
-      <viewAttribute id="payerBankName"/>
-      <viewAttribute id="payerBankBankCity"/>
-      <viewAttribute id="payerBankSettlementType"/>
-      <viewAttribute id="payeeInn"/>
-      <viewAttribute id="payeeKpp"/>
-      <viewAttribute id="payeePersonalAcc"/>
-      <viewAttribute id="payeeUip"/>
-      <viewAttribute id="payeeName"/>
-      <viewAttribute id="payeeBankBic"/>
-      <viewAttribute id="payeeBankCorrespAcc"/>
-      <viewAttribute id="payeeBankName"/>
-      <viewAttribute id="payeeBankBankCity"/>
-      <viewAttribute id="payeeBankSettlementType"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="Join_3">
-      <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="purpose" source="purpose"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docDate" source="docDate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docNum" source="docNum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docSum" source="docSum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatSum" source="vatSum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatRate" source="vatRate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vat" source="vat"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="transKind" source="transKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytKind" source="paytKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytCode" source="paytCode"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="priority" source="priority"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="codeVO" source="codeVO"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="nodocs" source="nodocs"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerInn" source="payerInn"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerKpp" source="payerKpp"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerPersonalAcc" source="payerPersonalAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerName" source="payerName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBic" source="payerBankBic"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankCorrespAcc" source="payerBankCorrespAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankName" source="payerBankName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBankCity" source="payerBankBankCity"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankSettlementType" source="payerBankSettlementType"/>
-    </input>
-    <input node="_Payee">
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeInn" source="payeeInn"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeKpp" source="payeeKpp"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeePersonalAcc" source="payeePersonalAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeUip" source="payeeUip"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeName" source="payeeName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankBic" source="payeeBankBic"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankCorrespAcc" source="payeeBankCorrespAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankName" source="payeeBankName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankBankCity" source="payeeBankBankCity"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankSettlementType" source="payeeBankSettlementType"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-    </input>
-    <joinAttribute name="docExtId"/>
-  </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="Join_5" cardinality="C1_1" joinType="leftOuter">
-    <viewAttributes>
-      <viewAttribute id="requestId"/>
-      <viewAttribute id="docExtId"/>
-      <viewAttribute id="status"/>
-      <viewAttribute id="purpose"/>
-      <viewAttribute id="docDate"/>
-      <viewAttribute id="docNum"/>
-      <viewAttribute id="docSum" aggregationType="sum"/>
-      <viewAttribute id="vatSum" aggregationType="sum"/>
-      <viewAttribute id="vatRate" aggregationType="sum"/>
-      <viewAttribute id="vat"/>
-      <viewAttribute id="transKind"/>
-      <viewAttribute id="paytKind"/>
-      <viewAttribute id="paytCode"/>
-      <viewAttribute id="priority" aggregationType="sum"/>
-      <viewAttribute id="codeVO"/>
-      <viewAttribute id="nodocs" aggregationType="sum"/>
-      <viewAttribute id="payerInn"/>
-      <viewAttribute id="payerKpp"/>
-      <viewAttribute id="payerPersonalAcc"/>
-      <viewAttribute id="payerName"/>
-      <viewAttribute id="payerBankBic"/>
-      <viewAttribute id="payerBankCorrespAcc"/>
-      <viewAttribute id="payerBankName"/>
-      <viewAttribute id="payerBankBankCity"/>
-      <viewAttribute id="payerBankSettlementType"/>
-      <viewAttribute id="payeeInn"/>
-      <viewAttribute id="payeeKpp"/>
-      <viewAttribute id="payeePersonalAcc"/>
-      <viewAttribute id="payeeUip"/>
-      <viewAttribute id="payeeName"/>
-      <viewAttribute id="payeeBankBic"/>
-      <viewAttribute id="payeeBankCorrespAcc"/>
-      <viewAttribute id="payeeBankName"/>
-      <viewAttribute id="payeeBankBankCity"/>
-      <viewAttribute id="payeeBankSettlementType"/>
-      <viewAttribute id="drawerStatus"/>
-      <viewAttribute id="cbc"/>
-      <viewAttribute id="okato"/>
-      <viewAttribute id="paytReason"/>
-      <viewAttribute id="taxPeriod"/>
-      <viewAttribute id="taxPaytKind"/>
-      <viewAttribute id="depDocNo"/>
-      <viewAttribute id="depDocDate"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="Join_4">
-      <mapping xsi:type="Calculation:AttributeMapping" target="requestId" source="requestId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="status" source="status"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="purpose" source="purpose"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docDate" source="docDate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docNum" source="docNum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docSum" source="docSum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatSum" source="vatSum"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vatRate" source="vatRate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="vat" source="vat"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="transKind" source="transKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytKind" source="paytKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytCode" source="paytCode"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="priority" source="priority"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="codeVO" source="codeVO"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="nodocs" source="nodocs"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerInn" source="payerInn"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerKpp" source="payerKpp"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerPersonalAcc" source="payerPersonalAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerName" source="payerName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBic" source="payerBankBic"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankCorrespAcc" source="payerBankCorrespAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankName" source="payerBankName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankBankCity" source="payerBankBankCity"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payerBankSettlementType" source="payerBankSettlementType"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeInn" source="payeeInn"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeKpp" source="payeeKpp"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeePersonalAcc" source="payeePersonalAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeUip" source="payeeUip"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeName" source="payeeName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankBic" source="payeeBankBic"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankCorrespAcc" source="payeeBankCorrespAcc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankName" source="payeeBankName"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankBankCity" source="payeeBankBankCity"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="payeeBankSettlementType" source="payeeBankSettlementType"/>
-    </input>
-    <input node="_DepartmentalInfo">
-      <mapping xsi:type="Calculation:AttributeMapping" target="drawerStatus" source="drawerStatus"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="cbc" source="cbc"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="okato" source="okato"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="paytReason" source="paytReason"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="taxPeriod" source="taxPeriod"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="taxPaytKind" source="taxPaytKind"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="depDocNo" source="depDocNo"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="depDocDate" source="depDocDate"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="docExtId" source="docExtId"/>
-    </input>
-    <joinAttribute name="docExtId"/>
-  </calculationView>
-</calculationViews>
-<logicalModel id="Join_5">
+<calculationViews/>
+<logicalModel id="RaiffeisenBank.PaymentOrder">
   <attributes>
     <attribute id="requestId" order="1" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="requestId"/>
-      <keyMapping columnObjectName="Join_5" columnName="requestId"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="requestId"/>
     </attribute>
     <attribute id="docExtId" order="2" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="docExtId"/>
-      <keyMapping columnObjectName="Join_5" columnName="docExtId"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="docExtId"/>
     </attribute>
     <attribute id="status" order="3" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="status"/>
-      <keyMapping columnObjectName="Join_5" columnName="status"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="status"/>
     </attribute>
     <attribute id="purpose" order="4" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="purpose"/>
-      <keyMapping columnObjectName="Join_5" columnName="purpose"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="purpose"/>
     </attribute>
     <attribute id="docDate" order="5" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="docDate"/>
-      <keyMapping columnObjectName="Join_5" columnName="docDate"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="docDate"/>
     </attribute>
     <attribute id="docNum" order="6" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="docNum"/>
-      <keyMapping columnObjectName="Join_5" columnName="docNum"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="docNum"/>
     </attribute>
-    <attribute id="vatRate" order="9" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="vatRate" order="9">
       <descriptions defaultDescription="vatRate"/>
-      <keyMapping columnObjectName="Join_5" columnName="vatRate"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="vatRate"/>
     </attribute>
     <attribute id="vat" order="10" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="vat"/>
-      <keyMapping columnObjectName="Join_5" columnName="vat"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="vat"/>
     </attribute>
     <attribute id="transKind" order="11" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="transKind"/>
-      <keyMapping columnObjectName="Join_5" columnName="transKind"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="transKind"/>
     </attribute>
     <attribute id="paytKind" order="12" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="paytKind"/>
-      <keyMapping columnObjectName="Join_5" columnName="paytKind"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="paytKind"/>
     </attribute>
     <attribute id="paytCode" order="13" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="paytCode"/>
-      <keyMapping columnObjectName="Join_5" columnName="paytCode"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="paytCode"/>
     </attribute>
-    <attribute id="priority" order="14" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="priority" order="14">
       <descriptions defaultDescription="priority"/>
-      <keyMapping columnObjectName="Join_5" columnName="priority"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="priority"/>
     </attribute>
     <attribute id="codeVO" order="15" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="codeVO"/>
-      <keyMapping columnObjectName="Join_5" columnName="codeVO"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="codeVO"/>
     </attribute>
-    <attribute id="nodocs" order="16" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="nodocs" order="16">
       <descriptions defaultDescription="nodocs"/>
-      <keyMapping columnObjectName="Join_5" columnName="nodocs"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="nodocs"/>
     </attribute>
     <attribute id="payerInn" order="17" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerInn"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerInn"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerInn"/>
     </attribute>
     <attribute id="payerKpp" order="18" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerKpp"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerKpp"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerKpp"/>
     </attribute>
     <attribute id="payerPersonalAcc" order="19" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerPersonalAcc"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerPersonalAcc"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerPersonalAcc"/>
     </attribute>
     <attribute id="payerName" order="20" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerName"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerName"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerName"/>
     </attribute>
     <attribute id="payerBankBic" order="21" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerBankBic"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerBankBic"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerBankBic"/>
     </attribute>
     <attribute id="payerBankCorrespAcc" order="22" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerBankCorrespAcc"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerBankCorrespAcc"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerBankCorrespAcc"/>
     </attribute>
     <attribute id="payerBankName" order="23" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerBankName"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerBankName"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerBankName"/>
     </attribute>
     <attribute id="payerBankBankCity" order="24" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerBankBankCity"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerBankBankCity"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerBankBankCity"/>
     </attribute>
     <attribute id="payerBankSettlementType" order="25" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payerBankSettlementType"/>
-      <keyMapping columnObjectName="Join_5" columnName="payerBankSettlementType"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payerBankSettlementType"/>
     </attribute>
     <attribute id="payeeInn" order="26" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeInn"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeInn"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeInn"/>
     </attribute>
     <attribute id="payeeKpp" order="27" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeKpp"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeKpp"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeKpp"/>
     </attribute>
     <attribute id="payeePersonalAcc" order="28" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeePersonalAcc"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeePersonalAcc"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeePersonalAcc"/>
     </attribute>
     <attribute id="payeeUip" order="29" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeUip"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeUip"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeUip"/>
     </attribute>
     <attribute id="payeeName" order="30" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeName"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeName"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeName"/>
     </attribute>
     <attribute id="payeeBankBic" order="31" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeBankBic"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeBankBic"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeBankBic"/>
     </attribute>
     <attribute id="payeeBankCorrespAcc" order="32" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeBankCorrespAcc"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeBankCorrespAcc"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeBankCorrespAcc"/>
     </attribute>
     <attribute id="payeeBankName" order="33" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeBankName"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeBankName"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeBankName"/>
     </attribute>
     <attribute id="payeeBankBankCity" order="34" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeBankBankCity"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeBankBankCity"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeBankBankCity"/>
     </attribute>
     <attribute id="payeeBankSettlementType" order="35" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="payeeBankSettlementType"/>
-      <keyMapping columnObjectName="Join_5" columnName="payeeBankSettlementType"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="payeeBankSettlementType"/>
     </attribute>
     <attribute id="drawerStatus" order="36" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="drawerStatus"/>
-      <keyMapping columnObjectName="Join_5" columnName="drawerStatus"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="drawerStatus"/>
     </attribute>
     <attribute id="cbc" order="37" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="cbc"/>
-      <keyMapping columnObjectName="Join_5" columnName="cbc"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="cbc"/>
     </attribute>
     <attribute id="okato" order="38" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="okato"/>
-      <keyMapping columnObjectName="Join_5" columnName="okato"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="okato"/>
     </attribute>
     <attribute id="paytReason" order="39" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="paytReason"/>
-      <keyMapping columnObjectName="Join_5" columnName="paytReason"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="paytReason"/>
     </attribute>
     <attribute id="taxPeriod" order="40" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="taxPeriod"/>
-      <keyMapping columnObjectName="Join_5" columnName="taxPeriod"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="taxPeriod"/>
     </attribute>
-    <attribute id="taxPaytKind" order="41" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="taxPaytKind"/>
-      <keyMapping columnObjectName="Join_5" columnName="taxPaytKind"/>
-    </attribute>
-    <attribute id="depDocNo" order="42" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="depDocNo" order="41" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="depDocNo"/>
-      <keyMapping columnObjectName="Join_5" columnName="depDocNo"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="depDocNo"/>
     </attribute>
-    <attribute id="depDocDate" order="43" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="depDocDate" order="42" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="depDocDate"/>
-      <keyMapping columnObjectName="Join_5" columnName="depDocDate"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="depDocDate"/>
+    </attribute>
+    <attribute id="taxPaytKind" order="43" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="taxPaytKind"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="taxPaytKind"/>
+    </attribute>
+    <attribute id="signType" order="44" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="signType"/>
+      <keyMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="signType"/>
     </attribute>
   </attributes>
   <calculatedAttributes/>
   <baseMeasures>
     <measure id="docSum" order="7" aggregationType="sum" measureType="simple">
       <descriptions defaultDescription="docSum"/>
-      <measureMapping columnObjectName="Join_5" columnName="docSum"/>
+      <measureMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="docSum"/>
     </measure>
     <measure id="vatSum" order="8" aggregationType="sum" measureType="simple">
       <descriptions defaultDescription="vatSum"/>
-      <measureMapping columnObjectName="Join_5" columnName="vatSum"/>
+      <measureMapping columnObjectName="RaiffeisenBank.PaymentOrder" columnName="vatSum"/>
     </measure>
   </baseMeasures>
   <calculatedMeasures/>
@@ -651,95 +198,9 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="660.3038801290666" y="112"/>
+      <upperLeftCorner x="660" y="112"/>
     
       <rectangleSize width="160"/>
-    </shape>
-  
-    <shape expanded="true" modelObjectName="_PayDocRu" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="91.99999999999997" y="1016.9999940395355"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="_Status" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302.00000000000006" y="1016.9999940395355"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="_AccDoc" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="380.18794682697023" y="856.9999952316284"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="_Payer" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="474.7983235081821" y="696.9999964237213"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="_Payee" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="584.5795303100989" y="536.9999976158142"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="_DepartmentalInfo" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="708.3361339234377" y="376.9999988079071"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="118.6666666666666" y="856.9999952316284"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape modelObjectName="_PayDocRu" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="131.86376953125"/>
-    </shape>
-    <shape modelObjectName="_Status" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="115.34765625"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="145.33333333333337" y="696.9999964237213"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape modelObjectName="Join_1" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="131.86376953125"/>
-    </shape>
-    <shape modelObjectName="_AccDoc" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="133.08837890625"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Join_3" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="172" y="536.9999976158142"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape modelObjectName="Join_2" modelObjectNameSpace="Join_3" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="250"/>
-    </shape>
-    <shape modelObjectName="_Payer" modelObjectNameSpace="Join_3" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="250"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Join_4" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="198.66666666666663" y="376.9999988079071"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape modelObjectName="Join_3" modelObjectNameSpace="Join_4" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="250"/>
-    </shape>
-    <shape modelObjectName="_Payee" modelObjectNameSpace="Join_4" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="250"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Join_5" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="660.3038801290664" y="217"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape modelObjectName="Join_4" modelObjectNameSpace="Join_5" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="175.267578125"/>
-    </shape>
-    <shape modelObjectName="_DepartmentalInfo" modelObjectNameSpace="Join_5" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="169.3515625"/>
-    </shape>
-  </shapes>
+    </shape></shapes>
 </layout>
 </Calculation:scenario>

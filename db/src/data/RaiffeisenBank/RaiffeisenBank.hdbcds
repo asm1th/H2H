@@ -217,8 +217,8 @@ context RaiffeisenBank {
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
         key DOCEXTID      : t_uuid;
 
-            @Comment : 'Серийный номер сертификата'
-            SN            : t_str;
+        	@Comment : 'Серийный номер сертификата'
+        key SN            : t_str;
 
             @Comment : 'Значение ЭП'
             VALUE         : t_file;
@@ -270,7 +270,19 @@ context RaiffeisenBank {
 
             @Comment : 'Дата выписки'
             STMTDATE   : t_date;
+            
+            @Comment : 'Дата начала периода выписки'
+            BEGINDATE	: t_date;
 
+            @Comment : 'Дата окончания периода выписки'
+            ENDDATE	: t_date;
+            
+            @Comment : 'Дата последней операции по счету'
+            LASTMOVETDATE	: t_date;
+            
+            @Comment : 'Дата предыдущей операции по счету'
+            LASTSTMTDATE	: t_date;
+            
             @Comment : 'Входящий остаток'
             ENTERBAL   : t_sum;
 			
@@ -278,10 +290,12 @@ context RaiffeisenBank {
 			STMTTYPE : String(10);
 
             @Comment : 'Номер документа'
-            DOCNUM     : t_str_6;
-            _STITEMS   : association[1] to TStatementItems on _STITEMS.RESPONSEID	= RESPONSEID;
-            _STYPE      : association[1] to TStatementType on _STYPE.ID				= STMTTYPE;
-            _FILE      : association[1] to TFile           on _FILE.REQUESTID		= RESPONSEID;
+            DOCNUM  	: t_str_6;
+            _STITEMS	: association[1] to TStatementItems 	on _STITEMS.RESPONSEID	= RESPONSEID;
+            _ACC		: association[1] to H2H.AccountMapping	on _ACC.ACCOUNT			= ACC;
+            _STYPE      : association[1] to TStatementType		on _STYPE.ID			= STMTTYPE;
+            _FILE   	: association[1] to TFile           	on _FILE.REQUESTID		= RESPONSEID;
+            
     };
 
     entity TStatementItems {
@@ -458,7 +472,7 @@ context RaiffeisenBank {
             _DEPART.DEPDOCDATE             as depDocDate,
             _DEPART.TAXPAYTKIND            as taxPaytKind,
             _SIGN.SIGNTYPE                 as signType
-        };
+        }Where _STATUS.ID <> 99;
 
     define view Extract as
         select from TPayDocRu
@@ -618,6 +632,7 @@ context RaiffeisenBank {
         {
             RESPONSEID  		as responseId,
             ACC					as acc,
+            _ACC.ORGANIZATION	as organization,
             BIC         		as bic,
             DEBETSUM			as debetSum,
             CREDITSUM			as creditSum,
@@ -625,6 +640,10 @@ context RaiffeisenBank {
             DOCTIME     		as docTime,
             OUTBAL      		as outBal,
             STMTDATE    		as stmtDate,
+            BEGINDATE			as beginDate,
+            ENDDATE				as endDate,
+            LASTMOVETDATE		as lastMovetDate,
+            LASTSTMTDATE		as lastStmtDate,
             ENTERBAL    		as enterBal,
             DOCNUM      		as docNum,
             _STYPE.ID			as stmtTypeId,
