@@ -679,8 +679,9 @@ function updateAccDoc(param){
 }
 
 function deletSing(param){
-	var after = param.afterTableName;
-	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
+	// var after = param.afterTableName;
+	var before = param.beforeTableName;
+	var pStmt = param.connection.prepareStatement("select * from \"" + before + "\"");
 	rs = null;
 	rs = pStmt.executeQuery();
 	var fileBody = null;
