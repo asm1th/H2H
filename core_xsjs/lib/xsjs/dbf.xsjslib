@@ -703,7 +703,7 @@ function deletSing(param){
 	rs = pStmt.executeQuery();
 	while(rs.next()){
 		docExtId = rs.getString(1);
-		SignType = rs.getString(2);
+		raif.signName = rs.getString(2);
 	}
 	pStmt.close();
 	
@@ -714,6 +714,27 @@ function deletSing(param){
 	    pStmt.executeUpdate();
 	    param.connection.commit();
 	    pStmt.close();
+	    
+	    pStmt = param.connection.prepareStatement("select \"STATUS\" from \"H2H.AccountMapping\" where \"ACCOUNT\"='" + raif.payerPersonalAcc + "' and \"SIGNORDER\"=" + raif.signOrder );
+		rs = null;
+		rs = pStmt.executeQuery();
+		while (rs.next()) {
+			raif.status = rs.getInt(1);
+		}
+		pStmt.close();
+		if(raif.status == 4){
+			raif.status = 3;
+		}else if(raif.status == 3){
+			raif.status = 1;
+		}
+		
+		pStmt = param.connection.prepareStatement("Update \"RaiffeisenBank.TPayDocRu\" set \"STATUS\" = ? Where \"DOCEXTID\"='" + sign.docExtId + "'");
+		pStmt.setInt(1, raif.status);
+		pStmt.execute();
+		pStmt.close();
+		historyAdd(param, sign.docExtId, 'Отзыв ЭЦП', 'success', raif.signName);
+		
+		
 	}
 }
 
