@@ -708,6 +708,13 @@ function deletSing(param){
 	}
 	pStmt.close();
 	
+	pStmt = param.connection.prepareStatement("select COUNT(*) from \"RaiffeisenBank.TSign\" where \"DOCEXTID\" = '"+sign.docExtId+"'");
+	rs = pStmt.executeQuery();
+	while(rs.next()){
+		raif.signCount = rs.getInt(1);
+	}
+	pStmt.close();
+
 	if(docExtId === ''){
 		throw new error("Invalid Sales Order ID.");
 	}else{
@@ -715,17 +722,11 @@ function deletSing(param){
 	    pStmt.executeUpdate();
 	    param.connection.commit();
 	    pStmt.close();
-	    
-	    pStmt = param.connection.prepareStatement("select \"STATUS\" from \"H2H.AccountMapping\" where \"ACCOUNT\"='" + raif.payerPersonalAcc + "' and \"SIGNORDER\"=" + raif.signOrder );
-		rs = null;
-		rs = pStmt.executeQuery();
-		while (rs.next()) {
-			raif.status = rs.getInt(1);
-		}
+
 		pStmt.close();
-		if(raif.status == 4){
+		if(raif.signCount > 1){
 			raif.status = 3;
-		}else if(raif.status == 3){
+		}else if(raif.status = 1){
 			raif.status = 1;
 		}
 		
