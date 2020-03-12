@@ -337,7 +337,7 @@
 					<Record Type="UI.PresentationVariantType">
 						<PropertyValue Property="RequestAtLeast">
 							<Collection>
-								<PropertyPath>ID</PropertyPath>
+								<!--<PropertyPath>ID</PropertyPath>-->
 								<PropertyPath>responseId</PropertyPath>
 								<PropertyPath>bic</PropertyPath>
 								<PropertyPath>acc</PropertyPath>
@@ -349,8 +349,8 @@
 								<PropertyPath>creditSum</PropertyPath>
 								<PropertyPath>outBal</PropertyPath>
 								<PropertyPath>enterBal</PropertyPath>
-								<!--<PropertyPath>stmtType</PropertyPath>-->
-								<!--<PropertyPath>stmtTypeId</PropertyPath>-->
+								<PropertyPath>stmtType</PropertyPath>
+								<PropertyPath>stmtTypeId</PropertyPath>
 							</Collection>
 						</PropertyValue>
 					</Record>
@@ -382,11 +382,11 @@
 							<PropertyValue Property="Label" String="Счет клиента"/>
 							<Annotation Term="Common.QuickInfo" String="Счет клиента"/>
 						</Record>
-						<!--<Record Type="UI.DataField">-->
-						<!--	<PropertyValue Property="Value" Path="stmtType"/>-->
-						<!--	<PropertyValue Property="Label" String="Тип выписки"/>-->
-						<!--	<Annotation Term="Common.QuickInfo" String="Тип выписки"/>-->
-						<!--</Record>-->
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="stmtType"/>
+							<PropertyValue Property="Label" String="Тип выписки"/>
+							<Annotation Term="Common.QuickInfo" String="Тип выписки"/>
+						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="stmtTypeId"/>
 							<PropertyValue Property="Label" String="Статус выписки"/>

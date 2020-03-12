@@ -9,7 +9,7 @@ function makeDocPdf(Data) {
 	var path = require('path');
 
 	//Load the docx file as a binary
-	var content = fs.readFileSync(path.resolve(__dirname, 'doctemplates/ptemplate1.docx'), 'binary');
+	var content = fs.readFileSync(path.resolve(__dirname, 'doctemplates/vtemplate.docx'), 'binary');
 
 	var zip = new PizZip(content);
 
@@ -20,7 +20,6 @@ function makeDocPdf(Data) {
 	doc.setData(Data);
 
 	try {
-		// render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
 		doc.render()
 	} catch (error) {
 		// The error thrown here contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
@@ -67,7 +66,7 @@ function _getDocSumPropis(Data) {
 		},
 		convertNumbertToWords: {
 			integer: true,
-			fractional: true,
+			fractional: false,
 		},
 		showCurrency: {
 			integer: true,
@@ -78,7 +77,7 @@ function _getDocSumPropis(Data) {
 };
 
 router.get('/', function (req, res, next) {
-	// var docExtId = "df5a0424-441a-4731-eabd-19de2794671e"; ec605643-0842-5e1c-49e1-45b5008cfb42
+	// var responseId = "f6197de1-8c6a-e165-8370-22714fa32d66,6c0fc4e3-b305-b801-3bec-5ac501fac6f1"
 	// https://host-to-host.cfapps.eu10.hana.ondemand.com/node/exportbytemplate?docExtIds=01b00858-57c0-81ac-6f69-1a2f94e20d86,89625293-3a4f-8437-75e5-079f8003c5e3
 	// var ids = req.body.docExtIds.split(","); //post
 	var ids = req.query.responseIds.split(","); //get
@@ -90,55 +89,44 @@ router.get('/', function (req, res, next) {
 			idString += "'" + id + "',";
 		});
 		idString = idString.substring(0, idString.length - 1);
-		var sql = 'Select * From "cvStatement" Where "responseId" IN (' + idString + ')';
-		// var sql = 'Select "DOCEXTID","PURPOSE" From "RaiffeisenBank.TAccDoc" Where "DOCEXTID" IN (' + idString + ')';
-
-		req.db.exec(sql, function (err, rows) {
+		var sql_stmnt = 'Select * From "cvStatement" Where "responseId" IN (' + idString + ')';
+		var sql_debCred = 'Select * From "RaiffeisenBank.TStatementItems" Where "RESPONSEID" IN (' + idString + ')';
+		
+		//var sqlPPCred = 'Select * From "RaiffeisenBank.StatementItemsCred" Where "extId" IN (' + idString + ')';
+		//var sqlPPDeb = 'Select * From "RaiffeisenBank.StatementItemsDeb" Where "extId" IN (' + idString + ')';
+		
+		var print = {};
+		req.db.exec(sql_stmnt, function (err, rows) {
 			if (err) {
 				console.log(err);
 				return next(err);
-				//print error
-				//res.send(err);
 			}
 			if (rows.length > 0) {
-				// rows.forEach(function (row, i) {
-				// 	rows.docSumPropis = _getDocSumPropis(row.docSum);
-				// 	console.log('docSumPropis ', row.docSum);
-				// 	console.log(rows.docSumPropis);
-				// })
-
-				//set the templateVariables
-				var docs = {
-					docs: rows
-				}
-				console.log('docs ', docs);
-
-				//res.send(rows);
-				//res.json(rows);
-
-				// dummie
-				// var docs = {
-				// 	"docs": [{/payerName: "docs"}, {payerName: "docs2"}]
-				// }
-
-				// EXPORT DOC =================================== 
-				// https://docxtemplater.readthedocs.io/en/latest/tag_types.html#loops
-
-				if (type == "DOC") {
-					var buffer = makeDocPdf(docs);
-					res.set('Content-Disposition', 'attachment; filename="Statement.docx"');
-					res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
-					var fileBase64String = buffer.toString('base64');
-					res.end(fileBase64String, 'base64');
-				} else {
-					//res.send('Type error (DOC-PDF)');
-					var buffer = makeDocPdf(docs);
-
-					res.set('Content-Disposition', 'attachment; filename="Statement.pdf"');
-					res.set('Content-Type', 'application/pdf');
-					var fileBase64String = buffer.toString('base64');
-					res.end(fileBase64String, 'base64');
-				}
+				print = rows[0];
+				//console.log('print ', print);
+				
+				req.db.exec(sql_debCred, function (err, rows) {
+					if (err) {console.log(err);return next(err);}
+					if (rows.length > 0) {
+						rows.forEach(function (row) {
+							if (row.DC == "1") {
+								row.isDebit = true;
+							} else if (row.DC == "2") {
+								row.isCredit = true;
+							} 
+						});
+						print.docs = rows;
+						console.log('print all ', print);
+					}
+					if (type == "DOC") {
+						var buffer = makeDocPdf(print);
+						
+						res.set('Content-Disposition', 'attachment; filename="Statement.docx"');
+						res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
+						var fileBase64String = buffer.toString('base64');
+						res.end(fileBase64String, 'base64');
+					}
+				});
 			} else {
 				res.send('Нет данных в БД');
 			}

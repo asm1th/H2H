@@ -98,6 +98,7 @@ sap.ui.define([
 
 			// Активация кнопок
 			this.byId("onSend").setEnabled(false);
+			this.byId("onUndoSign").setEnabled(false);
 		},
 
 		// remove test after
@@ -537,7 +538,8 @@ sap.ui.define([
 			var oModel = this.getOwnerComponent().getModel();
 
 			// Get file
-			var url = "/xsjs/download.xsjs";
+			// var url = "/xsjs/download.xsjs";
+			var url = "/download.xsjs";
 			$.ajax({
 				type: "GET",
 				url: url,
@@ -616,8 +618,10 @@ sap.ui.define([
 				});
 				this.getView().getModel("UIData").setProperty("/PaymentOrderTotal", PaymentOrderTotal);
 				this.byId("onSend").setEnabled(StatusEnableButton);
+				this.byId("onUndoSign").setEnabled(StatusEnableButton);
 			} else {
 				this.byId("onSend").setEnabled(false);
+				this.byId("onUndoSign").setEnabled(false);
 				this.getView().getModel("UIData").setProperty("/PaymentOrderTotal", 0);
 			}
 		},
@@ -906,27 +910,26 @@ sap.ui.define([
 			//var objSign = src.getModel().getProperty(ctx.getPath());
 			//var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
 			var docExtId = this._getDocExtId();
-
+            var SNarr = oEvent.getSource().getProperty("info").split(" ");
+            var SN = SNarr[2]; 
+            
 			var oEntry = {};
 			oEntry.docExtId = docExtId[0];
 			// oEntry.Value = Sign;
 			// oEntry.SN = objSign.SerialNumber;
 			// oEntry.Issuer = objSign.IssuerName;
 			// oEntry.Fio = objSign.SubjectName;
-			//debugger;
 			var oModel = this.getOwnerComponent().getModel();
-			// 			oModel.setHeaders({
-			// 				"X-Requested-With": "XMLHttpRequest",
-			// 				"Content-Type": "application/json",
-			// 				"X-CSRF-Token": "Fetch"
-			// 			});
 			var mParams = {};
+			var that = this;
 			mParams.success = function () {
+				var oSmartTable = that.byId("LineItemsSmartTable");
+				oSmartTable.rebindTable();
 				MessageToast.show("Подпись снята");
-				this.undoSignDialog.close();
+				that.undoSignDialog.close();
 			};
 			mParams.error = this._onErrorCall;
-			var Path = "/Sign(docExtId='" + docExtId + "')";
+			var Path = "/Sign(docExtId='" + docExtId + "',SN='" + SN + "')";
 			oModel.remove(Path, mParams);
 
 			this.undoSignDialog.close();
@@ -1016,7 +1019,6 @@ sap.ui.define([
 
 		// Получаем сертификаты пользователя
 		// return mySerts=[{}]
-
 		_getUserCertificates: function (oEvent) {
 			var mySerts = []; // сюда сложим все найденные сертификаты юзера
 			var CADESCOM_CADES_BES = 1;
@@ -1076,14 +1078,12 @@ sap.ui.define([
 			var objSign = src.getModel().getProperty(ctx.getPath());
 			var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
 
-			//var oModel = this.getView().getModel();
-			//var oModel = this.getOwnerComponent().getModel();
-			//var that = this;
 			var dataToSign = "Digest";
 			var docExtId = this._getDocExtId();
 
 			// get Digest HERE 
-			var url = "/xsjs/digest.xsjs";
+			//var url = "/xsjs/digest.xsjs";
+			var url = "/digest.xsjs";
 			$.ajax({
 				type: "GET",
 				url: url,
@@ -1161,11 +1161,6 @@ sap.ui.define([
 			// oEntry.Thumbprint = objSign.Thumbprint;
 
 			var oModel = this.getOwnerComponent().getModel();
-			oModel.setHeaders({
-				"X-Requested-With": "XMLHttpRequest",
-				"Content-Type": "application/json",
-				"X-CSRF-Token": "Fetch"
-			});
 			var mParams = {};
 			var that = this;
 			mParams.success = function () {
@@ -1309,7 +1304,7 @@ sap.ui.define([
 
 			//var dataSend = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
 			//window.location = '/node/pp_exportbytemplate?' + dataSend;
-			var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdsAr.join() + '&type=DOC&deb_or_cred=0';
+			var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdsAr.join() + '&type=DOC&debcred=0';
 			var link = document.createElement("a");
 			link.download = "PaymentOrder.docx";
 			link.href = uri;
@@ -1387,11 +1382,30 @@ sap.ui.define([
 					responseIdsAr.push(obj.responseId);
 				});
 				
-				var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
-				var link = document.createElement("a");
-				link.download = 'Statements.docx';
-				link.href = uri;
-				link.click();
+				var url = '/node/v_exportbytemplate';
+				$.ajax({
+					type: "GET",
+					url: url,
+					data: 'responseIds=' + responseIdsAr.join() + '&type=DOC',
+					//dataType: "text/plain",
+					success: function (data) {
+						window.location = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
+							
+						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
+						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
+					},
+					error: function (oError) {
+						MessageBox.error(oError.responseText);
+						console.warn(oError);
+					}
+				});
+				
+				//workin
+				// var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
+				// var link = document.createElement("a");
+				// link.download = 'Statements.docx';
+				// link.href = uri;
+				// link.click();
 			}
 		},
 
@@ -1406,7 +1420,7 @@ sap.ui.define([
 					var obj = Context.getObject();
 					docExtIdAr.push(obj.extId);
 				});
-				var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC&deb_or_cred=Cred';
+				var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC&debcred=Cred';
 				var link = document.createElement("a");
 				link.download = 'PaymentOrder_credit.docx';
 				link.href = uri;
@@ -1427,7 +1441,7 @@ sap.ui.define([
 					var obj = Context.getObject();
 					docExtIdAr.push(obj.extId);
 				});
-				var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC&deb_or_cred=Deb';
+				var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC&debcred=Deb';
 				var link = document.createElement("a");
 				link.download = 'PaymentOrder_credit.docx';
 				link.href = uri;

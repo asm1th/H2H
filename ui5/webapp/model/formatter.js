@@ -56,14 +56,18 @@ sap.ui.define([
 			// 7;Принят АБС;
 			// 8;Исполнен;
 			// 9;Отказан АБС;
-			if (oValue === "Исполнен") {
-				return "Success";
-			} else if (oValue === "Подписан") {
+			if (oValue === "Импортирован") {
 				return "Information";
-			} else if (oValue === "Импортирован") {
-				return "None";
-			} else if (oValue === "Отправлен") {
+			} else if (oValue === "Подписан" || oValue === "Подписан I" || oValue === "Подписан II") {
 				return "Warning";
+			} else if (oValue === "Импортирован") {
+				return "Information";
+			} else if (oValue === "Отправлен" || oValue === "Доставлен" || oValue === "Принят АБС" || oValue === "Отправлен") {
+				return "Warning";
+			} else if (oValue === "Исполнен") {
+				return "Success";
+			} else if (oValue === "Отказан АБС") {
+				return "Error";
 			}
 			return "None";
 		},

@@ -38,6 +38,7 @@ app.get('/node', function (req, res, next) {
 // =============
 
 var port = process.env.PORT || 3000;
+//process.setMaxListeners(0);
 app.listen(port, function () {
 	console.log('myapp listening on port ' + port);
 });
@@ -64,6 +65,7 @@ app.use('/node/exportfile', exportfile);
 
 app.use('/node/pp_exportbytemplate', require('./lib/pp_exportbytemplate'));
 app.use('/node/v_exportbytemplate', require('./lib/v_exportbytemplate'));
+app.use('/node/vp_exportbytemplate', require('./lib/vp_exportbytemplate'));
 
 // ========================== 
 // LAST SECTION IN FILE errors not found - должна находиться только в конце файла

@@ -44,9 +44,10 @@
 <Property Name="okato" Type="Edm.String" MaxLength="11" sap:label="okato" sap:aggregation-role="dimension"/>
 <Property Name="paytReason" Type="Edm.String" MaxLength="2" sap:label="paytReason" sap:aggregation-role="dimension"/>
 <Property Name="taxPeriod" Type="Edm.String" MaxLength="10" sap:label="taxPeriod" sap:aggregation-role="dimension"/>
-<Property Name="taxPaytKind" Type="Edm.String" MaxLength="2" sap:label="taxPaytKind" sap:aggregation-role="dimension"/>
 <Property Name="depDocNo" Type="Edm.String" MaxLength="15" sap:label="depDocNo" sap:aggregation-role="dimension"/>
 <Property Name="depDocDate" Type="Edm.String" MaxLength="10" sap:label="depDocDate" sap:aggregation-role="dimension"/>
+<Property Name="taxPaytKind" Type="Edm.String" MaxLength="2" sap:label="taxPaytKind" sap:aggregation-role="dimension"/>
+<Property Name="signType" Type="Edm.String" MaxLength="255" sap:label="signType" sap:aggregation-role="dimension"/>
 <Property Name="docSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="docSum" sap:aggregation-role="measure" sap:filterable="false"/>
 <Property Name="vatSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="vatSum" sap:aggregation-role="measure" sap:filterable="false"/>
 <NavigationProperty Name="PaymentOrderFile" Relationship="default.PaymentOrder_FilesType" FromRole="PaymentOrderPrincipal" ToRole="FilesDependent" sap:creatable="false" sap:filterable="false"/>
@@ -139,6 +140,7 @@
 <EntityType Name="SignType">
 <Key>
 <PropertyRef Name="docExtId"/>
+<PropertyRef Name="SN"/>
 </Key>
 <Property Name="docExtId" Type="Edm.String" Nullable="false" MaxLength="38"/>
 <Property Name="SN" Type="Edm.String" MaxLength="255"/>
@@ -152,11 +154,11 @@
 </EntityType>
 <EntityType Name="StatementType">
 <Key>
-<PropertyRef Name="ID"/>
+<PropertyRef Name="responseId"/>
 </Key>
-<Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="2147483647" sap:filterable="false"/>
 <Property Name="responseId" Type="Edm.String" MaxLength="38" sap:label="responseId"/>
 <Property Name="acc" Type="Edm.String" MaxLength="20" sap:label="acc"/>
+<Property Name="organization" Type="Edm.String" MaxLength="255" sap:label="organization"/>
 <Property Name="bic" Type="Edm.String" MaxLength="9" sap:label="bic"/>
 <Property Name="debetSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="debetSum"/>
 <Property Name="creditSum" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="creditSum"/>
@@ -164,6 +166,10 @@
 <Property Name="docTime" Type="Edm.String" MaxLength="8" sap:label="docTime"/>
 <Property Name="outBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="outBal"/>
 <Property Name="stmtDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="stmtDate"/>
+<Property Name="beginDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="beginDate"/>
+<Property Name="lastMovetDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="lastMovetDate"/>
+<Property Name="lastStmtDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="lastStmtDate"/>
+<Property Name="endDate" Type="Edm.DateTime" sap:display-format="Date" sap:label="endDate"/>
 <Property Name="enterBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="enterBal"/>
 <Property Name="docNum" Type="Edm.String" MaxLength="6" sap:label="docNum"/>
 <Property Name="stmtType" Type="Edm.String" MaxLength="25" sap:label="stmtType"/>
