@@ -116,7 +116,7 @@ router.get('/', function (req, res, next) {
 							} 
 						});
 						print.docs = rows;
-						console.log('print all ', print);
+						//console.log('print all ', print);
 					}
 					if (type == "DOC") {
 						var buffer = makeDocPdf(print);

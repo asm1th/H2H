@@ -107,14 +107,15 @@ router.get('/', function (req, res, next) {
 				req.db.exec(sqlPPDeb, function (err, rows) {
 					if (err) {console.log(err);return next(err);}
 					if (rows.length > 0) {
-						
-						var print = {...docs1, ...rows};
-						
-						console.log('print all ', print);
+						var docs = docs1.concat(rows);
+						var print = {
+							docs: docs
+						};
+						//console.log('print all ', print);
 					}
 					if (type == "DOC") {
 						var buffer = makeDocPdf(print);
-						res.set('Content-Disposition', 'attachment; filename="Statement.docx"');
+						res.set('Content-Disposition', 'attachment; filename="StatementAllOrders.docx"');
 						res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
 						var fileBase64String = buffer.toString('base64');
 						res.end(fileBase64String, 'base64');

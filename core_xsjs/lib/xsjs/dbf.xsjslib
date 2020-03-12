@@ -686,6 +686,7 @@ function deletSing(param){
 	rs = pStmt.executeQuery();
 	var fileBody = null;
 	var sign = {};
+	var raif = {};
 	while (rs.next()) {
 		sign.docExtId = 		rs.getString(1);
     	sign.SN =				rs.getString(2);

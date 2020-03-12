@@ -108,7 +108,6 @@
 					<Record Type="UI.PresentationVariantType">
 						<PropertyValue Property="RequestAtLeast">
 							<Collection>
-								<PropertyPath>ID</PropertyPath>
 								<PropertyPath>requestId</PropertyPath>
 								<PropertyPath>docExtId</PropertyPath>
 								<PropertyPath>status</PropertyPath>

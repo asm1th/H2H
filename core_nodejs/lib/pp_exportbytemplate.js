@@ -122,7 +122,7 @@ router.get('/', function (req, res, next) {
 				var docs = {
 					docs: rows
 				}
-				console.log('docs ',  docs);
+				//console.log('docs ',  docs);
 	
 				//res.send(rows);
 				//res.json(rows);

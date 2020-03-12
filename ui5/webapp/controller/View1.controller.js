@@ -910,9 +910,9 @@ sap.ui.define([
 			//var objSign = src.getModel().getProperty(ctx.getPath());
 			//var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
 			var docExtId = this._getDocExtId();
-            var SNarr = oEvent.getSource().getProperty("info").split(" ");
-            var SN = SNarr[2]; 
-            
+			var SNarr = oEvent.getSource().getProperty("info").split(" ");
+			var SN = SNarr[2];
+
 			var oEntry = {};
 			oEntry.docExtId = docExtId[0];
 			// oEntry.Value = Sign;
@@ -1381,7 +1381,7 @@ sap.ui.define([
 					var obj = Context.getObject();
 					responseIdsAr.push(obj.responseId);
 				});
-				
+
 				var url = '/node/v_exportbytemplate';
 				$.ajax({
 					type: "GET",
@@ -1390,7 +1390,7 @@ sap.ui.define([
 					//dataType: "text/plain",
 					success: function (data) {
 						window.location = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
-							
+
 						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
 						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
 					},
@@ -1399,7 +1399,7 @@ sap.ui.define([
 						console.warn(oError);
 					}
 				});
-				
+
 				//workin
 				// var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
 				// var link = document.createElement("a");
@@ -1407,6 +1407,54 @@ sap.ui.define([
 				// link.href = uri;
 				// link.click();
 			}
+		},
+
+		onDownload_V_PP: function (oEvent) {
+			var oSmartTable = this.byId("SmartTableStatements");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var responseIdsAr = [];
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					responseIdsAr.push(obj.responseId);
+				});
+
+				var url = '/node/vpp_exportbytemplate';
+				$.ajax({
+					type: "GET",
+					url: url,
+					data: 'responseIds=' + responseIdsAr.join() + '&type=DOC',
+					//dataType: "text/plain",
+					success: function (data) {
+						window.location = '/node/vpp_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
+
+						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
+						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
+					},
+					error: function (oError) {
+						MessageBox.error(oError.responseText);
+						console.warn(oError);
+					}
+				});
+
+				//workin
+				// var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
+				// var link = document.createElement("a");
+				// link.download = 'Statements.docx';
+				// link.href = uri;
+				// link.click();
+			}
+		},
+
+		onDownload_V_PDF: function (oEvent) {
+			MessageToast.show("В разработке");
+		},
+
+		onDownload_V_MO: function (oEvent) {
+			MessageToast.show("В разработке");
 		},
 
 		onPrint_C: function (oEvent) {
@@ -1451,70 +1499,60 @@ sap.ui.define([
 			}
 		},
 
-		onDownload_V_PDF: function (oEvent) {
-			MessageToast.show("В разработке");
-		},
-		onDownload_V_PP: function (oEvent) {
-			MessageToast.show("В разработке");
-		},
-		onDownload_V_MO: function (oEvent) {
-			MessageToast.show("В разработке");
-		},
+		// печать напрямубю из табло
+		// onPrint: function (oEvent) {
+		// 	var docExtId = this._getDocExtId();
 
-		// печать выбранной ПП
-		onPrint: function (oEvent) {
-			var docExtId = this._getDocExtId();
+		// ================
+		// печать из таблицы
+		// ================
+		// 			var oTarget = this.getView(),
+		// 				sTargetId = oEvent.getSource().data("LineItemsSmartTable");
+		// 			if (sTargetId) {
+		// 				oTarget = oTarget.byId(sTargetId);
+		// 			}
+		// 			if (oTarget) {
+		// 				var $domTarget = oTarget.$()[0],
+		// 					sTargetContent = $domTarget.innerHTML,
+		// 					sOriginalContent = document.body.innerHTML;
 
-			// ================
-			// печать из таблицы
-			// ================
-			// 			var oTarget = this.getView(),
-			// 				sTargetId = oEvent.getSource().data("LineItemsSmartTable");
-			// 			if (sTargetId) {
-			// 				oTarget = oTarget.byId(sTargetId);
-			// 			}
-			// 			if (oTarget) {
-			// 				var $domTarget = oTarget.$()[0],
-			// 					sTargetContent = $domTarget.innerHTML,
-			// 					sOriginalContent = document.body.innerHTML;
+		// 				document.body.innerHTML = sTargetContent;
+		// 				window.print();
+		// 				document.body.innerHTML = sOriginalContent;
+		// 			} else {
+		// 				jQuery.sap.log.error("onPrint needs a valid target container [view|data:targetId=\"SID\"]");
+		// 			}
 
-			// 				document.body.innerHTML = sTargetContent;
-			// 				window.print();
-			// 				document.body.innerHTML = sOriginalContent;
-			// 			} else {
-			// 				jQuery.sap.log.error("onPrint needs a valid target container [view|data:targetId=\"SID\"]");
-			// 			}
+		// ================
+		// вызов внешней печатной формы
+		// ================
+		//bwd bwq - чтоб не зависило от системы
+		// 			var href = window.location.href;
+		// 			var matches = href.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i); // порт
+		// 			//var matches = href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i);  // без порта
+		// 			var domain = matches && matches[1];
 
-			// ================
-			// вызов внешней печатной формы
-			// ================
-			//bwd bwq - чтоб не зависило от системы
-			// 			var href = window.location.href;
-			// 			var matches = href.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i); // порт
-			// 			//var matches = href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i);  // без порта
-			// 			var domain = matches && matches[1];
-
-			// 			var oTable = this.byId("tableHeaders");
-			// 			var iIndex = oTable.getSelectedIndices();
-			// 			var data = [];
-			// 			if (iIndex.length > 0 & iIndex.length < 2) {
-			// 				for (var i = 0; i < iIndex.length; i++) {
-			// 					var sPath = oTable.getContextByIndex(iIndex[i]).sPath;
-			// 					data.push(oTable.getModel().getProperty(sPath));
-			// 				}
-			// 				console.log(data);
-			// 				var ZsbnReqn = [];
-			// 				for (var i = 0; i < data.length; i++) {
-			// 					ZsbnReqn.push(data[i].ZsbnReqn);
-			// 				}
-			// 				// https://sapbwq.gazprom-neft.local:8143
-			// 				var url = "https://" + domain + "/sap/bw/analysis?APPLICATION=EXCEL&OBJECT_TYPE=DOCUMENT&OBJECT_ID=ZSBNCP017_WBR002" +
-			// 					"&VARZCOMP_CODE_VAR_CMP002=1000&VARZSBNNUMZK_VAR_CMP001=" + ZsbnReqn;
-			// 				sap.m.URLHelper.redirect(url, true);
-			// 			} else {
-			// 				MessageToast.show("Выделите одну заявку в первой таблице заявок для печати");
-			// 			}
-		}
+		// 			var oTable = this.byId("tableHeaders");
+		// 			var iIndex = oTable.getSelectedIndices();
+		// 			var data = [];
+		// 			if (iIndex.length > 0 & iIndex.length < 2) {
+		// 				for (var i = 0; i < iIndex.length; i++) {
+		// 					var sPath = oTable.getContextByIndex(iIndex[i]).sPath;
+		// 					data.push(oTable.getModel().getProperty(sPath));
+		// 				}
+		// 				console.log(data);
+		// 				var ZsbnReqn = [];
+		// 				for (var i = 0; i < data.length; i++) {
+		// 					ZsbnReqn.push(data[i].ZsbnReqn);
+		// 				}
+		// 				// https://sapbwq.gazprom-neft.local:8143
+		// 				var url = "https://" + domain + "/sap/bw/analysis?APPLICATION=EXCEL&OBJECT_TYPE=DOCUMENT&OBJECT_ID=ZSBNCP017_WBR002" +
+		// 					"&VARZCOMP_CODE_VAR_CMP002=1000&VARZSBNNUMZK_VAR_CMP001=" + ZsbnReqn;
+		// 				sap.m.URLHelper.redirect(url, true);
+		// 			} else {
+		// 				MessageToast.show("Выделите одну заявку в первой таблице заявок для печати");
+		// 			}
+		// }
 
 		/////////////////////////////////// end BaseController
 	});

@@ -1,7 +1,6 @@
 service {
-	"cvPaymentOrder"						as "PaymentOrder"		keys generate local "ID"		navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
-																												"PaymentOrder_Sign"				as "PaymentOrderSign"	from principal) 
-																												aggregates always;
+	"cvPaymentOrder"						as "PaymentOrder"		key ("docExtId")		navigates (	"PaymentOrder_Files"			as "PaymentOrderFile", 
+																												"PaymentOrder_Sign"				as "PaymentOrderSign"	from principal);
 	"RaiffeisenBank.Request"				as "Request" 			key ("requestId")				navigates (	"Request_PayDoc"				as "RequestPayDoc"		from principal);	
 	"RaiffeisenBank.PayDocRu"				as "PayDocRu"			key ("requestId", "docExtId")	navigates (	"PayDocRu_AccDoc"				as "PayDocRuAccDoc",
 																												"PayDocRu_Payer"				as "PayDocRuPayer",
