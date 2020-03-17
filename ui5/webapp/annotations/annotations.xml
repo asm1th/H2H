@@ -336,7 +336,6 @@
 					<Record Type="UI.PresentationVariantType">
 						<PropertyValue Property="RequestAtLeast">
 							<Collection>
-								<!--<PropertyPath>ID</PropertyPath>-->
 								<PropertyPath>responseId</PropertyPath>
 								<PropertyPath>bic</PropertyPath>
 								<PropertyPath>acc</PropertyPath>
@@ -416,6 +415,31 @@
 							<PropertyValue Property="Label" String="Входящий остаток"/>
 							<Annotation Term="Common.QuickInfo" String="Входящий остаток"/>
 						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="BeginDate"/>
+							<PropertyValue Property="Label" String="Дата начала периода выписки"/>
+							<Annotation Term="Common.QuickInfo" String="Дата начала периода выписки"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="EndDate"/>
+							<PropertyValue Property="Label" String="Дата окончания периода выписки"/>
+							<Annotation Term="Common.QuickInfo" String="Дата окончания периода выписки"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="lastMovetDate"/>
+							<PropertyValue Property="Label" String="Дата последней операции по счету"/>
+							<Annotation Term="Common.QuickInfo" String="Дата последней операции по счету"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="lastStmtDate"/>
+							<PropertyValue Property="Label" String="Дата предыдущей операции по счету"/>
+							<Annotation Term="Common.QuickInfo" String="Дата предыдущей операции по счету"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="organization"/>
+							<PropertyValue Property="Label" String="Организация"/>
+							<Annotation Term="Common.QuickInfo" String="Организация"/>
+						</Record>
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
@@ -481,8 +505,8 @@
 					<Collection>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
-							<PropertyValue Property="Label" String="Дата документа"/>
-							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
+							<PropertyValue Property="Label" String="Данные актуальны на (дата)"/>
+							<Annotation Term="Common.QuickInfo" String="Данные актуальны на (дата)"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docNum"/>
@@ -912,12 +936,13 @@
 			<Annotations Target="Metadata.StatementType/acc">
 				<Annotation Term="Common.Label" String="Счет клиента"/>
 			</Annotations>
-			<!--<Annotations Target="Metadata.StatementType/stmtType">-->
-			<!--	<Annotation Term="Common.Label" String="Тип выписки"/>-->
-			<!--</Annotations>-->
+			<Annotations Target="Metadata.StatementType/stmtType">
+				<Annotation Term="Common.Label" String="Тип выписки"/>
+			</Annotations>
 			<Annotations Target="Metadata.StatementType/stmtTypeId">
 				<Annotation Term="Common.Label" String="Статус выписки"/>
 			</Annotations>
+			
 			<Annotations Target="Metadata.StatementItemsDebType/paytKind">
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>
 				<Annotation Term="Common.Label" String="Вид платежа"/>

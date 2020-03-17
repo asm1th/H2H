@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+	    body{
+	        font: 12px 'Arial';
+	    }
+	    .stamp{
+font-size: 11px;
+    padding: 10px;
+    border: 1px solid black;
+    width: 170px;
+    text-align: center;
+	    }
+        table {
+            border-collapse: collapse;
+        }
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+	<div id="pageHeader">
+	    <div class="stamp">
+            АО «Райффайзенбанк»<br>Ген. лицензия ЦБ РФ<br>№ 3292<br>
+            Россия, 129090, г. Москва,<br>
+            Троицкая ул., 17/1<br>Тел.: 721-99-00<br>Факс: 721-99-01
+        </div>
+
+        <div class="title">Выписка по счету клиента / Account statement №42 за дату / as of 18.02.2020</div>
+        <div class="logo">
+
+        </div>
+	</div>
+	
+	
+    <div style="width: 95%; margin: 0 3.5%;">
+
+
+        <div class="bank">
+            <div class="label">
+                Банк / Bank:
+            </div>
+            <div class="input">
+                АО "Райффайзенбанк", 129090, Г. МОСКВА, ул Троицкая, 17/1, БИК 044525700, ИНН 7744000302
+            </div>
+        </div>
+
+        <div class="client">
+            <div class="label">
+                Клиент / Client:
+            </div>
+            <div class="input">
+                ПАО ГАЗПРОМ НЕФТЬ
+            </div>
+            <div class="inn">
+                ИНН / INN: КИО/KIO
+                <span>5504036333</span>
+            </div>
+        </div>
+
+        <div class="header">
+            <table>
+                <tr>
+                    <td>Наименование счета / Account name:</td>
+                    <td>Рублевый расчетный</td>
+                </tr>
+                <tr>
+                    <td>Валюта счета / Account currency:</td>
+                    <td>810 (РОССИЙСКИЙ РУБЛЬ)</td>
+                </tr>
+                <tr>
+                    <td>Номер счета / Account number:</td>
+                    <td>40702810800001400002</td>
+                </tr>
+            </table>
+            <div class="part2">
+                <table>
+                    <tr>
+                        <td>Дата предыдущей выписки/Previous statement date:</td>
+                        <td>17.02.2020</td>
+                    </tr>
+                    <tr>
+                        <td>Входящий остаток на начало дня (периода)</td>
+                        <td>/ Opening Balance:</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding-left: 50px;">
+            <h3>Student Report</h5>
+                <table>
+                    <% if (students.length > 0) { %>
+                    <% students.forEach(item => {%>
+                    <tr>
+                        <td><%= item.name %></td>
+                    </tr>
+                    <%  });%>
+                    <% }%>
+                </table>
+        </div>
+    </div>
+    
+    <div id="pageFooter"> 
+    	<div>ДОКУМЕНТ ПОДПИСАН ЭЛЕКТРОННОЙ ПОДПИСЬЮ АО "Райффайзенбанк"</div>
+			АО «Райффайзенбанк», 129090, Москва, ул. Троицкая, д.17, стр. 1
+			Страница /Page 1
+		</div>
+</body>
+
+</html>

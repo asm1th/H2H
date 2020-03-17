@@ -3,7 +3,9 @@
 	<Dialog title="Выбрать подпись" resizable="true">
 		<content>
 			<List id="SignList" items="{/mySerts}" includeItemInSelection="true">
-				<StandardListItem press="onUseSign" title="{SubjectName}" description="Издатель: {IssuerName}" info="SN = {SerialNumber}" type="Navigation"/>
+				<!--<StandardListItem press="onUseSign" title="{SubjectName}" description="Издатель: {IssuerName}" info="SN = {SerialNumber}" type="Navigation"/>-->
+				<StandardListItem press="onUseSign" title="{SubjectName}" description="Издатель: {IssuerName}"
+					info="Действителен до {path: 'ValidToDate'}" type="Navigation"/>
 			</List>
 		</content>
 		<buttons>

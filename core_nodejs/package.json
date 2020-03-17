@@ -11,11 +11,12 @@
     "docxtemplater": "^3.16.9",
     "morgan": "^1.9.0",
     "number-to-words-ru": "2.0.1",
-    "libreoffice-convert": "1.0.5"
+    "ejs": "^3.0.1",
+    "html-pdf": "^2.2.0"
   },
   "files": [],
   "main": "start.js",
-  "description": "Node app",
+  "description": "Node print service",
   "name": "core_nodejs",
   "scripts": {
     "test": "node node_modules/jest/bin/jest --config jest.json",
@@ -23,7 +24,7 @@
     "start": "node start.js"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10.18.0"
   },
   "version": "1.0.0"
 }
