@@ -472,7 +472,7 @@ context RaiffeisenBank {
             _DEPART.DEPDOCDATE             as depDocDate,
             _DEPART.TAXPAYTKIND            as taxPaytKind,
             _SIGN.SIGNTYPE                 as signType
-        }Where _STATUS.ID <> 99;
+        };
 
     define view Extract as
         select from TPayDocRu
