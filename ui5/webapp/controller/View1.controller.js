@@ -881,26 +881,38 @@ sap.ui.define([
 		onUndoSign: function () {
 			if (!this.undoSignDialog) {
 				this.undoSignDialog = sap.ui.xmlfragment("undoSignDialog", "h2h.ui5.view.undoSignDialog", this);
-				var mySerts;
-
-				// вызов промиса - получаем сертификаты в окно
-				var thenable = this._getUserCertificates();
-				var that = this;
-				thenable.then(
-					function (result) {
-						mySerts = result;
-						console.log(result);
-						var oModel = new JSONModel();
-						oModel.setProperty("/mySerts", mySerts);
-						that.undoSignDialog.setModel(oModel);
-						that.undoSignDialog.open();
-					},
-					function (result) {
-						console.log(result);
-					});
 			} else {
 				this.undoSignDialog.open();
 			}
+			var mySerts;
+			// вызов промиса - получаем сертификаты в окно
+			var thenable = this._getUserCertificates();
+			var that = this;
+			thenable.then(
+				function (result) {
+					mySerts = result;
+					console.log(result);
+
+					result.forEach(function (item, i) {
+						var SubjectName = item.SubjectName.split('=');
+						item.SubjectName = SubjectName[1];
+
+						var IssuerName = item.IssuerName.split(', ');
+						var IssuerName1 = IssuerName[0].split('=');
+						item.IssuerName = IssuerName1[1];
+
+                        var ValidToDate = item.ValidToDate.split('T');
+                        item.ValidToDate = ValidToDate[0];
+					});
+
+					var oModel = new JSONModel();
+					oModel.setProperty("/mySerts", mySerts);
+					that.undoSignDialog.setModel(oModel);
+					that.undoSignDialog.open();
+				},
+				function (result) {
+					console.log(result);
+				});
 		},
 
 		// выбрали подпись в окне выбора
@@ -995,26 +1007,39 @@ sap.ui.define([
 		onSignDialog: function () {
 			if (!this.signDialog) {
 				this.signDialog = sap.ui.xmlfragment("signDialog", "h2h.ui5.view.signDialog", this);
-				var mySerts;
-
-				// вызов промиса - получаем сертификаты в окно
-				var thenable = this._getUserCertificates();
-				var that = this;
-				thenable.then(
-					function (result) {
-						mySerts = result;
-						console.log(result);
-						var oModel = new JSONModel();
-						oModel.setProperty("/mySerts", mySerts);
-						that.signDialog.setModel(oModel);
-						that.signDialog.open();
-					},
-					function (result) {
-						console.log(result);
-					});
 			} else {
 				this.signDialog.open();
 			}
+
+			var mySerts;
+			// вызов промиса - получаем сертификаты в окно
+			var thenable = this._getUserCertificates();
+			var that = this;
+			thenable.then(
+				function (result) {
+					mySerts = result;
+					console.log(result);
+
+					result.forEach(function (item, i) {
+						var SubjectName = item.SubjectName.split('=');
+						item.SubjectName = SubjectName[1];
+
+						var IssuerName = item.IssuerName.split(', ');
+						var IssuerName1 = IssuerName[0].split('=');
+						item.IssuerName = IssuerName1[1];
+
+                        var ValidToDate = item.ValidToDate.split('T');
+                        item.ValidToDate = ValidToDate[0];
+					});
+
+					var oModel = new JSONModel();
+					oModel.setProperty("/mySerts", mySerts);
+					that.signDialog.setModel(oModel);
+					that.signDialog.open();
+				},
+				function (result) {
+					console.log(result);
+				});
 		},
 
 		// Получаем сертификаты пользователя
@@ -1091,7 +1116,7 @@ sap.ui.define([
 				//dataType: "text/plain",
 				success: function (data) {
 					dataToSign = data;
-					console.log("digest: ", data);
+					//console.log("digest: ", data);
 				},
 				error: function (oError) {
 					MessageBox.error(oError.responseText);

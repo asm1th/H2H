@@ -107,7 +107,7 @@
 							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable" initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
 							<!--tableType="ResponsiveTable" demandPopin="false"-->
 							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
-								demandPopin="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения"
+								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения"
 								showRowCount="true" beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_0" enableAutoBinding="true"
 								showFullScreenButton="true" class="sapUiResponsiveContentPadding">
 								<!--beforeRebindTable="onDataReceived"-->
@@ -303,6 +303,60 @@
 							</HBox>
 						</VBox>
 					</ScrollContainer>
+					
+					<!-- Все света -->
+					<ScrollContainer id="all" horizontal="false" vertical="false" height="100%">
+						<VBox fitContainer="true"> 
+							<smartFilterBar:SmartFilterBar id="smartFilterBar_2" entitySet="PaymentOrder" persistencyKey="SmartFilter_2"> 
+								<smartFilterBar:layoutData>
+									<FlexItemData shrinkFactor="0"/>
+								</smartFilterBar:layoutData>
+							</smartFilterBar:SmartFilterBar> 
+							<smartTable:SmartTable id="LineItemsSmartTable_1" entitySet="PaymentOrder" smartFilterId="smartFilterBar_2" useExportToExcel="true"
+								 beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения"
+								showRowCount="true" beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_0" enableAutoBinding="true"
+								showFullScreenButton="true" class="sapUiResponsiveContentPadding"> 
+								<smartTable:customToolbar>
+									<Toolbar>
+										<ToolbarSpacer/> 
+										<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh" enabled="true"/>
+										<Button icon="sap-icon://history" tooltip="Журнал" id="onJournal_2" class="btn btn-bordered" press="onJournal" enabled="true"/>
+										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Ипорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
+										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllPP" enabled="true"/>
+										<MenuButton icon="sap-icon://print" class="btn btn-bordered">
+											<menu>
+												<Menu>
+													<MenuItem text="TXT" icon="sap-icon://save" press="onDownload_1C"/>
+													<MenuItem text="DOC" icon="sap-icon://save" press="onDownload_DOC"/>
+													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" enabled="false"/>
+												</Menu>
+											</menu>
+										</MenuButton> 
+										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
+										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" id="onUndoSign_2"/>
+										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered btn-warning" press="onSend"
+											id="onSend_2" enabled="true"/>
+									</Toolbar>
+								</smartTable:customToolbar>
+								<t:Table id="smtable_2" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1" rowSelectionChange="onSelPaymentOrder">
+									<t:rowSettingsTemplate>
+										<t:RowSettings highlight="{path:'status', formatter:'.formatter.formatRowHighlight'}"/>
+									</t:rowSettingsTemplate>
+									<t:rowActionTemplate>
+										<t:RowAction>
+											<t:items>
+												<t:RowActionItem type="Navigation" press="onDetailDialog"></t:RowActionItem>
+												<!--<t:RowActionItem visible="{path:'status', formatter:'.formatter.formatEnableDelPP'}" icon="sap-icon://delete" type="Delete" press="onDeletePP"></t:RowActionItem>-->
+											</t:items>
+										</t:RowAction>
+									</t:rowActionTemplate>
+									<t:footer><Label design="Bold" wrapping="true" text="Всего: {path:'UIData>/PaymentOrderTotal', formatter:'.formatter.toCurrency'}"/>
+									</t:footer>
+								</t:Table>
+							</smartTable:SmartTable>
+						</VBox>
+					</ScrollContainer>
+					
 				</pages>
 			</NavContainer>
 		</tnt:mainContents>
