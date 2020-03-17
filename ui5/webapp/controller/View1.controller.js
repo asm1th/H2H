@@ -97,30 +97,15 @@ sap.ui.define([
 			oMessagePopover.setModel(messageModel);
 
 			// Активация кнопок
-			this.byId("onSend").setEnabled(false);
-			this.byId("onUndoSign").setEnabled(false);
+			this.byId("onSend").setEnabled(true);
+			this.byId("onUndoSign").setEnabled(true);
+			this.byId("onSignDialog").setEnabled(true);
 		},
 
 		// remove test after
-		testStmnt: function (oEvent) {
+		testButton: function (oEvent) {
 			var oModel = this.getOwnerComponent().getModel();
-			var mParams = {};
-			var that = this;
-
-			var aPath = [
-				'/Statement?$select=debetSum,creditSum,outBal,enterBal&$top=100&$inlinecount=allpages',
-				'/Statement?$select=docNum,stmtDate,docTime,bic,currCode,responseId,debetSum,creditSum,outBal,enterBal,ID&$top=110&$inlinecount=allpages'
-			];
-			mParams.success = function (data) {
-				//MessageToast.show("Прочитано");
-				console.log(data.results);
-			};
-			mParams.error = function (oError) {
-				this._onErrorCall(oError);
-			};
-			aPath.forEach(function (Path, i) {
-				oModel.read(Path, that.mParams);
-			});
+			MessageToast.show("Подписано или изменено другим пользователем");
 		},
 
 		onAfterRendering: function (oEvent) {
@@ -604,6 +589,7 @@ sap.ui.define([
 			var sPath;
 			if (iIndex.length > 0) {
 				var StatusEnableButton = true; //все ПП подписаны
+				var StatusSignEnableButton = true; //все ПП подписаны
 				var PaymentOrderTotal = 0;
 
 				iIndex.forEach(function (item, i) {
@@ -614,6 +600,9 @@ sap.ui.define([
 					var data = oTable.getModel().getProperty(sPath);
 					if (data.status === "Подписан") {} else {
 						StatusEnableButton = false; // хоть одна ПП не подписана
+					}
+					if (data.status === "Удален") {} else {
+						StatusSignEnableButton = false; // хоть одна ПП не подписана
 					}
 				});
 				this.getView().getModel("UIData").setProperty("/PaymentOrderTotal", PaymentOrderTotal);
@@ -896,11 +885,9 @@ sap.ui.define([
 					result.forEach(function (item, i) {
 						var SubjectName = item.SubjectName.split('=');
 						item.SubjectName = SubjectName[1];
-
 						var IssuerName = item.IssuerName.split(', ');
 						var IssuerName1 = IssuerName[0].split('=');
 						item.IssuerName = IssuerName1[1];
-
                         var ValidToDate = item.ValidToDate.split('T');
                         item.ValidToDate = ValidToDate[0];
 					});
@@ -922,8 +909,7 @@ sap.ui.define([
 			//var objSign = src.getModel().getProperty(ctx.getPath());
 			//var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
 			var docExtId = this._getDocExtId();
-			var SNarr = oEvent.getSource().getProperty("info").split(" ");
-			var SN = SNarr[2];
+            var oObject = oEvent.getSource().getBindingContext().getObject();
 
 			var oEntry = {};
 			oEntry.docExtId = docExtId[0];
@@ -941,7 +927,7 @@ sap.ui.define([
 				that.undoSignDialog.close();
 			};
 			mParams.error = this._onErrorCall;
-			var Path = "/Sign(docExtId='" + docExtId + "',SN='" + SN + "')";
+			var Path = "/Sign(docExtId='" + docExtId + "',SN='" + oObject.SerialNumber + "')";
 			oModel.remove(Path, mParams);
 
 			this.undoSignDialog.close();
@@ -1023,11 +1009,9 @@ sap.ui.define([
 					result.forEach(function (item, i) {
 						var SubjectName = item.SubjectName.split('=');
 						item.SubjectName = SubjectName[1];
-
 						var IssuerName = item.IssuerName.split(', ');
 						var IssuerName1 = IssuerName[0].split('=');
 						item.IssuerName = IssuerName1[1];
-
                         var ValidToDate = item.ValidToDate.split('T');
                         item.ValidToDate = ValidToDate[0];
 					});
@@ -1408,6 +1392,8 @@ sap.ui.define([
 				});
 
 				var url = '/node/v_exportbytemplate';
+				this.byId("toolPage").setBusy(true);
+				var that = this;
 				$.ajax({
 					type: "GET",
 					url: url,
@@ -1415,9 +1401,7 @@ sap.ui.define([
 					//dataType: "text/plain",
 					success: function (data) {
 						window.location = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
-
-						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
-						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
+						that.byId("toolPage").setBusy(false);
 					},
 					error: function (oError) {
 						MessageBox.error(oError.responseText);
@@ -1448,6 +1432,8 @@ sap.ui.define([
 				});
 
 				var url = '/node/vpp_exportbytemplate';
+				this.byId("toolPage").setBusy(true);
+				var that = this;
 				$.ajax({
 					type: "GET",
 					url: url,
@@ -1455,9 +1441,7 @@ sap.ui.define([
 					//dataType: "text/plain",
 					success: function (data) {
 						window.location = '/node/vpp_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
-
-						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
-						//window.location = '/node/pp_exportbytemplate?docExtIds=' + responseIdsAr.join() + '&type=DOC&debcred=0';
+						that.byId("toolPage").setBusy(false);
 					},
 					error: function (oError) {
 						MessageBox.error(oError.responseText);
@@ -1475,7 +1459,36 @@ sap.ui.define([
 		},
 
 		onDownload_V_PDF: function (oEvent) {
-			MessageToast.show("В разработке");
+			var oSmartTable = this.byId("SmartTableStatements");
+			var oTable = oSmartTable.getTable();
+			var iIndex = oTable.getSelectedIndices();
+			var responseIdsAr = [];
+
+			if (iIndex.length > 0) {
+				iIndex.forEach(function (item, i) {
+					var Context = oTable.getContextByIndex(item);
+					var obj = Context.getObject();
+					responseIdsAr.push(obj.responseId);
+				});
+
+				var url = '/node/v_export_pdf';
+				this.byId("toolPage").setBusy(true);
+				var that = this;
+				$.ajax({
+					type: "GET",
+					url: url,
+					data: 'responseIds=' + responseIdsAr.join() + '',
+					//dataType: "text/plain",
+					success: function (data) {
+						window.location = '/node/v_export_pdf?responseIds=' + responseIdsAr.join() + '';
+						that.byId("toolPage").setBusy(false);
+					},
+					error: function (oError) {
+						MessageBox.error(oError.responseText);
+						console.warn(oError);
+					}
+				});
+			}
 		},
 
 		onDownload_V_MO: function (oEvent) {

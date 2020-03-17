@@ -918,30 +918,30 @@
 					</Collection>
 				</Annotation>
 			</Annotations>
-			<!--<Annotations Target="Metadata.StatementType/bic">-->
-			<!--	<Annotation Term="Common.Label" String="БИК банка"/>-->
-			<!--</Annotations>-->
-			<!--<Annotations Target="Metadata.StatementType/docNum">-->
-			<!--	<Annotation Term="Common.Label" String="Номер документа"/>-->
-			<!--</Annotations>-->
-			<!--<Annotations Target="Metadata.StatementType/stmtDate">-->
-			<!--	<Annotation Term="Common.Label" String="Дата выписки"/>-->
-			<!--</Annotations>-->
-			<!--<Annotations Target="Metadata.StatementType/enterBal">-->
-			<!--	<Annotation Term="Common.Label" String="Входящий остаток"/>-->
-			<!--</Annotations>-->
-			<!--<Annotations Target="Metadata.StatementType/currCode">-->
-			<!--	<Annotation Term="Common.Label" String="Код валюты выписки 111"/>-->
-			<!--</Annotations>-->
-			<!--<Annotations Target="Metadata.StatementType/acc">-->
-			<!--	<Annotation Term="Common.Label" String="Счет клиента"/>-->
-			<!--</Annotations>-->
-			<!--<Annotations Target="Metadata.StatementType/stmtType">-->
-			<!--	<Annotation Term="Common.Label" String="Тип выписки"/>-->
-			<!--</Annotations>-->
-			<!--<Annotations Target="Metadata.StatementType/stmtTypeId">-->
-			<!--	<Annotation Term="Common.Label" String="Статус выписки"/>-->
-			<!--</Annotations>-->
+			<Annotations Target="Metadata.StatementType/bic">
+				<Annotation Term="Common.Label" String="БИК банка"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/docNum">
+				<Annotation Term="Common.Label" String="Номер документа"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/stmtDate">
+				<Annotation Term="Common.Label" String="Дата выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/enterBal">
+				<Annotation Term="Common.Label" String="Входящий остаток"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/currCode">
+				<Annotation Term="Common.Label" String="Код валюты выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/acc">
+				<Annotation Term="Common.Label" String="Счет клиента"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/stmtType">
+				<Annotation Term="Common.Label" String="Тип выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/stmtTypeId">
+				<Annotation Term="Common.Label" String="Статус выписки"/>
+			</Annotations>
 			
 			<Annotations Target="Metadata.StatementItemsDebType/paytKind">
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>

@@ -37,11 +37,10 @@
 				<!--<Button icon="sap-icon://nav-back" type="Transparent" press="onNavBack"></Button>-->
 				<ToolbarSpacer/>
 				<!--<Button icon="sap-icon://search" type="Transparent"/>-->
-				<Button type="Transparent" press="fixColums_PP" tooltip="ПП"/>
-				<Button type="Transparent" press="fixColums_S" tooltip="Вып"/>
+
 				<Button id="messagePopup" icon="sap-icon://bell" type="Transparent" tooltip="Сообщения" text=" {/messagesLength}"
 					press="handleMessagePopoverPress"/>
-				<Button icon="sap-icon://lab" type="Transparent" press="testStmnt"/>
+				<Button icon="sap-icon://lab" type="Transparent" press="testButton"/>
 				<!--<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"/>-->
 				<!--<MenuButton type="Transparent">-->
 				<!--	<menu>-->
@@ -130,8 +129,8 @@
 											</menu>
 										</MenuButton>
 										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
-										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
-										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" id="onUndoSign"/>
+										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" id="onSignDialog" enabled="true"/>
+										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" id="onUndoSign" enabled="true"/>
 										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered btn-warning" press="onSend"
 											id="onSend" enabled="true"/>
 									</Toolbar>
@@ -193,7 +192,7 @@
 														<MenuItem text="XML" icon="sap-icon://save" press="onDownload_V_XML"/>
 														<MenuItem text="Печать выписки DOC" icon="sap-icon://doc-attachment" press="onDownload_V_DOC"></MenuItem>
 														<MenuItem text="Печать всех ПП данной выписки" icon="sap-icon://documents" press="onDownload_V_PP"/>
-														<MenuItem text="Печать выписки PDF" icon="sap-icon://pdf-attachment" press="onDownload_V_PDF" enabled="false"></MenuItem>
+														<MenuItem text="Печать выписки PDF" icon="sap-icon://pdf-attachment" press="onDownload_V_PDF" enabled="true"></MenuItem>
 														<MenuItem text="Печать мемор. ордеров" icon="sap-icon://document" press="onDownload_V_MO" enabled="fasle"/>
 													</Menu>
 												</menu>
