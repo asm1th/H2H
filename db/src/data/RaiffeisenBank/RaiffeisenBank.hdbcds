@@ -310,6 +310,9 @@ context RaiffeisenBank {
 
             @Comment : 'Счет плательщика'
             CORRACC                 : String(20);
+            
+            @Comment : 'БИК банка получателя'
+            CORRBIC					: String(9);
 
             @Comment : 'признак дебета/кредита. Если 1-дебет, 2-кредит'
             DC                      : t_int;
@@ -657,6 +660,7 @@ context RaiffeisenBank {
             EXTID                   as extId,
             BANK                    as bank,
             CORRACC                 as corrAcc,
+            CORRBIC					as corrBIC,
             DC                      as dc,
             DOCDATE                 as docDate,
             DOCNUM                  as docNum,
@@ -701,6 +705,7 @@ context RaiffeisenBank {
             EXTID                   as extId,
             BANK                    as bank,
             CORRACC                 as corrAcc,
+            CORRBIC					as corrBIC,
             DC                      as dc,
             DOCDATE                 as docDate,
             DOCNUM                  as docNum,

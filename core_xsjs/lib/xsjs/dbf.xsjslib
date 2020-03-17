@@ -509,6 +509,7 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 					StatementItemsRaif.set('EXTID',						doc.$.extId);
 					StatementItemsRaif.set('BANK',						doc.$.bank);
 					StatementItemsRaif.set('CORRACC',					doc.$.corrAcc);
+					StatementItemsRaif.set('CORRBIC',					doc.$.corrBIC);
 					StatementItemsRaif.set('DC',						doc.$.dc);
 					StatementItemsRaif.set('DOCNUM',					doc.$.docNum);
 					StatementItemsRaif.set('DOCSUM',					doc.$.docSum);

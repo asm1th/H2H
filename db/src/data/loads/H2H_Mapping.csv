@@ -89,6 +89,7 @@ BANKID;DOCUMENTTYPEID;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSO
 1;2;"0.1";"StatementItems";"Str";"EXTID";"";"X";
 1;2;"0.1";"StatementItems";"Str";"BANK";"";"";
 1;2;"0.1";"StatementItems";"Str";"CORRACC";"";"";
+1;2;"0.1";"StatementItems";"Str";"CORRBIC";"";"";
 1;2;"0.1";"StatementItems";"Int";"DC";"";"";
 1;2;"0.1";"StatementItems";"Str";"DOCNUM";"";"";
 1;2;"0.1";"StatementItems";"Str";"DOCSUM";"";"";
