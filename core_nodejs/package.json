@@ -24,7 +24,7 @@
     "start": "node start.js"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10.18.0"
   },
   "version": "1.0.0"
 }
