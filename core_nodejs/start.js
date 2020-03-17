@@ -66,6 +66,7 @@ app.use('/node/exportfile', exportfile);
 app.use('/node/pp_exportbytemplate', require('./lib/pp_exportbytemplate'));
 app.use('/node/v_exportbytemplate', require('./lib/v_exportbytemplate'));
 app.use('/node/vpp_exportbytemplate', require('./lib/vpp_exportbytemplate'));
+app.use('/node/v_export_pdf', require('./lib/v_export_pdf'));
 
 // ========================== 
 // LAST SECTION IN FILE errors not found - должна находиться только в конце файла
