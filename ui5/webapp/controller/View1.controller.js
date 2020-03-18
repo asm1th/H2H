@@ -97,9 +97,9 @@ sap.ui.define([
 			oMessagePopover.setModel(messageModel);
 
 			// Активация кнопок
-			this.byId("onSend").setEnabled(true);
-			this.byId("onUndoSign").setEnabled(true);
-			this.byId("onSignDialog").setEnabled(true);
+			this.byId("onSend").setEnabled(false);
+			this.byId("onUndoSign").setEnabled(false);
+			this.byId("onSignDialog").setEnabled(false);
 		},
 
 		// remove test after
@@ -601,16 +601,18 @@ sap.ui.define([
 					if (data.status === "Подписан") {} else {
 						StatusEnableButton = false; // хоть одна ПП не подписана
 					}
-					if (data.status === "Удален") {} else {
+					if (data.status === "Удален") {
 						StatusSignEnableButton = false; // хоть одна ПП не подписана
 					}
 				});
 				this.getView().getModel("UIData").setProperty("/PaymentOrderTotal", PaymentOrderTotal);
 				this.byId("onSend").setEnabled(StatusEnableButton);
 				this.byId("onUndoSign").setEnabled(StatusEnableButton);
+				this.byId("onSignDialog").setEnabled(StatusSignEnableButton);
 			} else {
 				this.byId("onSend").setEnabled(false);
 				this.byId("onUndoSign").setEnabled(false);
+				this.byId("onSignDialog").setEnabled(false);
 				this.getView().getModel("UIData").setProperty("/PaymentOrderTotal", 0);
 			}
 		},
@@ -904,19 +906,9 @@ sap.ui.define([
 
 		// выбрали подпись в окне выбора
 		onUndoThisSign: function (oEvent) {
-			//var src = oEvent.getSource();
-			//var ctx = src.getBindingContext();
-			//var objSign = src.getModel().getProperty(ctx.getPath());
-			//var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
 			var docExtId = this._getDocExtId();
             var oObject = oEvent.getSource().getBindingContext().getObject();
 
-			var oEntry = {};
-			oEntry.docExtId = docExtId[0];
-			// oEntry.Value = Sign;
-			// oEntry.SN = objSign.SerialNumber;
-			// oEntry.Issuer = objSign.IssuerName;
-			// oEntry.Fio = objSign.SubjectName;
 			var oModel = this.getOwnerComponent().getModel();
 			var mParams = {};
 			var that = this;
@@ -927,9 +919,11 @@ sap.ui.define([
 				that.undoSignDialog.close();
 			};
 			mParams.error = this._onErrorCall;
-			var Path = "/Sign(docExtId='" + docExtId + "',SN='" + oObject.SerialNumber + "')";
-			oModel.remove(Path, mParams);
-
+			docExtId.forEach(function (item, i) {
+                var Path = "/Sign(docExtId='" + item + "',SN='" + oObject.SerialNumber + "')";
+			    oModel.remove(Path, mParams);
+			});
+			
 			this.undoSignDialog.close();
 		},
 
@@ -1087,41 +1081,43 @@ sap.ui.define([
 			var objSign = src.getModel().getProperty(ctx.getPath());
 			var Thumbprint = objSign.Thumbprint; // берем отпечаток = SHA1
 
-			var dataToSign = "Digest";
+			var dataToSign = "";
 			var docExtId = this._getDocExtId();
 
 			// get Digest HERE 
 			//var url = "/xsjs/digest.xsjs";
 			var url = "/digest.xsjs";
-			$.ajax({
-				type: "GET",
-				url: url,
-				data: "docExtId=%27" + docExtId[0] + "%27",
-				//dataType: "text/plain",
-				success: function (data) {
-					dataToSign = data;
-					//console.log("digest: ", data);
-				},
-				error: function (oError) {
-					MessageBox.error(oError.responseText);
-					console.warn(oError);
-				}
-			});
-
-			///////////////////
-			var thenable = this._SignCreate(Thumbprint, dataToSign);
 			var that = this;
-			// обработка ошибки
-			thenable.then(
-				function (result) {
-					//MessageBox.success("Платежное поручение подписано");
-					console.log(result);
-					that._sendSign(result, objSign);
-				},
-				function (result) {
-					MessageBox.error(result);
-					console.warn(result);
-				});
+			docExtId.forEach(function (item, i) {
+				$.ajax({
+					type: "GET",
+					url: url,
+					data: "docExtId=%27" + item + "%27",
+					//dataType: "text/plain",
+					success: function (data) {
+						dataToSign = data;
+						//console.log("digest: ", data);
+
+						 ///////////////////
+						var thenable = that._SignCreate(Thumbprint, dataToSign);
+						// обработка ошибки
+						thenable.then(
+							function (result) {
+								//MessageBox.success("Платежное поручение подписано");
+								console.log(result);
+								that._sendSign(result, objSign);
+							},
+							function (result) {
+								MessageBox.error(result);
+								console.warn(result);
+							});
+							},
+							error: function (oError) {
+								MessageBox.error(oError.responseText);
+								console.warn(oError);
+							}
+						});
+			});
 		},
 
 		// функция получения DocExtId из таблицы LineItemsSmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
@@ -1155,31 +1151,30 @@ sap.ui.define([
 		// отправка подписи
 		_sendSign: function (Sign, objSign) {
 			var docExtId = this._getDocExtId();
-
-			var oEntry = {};
-			oEntry.docExtId = docExtId[0];
-			// убираем переносы строк /r/ в SIgn
-			// var Sign2 = Sign.replace("/r/", "");
-			// oEntry.Value = Sign2.replace(" ", "");
-
-			oEntry.Value = Sign;
-			oEntry.SN = objSign.SerialNumber;
-			oEntry.Issuer = objSign.IssuerName;
-			oEntry.Fio = objSign.SubjectName;
-			// oEntry.ValidToDate = objSign.ValidToDate;
-			// oEntry.Thumbprint = objSign.Thumbprint;
-
-			var oModel = this.getOwnerComponent().getModel();
-			var mParams = {};
 			var that = this;
-			mParams.success = function () {
-				var oSmartTable = that.byId("LineItemsSmartTable");
-				oSmartTable.rebindTable();
-				that.signDialog.close();
-				MessageToast.show("ПП подписана");
-			};
-			mParams.error = this._onErrorCall;
-			oModel.create("/Sign", oEntry, mParams);
+
+			docExtId.forEach(function (item, i) {
+				var oEntry = {};
+				oEntry.docExtId = item;
+
+				oEntry.Value = Sign;
+				oEntry.SN = objSign.SerialNumber;
+				oEntry.Issuer = objSign.IssuerName;
+				oEntry.Fio = objSign.SubjectName;
+				// oEntry.ValidToDate = objSign.ValidToDate;
+				// oEntry.Thumbprint = objSign.Thumbprint;
+
+				var oModel = that.getOwnerComponent().getModel();
+				var mParams = {};
+				mParams.success = function () {
+					var oSmartTable = that.byId("LineItemsSmartTable");
+					oSmartTable.rebindTable();
+					that.signDialog.close();
+					MessageToast.show("ПП подписана");
+				};
+				mParams.error = that._onErrorCall;
+				oModel.create("/Sign", oEntry, mParams);
+			});
 		},
 
 		//закрыли signDialog
