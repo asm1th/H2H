@@ -19,68 +19,88 @@
       <descriptions defaultDescription="acc"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="acc"/>
     </attribute>
-    <attribute id="organization" order="3" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="accINN" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="accINN"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="accINN"/>
+    </attribute>
+    <attribute id="organization" order="4" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="organization"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="organization"/>
     </attribute>
-    <attribute id="bic" order="4" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="bic" order="5" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="bic"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="bic"/>
     </attribute>
-    <attribute id="debetSum" order="5" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="bankName" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="bankName"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="bankName"/>
+    </attribute>
+    <attribute id="bankSettlenentType" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="bankSettlenentType"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="bankSettlenentType"/>
+    </attribute>
+    <attribute id="bankSettlenentName" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="bankSettlenentName"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="bankSettlenentName"/>
+    </attribute>
+    <attribute id="bankAddress" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="bankAddress"/>
+      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="bankAddress"/>
+    </attribute>
+    <attribute id="debetSum" order="10" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="debetSum"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="debetSum"/>
     </attribute>
-    <attribute id="creditSum" order="6" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="creditSum" order="11" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="creditSum"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="creditSum"/>
     </attribute>
-    <attribute id="currCode" order="7" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="currCode" order="12" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="currCode"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="currCode"/>
     </attribute>
-    <attribute id="docTime" order="8" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="docTime" order="13" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="docTime"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="docTime"/>
     </attribute>
-    <attribute id="outBal" order="9" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="outBal" order="14" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="outBal"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="outBal"/>
     </attribute>
-    <attribute id="stmtDate" order="10" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="stmtDate" order="15" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="stmtDate"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="stmtDate"/>
     </attribute>
-    <attribute id="beginDate" order="11" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="beginDate" order="16" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="beginDate"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="beginDate"/>
     </attribute>
-    <attribute id="lastMovetDate" order="12" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="lastMovetDate" order="17" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="lastMovetDate"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="lastMovetDate"/>
     </attribute>
-    <attribute id="lastStmtDate" order="13" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="lastStmtDate" order="18" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="lastStmtDate"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="lastStmtDate"/>
     </attribute>
-    <attribute id="endDate" order="14" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="endDate" order="19" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="endDate"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="endDate"/>
     </attribute>
-    <attribute id="enterBal" order="15" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="enterBal" order="20" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="enterBal"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="enterBal"/>
     </attribute>
-    <attribute id="docNum" order="16" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="docNum" order="21" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="docNum"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="docNum"/>
     </attribute>
-    <attribute id="stmtType" order="17" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="stmtType" order="22" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="stmtType"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="stmtType"/>
     </attribute>
   
-    <attribute id="stmtTypeId" order="18" displayAttribute="false" attributeHierarchyActive="false">
+    <attribute id="stmtTypeId" order="23" displayAttribute="false" attributeHierarchyActive="false">
       <descriptions defaultDescription="stmtTypeId"/>
   
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="stmtTypeId"/>

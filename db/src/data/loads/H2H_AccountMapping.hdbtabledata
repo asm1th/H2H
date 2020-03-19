@@ -12,7 +12,7 @@
 		        } 
             },
             "import_settings": {
-                "import_columns": ["BANKID","DOCUMENTTYPEID","ORGANIZATIONID","ACCOUNT","SIGNTYPEID"]
+                "import_columns": ["BANKID","DOCUMENTTYPEID","ORGANIZATIONID","ACCOUNT","INN","SIGNTYPEID"]
             }
     	}
     ]
