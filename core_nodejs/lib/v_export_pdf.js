@@ -28,34 +28,37 @@ function _getDocSumPropis(Data) {
 };
 
 function makePdf(Data, req, res, next) {
-	let students = [{
-		name: "Joy",
-		email: "joy@example.com",
-		city: "New York",
-		country: "USA"
-	}, {
-		name: "John",
-		email: "John@example.com",
-		city: "San Francisco",
-		country: "USA"
-	}];
+	// let students = [{
+	// 	name: "Joy",
+	// 	email: "joy@example.com",
+	// 	city: "New York",
+	// 	country: "USA"
+	// }, {
+	// 	name: "John",
+	// 	email: "John@example.com",
+	// 	city: "San Francisco",
+	// 	country: "USA"
+	// }];
 
 	//var content = fs.readFileSync(path.resolve(__dirname, 'doctemplates/vtemplate.docx'), 'binary');
 
 	ejs.renderFile(path.resolve(__dirname, 'doctemplates/v_export_pdf_template.ejs'), {
-		students: students
+		//students: students
+		data: Data
 	}, (err, data) => {
 		if (err) {
 			res.send(err);
 		} else {
 			let options = {
-				"height": "11.25in",
-				"width": "18.5in",
+				//"height": "11.25in",
+				//"width": "18.5in",
+				"format": "A4",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid
+				"orientation": "landscape", // portrait or landscape
 				"header": {
-					"height": "70mm"
+					"height": "38mm"
 				},
 				"footer": {
-					"height": "50mm",
+					"height": "20mm",
 				},
 			};
 			// pdf.create(data, options).toStream((err, stream) => {
@@ -68,7 +71,7 @@ function makePdf(Data, req, res, next) {
 			// 		stream.pipe(res);
 			// 	}
 			// });
-
+			
 		    pdf.create(data, options).toBuffer(function (err, buffer) {
 				//console.log('This is a buffer:', Buffer.isBuffer(buffer));
 				res.setHeader('Content-type', 'application/pdf');
@@ -115,13 +118,13 @@ router.get('/', function (req, res, next) {
 						return next(err);
 					}
 					if (rows.length > 0) {
-						rows.forEach(function (row) {
-							if (row.DC == "1") {
-								row.isDebit = true;
-							} else if (row.DC == "2") {
-								row.isCredit = true;
-							}
-						});
+						// rows.forEach(function (row) {
+						// 	if (row.DC == "1") {
+						// 		row.isDebit = true;
+						// 	} else if (row.DC == "2") {
+						// 		row.isCredit = true;
+						// 	}
+						// });
 						print.docs = rows;
 						//console.log('print all ', print);
 					}
