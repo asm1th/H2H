@@ -45,6 +45,8 @@ context H2H {
 		key ORGANIZATIONID		: Integer; 
 		@Comment : 'Счет плательщика'
 			ACCOUNT				: String(20);
+		 @Comment : 'ИНН (до 12)'
+            INN                : String(12);
 		@Comment : 'Тип подписи'
 			SIGNTYPEID			: Integer;
 		_BANK					: association[1] to TBank			on _BANK.ID = BANKID;
@@ -123,6 +125,7 @@ context H2H {
 	
 	define view AccountMapping as Select from TAccountMapping{
 		_BANK.NAME			as BANK,
+		INN					as INN,
 		_DOCUMENTTYPE.NAME	as DOCUMENTTYPE,
 		_ORGANIZATION.NAME	as ORGANIZATION,
 		ACCOUNT,

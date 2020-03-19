@@ -250,6 +250,74 @@ function fileUpload(param)
 	
 }
 
+function getDocGUID(param, docNum, docType)
+{
+	if(docType == 'PO'){
+		var pStmt = param.connection.prepareStatement("Select \"DOCEXTID\" From \"RaiffeisenBank.TAccDoc\" Where \"DOCNUM\" = " + docNum);
+		rs = null;
+		rs = pStmt.executeQuery();
+		while (rs.next()) {
+			var docGUID = rs.getString(1);
+		}
+		pStmt.close();
+		return docGUID;
+	}else if(docType == 'ST'){
+			var pStmt = param.connection.prepareStatement("Select \"RESPONSEID\" From \"RaiffeisenBank.TStatement\" Where \"DOCNUM\" = " + docNum);
+		rs = null;
+		rs = pStmt.executeQuery();
+		while (rs.next()) {
+			var docGUID = rs.getString(1);
+		}
+		pStmt.close();
+		return docGUID;
+	}
+}
+
+function delExistDoc(param, docGUIDs, docType)
+{
+	var values = '';
+	docGUIDs.forEach(function(docGUID, i){values += i==0 ? "'" + docGUID + "'" : ' ,"' + docGUID + "'"});
+		console.log(values);
+		
+	if(docType == 'PO'){
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayDocRu\" WHERE \"DOCEXTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TAccDoc\" WHERE \"DOCEXTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayer\" WHERE \"DOCEXTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TPayee\" WHERE \"DOCEXTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TDepartmentalInfo\" WHERE \"DOCEXTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TSign\" WHERE \"DOCEXTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.THistory\" WHERE \"DOCEXTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+	
+		param.connection.commit();
+		pStmt.close();
+	}else if(docType == 'ST'){
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TStatement\" WHERE \"RESPONSEID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TStatementItems\" WHERE \"RESPONSEID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.TFile\" WHERE \"REQUESTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+		
+		pStmt = param.connection.prepareStatement("delete from \"RaiffeisenBank.THistory\" WHERE \"DOCEXTID\" in (" + values + ")");
+		pStmt.executeUpdate();
+	}
+}
+
 function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBody, content) {
 	try {
 		var rs = null;
@@ -259,7 +327,7 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 		var pStmt = param.connection.prepareStatement("Select \"ENTITYNAME\",\"FILDSOURCE\",\"FIELDDESTINATION\",\"FIELDTYPE\",\"OBLIGATORY\" From \"H2H.TMapping\" Where \"BANKID\" = 1 and \"DOCUMENTTYPEID\" = 1");
 		rs = null;
 		rs = pStmt.executeQuery();
-		
+		existDocGUID = [];
 		var fieldsRequest	= [];
 		var fieldsPayDocRu	= [];
 		var fieldsAccDoc	= [];
@@ -325,7 +393,7 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 					break;	
 			}
 		}
-
+		pStmt.close();
 		var fileRows = content.split(/\r\n|\n/);
 		
 		var requestID = guid();
@@ -399,6 +467,10 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 							AccDoc.set('DOCDATE',docDate.substr(6,4) + docDate.substr(3,2) + docDate.substr(0,2));
 						}
 						raif.AccDoc.push(AccDoc);
+						var existGUID = getDocGUID(param, AccDoc.get('DOCNUM'),'PO')
+						if(existGUID != null){
+							existDocGUID.push(existGUID);
+						}
 					}
 					if (Payer.size > 0) {
 						Payer.set('DOCEXTID', docExtID);
@@ -428,6 +500,10 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 						raif.DepInfo.push(DepInfo);
 					}
 				} else if (destinationField.Field == "EOF" ){
+					
+					if(existDocGUID.length > 0){
+						delExistDoc(param, existDocGUID, 'PO');
+					}
 					insertEntity(param, 'Request',				raif.Request,	fieldsRequest,	destinatonFieldOpt);
 					insertEntity(param, 'File',					raif.File,		fieldsFile,		destinatonFieldOpt);
 					insertEntity(param, 'PayDocRu',				raif.PayDocRu,	fieldsPayDocRu, destinatonFieldOpt);
@@ -451,6 +527,7 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 	statementData.Statement = {};
 	statementData.StatementItems = {};
 	statementData.File = {}
+	existDocGUID = [];
 	var responseID = guid();
 
 	statementData.Statement = getMapping(param, 1, 2, 'Statement');
@@ -500,6 +577,11 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 				
 			
 			StatementRaif.set('DOCNUM',statement.$.docNum);
+			var existGUID = getDocGUID(param, statement.$.docNum,'ST')
+			if(existGUID != null){
+				existDocGUID.push(existGUID);
+			}
+			
 			statementData.Statement.data.push(StatementRaif);
 			
 			statement.Docs.forEach(function(docs){
@@ -549,6 +631,10 @@ function createStatment(param, docType, fileName, fileType, fileSize, fileBody, 
 			});
 		});
 	});	
+
+	if(existDocGUID.length > 0){
+		delExistDoc(param, existDocGUID, 'ST');
+	}
 
 	insertEntity(	param,
 					statementData.File.entityName, 

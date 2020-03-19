@@ -293,6 +293,7 @@ context RaiffeisenBank {
             DOCNUM  	: t_str_6;
             _STITEMS	: association[1] to TStatementItems 	on _STITEMS.RESPONSEID	= RESPONSEID;
             _ACC		: association[1] to H2H.AccountMapping	on _ACC.ACCOUNT			= ACC;
+            _BIC		: association[1] to H2H.BicInformation	on _BIC.BIC				= BIC;
             _STYPE      : association[1] to TStatementType		on _STYPE.ID			= STMTTYPE;
             _FILE   	: association[1] to TFile           	on _FILE.REQUESTID		= RESPONSEID;
             
@@ -636,7 +637,12 @@ context RaiffeisenBank {
             RESPONSEID  		as responseId,
             ACC					as acc,
             _ACC.ORGANIZATION	as organization,
+            _ACC.INN			as accINN,
             BIC         		as bic,
+            _BIC.NAME			as bankName,
+            _BIC.SETTLEMENTTYPE as bankSettlenentType,
+            _BIC.SETTLEMENTNAME as bankSettlenentName,
+			_BIC.ADDRESS		as bankAddress,
             DEBETSUM			as debetSum,
             CREDITSUM			as creditSum,
             CURRCODE    		as currCode,
