@@ -1159,7 +1159,7 @@ sap.ui.define([
 
 				oEntry.Value = Sign;
 				oEntry.SN = objSign.SerialNumber;
-				oEntry.Issuer = objSign.IssuerName;
+				oEntry.Issuer = "CN="+objSign.IssuerName;
 				oEntry.Fio = objSign.SubjectName;
 				// oEntry.ValidToDate = objSign.ValidToDate;
 				// oEntry.Thumbprint = objSign.Thumbprint;
