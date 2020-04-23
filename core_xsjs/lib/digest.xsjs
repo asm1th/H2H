@@ -54,7 +54,7 @@ while (rs.next()) {
 	raif.Payer.Bank.bic 			= rs.getString(22);
 	raif.Payer.Bank.correspAcc		= rs.getString(23);
 	raif.Payer.Bank.Name			= rs.getString(24);
-	raif.Payer.Bank.BankCity		= rs.getString(25).toUpperCase();
+	raif.Payer.Bank.BankCity		= rs.getString(25);
 	raif.Payer.Bank.SettlementType	= rs.getString(26);
 	raif.Payee.inn					= rs.getString(27);
 	raif.Payee.kpp					= rs.getString(28);
@@ -63,7 +63,7 @@ while (rs.next()) {
 	raif.Payee.Bank.bic 			= rs.getString(31);
 	raif.Payee.Bank.correspAcc		= rs.getString(32);
 	raif.Payee.Bank.Name			= rs.getString(33);
-	raif.Payee.Bank.BankCity		= rs.getString(34).toUpperCase();
+	raif.Payee.Bank.BankCity		= rs.getString(34);
 	raif.Payee.Bank.SettlementType	= rs.getString(35);
 }
 if (errMsg == '') {
