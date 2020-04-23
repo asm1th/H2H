@@ -28,9 +28,18 @@ while (rs.next()) {
 	raif.AccDoc.purpose 			= rs.getString(5);
 	raif.AccDoc.docDate 			= rs.getString(6) + ' 00:00:00';
 	raif.AccDoc.docNum				= rs.getString(7);
-	raif.AccDoc.docSum				= rs.getString(8);
+	raif.AccDoc.docSum				= rs.getString(8); 
+	if (raif.AccDoc.docSum != "") {
+		raif.AccDoc.docSum = raif.AccDoc.docSum.replace(".00", "");
+	}
 	raif.AccDoc.vatSum				= rs.getString(9);
+	if (raif.AccDoc.vatSum != "") {
+		raif.AccDoc.vatSum = raif.AccDoc.vatSum.replace(".00", "");
+	}
 	raif.AccDoc.vatRate 			= rs.getString(10);
+	if (raif.AccDoc.vatRate != "") {
+		raif.AccDoc.vatRate = raif.AccDoc.vatRate.replace(".00", "");
+	}
 	raif.AccDoc.vat 				= rs.getString(11);
 	raif.AccDoc.transKind			= rs.getString(12);
 	raif.AccDoc.paytKind			= rs.getString(13);
