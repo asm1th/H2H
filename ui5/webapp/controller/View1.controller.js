@@ -987,9 +987,10 @@ sap.ui.define([
 		onSignDialog: function () {
 			if (!this.signDialog) {
 				this.signDialog = sap.ui.xmlfragment("signDialog", "h2h.ui5.view.signDialog", this);
-			} else {
-				this.signDialog.open();
 			}
+			// } else {
+			// 	this.signDialog.open();
+			// }
 
 			var mySerts;
 			// вызов промиса - получаем сертификаты в окно
@@ -1096,7 +1097,7 @@ sap.ui.define([
 					//dataType: "text/plain",
 					success: function (data) {
 						dataToSign = data;
-						//console.log("digest: ", data);
+						console.log("digest: ", data);
 
 						 ///////////////////
 						var thenable = that._SignCreate(Thumbprint, dataToSign);

@@ -459,7 +459,7 @@ html.sap-desktop .sapContrast .sapMFooter-CTX .btn-delete .sapMBtnInner.sapMBtnR
     padding-right: 1rem;
 }
 .sapUiSizeCompact .btn .sapMBtnInner.sapMBtnText.sapMBtnIconFirst, .sapUiSizeCompact .btn .sapMBtnInner.sapMBtnText.sapMBtnBack {
-    padding-left: 1.875rem;
+    /*padding-left: 1.875rem;*/
 }
 .sapUiSizeCompact .btn .sapMBtnContent {
     line-height: 1.600rem;
