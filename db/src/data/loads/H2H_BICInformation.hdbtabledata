@@ -17,12 +17,13 @@
 		        "NAME"				: "NAMEP",
 		        "SETTLEMENTTYPE"	: "TNP", 
 		        "SETTLEMENTNAME"	: "NNP",
-		        "ADDRESS"			: "ADR"
+		        "ADDRESS"			: "ADR",
+		        "CORRESPACC"		: "KSNP"
 		     }, 
             
             
             "import_settings": {
-                "import_columns": ["BIC","NAME","SETTLEMENTTYPE","SETTLEMENTNAME","ADDRESS"]
+                "import_columns": ["BIC","NAME","SETTLEMENTTYPE","SETTLEMENTNAME","ADDRESS","CORRESPACC"]
             }
     	}
     ]

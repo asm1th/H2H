@@ -64,12 +64,28 @@ function historyAdd(param, docExtId, action, status, description){
 
 function getSettlementType(param, bic){
 	var pStmt = param.connection.prepareStatement("Select \"SETTLEMENTTYPE\" From \"H2H.BicInformation\" Where \"BIC\" = '" + bic + "'");
-		rs = null;
-		rs = pStmt.executeQuery();
-		while (rs.next()) {
-			return rs.getString(1);
-		}
-		pStmt.close();
+	rs = null;
+	rs = pStmt.executeQuery();
+	while (rs.next()) {
+		return rs.getString(1);
+	}
+	pStmt.close();
+}
+
+function getBicInfo(param, bic){
+	var bicInfo = {};
+	var pStmt = param.connection.prepareStatement("Select \"BIC\",\"NAME\",\"SETTLEMENTTYPE\",\"SETTLEMENTNAME\",\"ADDRESS\",\"CORRESPACC\" From \"H2H.BicInformation\" Where \"BIC\" = '" + bic + "'");
+	rs = null;
+	rs = pStmt.executeQuery();
+	while (rs.next()) {
+		bicInfo.Name = rs.getString(2);
+		bicInfo.SettlementType = rs.getString(3);
+		bicInfo.SettlementName = rs.getString(4);
+		bicInfo.Address = rs.getString(5);
+		bicInfo.CorrAcc = rs.getString(6);
+	}
+	pStmt.close();
+	return bicInfo;
 }
 
 function isNull(param, docExtId, destField, srcValue ) {
@@ -475,9 +491,17 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 					if (Payer.size > 0) {
 						Payer.set('DOCEXTID', docExtID);
 						
-						if (!Payer.has('PAYERBANKSETTLEMENTTYPE') && Payer.has('PAYERBANKBIC')) {
-							var PayerBankSettlementType = getSettlementType(param, Payer.get('PAYERBANKBIC'));
-							Payer.set('PAYERBANKSETTLEMENTTYPE', PayerBankSettlementType);
+						// if (!Payer.has('PAYERBANKSETTLEMENTTYPE') && Payer.has('PAYERBANKBIC')) {
+						// 	var PayerBankSettlementType = getSettlementType(param, Payer.get('PAYERBANKBIC'));
+						// 	Payer.set('PAYERBANKSETTLEMENTTYPE', PayerBankSettlementType);
+						// }
+						
+						if (Payer.has('PAYERBANKBIC')) {
+							var PayerBicInfo = getBicInfo(param, Payer.get('PAYERBANKBIC'));
+							Payer.set('PAYERBANKNAME', PayerBicInfo.Name)
+							Payer.set('PAYERBANKCITY', PayerBicInfo.SettlementName)
+							Payer.set('PAYERBANKSETTLEMENTTYPE', PayerBicInfo.SettlementType)
+							Payer.set('PAYERBANKCORRESPACC', PayerBicInfo.CorrAcc)
 						}
 						
 						raif.Payer.push(Payer);
@@ -485,12 +509,23 @@ function createPaymentOrder(param, docType, fileName, fileType, fileSize, fileBo
 					if (Payee.size > 0) {
 						Payee.set('DOCEXTID', docExtID);
 						
-						if (!Payee.has('PAYEEBANKSETTLEMENTTYPE') && Payee.has('PAYEEBANKBIC')) {
-							var PayeeBankSettlementType = getSettlementType(param, Payee.get('PAYEEBANKBIC'));
+						// if (!Payee.has('PAYEEBANKSETTLEMENTTYPE') && Payee.has('PAYEEBANKBIC')) {
+						// 	var PayeeBankSettlementType = getSettlementType(param, Payee.get('PAYEEBANKBIC'));
+						// 	if(DepInfo.get('CBC') != undefined){
+						// 		PayDocRu.set('PAYEEUIP', '0')
+						// 	}
+						// 	Payee.set('PAYEEBANKSETTLEMENTTYPE', PayeeBankSettlementType);
+						// }
+						
+						if (Payee.has('PAYEEBANKBIC')) {
+							var PayeeBicInfo = getBicInfo(param, Payee.get('PAYEEBANKBIC'));
 							if(DepInfo.get('CBC') != undefined){
 								PayDocRu.set('PAYEEUIP', '0')
 							}
-							Payee.set('PAYEEBANKSETTLEMENTTYPE', PayeeBankSettlementType);
+							Payee.set('PAYEEBANKNAME', PayeeBicInfo.Name)
+							Payee.set('PAYEEBANKCITY', PayeeBicInfo.SettlementName)
+							Payee.set('PAYEEBANKSETTLEMENTTYPE', PayeeBicInfo.SettlementType)
+							Payee.set('PAYEEBANKCORRESPACC', PayeeBicInfo.CorrAcc)
 						}
 						
 						raif.Payee.push(Payee);

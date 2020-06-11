@@ -67,6 +67,8 @@ context H2H {
 		SETTLEMENTNAME		: String(255);
 		@Comment : 'Адрес'
 		ADDRESS				: String(255);
+		@Comment : 'Номер корр. счёта банка'
+        CORRESPACC  		: String(20);
 		_SETTLEMENT			: association[1] to TSettlement on _SETTLEMENT.TYPE = SETTLEMENTTYPE;
 	};
 	
@@ -109,7 +111,8 @@ context H2H {
 		_SETTLEMENT.TYPE	as FILIAL,
 		_SETTLEMENT.NAME	as SETTLEMENTTYPE,
 		SETTLEMENTNAME		as SETTLEMENTNAME,
-		ADDRESS				as ADDRESS
+		ADDRESS				as ADDRESS,
+		CORRESPACC			as CORRESPACC
 	};
 	
 	define view Mapping as Select from TMapping{

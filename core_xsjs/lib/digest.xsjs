@@ -28,9 +28,18 @@ while (rs.next()) {
 	raif.AccDoc.purpose 			= rs.getString(5);
 	raif.AccDoc.docDate 			= rs.getString(6) + ' 00:00:00';
 	raif.AccDoc.docNum				= rs.getString(7);
-	raif.AccDoc.docSum				= rs.getString(8);
+	raif.AccDoc.docSum				= rs.getString(8); 
+	if (raif.AccDoc.docSum != "") {
+		raif.AccDoc.docSum = raif.AccDoc.docSum.replace(".00", "");
+	}
 	raif.AccDoc.vatSum				= rs.getString(9);
+	if (raif.AccDoc.vatSum != "") {
+		raif.AccDoc.vatSum = raif.AccDoc.vatSum.replace(".00", "");
+	}
 	raif.AccDoc.vatRate 			= rs.getString(10);
+	if (raif.AccDoc.vatRate != "") {
+		raif.AccDoc.vatRate = raif.AccDoc.vatRate.replace(".00", "");
+	}
 	raif.AccDoc.vat 				= rs.getString(11);
 	raif.AccDoc.transKind			= rs.getString(12);
 	raif.AccDoc.paytKind			= rs.getString(13);
@@ -45,7 +54,7 @@ while (rs.next()) {
 	raif.Payer.Bank.bic 			= rs.getString(22);
 	raif.Payer.Bank.correspAcc		= rs.getString(23);
 	raif.Payer.Bank.Name			= rs.getString(24);
-	raif.Payer.Bank.BankCity		= rs.getString(25).toUpperCase();
+	raif.Payer.Bank.BankCity		= rs.getString(25);
 	raif.Payer.Bank.SettlementType	= rs.getString(26);
 	raif.Payee.inn					= rs.getString(27);
 	raif.Payee.kpp					= rs.getString(28);
@@ -54,7 +63,7 @@ while (rs.next()) {
 	raif.Payee.Bank.bic 			= rs.getString(31);
 	raif.Payee.Bank.correspAcc		= rs.getString(32);
 	raif.Payee.Bank.Name			= rs.getString(33);
-	raif.Payee.Bank.BankCity		= rs.getString(34).toUpperCase();
+	raif.Payee.Bank.BankCity		= rs.getString(34);
 	raif.Payee.Bank.SettlementType	= rs.getString(35);
 }
 if (errMsg == '') {
@@ -105,7 +114,7 @@ if (errMsg == '') {
 	digestBody += 'Дата налогового документа (год)=\n';
 	digestBody += 'Тип налогового платежа=\n';
 	digestBody += 'Номер налогового документа=\n';
-	digestBody += 'Номер паспорта сделки=';
+	digestBody += 'Номер паспорта сделки=\n';
 }
 
 
