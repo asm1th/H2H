@@ -238,7 +238,7 @@ if (errMessage.length == 0) {
 	var options = {
 		method: 'POST',
 		body: data,
-		formData: formData,
+		//formData: formData,
 		json: true,
 		uri: url,
 		headers: {
