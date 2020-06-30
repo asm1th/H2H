@@ -890,8 +890,8 @@ sap.ui.define([
 						var IssuerName = item.IssuerName.split(', ');
 						var IssuerName1 = IssuerName[0].split('=');
 						item.IssuerName = IssuerName1[1];
-                        var ValidToDate = item.ValidToDate.split('T');
-                        item.ValidToDate = ValidToDate[0];
+						var ValidToDate = item.ValidToDate.split('T');
+						item.ValidToDate = ValidToDate[0];
 					});
 
 					var oModel = new JSONModel();
@@ -907,7 +907,7 @@ sap.ui.define([
 		// выбрали подпись в окне выбора
 		onUndoThisSign: function (oEvent) {
 			var docExtId = this._getDocExtId();
-            var oObject = oEvent.getSource().getBindingContext().getObject();
+			var oObject = oEvent.getSource().getBindingContext().getObject();
 
 			var oModel = this.getOwnerComponent().getModel();
 			var mParams = {};
@@ -920,10 +920,10 @@ sap.ui.define([
 			};
 			mParams.error = this._onErrorCall;
 			docExtId.forEach(function (item, i) {
-                var Path = "/Sign(docExtId='" + item + "',SN='" + oObject.SerialNumber + "')";
-			    oModel.remove(Path, mParams);
+				var Path = "/Sign(docExtId='" + item + "',SN='" + oObject.SerialNumber + "')";
+				oModel.remove(Path, mParams);
 			});
-			
+
 			this.undoSignDialog.close();
 		},
 
@@ -1007,8 +1007,8 @@ sap.ui.define([
 						var IssuerName = item.IssuerName.split(', ');
 						var IssuerName1 = IssuerName[0].split('=');
 						item.IssuerName = IssuerName1[1];
-                        var ValidToDate = item.ValidToDate.split('T');
-                        item.ValidToDate = ValidToDate[0];
+						var ValidToDate = item.ValidToDate.split('T');
+						item.ValidToDate = ValidToDate[0];
 					});
 
 					var oModel = new JSONModel();
@@ -1098,53 +1098,59 @@ sap.ui.define([
 					success: function (data) {
 						dataToSign = data;
 						console.log("digest: ", data);
-						
-						// savefile
+
+						///////////////////////// savefile
 						// alert("Сохраняем файл digest после подписи");
-    					// var filename = "digest";
-						// var blob = new Blob([data], { type: "text/plain" });
+						var filename = "digest";
+						var blob = new Blob([data], { type: "text/plain" });
 
-						// if (typeof window.navigator.msSaveBlob !== 'undefined') {
-						// 	window.navigator.msSaveBlob(blob, filename);
-						// } else {
-						// 	var URL = window.URL || window.webkitURL;
-						// 	var downloadUrl = URL.createObjectURL(blob);
+						if (typeof window.navigator.msSaveBlob !== 'undefined') {
+							window.navigator.msSaveBlob(blob, filename);
+						} else {
+							var URL = window.URL || window.webkitURL;
+							var downloadUrl = URL.createObjectURL(blob);
 
-						// 	if (filename) {
-						// 		var a = document.createElement("a");
-						// 		if (typeof a.download === 'undefined') {
-						// 			window.location.href = downloadUrl;
-						// 		} else {
-						// 			a.href = downloadUrl;
-						// 			a.download = filename;
-						// 			document.body.appendChild(a);
-						// 			a.click();
-						// 		}
-						// 	} else {
-						// 		window.location.href = downloadUrl;
-						// 	}
-						// 	setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-						// }
-
-						 ///////////////////
+							if (filename) {
+								var a = document.createElement("a");
+								if (typeof a.download === 'undefined') {
+									window.location.href = downloadUrl;
+								} else {
+									a.href = downloadUrl;
+									a.download = filename;
+									document.body.appendChild(a);
+									a.click();
+								}
+							} else {
+								window.location.href = downloadUrl;
+							}
+							setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+						}
+						///////////////////
+						
+						/// base64
 						var thenable = that._SignCreate(Thumbprint, dataToSign);
+						
+						/// blob
+						//console.log("sign data in BLOB!!!!!!!!!!!!!!!!!")
+						//var thenable = that._SignCreate(Thumbprint, blob);
+						
 						// обработка ошибки
 						thenable.then(
 							function (result) {
 								//MessageBox.success("Платежное поручение подписано");
-								console.log(result);
+								console.log("Sign",result);
 								that._sendSign(result, objSign);
 							},
 							function (result) {
 								MessageBox.error(result);
 								console.warn(result);
 							});
-							},
-							error: function (oError) {
-								MessageBox.error(oError.responseText);
-								console.warn(oError);
-							}
-						});
+					},
+					error: function (oError) {
+						MessageBox.error(oError.responseText);
+						console.warn(oError);
+					}
+				});
 			});
 		},
 
@@ -1187,7 +1193,7 @@ sap.ui.define([
 
 				oEntry.Value = Sign;
 				oEntry.SN = objSign.SerialNumber;
-				oEntry.Issuer = "CN="+objSign.IssuerName;
+				oEntry.Issuer = "CN=" + objSign.IssuerName;
 				oEntry.Fio = objSign.SubjectName;
 				// oEntry.ValidToDate = objSign.ValidToDate;
 				// oEntry.Thumbprint = objSign.Thumbprint;
@@ -1210,16 +1216,23 @@ sap.ui.define([
 			this.signDialog.close();
 		},
 
-		// получение сертификата иподписание
+		// получение сертификата и подписание
 		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-fileapi.html
 		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-sign-cades-bes-async.html
 		_SignCreate: function (Thumbprint, dataToSign) {
+
 			var CADESCOM_CADES_BES = 1;
+
 			var CAPICOM_CURRENT_USER_STORE = 2;
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
 			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; //	Возвращает сертификаты соответствующие указанному хэшу SHA1.
+
+			var CADESCOM_PKCS7_TYPE = 0xffff;
+			var CADESCOM_ENCODE_BINARY = 1;
+			//var CADESCOM_HASH_ALGORITHM_CP_GOST_3411 = 100;
+			var CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256 = 101 //Алгоритм ГОСТ Р 34.11-2012.
 
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
@@ -1232,6 +1245,7 @@ sap.ui.define([
 						// ============== поиск по имени
 						//var certSubjectName = 'Алексей';
 						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
+						
 						// ============== поиск по Thumbprint
 						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SHA1_HASH, Thumbprint);
 
@@ -1244,10 +1258,31 @@ sap.ui.define([
 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
 						yield oSigner.propset_Certificate(oCertificate);
 
-						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
-						yield oSignedData.propset_Content(dataToSign);
+						//// data prepare
+						var oHashedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.HashedData");
+						yield oHashedData.propset_Algorithm(CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256);
+						yield oHashedData.propset_DataEncoding(CADESCOM_ENCODE_BINARY);
+						yield oHashedData.Hash(dataToSign);
+						////////////// for SignHash oHashedData
+						var sHashValue1 = yield oHashedData.Value;
+						console.log("sHashValue1",sHashValue1);
+						yield oHashedData.SetHashValue(sHashValue1);
+						//////////////
 
-						var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_CADES_BES);
+						/////////////////////////// работает но подпись длинная
+						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
+						//yield oSignedData.propset_ContentEncoding = CADESCOM_ENCODE_BINARY;
+						var sSignedMessage = yield oSignedData.SignHash(oHashedData, oSigner, CADESCOM_PKCS7_TYPE);
+						///////////////////////
+
+						/////////////////////////// - работает - получение только подписи по хешу не указать CADESCOM_PKCS7_TYPE
+						//var oRawSignature = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.RawSignature");
+						//var sSignedMessage = yield oRawSignature.SignHash(oHashedData, oCertificate);
+
+						////////////////////// - работает, но подпись длинная
+						// var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
+						// yield oSignedData.propset_Content(dataToSign);
+						// var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_PKCS7_TYPE);
 
 						yield oStore.Close();
 
