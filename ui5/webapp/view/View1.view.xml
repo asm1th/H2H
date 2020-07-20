@@ -40,7 +40,7 @@
 
 				<Button id="messagePopup" icon="sap-icon://bell" type="Transparent" tooltip="Сообщения" text=" {/messagesLength}"
 					press="handleMessagePopoverPress"/>
-				<Button icon="sap-icon://lab" type="Transparent" press="testButton"/>
+				<!--<Button icon="sap-icon://lab" type="Transparent" press="testButton"/>-->
 				<!--<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"/>-->
 				<!--<MenuButton type="Transparent">-->
 				<!--	<menu>-->
@@ -202,10 +202,10 @@
 										</Toolbar>
 									</smartTable:customToolbar>
 									<!-- visibleRowCountMode="Auto" -->
-									<t:Table id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCount="10" rowActionCount="1" rowSelectionChange="onSelStatement">
-										<t:rowSettingsTemplate>
-											<t:RowSettings highlight="None"/>
-										</t:rowSettingsTemplate>
+									<t:Table id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" rowActionCount="1" rowSelectionChange="onSelStatement">
+										<!--<t:rowSettingsTemplate>-->
+										<!--	<t:RowSettings highlight="None"/>-->
+										<!--</t:rowSettingsTemplate>-->
 										<t:rowActionTemplate>
 											<t:RowAction>
 												<t:items>
