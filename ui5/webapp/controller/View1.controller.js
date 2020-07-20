@@ -932,18 +932,6 @@ sap.ui.define([
 			this.undoSignDialog.close();
 		},
 
-		// тест подписи
-		// 			var objSign = {
-		// 				IssuerName: "CN=CRYPTO-PRO Test Center 2, O=CRYPTO-PRO LLC, L=Moscow, C=RU, E=support@cryptopro.ru",
-		// 				SerialNumber: "12003CCD07A5CDE4B983DE43910001003CCD07",
-		// 				SubjectName: "CN=Алексей, E=kleale@kleale.ru",
-		// 				Thumbprint: "F15B11449945DFE37FD743F38E4F925E00BB5FBF",
-		// 				ValidToDate: "2020-02-06T11:56:17.000Z"
-		// 			};
-		// 			var result =
-		// 				"MIIFzAYJKoZIhvcNAQcCoIIFvTCCBbkCAQExDDAKBgYqhQMCAgkFADAbBgkqhkiG9w0BBwGgDgQMRABpAGcAZQBzAHQAoIIDNTCCAzEwggLgoAMCAQICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCAYGKoUDAgIDMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyMB4XDTE5MTEwNjExNDYxN1oXDTIwMDIwNjExNTYxN1owOjEfMB0GCSqGSIb3DQEJARYQa2xlYWxlQGtsZWFsZS5ydTEXMBUGA1UEAwwO0JDQu9C10LrRgdC10LkwYzAcBgYqhQMCAhMwEgYHKoUDAgIkAAYHKoUDAgIeAQNDAARACf1L8MMFFWEhjGGhE9uEMZvI3v8/ihbxGvSkR2DERznqd9NEBA83qdfQF5n95SGUb9PWqx7wZzoLfUIO4ljzKKOCAXYwggFyMA4GA1UdDwEB/wQEAwIE8DATBgNVHSUEDDAKBggrBgEFBQcDAjAdBgNVHQ4EFgQUfq57iywIx05913enla7zwSycM88wHwYDVR0jBBgwFoAUToM+FGnv7F16lStfEf43MhZJVSswXAYDVR0fBFUwUzBRoE+gTYZLaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC9DUllQVE8tUFJPJTIwVGVzdCUyMENlbnRlciUyMDIoMSkuY3JsMIGsBggrBgEFBQcBAQSBnzCBnDBkBggrBgEFBQcwAoZYaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvQ2VydEVucm9sbC90ZXN0LWNhLTIwMTRfQ1JZUFRPLVBSTyUyMFRlc3QlMjBDZW50ZXIlMjAyKDEpLmNydDA0BggrBgEFBQcwAYYoaHR0cDovL3Rlc3RjYS5jcnlwdG9wcm8ucnUvb2NzcC9vY3NwLnNyZjAIBgYqhQMCAgMDQQDoGvcedRo7bW6sEtR0XdckaJOmJE3lI5SpQz6P3uLqh08eH2nUQTisc5emGW+8dvmr7g0ken1s207oStI+49aKMYICTjCCAkoCAQEwgZYwfzEjMCEGCSqGSIb3DQEJARYUc3VwcG9ydEBjcnlwdG9wcm8ucnUxCzAJBgNVBAYTAlJVMQ8wDQYDVQQHEwZNb3Njb3cxFzAVBgNVBAoTDkNSWVBUTy1QUk8gTExDMSEwHwYDVQQDExhDUllQVE8tUFJPIFRlc3QgQ2VudGVyIDICExIAPM0Hpc3kuYPeQ5EAAQA8zQcwCgYGKoUDAgIJBQCgggFQMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE5MTEyMDA5MDExNlowLwYJKoZIhvcNAQkEMSIEILlvLxbprLjgB8/hZZO1XiSwNO8vIAGa7lXs44SWGaB9MIHkBgsqhkiG9w0BCRACLzGB1DCB0TCBzjCByzAIBgYqhQMCAgkEIGunFwOjKwcpzb8kuiIBzOUV3LOF6sAJBVtRbCgmsShiMIGcMIGEpIGBMH8xIzAhBgkqhkiG9w0BCQEWFHN1cHBvcnRAY3J5cHRvcHJvLnJ1MQswCQYDVQQGEwJSVTEPMA0GA1UEBxMGTW9zY293MRcwFQYDVQQKEw5DUllQVE8tUFJPIExMQzEhMB8GA1UEAxMYQ1JZUFRPLVBSTyBUZXN0IENlbnRlciAyAhMSADzNB6XN5LmD3kORAAEAPM0HMAoGBiqFAwICEwUABEAwlfyWU9TYw+CDNgxnZBrMSVrhsu5pSFwRx+KXZ9oSUq9qhU/u0+JYMkeXcu8IgphHhHPDhsNJTlygDXfmH+/g";
-		// 			this._sendSign(result, objSign);
-
 		// журнал
 		onJournal: function (oEvent) {
 			var that = this;
@@ -1099,40 +1087,35 @@ sap.ui.define([
 						dataToSign = data;
 						console.log("digest: ", data);
 
-						///////////////////////// savefile
+						///////////////////////// save digest file for test 
 						// alert("Сохраняем файл digest после подписи");
-						var filename = "digest";
-						var blob = new Blob([data], { type: "text/plain" });
+						// var filename = "digest";
+						// var blob = new Blob([data], { type: "text/plain" });
 
-						if (typeof window.navigator.msSaveBlob !== 'undefined') {
-							window.navigator.msSaveBlob(blob, filename);
-						} else {
-							var URL = window.URL || window.webkitURL;
-							var downloadUrl = URL.createObjectURL(blob);
+						// if (typeof window.navigator.msSaveBlob !== 'undefined') {
+						// 	window.navigator.msSaveBlob(blob, filename);
+						// } else {
+						// 	var URL = window.URL || window.webkitURL;
+						// 	var downloadUrl = URL.createObjectURL(blob);
 
-							if (filename) {
-								var a = document.createElement("a");
-								if (typeof a.download === 'undefined') {
-									window.location.href = downloadUrl;
-								} else {
-									a.href = downloadUrl;
-									a.download = filename;
-									document.body.appendChild(a);
-									a.click();
-								}
-							} else {
-								window.location.href = downloadUrl;
-							}
-							setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-						}
-						///////////////////
+						// 	if (filename) {
+						// 		var a = document.createElement("a");
+						// 		if (typeof a.download === 'undefined') {
+						// 			window.location.href = downloadUrl;
+						// 		} else {
+						// 			a.href = downloadUrl;
+						// 			a.download = filename;
+						// 			document.body.appendChild(a);
+						// 			a.click();
+						// 		}
+						// 	} else {
+						// 		window.location.href = downloadUrl;
+						// 	}
+						// 	setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+						// }
 						
 						/// base64
 						var thenable = that._SignCreate(Thumbprint, dataToSign);
-						
-						/// blob
-						//console.log("sign data in BLOB!!!!!!!!!!!!!!!!!")
-						//var thenable = that._SignCreate(Thumbprint, blob);
 						
 						// обработка ошибки
 						thenable.then(
@@ -1163,18 +1146,9 @@ sap.ui.define([
 
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
-					// не работает так как oData не возвращает скрытые колонки 2==================
-					//var obj = oTable.getModel().getProperty(sPath);
 					var Context = oTable.getContextByIndex(item);
 					var obj = Context.getObject();
 					docExtId.push(obj.docExtId);
-					//===========================
-
-					//var Context = oTable.getContextByIndex(item);
-					//var sPath = Context.sPath;
-					//var nov_reg = "docExtId='(.*)'";
-					//var myAttr = sPath.match(nov_reg);
-					//docExtId.push(myAttr[1]);
 				});
 				return docExtId;
 			} else {
@@ -1217,22 +1191,16 @@ sap.ui.define([
 		},
 
 		// получение сертификата и подписание
-		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-fileapi.html
-		//https://cpdn.cryptopro.ru/content/cades/plugin-samples-sign-cades-bes-async.html
 		_SignCreate: function (Thumbprint, dataToSign) {
-
-			var CADESCOM_CADES_BES = 1;
-
 			var CAPICOM_CURRENT_USER_STORE = 2;
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
-			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; //	Возвращает сертификаты соответствующие указанному хэшу SHA1.
-
-			var CADESCOM_PKCS7_TYPE = 0xffff;
-			var CADESCOM_ENCODE_BINARY = 1;
-			//var CADESCOM_HASH_ALGORITHM_CP_GOST_3411 = 100;
-			var CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256 = 101 //Алгоритм ГОСТ Р 34.11-2012.
+			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; 	// Возвращает сертификаты соответствующие указанному хэшу SHA1.
+			/// для подписания 
+			var CADESCOM_PKCS7_TYPE = 0xffff;				// требуемый тип подписи
+			var CADESCOM_BASE64_TO_BINARY = 1;
+			//var CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256 = 101; // Хеш Алгоритм ГОСТ Р 34.11-2012.
 
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
@@ -1242,50 +1210,26 @@ sap.ui.define([
 						//debugger;
 						var CertificatesObj = yield oStore.Certificates;
 
-						// ============== поиск по имени
-						//var certSubjectName = 'Алексей';
-						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, certSubjectName);
-						
 						// ============== поиск по Thumbprint
 						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SHA1_HASH, Thumbprint);
-
 						var Count = yield oCertificates.Count;
 						if (Count == 0) {
 							throw ("Certificate not found: " + args[0]);
 						}
-
 						var oCertificate = yield oCertificates.Item(1);
+						// подписант
 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
 						yield oSigner.propset_Certificate(oCertificate);
-
-						//// data prepare
-						var oHashedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.HashedData");
-						yield oHashedData.propset_Algorithm(CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256);
-						yield oHashedData.propset_DataEncoding(CADESCOM_ENCODE_BINARY);
-						yield oHashedData.Hash(dataToSign);
-						////////////// for SignHash oHashedData
-						var sHashValue1 = yield oHashedData.Value;
-						console.log("sHashValue1",sHashValue1);
-						yield oHashedData.SetHashValue(sHashValue1);
-						//////////////
-
-						/////////////////////////// работает но подпись длинная
+						
+						// обязательная подготовка в бинари 
+						var binaryDataToSign = btoa(unescape(encodeURIComponent(dataToSign)));
+						// подпись
 						var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
-						//yield oSignedData.propset_ContentEncoding = CADESCOM_ENCODE_BINARY;
-						var sSignedMessage = yield oSignedData.SignHash(oHashedData, oSigner, CADESCOM_PKCS7_TYPE);
-						///////////////////////
-
-						/////////////////////////// - работает - получение только подписи по хешу не указать CADESCOM_PKCS7_TYPE
-						//var oRawSignature = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.RawSignature");
-						//var sSignedMessage = yield oRawSignature.SignHash(oHashedData, oCertificate);
-
-						////////////////////// - работает, но подпись длинная
-						// var oSignedData = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CadesSignedData");
-						// yield oSignedData.propset_Content(dataToSign);
-						// var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_PKCS7_TYPE);
+						yield oSignedData.propset_ContentEncoding(CADESCOM_BASE64_TO_BINARY);
+						yield oSignedData.propset_Content(binaryDataToSign);
+						var sSignedMessage = yield oSignedData.SignCades(oSigner, CADESCOM_PKCS7_TYPE, true);
 
 						yield oStore.Close();
-
 						args[2](sSignedMessage);
 					} catch (e) {
 						args[3]("Failed to create signature. Error: " + window.cadesplugin.getLastError(e));
@@ -1304,13 +1248,6 @@ sap.ui.define([
 
 			if (iIndex.length > 0) {
 				iIndex.forEach(function (item, i) {
-					/*var Context = oTable.getContextByIndex(item);
-					var sPath = Context.sPath;
-					// sPath = "/PaymentOrder(requestId='dbcfa37f-5c47-beef-88ff-6e3cb3fed730',docExtId='dc8506e9-8fab-7a73-a787-21e71a941f1c')"
-					var nov_reg = "requestId='(.*)',";
-					var myAttr = sPath.match(nov_reg);
-					requestId.push(myAttr[1]);
-					*/
 					var Context = oTable.getContextByIndex(item);
 					var obj = Context.getObject();
 					requestId.push(obj.requestId);
@@ -1466,13 +1403,6 @@ sap.ui.define([
 						console.warn(oError);
 					}
 				});
-
-				//workin
-				// var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
-				// var link = document.createElement("a");
-				// link.download = 'Statements.docx';
-				// link.href = uri;
-				// link.click();
 			}
 		},
 
@@ -1506,13 +1436,6 @@ sap.ui.define([
 						console.warn(oError);
 					}
 				});
-
-				//workin
-				// var uri = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
-				// var link = document.createElement("a");
-				// link.download = 'Statements.docx';
-				// link.href = uri;
-				// link.click();
 			}
 		},
 
@@ -1593,63 +1516,7 @@ sap.ui.define([
 			} else {
 				MessageToast.show("Выделите хотя бы одну ПП в таблице дебета");
 			}
-		},
-
-		// печать напрямубю из табло
-		// onPrint: function (oEvent) {
-		// 	var docExtId = this._getDocExtId();
-
-		// ================
-		// печать из таблицы
-		// ================
-		// 			var oTarget = this.getView(),
-		// 				sTargetId = oEvent.getSource().data("LineItemsSmartTable");
-		// 			if (sTargetId) {
-		// 				oTarget = oTarget.byId(sTargetId);
-		// 			}
-		// 			if (oTarget) {
-		// 				var $domTarget = oTarget.$()[0],
-		// 					sTargetContent = $domTarget.innerHTML,
-		// 					sOriginalContent = document.body.innerHTML;
-
-		// 				document.body.innerHTML = sTargetContent;
-		// 				window.print();
-		// 				document.body.innerHTML = sOriginalContent;
-		// 			} else {
-		// 				jQuery.sap.log.error("onPrint needs a valid target container [view|data:targetId=\"SID\"]");
-		// 			}
-
-		// ================
-		// вызов внешней печатной формы
-		// ================
-		//bwd bwq - чтоб не зависило от системы
-		// 			var href = window.location.href;
-		// 			var matches = href.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i); // порт
-		// 			//var matches = href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i);  // без порта
-		// 			var domain = matches && matches[1];
-
-		// 			var oTable = this.byId("tableHeaders");
-		// 			var iIndex = oTable.getSelectedIndices();
-		// 			var data = [];
-		// 			if (iIndex.length > 0 & iIndex.length < 2) {
-		// 				for (var i = 0; i < iIndex.length; i++) {
-		// 					var sPath = oTable.getContextByIndex(iIndex[i]).sPath;
-		// 					data.push(oTable.getModel().getProperty(sPath));
-		// 				}
-		// 				console.log(data);
-		// 				var ZsbnReqn = [];
-		// 				for (var i = 0; i < data.length; i++) {
-		// 					ZsbnReqn.push(data[i].ZsbnReqn);
-		// 				}
-		// 				// https://sapbwq.gazprom-neft.local:8143
-		// 				var url = "https://" + domain + "/sap/bw/analysis?APPLICATION=EXCEL&OBJECT_TYPE=DOCUMENT&OBJECT_ID=ZSBNCP017_WBR002" +
-		// 					"&VARZCOMP_CODE_VAR_CMP002=1000&VARZSBNNUMZK_VAR_CMP001=" + ZsbnReqn;
-		// 				sap.m.URLHelper.redirect(url, true);
-		// 			} else {
-		// 				MessageToast.show("Выделите одну заявку в первой таблице заявок для печати");
-		// 			}
-		// }
-
-		/////////////////////////////////// end BaseController
+		}
+		
 	});
 });
