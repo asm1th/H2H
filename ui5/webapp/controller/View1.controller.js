@@ -450,6 +450,19 @@ sap.ui.define([
 			// =================
 			this.detailDialog.open();
 		},
+		
+		onDetailDialogCell: function (oEvent) {
+			var oView = this.getView();
+			if (!this.detailDialog) {
+				this.detailDialog = sap.ui.xmlfragment("detailDialog", "h2h.ui5.view.detailDialog", this).addStyleClass("sapUiSizeCompact");
+				oView.addDependent(this.detailDialog);
+			}
+
+			var rowBindingContext = oEvent.getParameters().rowBindingContext;
+			this.detailDialog.setBindingContext(rowBindingContext);
+			// =================
+			this.detailDialog.open();
+		},
 
 		detailDialogSave: function (oEvent) {
 			//MessageToast.show("Сохраняем очередность платежа");

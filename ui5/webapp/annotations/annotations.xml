@@ -360,11 +360,11 @@
 							<PropertyValue Property="Label" String="Номер документа"/>
 							<Annotation Term="Common.QuickInfo" String="Номер документа"/>
 						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="stmtDate"/>
-							<PropertyValue Property="Label" String="Дата выписки"/>
-							<Annotation Term="Common.QuickInfo" String="Дата выписки"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="stmtDate"/>-->
+						<!--	<PropertyValue Property="Label" String="Дата выписки"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Дата выписки"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docTime"/>
 							<PropertyValue Property="Label" String="Данные актуальны на (время)"/>
@@ -416,12 +416,12 @@
 							<Annotation Term="Common.QuickInfo" String="Входящий остаток"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="BeginDate"/>
+							<PropertyValue Property="Value" Path="beginDate"/>
 							<PropertyValue Property="Label" String="Дата начала периода выписки"/>
 							<Annotation Term="Common.QuickInfo" String="Дата начала периода выписки"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="EndDate"/>
+							<PropertyValue Property="Value" Path="endDate"/>
 							<PropertyValue Property="Label" String="Дата окончания периода выписки"/>
 							<Annotation Term="Common.QuickInfo" String="Дата окончания периода выписки"/>
 						</Record>
@@ -444,12 +444,9 @@
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
-						<PropertyPath>docNum</PropertyPath>
 						<PropertyPath>stmtDate</PropertyPath>
-						<PropertyPath>bic</PropertyPath>
 						<PropertyPath>acc</PropertyPath>
 						<PropertyPath>docNum</PropertyPath>
-						<PropertyPath>currCode</PropertyPath>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Выписка"/>
@@ -942,7 +939,6 @@
 			<Annotations Target="Metadata.StatementType/stmtTypeId">
 				<Annotation Term="Common.Label" String="Статус выписки"/>
 			</Annotations>
-			
 			<Annotations Target="Metadata.StatementItemsDebType/paytKind">
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>
 				<Annotation Term="Common.Label" String="Вид платежа"/>
