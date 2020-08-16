@@ -355,16 +355,16 @@
 				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docNum"/>
-							<PropertyValue Property="Label" String="Номер документа"/>
-							<Annotation Term="Common.QuickInfo" String="Номер документа"/>
-						</Record>
 						<!--<Record Type="UI.DataField">-->
-						<!--	<PropertyValue Property="Value" Path="stmtDate"/>-->
-						<!--	<PropertyValue Property="Label" String="Дата выписки"/>-->
-						<!--	<Annotation Term="Common.QuickInfo" String="Дата выписки"/>-->
+						<!--	<PropertyValue Property="Value" Path="docNum"/>-->
+						<!--	<PropertyValue Property="Label" String="Номер документа"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Номер документа"/>-->
 						<!--</Record>-->
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="stmtDate"/>
+							<PropertyValue Property="Label" String="Дата выписки"/>
+							<Annotation Term="Common.QuickInfo" String="Дата выписки"/>
+						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docTime"/>
 							<PropertyValue Property="Label" String="Данные актуальны на (время)"/>
@@ -446,7 +446,6 @@
 					<Collection>
 						<PropertyPath>stmtDate</PropertyPath>
 						<PropertyPath>acc</PropertyPath>
-						<PropertyPath>docNum</PropertyPath>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Выписка"/>
@@ -939,6 +938,36 @@
 			<Annotations Target="Metadata.StatementType/stmtTypeId">
 				<Annotation Term="Common.Label" String="Статус выписки"/>
 			</Annotations>
+			
+			<Annotations Target="Metadata.StatementType/docTime">
+				<Annotation Term="Common.Label" String="Данные актуальны на (время)"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/debetSum">
+				<Annotation Term="Common.Label" String="Итого оборотов по дебету"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/creditSum">
+				<Annotation Term="Common.Label" String="Итого оборотов по кредиту"/>
+			</Annotations>
+			
+			<Annotations Target="Metadata.StatementType/outBal">
+				<Annotation Term="Common.Label" String="Исходящий остаток"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/beginDate">
+				<Annotation Term="Common.Label" String="Дата начала периода выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/endDate">
+				<Annotation Term="Common.Label" String="Дата окончания периода выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/lastMovetDate">
+				<Annotation Term="Common.Label" String="Дата последней операции по счету"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/lastStmtDate">
+				<Annotation Term="Common.Label" String="Дата предыдущей операции по счету"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/organization">
+				<Annotation Term="Common.Label" String="Организация"/>
+			</Annotations>
+
 			<Annotations Target="Metadata.StatementItemsDebType/paytKind">
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>
 				<Annotation Term="Common.Label" String="Вид платежа"/>
@@ -954,6 +983,11 @@
 			<Annotations Target="Metadata.StatementItemsCredType/dc">
 				<Annotation Term="Common.QuickInfo" String="признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
 				<Annotation Term="Common.Label" String="Признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
+			</Annotations>
+			
+			<Annotations Target="Metadata.StatementItemsCredType/DocDate">
+				<Annotation Term="Common.QuickInfo" String="Дата документа"/>
+				<Annotation Term="Common.Label" String="Дата документа"/>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>
