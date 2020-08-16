@@ -26,7 +26,9 @@
 					<t:columns>
 					    <t:Column>
 							<Label text="Дата"/>
-							<t:template><Text text="{path: 'timestamp', type: 'sap.ui.model.type.Date'}"/></t:template>
+							<t:template>
+								<Text text="{path: 'timestamp', type: 'sap.ui.model.type.DateTime'}"/>
+							</t:template>
 						</t:Column>
 					    <t:Column>
 							<Label text="Операция"/>
