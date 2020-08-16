@@ -459,6 +459,21 @@ sap.ui.define([
 			}
 
 			var rowBindingContext = oEvent.getParameters().rowBindingContext;
+			var oRow = rowBindingContext.getObject();
+
+			var nalogFields = [{
+				cbc: oRow.cbc,
+				okato: oRow.okato,
+				paytReason: oRow.paytReason,
+				taxPeriod: oRow.taxPeriod,
+				depDocNo: oRow.depDocNo,
+				depDocDate: oRow.depDocDate,
+				taxPaytKind: oRow.taxPaytKind,
+				payeeUip: oRow.payeeUip
+			}];
+
+            this.getView().getModel("UIData").setProperty("/nalogFields", nalogFields);
+
 			this.detailDialog.setBindingContext(rowBindingContext);
 			// =================
 			this.detailDialog.open();
