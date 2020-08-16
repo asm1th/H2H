@@ -114,6 +114,9 @@ router.get('/', function (req, res, next) {
 			
 			if (rows.length > 0) {
 				rows.forEach(function (row, i) {
+					// вывод печати снизу ПП на странице - только для ПП в статусе исполнен
+					row.isDone = (row.status === "Исполнен") ? true : false;
+					
 					rows[i].docSumPropis = _getDocSumPropis(row.docSum);
 					//console.log('docSumPropis ',rows.docSumPropis);
 				})

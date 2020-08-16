@@ -96,18 +96,19 @@ router.get('/', function (req, res, next) {
 		var sqlPPDeb = 'Select * From "RaiffeisenBank.StatementItemsDeb" Where "responseId" IN (' + idString + ')';
 		
 		var print = {};
-		req.db.exec(sqlPPCred, function (err, rows) {
+		req.db.exec(sqlPPCred, function (err, rowsHead) {
 			if (err) {
 				console.log(err);
 				return next(err);
 			}
-			if (rows.length > 0) {
-				var docs1 = rows;
-				
+			if (rowsHead.length > 0) {
 				req.db.exec(sqlPPDeb, function (err, rows) {
 					if (err) {console.log(err);return next(err);}
 					if (rows.length > 0) {
-						var docs = docs1.concat(rows);
+						var docs = rowsHead.concat(rows);
+						docs.docDate = (docs.docDate) ? docs.docDate.replace(/-/g, "") : "----"
+						docs.operDate = (docs.operDate) ? docs.operDate.replace(/-/g, ".") : "----"
+						docs.ddocDate = (docs.ddocDate) ? docs.ddocDate.replace(/-/g, ".") : "----"
 						var print = {
 							docs: docs
 						};
