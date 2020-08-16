@@ -223,7 +223,7 @@
 			    </VBox>
 			    <VBox width="50%">
 			        <Label text="Сообщение из банка:"/>
-			        <TextArea enabled="false" value="нет переменной" rows="3" width="100%"/>
+			        <TextArea enabled="false" value="{UIData>/description}" rows="3" width="100%"/>
 			    </VBox>
 			</HBox>
 			

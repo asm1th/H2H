@@ -445,8 +445,10 @@ sap.ui.define([
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var path = ctx.getPath();
+			var oObject = ctx.getObject();
 			this.detailDialog.setBindingContext(ctx);
-
+			this._loadDetailDialogData(oObject);
+			
 			// =================
 			this.detailDialog.open();
 		},
@@ -459,8 +461,16 @@ sap.ui.define([
 			}
 
 			var rowBindingContext = oEvent.getParameters().rowBindingContext;
-			var oRow = rowBindingContext.getObject();
-
+			var oObject = rowBindingContext.getObject();
+			this._loadDetailDialogData(oObject);
+			
+			this.detailDialog.setBindingContext(rowBindingContext);
+			// =================
+			this.detailDialog.open();
+		},
+		
+		_loadDetailDialogData: function (oRow) {
+			// load nalogFields
 			var nalogFields = [{
 				cbc: oRow.cbc,
 				okato: oRow.okato,
@@ -471,14 +481,24 @@ sap.ui.define([
 				taxPaytKind: oRow.taxPaytKind,
 				payeeUip: oRow.payeeUip
 			}];
-
             this.getView().getModel("UIData").setProperty("/nalogFields", nalogFields);
+			
+			// load LastMessage from History
+			var that = this;
+			var oModel = this.getOwnerComponent().getModel();
 
-			this.detailDialog.setBindingContext(rowBindingContext);
-			// =================
-			this.detailDialog.open();
+			oModel.read("/History", {
+				filters: [new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, oRow.docExtId)],
+				success: function (data) {
+					//console.log("History", data);
+					that.getView().getModel("UIData").setProperty("/description", data.results[data.results.length - 1].description);
+				},
+				error: function (oError) {
+					console.log("error: " + oError);
+				}
+			});
 		},
-
+		
 		detailDialogSave: function (oEvent) {
 			//MessageToast.show("Сохраняем очередность платежа");
 			var src = oEvent.getSource().getParent();
