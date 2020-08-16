@@ -16,14 +16,14 @@
 						<menu>
 							<Menu>
 								<items>
-									<MenuItem text="Газпромбанк" icon="sap-icon://loan" press="onPress">
+									<MenuItem text="Райффайзенбанк" icon="sap-icon://loan" press="onPress">
 										<customData>
 											<core:CustomData key="target" value="p1"/>
 										</customData>
 									</MenuItem>
-									<MenuItem text="Сбербанк" icon="sap-icon://loan" press="onPress"/>
-									<MenuItem text="Райфайзен" icon="sap-icon://loan" press="onPress"/>
-									<MenuItem text="Белгазпромбанк" icon="sap-icon://loan" press="onPress"/>
+									<MenuItem text="Банк 1" icon="sap-icon://loan" press="onPress"/>
+									<MenuItem text="Банк 2" icon="sap-icon://loan" press="onPress"/>
+									<MenuItem text="Банк 3" icon="sap-icon://loan" press="onPress"/>
 								</items>
 							</Menu>
 						</menu>
