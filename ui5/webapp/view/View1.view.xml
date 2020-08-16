@@ -197,16 +197,16 @@
 											</t:RowAction>
 										</t:rowActionTemplate>
 										<t:columns>
-											<t:Column width="7rem">
+											<t:Column width="7rem" tooltip="Тип выписки">
 												<t:customData>
 													<core:CustomData key="p13nData" value="\{&quot;columnKey&quot;: &quot;stmtType&quot;, &quot;maxLength&quot;: &quot;10&quot;,&quot;columnIndex&quot;:&quot;4&quot;, &quot;leadingProperty&quot;: &quot;stmtType&quot;,&quot;filterProperty&quot;: &quot;stmtType&quot;}"/>
 												</t:customData>
-												<Label text="Тип выписки"/>
+												<Label text="Тип выписки"/> 
 												<t:template>
 													<Text text="{path:'stmtType'}"/>
 												</t:template>
 											</t:Column>
-											<t:Column width="7rem">
+											<t:Column width="7rem" tooltip="Статус выписки">
 												<t:customData>
 													<core:CustomData key="p13nData" value="\{&quot;columnKey&quot;: &quot;stmtTypeId&quot;, &quot;maxLength&quot;: &quot;10&quot;,&quot;columnIndex&quot;:&quot;5&quot;, &quot;leadingProperty&quot;: &quot;stmtTypeId&quot;,&quot;filterProperty&quot;: &quot;stmtTypeId&quot;}"/>
 												</t:customData>
@@ -215,7 +215,7 @@
 													<ObjectStatus text="{path:'stmtTypeId', formatter:'.formatter.stmtTypeIdToText'}" state="{path:'stmtTypeId', formatter:'.formatter.stmtTypeIdToTextStatus'}"/>
 												</t:template>
 											</t:Column>
-											<t:Column width="11rem">
+											<t:Column width="11rem" tooltip="Счет клиента">
 												<t:customData>
 													<core:CustomData key="p13nData" value="\{&quot;columnKey&quot;: &quot;acc&quot;, &quot;maxLength&quot;: &quot;10&quot;,&quot;columnIndex&quot;:&quot;6&quot;, &quot;leadingProperty&quot;: &quot;acc&quot;,&quot;filterProperty&quot;: &quot;acc&quot;}"/>
 												</t:customData>
@@ -291,7 +291,7 @@
 										<ToolbarSpacer/> 
 										<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh" enabled="true"/>
 										<Button icon="sap-icon://history" tooltip="Журнал" id="onJournal_2" class="btn btn-bordered" press="onJournal" enabled="true"/>
-										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Ипорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
+										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Импорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
 										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllPP" enabled="true"/>
 										<MenuButton icon="sap-icon://print" class="btn btn-bordered">
 											<menu>
