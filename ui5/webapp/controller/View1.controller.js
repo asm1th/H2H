@@ -1685,6 +1685,8 @@ sap.ui.define([
 
 		//////////////////
 		// экспорт таблицы
+		// настройки https://sapui5.hana.ondemand.com/#/api/sap.ui.export.Spreadsheet%23constructor
+		// 
 		onBeforeExport: function (oEvent) {
 			var mExcelSettings = oEvent.getParameter("exportSettings");
 			// GW export
