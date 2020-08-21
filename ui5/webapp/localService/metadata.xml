@@ -173,7 +173,6 @@
 <Property Name="enterBal" Type="Edm.Decimal" Precision="13" Scale="2" sap:label="enterBal"/>
 <Property Name="docNum" Type="Edm.String" MaxLength="6" sap:label="docNum"/>
 <Property Name="stmtType" Type="Edm.String" MaxLength="25" sap:label="stmtType"/>
-<Property Name="stmtTypeId" Type="Edm.Int32" sap:label="stmtTypeId"/>
 <NavigationProperty Name="ItemsCred" Relationship="default.Statement_ItemsCredType" FromRole="StatementPrincipal" ToRole="StatementItemsCredDependent" sap:creatable="false" sap:filterable="false"/>
 <NavigationProperty Name="ItemsDeb" Relationship="default.Statement_ItemsDebType" FromRole="StatementPrincipal" ToRole="StatementItemsDebDependent" sap:creatable="false" sap:filterable="false"/>
 </EntityType>

@@ -167,9 +167,9 @@
 				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docNum"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="docNum"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docDate"/>
 							<PropertyValue Property="Label" String="Дата документа"/>

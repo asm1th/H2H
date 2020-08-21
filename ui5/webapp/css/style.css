@@ -976,3 +976,7 @@ div#__xmlview1--FilterBar {
 .d_table .sapUiTableRowWithAction {
     right: 10px;
 }
+
+.sapMObjectIdentifierTitle .sapMLnk, .sapMObjectIdentifierTitle .sapMText {
+    font-size: .75rem;
+}

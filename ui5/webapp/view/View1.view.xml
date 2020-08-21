@@ -16,14 +16,16 @@
 						<menu>
 							<Menu>
 								<items>
-									<MenuItem text="Райффайзенбанк" icon="sap-icon://loan" press="onPress">
+									<MenuItem text="Райффайзенбанк" icon="sap-icon://loan" press="onPressBank">
 										<customData>
-											<core:CustomData key="target" value="p1"/>
+											<core:CustomData key="BIK" value="{044525823}"/>
 										</customData>
 									</MenuItem>
-									<MenuItem text="Банк 1" icon="sap-icon://loan" press="onPress"/>
-									<MenuItem text="Банк 2" icon="sap-icon://loan" press="onPress"/>
-									<MenuItem text="Банк 3" icon="sap-icon://loan" press="onPress"/>
+									<MenuItem text="Банк 1" icon="sap-icon://loan" press="onPressBank">
+										<customData>
+											<core:CustomData key="BIK" value="{042908612}"/>
+										</customData>
+									</MenuItem>
 								</items>
 							</Menu>
 						</menu>
@@ -107,7 +109,7 @@
 										<ToolbarSpacer/>
 										<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh" enabled="true"/>
 										<Button icon="sap-icon://history" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="true"/>
-										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Ипорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
+										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Импорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
 										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllPP" enabled="true"/>
 										<MenuButton icon="sap-icon://print" class="btn btn-bordered">
 											<menu>
@@ -124,7 +126,7 @@
 										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered btn-warning" press="onSend" id="onSend" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:Table id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1" cellClick="onDetailDialogCell" rowSelectionChange="onSelPaymentOrder">
+								<t:Table id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1" rowSelectionChange="onSelPaymentOrder">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="{path:'status', formatter:'.formatter.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>
@@ -136,6 +138,14 @@
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
+									
+									<t:Column tooltip="Номер документа" width="5rem">
+										<Label text="Номер документа"/> 
+										<t:template>
+											<ObjectIdentifier title="{docNum}" titleActive="true" titlePress="toPaymentOrder"/>
+										</t:template>
+									</t:Column>
+									
 									<t:footer><Label design="Bold" wrapping="true" text="Всего: {path:'UIData>/PaymentOrderTotal', formatter:'.formatter.toCurrency'}"/>
 									</t:footer>
 								</t:Table>

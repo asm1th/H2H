@@ -25,9 +25,9 @@ sap.ui.define([
 		stmtTypeIdToText: function (value) {
 			switch (value) {
 			case 1:
-				return "Итоговая";
+				return "Итоговая выписка";
 			case 2:
-				return "Не итоговая";
+				return "Промежуточная выписка";
 			default:
 				return "";
 			}

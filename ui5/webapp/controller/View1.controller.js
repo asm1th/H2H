@@ -453,19 +453,19 @@ sap.ui.define([
 			this.detailDialog.open();
 		},
 		
-		onDetailDialogCell: function (oEvent) {
+		toPaymentOrder: function (oEvent) {
 			var oView = this.getView();
 			if (!this.detailDialog) {
 				this.detailDialog = sap.ui.xmlfragment("detailDialog", "h2h.ui5.view.detailDialog", this).addStyleClass("sapUiSizeCompact");
 				oView.addDependent(this.detailDialog);
 			}
 
-			var rowBindingContext = oEvent.getParameters().rowBindingContext;
+            var src = oEvent.getSource();
+			var rowBindingContext = src.getBindingContext();
 			var oObject = rowBindingContext.getObject();
+
 			this._loadDetailDialogData(oObject);
-			
 			this.detailDialog.setBindingContext(rowBindingContext);
-			// =================
 			this.detailDialog.open();
 		},
 		
@@ -1564,7 +1564,26 @@ sap.ui.define([
 			} else {
 				MessageToast.show("Выделите хотя бы одну ПП в таблице дебета");
 			}
-		}
+		},
+		
+		onPressBank: function (oEvent) {
+			var src = oEvent.getSource();
+			var selectedBIK = ttt3.getCustomData("BIK")[0].mProperties.value;
+			
+			var filters = [];
+			
+			// Поменять на правильный банк - не платильщика а правильной организации (сейчас его нет в сете)
+			filters.push(new sap.ui.model.Filter("payeeBankBic", sap.ui.model.FilterOperator.EQ, selectedBIK));
+			
+			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oTable = oSmartTable.getTable();
+			if (oTable.bindRows) {
+				oTable.getBinding("rows").filter(filters);
+			}
+			//oSmartTable.rebindTable();
+		},
+		
+		
 		
 	});
 });
