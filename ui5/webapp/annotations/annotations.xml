@@ -348,7 +348,6 @@
 								<PropertyPath>outBal</PropertyPath>
 								<PropertyPath>enterBal</PropertyPath>
 								<PropertyPath>stmtType</PropertyPath>
-								<PropertyPath>stmtTypeId</PropertyPath>
 							</Collection>
 						</PropertyValue>
 					</Record>
@@ -384,11 +383,6 @@
 							<PropertyValue Property="Value" Path="stmtType"/>
 							<PropertyValue Property="Label" String="Тип выписки"/>
 							<Annotation Term="Common.QuickInfo" String="Тип выписки"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="stmtTypeId"/>
-							<PropertyValue Property="Label" String="Статус выписки"/>
-							<Annotation Term="Common.QuickInfo" String="Статус выписки"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="currCode"/>
@@ -935,10 +929,7 @@
 			<Annotations Target="Metadata.StatementType/stmtType">
 				<Annotation Term="Common.Label" String="Тип выписки"/>
 			</Annotations>
-			<Annotations Target="Metadata.StatementType/stmtTypeId">
-				<Annotation Term="Common.Label" String="Статус выписки"/>
-			</Annotations>
-			
+
 			<Annotations Target="Metadata.StatementType/docTime">
 				<Annotation Term="Common.Label" String="Данные актуальны на (время)"/>
 			</Annotations>

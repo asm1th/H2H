@@ -22,17 +22,6 @@ sap.ui.define([
 			return oCurrencyFormat.format(value, "руб");
 		},
 
-		stmtTypeIdToText: function (value) {
-			switch (value) {
-			case 1:
-				return "Итоговая выписка";
-			case 2:
-				return "Промежуточная выписка";
-			default:
-				return "";
-			}
-		},
-
 		stmtTypeIdToTextStatus: function (value) {
 			switch (value) {
 			case 1:

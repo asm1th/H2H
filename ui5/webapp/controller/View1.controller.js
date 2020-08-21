@@ -43,7 +43,8 @@ sap.ui.define([
 			this.getView().setModel(oModel);
 
 			var UIData = {
-				PaymentOrderTotal: 0
+				PaymentOrderTotal: 0,
+				maxDate: new Date()
 			};
 			var uiModel = new JSONModel(UIData)
 			this.getView().setModel(uiModel, "UIData");
@@ -125,7 +126,7 @@ sap.ui.define([
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var sPath = ctx.getPath();
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var data = oTable.getModel().getProperty(sPath);
 			this._delStmnt(data);
@@ -146,7 +147,7 @@ sap.ui.define([
 		},
 
 		onDeleteAllStatement: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -166,7 +167,7 @@ sap.ui.define([
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var sPath = ctx.getPath();
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var data = oTable.getModel().getProperty(sPath);
 			if (data.status != "Подписан") {
@@ -188,7 +189,7 @@ sap.ui.define([
 		},
 
 		onDeleteAllPP: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -236,7 +237,7 @@ sap.ui.define([
 			mParams.success = function () {
 				oModel.remove(Path, {
 					success: function (data) {
-						var oSmartTable = that.byId("LineItemsSmartTable");
+						var oSmartTable = that.byId("PP_SmartTable");
 						oSmartTable.rebindTable();
 						MessageToast.show("Запись удалена");
 					},
@@ -269,12 +270,12 @@ sap.ui.define([
 		},
 
 		onRefresh: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			oSmartTable.rebindTable();
 		},
 
 		onRefresh_Stmnt: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			oSmartTable.rebindTable();
 
 			var oSmartTable = this.byId("SmartTable_D");
@@ -288,7 +289,7 @@ sap.ui.define([
 			if (!this.journalDialog) {
 				this.journalDialog = sap.ui.xmlfragment("journalDialog", "h2h.ui5.view.journalDialog", this);
 			}
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -324,7 +325,7 @@ sap.ui.define([
 		},
 
 		onSelStatement: function () {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -400,40 +401,6 @@ sap.ui.define([
 			MessageToast.show(evt.getSource().getId() + " Pressed");
 		},
 
-		//////////////////
-		// фикс размер колонок по заголовкам table
-		onDataReceived: function () {
-			// var oSmartTable = this.byId("LineItemsSmartTable");
-			// var oTable = oSmartTable.getTable();
-			// var oTpc = new sap.ui.table.TablePointerExtension(oTable);
-			// var aColumns = oTable.getColumns();
-			// for (var i = 0; i < aColumns.length; i++) {
-			//   oTpc.doAutoResizeColumn(i);
-			// }
-			// 			var oSmartTable = this.byId("LineItemsSmartTable");
-			// 			var i = 0;
-			// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
-			// 				oLine.setWidth("100%");
-			// 				oLine.getParent().autoResizeColumn(i);
-			// 				i++;
-			// 			});
-			//oSmartTable.getTable().rerender();
-			//oSmartTable.getTable().scrollLeft();
-		},
-
-		//////////////////
-		// экспорт таблицы
-		onBeforeExport: function (oEvent) {
-			var mExcelSettings = oEvent.getParameter("exportSettings");
-			// GW export
-			if (mExcelSettings.url) {
-				return;
-			}
-			// For UI5 Client Export --> The settings contains sap.ui.export.SpreadSheet relevant settings that be used to modify the output of excel
-			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
-			mExcelSettings.worker = false;
-		},
-
 		///////////////////////
 		// окно подробностей
 		onDetailDialog: function (oEvent) {
@@ -448,11 +415,11 @@ sap.ui.define([
 			var oObject = ctx.getObject();
 			this.detailDialog.setBindingContext(ctx);
 			this._loadDetailDialogData(oObject);
-			
+
 			// =================
 			this.detailDialog.open();
 		},
-		
+
 		toPaymentOrder: function (oEvent) {
 			var oView = this.getView();
 			if (!this.detailDialog) {
@@ -460,7 +427,7 @@ sap.ui.define([
 				oView.addDependent(this.detailDialog);
 			}
 
-            var src = oEvent.getSource();
+			var src = oEvent.getSource();
 			var rowBindingContext = src.getBindingContext();
 			var oObject = rowBindingContext.getObject();
 
@@ -468,7 +435,7 @@ sap.ui.define([
 			this.detailDialog.setBindingContext(rowBindingContext);
 			this.detailDialog.open();
 		},
-		
+
 		_loadDetailDialogData: function (oRow) {
 			// load nalogFields
 			var nalogFields = [{
@@ -481,8 +448,8 @@ sap.ui.define([
 				taxPaytKind: oRow.taxPaytKind,
 				payeeUip: oRow.payeeUip
 			}];
-            this.getView().getModel("UIData").setProperty("/nalogFields", nalogFields);
-			
+			this.getView().getModel("UIData").setProperty("/nalogFields", nalogFields);
+
 			// load LastMessage from History
 			var that = this;
 			var oModel = this.getOwnerComponent().getModel();
@@ -498,7 +465,7 @@ sap.ui.define([
 				}
 			});
 		},
-		
+
 		detailDialogSave: function (oEvent) {
 			//MessageToast.show("Сохраняем очередность платежа");
 			var src = oEvent.getSource().getParent();
@@ -564,7 +531,7 @@ sap.ui.define([
 		//////////////////
 		// просмотр платежки загружаемой в банк
 		onShowXml: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			//var oTable = oSmartTable.getTable();
 			//var iIndex = oTable.getSelectedIndices();
 			var docExtId = this._getDocExtId();
@@ -631,7 +598,7 @@ sap.ui.define([
 
 		// выделение ПП и проверка на статус
 		onSelPaymentOrder: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -720,7 +687,7 @@ sap.ui.define([
 					});
 					var mParams = {};
 					mParams.success = function () {
-						var oSmartTable = that.byId("LineItemsSmartTable");
+						var oSmartTable = that.byId("PP_SmartTable");
 						oSmartTable.rebindTable();
 						that.addDialog.close();
 						that.addDialog.setBusy(false);
@@ -806,7 +773,7 @@ sap.ui.define([
 					});
 					var mParams = {};
 					mParams.success = function () {
-						var oSmartTable = that.byId("SmartTableStatements");
+						var oSmartTable = that.byId("Stmt_SmartTable");
 						oSmartTable.rebindTable();
 						that.addDialogStmnt.close();
 						that.addDialogStmnt.setBusy(false);
@@ -961,7 +928,7 @@ sap.ui.define([
 			var mParams = {};
 			var that = this;
 			mParams.success = function () {
-				var oSmartTable = that.byId("LineItemsSmartTable");
+				var oSmartTable = that.byId("PP_SmartTable");
 				oSmartTable.rebindTable();
 				MessageToast.show("Подпись снята");
 				that.undoSignDialog.close();
@@ -1161,15 +1128,15 @@ sap.ui.define([
 						// 	}
 						// 	setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
 						// }
-						
+
 						/// base64
 						var thenable = that._SignCreate(Thumbprint, dataToSign);
-						
+
 						// обработка ошибки
 						thenable.then(
 							function (result) {
 								//MessageBox.success("Платежное поручение подписано");
-								console.log("Sign",result);
+								console.log("Sign", result);
 								that._sendSign(result, objSign);
 							},
 							function (result) {
@@ -1185,9 +1152,9 @@ sap.ui.define([
 			});
 		},
 
-		// функция получения DocExtId из таблицы LineItemsSmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
+		// функция получения DocExtId из таблицы PP_SmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
 		_getDocExtId: function () {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var docExtId = [];
@@ -1223,7 +1190,7 @@ sap.ui.define([
 				var oModel = that.getOwnerComponent().getModel();
 				var mParams = {};
 				mParams.success = function () {
-					var oSmartTable = that.byId("LineItemsSmartTable");
+					var oSmartTable = that.byId("PP_SmartTable");
 					oSmartTable.rebindTable();
 					that.signDialog.close();
 					MessageToast.show("ПП подписана");
@@ -1244,9 +1211,9 @@ sap.ui.define([
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
-			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; 	// Возвращает сертификаты соответствующие указанному хэшу SHA1.
+			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; // Возвращает сертификаты соответствующие указанному хэшу SHA1.
 			/// для подписания 
-			var CADESCOM_PKCS7_TYPE = 0xffff;				// требуемый тип подписи
+			var CADESCOM_PKCS7_TYPE = 0xffff; // требуемый тип подписи
 			var CADESCOM_BASE64_TO_BINARY = 1;
 			//var CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256 = 101; // Хеш Алгоритм ГОСТ Р 34.11-2012.
 
@@ -1268,7 +1235,7 @@ sap.ui.define([
 						// подписант
 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
 						yield oSigner.propset_Certificate(oCertificate);
-						
+
 						// обязательная подготовка в бинари 
 						var binaryDataToSign = btoa(unescape(encodeURIComponent(dataToSign)));
 						// подпись
@@ -1289,7 +1256,7 @@ sap.ui.define([
 
 		// скачать загруженное ПП в том же формате
 		onDownload_1C: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var requestId = [];
@@ -1346,7 +1313,7 @@ sap.ui.define([
 
 		// скачать ПП для печати DOC
 		onDownload_DOC: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var docExtIdsAr = this._getDocExtId();
 
 			//post
@@ -1385,7 +1352,7 @@ sap.ui.define([
 
 		// скачать ПП для печати PDF
 		onDownload_PDF: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var docExtIdsAr = this._getDocExtId();
 
 			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=PDF';
@@ -1422,7 +1389,7 @@ sap.ui.define([
 		},
 
 		onDownload_V_DOC: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var responseIdsAr = [];
@@ -1455,7 +1422,7 @@ sap.ui.define([
 		},
 
 		onDownload_V_PP: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var responseIdsAr = [];
@@ -1488,7 +1455,7 @@ sap.ui.define([
 		},
 
 		onDownload_V_PDF: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var responseIdsAr = [];
@@ -1565,25 +1532,169 @@ sap.ui.define([
 				MessageToast.show("Выделите хотя бы одну ПП в таблице дебета");
 			}
 		},
-		
+
 		onPressBank: function (oEvent) {
-			var src = oEvent.getSource();
-			var selectedBIK = ttt3.getCustomData("BIK")[0].mProperties.value;
-			
-			var filters = [];
-			
 			// Поменять на правильный банк - не платильщика а правильной организации (сейчас его нет в сете)
-			filters.push(new sap.ui.model.Filter("payeeBankBic", sap.ui.model.FilterOperator.EQ, selectedBIK));
-			
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var src = oEvent.getSource();
+			var selectedBIK = src.getCustomData("BIK")[0].mProperties.value;
+
+			var filters = [];
+			if (selectedBIK != "0") {
+				filters.push(new sap.ui.model.Filter("payeeBankBic", sap.ui.model.FilterOperator.EQ, selectedBIK));
+			} else {
+				filters = [];
+			}
+
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			if (oTable.bindRows) {
 				oTable.getBinding("rows").filter(filters);
+
+				this.byId("bankButton").setText(src.getText());
 			}
 			//oSmartTable.rebindTable();
 		},
+
+		onSearch: function () {
+			// var aFilters = this.getView().byId("smartFilterBar").getFilters();
+			// var oSmartTable = this.byId("PP_SmartTable");
+			// var oTable = oSmartTable.getTable();
+			// oTable.getBinding("rows").filter(aFilters);
+		},
+
+		onBeforeRebindTable: function (oEvent) {
+			var mBindingParams = oEvent.getParameter("bindingParams");
+			var oSmtFilter = this.getView().byId("smartFilterBar");
+			var oSmartTable = this.byId("PP_SmartTable");
+			var oTable = oSmartTable.getTable();
+			var oSelect = oSmtFilter.getControlByKey("status");
+			var status = oSelect.getSelectedKey();
+			
+			if (status) {
+				var newFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, status);
+				mBindingParams.filters.push(newFilter);
+			} else {
+				var oListBinding = oTable.getBinding();
+				if (oListBinding) {
+					oListBinding.aSorters = null;
+				    oListBinding.aFilters = null;
+				    oTable.getModel().refresh(true);
+				}
+			}
+			// this._fixedCols();
+		},
 		
-		
-		
+		onBeforeRebindTableStmt: function (oEvent) {
+			var mBindingParams = oEvent.getParameter("bindingParams");
+			var oSmartTable = this.byId("Stmt_SmartTable");
+			var oTable = oSmartTable.getTable();
+			var oSmtFilter = this.getView().byId("smartFilterBarStmt");
+			
+			var acc = oSmtFilter.getControlByKey("acc").getSelectedKey();
+			var currCode = oSmtFilter.getControlByKey("currCode").getSelectedKey();
+			//var organisation = oSmtFilter.getControlByKey("organisation").getSelectedKey();
+			
+			var stmtDate = oSmtFilter.getControlByKey("stmtDate");
+			var sTo = stmtDate.getProperty("dateValue");
+			if (sTo) {
+				sTo.setDate(sTo.getDate() + 1);
+				sTo = sTo.toISOString();
+			} else {
+				sTo = null;
+			}
+			var sFrom = stmtDate.getProperty("secondDateValue") ? stmtDate.getProperty("secondDateValue").toISOString() : null;
+			
+			var newFilter = [];
+			if (acc) {
+				newFilter.push(new sap.ui.model.Filter("acc", sap.ui.model.FilterOperator.EQ, acc));
+			} 
+			if (currCode) {
+				//newFilter.push(new sap.ui.model.Filter("currCode", sap.ui.model.FilterOperator.EQ, currCode));
+				// в фильтре подставлен аккаунт так кк для каждого счета своя валюта
+				newFilter.push(new sap.ui.model.Filter("acc", sap.ui.model.FilterOperator.EQ, currCode));
+			} 
+// 			if (organisation) {
+// 				newFilter.push(new sap.ui.model.Filter("organisation", "Contains", organisation));
+// 			} 
+			if (sTo && sFrom) {
+				newFilter.push(new sap.ui.model.Filter("stmtDate", sap.ui.model.FilterOperator.BT, sTo, sFrom));
+			}
+			if (acc || sTo || currCode ) {
+				//mBindingParams.filters.push(newFilter);
+				//mBindingParams.filter(aFilters);
+				oBinding = oTable.getBinding();
+				oBinding.aFilters = newFilter;
+				oTable.getModel().refresh(true);
+			} else {
+				var oBinding = oTable.getBinding();
+				if (oBinding) {
+					oBinding.aSorters = null;
+				    oBinding.aFilters = null;
+				    oTable.getModel().refresh(true);
+				}
+			}
+			// this._fixedCols();
+		},
+
+		// beforeRebind: function (oEvent) {
+		// 	var aFilters = oEvent.mParameters.bindingParams.filters,
+		// 		aSorters = oEvent.mParameters.bindingParams.sorter,
+		// 		sQuarter = this.getView().getModel("FilterModel").getProperty("/Quarter"),
+		// 		oQuarterFilter;
+
+		// 	if (sQuarter) {
+		// 		oQuarterFilter = new sap.ui.model.Filter({
+		// 			filters: [new sap.ui.model.Filter("ValidFr", "LE", sQuarter), new sap.ui.model.Filter("ValidTo", "GE", sQuarter)],
+		// 			and: true
+		// 		});
+		// 		if (aFilters.length === 0) {
+		// 			aFilters.push(oQuarterFilter);
+		// 		} else if (aFilters.length === 1) {
+		// 			if (aFilters[0].bAnd) {
+		// 				aFilters[0].aFilters.push(oQuarterFilter);
+		// 			} else {
+		// 				var oTempFilter = new sap.ui.model.Filter({
+		// 					filters: [aFilters[0], oQuarterFilter],
+		// 					and: true
+		// 				});
+		// 				aFilters[0] = oTempFilter;
+		// 			}
+		// 		}
+		// 	}
+		// },
+
+		// фикс размер колонок по заголовкам table
+		//_fixedCols: function () {
+		// var oSmartTable = this.byId("PP_SmartTable");
+		// var oTable = oSmartTable.getTable();
+		// var oTpc = new sap.ui.table.TablePointerExtension(oTable);
+		// var aColumns = oTable.getColumns();
+		// for (var i = 0; i < aColumns.length; i++) {
+		//   oTpc.doAutoResizeColumn(i);
+		// }
+		// 			var oSmartTable = this.byId("PP_SmartTable");
+		// 			var i = 0;
+		// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
+		// 				oLine.setWidth("100%");
+		// 				oLine.getParent().autoResizeColumn(i);
+		// 				i++;
+		// 			});
+		//oSmartTable.getTable().rerender();
+		//oSmartTable.getTable().scrollLeft();
+		//},
+
+		//////////////////
+		// экспорт таблицы
+		onBeforeExport: function (oEvent) {
+			var mExcelSettings = oEvent.getParameter("exportSettings");
+			// GW export
+			if (mExcelSettings.url) {
+				return;
+			}
+			// For UI5 Client Export --> The settings contains sap.ui.export.SpreadSheet relevant settings that be used to modify the output of excel
+			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
+			// mExcelSettings.worker = false;
+		},
+
 	});
 });
