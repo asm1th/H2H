@@ -1581,18 +1581,44 @@ sap.ui.define([
 			var oSmtFilter = this.getView().byId("smartFilterBar");
 			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
-			var oSelect = oSmtFilter.getControlByKey("status");
-			var status = oSelect.getSelectedKey();
 			
-			if (status) {
-				var newFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, status);
-				//mBindingParams.sorter = [new sap.ui.model.Sorter("docDate", false),new sap.ui.model.Sorter("docNum", true)];
-				mBindingParams.filters.push(newFilter);
+			var status = oSmtFilter.getControlByKey("status").getSelectedKey();
+			var payerPersonalAcc = oSmtFilter.getControlByKey("payerPersonalAcc").getSelectedKey();
+			var codeVO = oSmtFilter.getControlByKey("codeVO").getSelectedKey();
+			
+			var docDate = oSmtFilter.getControlByKey("docDate");
+			var sTo = docDate.getProperty("dateValue");
+			if (sTo) {
+				sTo.setDate(sTo.getDate() + 1);
+				sTo = sTo.toISOString();
 			} else {
-				var oListBinding = oTable.getBinding();
-				if (oListBinding) {
-					//oListBinding.aSorters = null;
-				    oListBinding.aFilters = null;
+				sTo = null;
+			}
+			var sFrom = docDate.getProperty("secondDateValue") ? docDate.getProperty("secondDateValue").toISOString() : null;
+			
+			var newFilter = [];
+			if (status) {
+				newFilter.push(new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, status));
+			} 
+			if (payerPersonalAcc) {
+				newFilter.push(new sap.ui.model.Filter("payerPersonalAcc", sap.ui.model.FilterOperator.EQ, payerPersonalAcc));
+			} 
+			if (codeVO) {
+				newFilter.push(new sap.ui.model.Filter("codeVO", sap.ui.model.FilterOperator.EQ, codeVO));
+			}
+			if (sTo && sFrom) {
+				newFilter.push(new sap.ui.model.Filter("docDate", sap.ui.model.FilterOperator.BT, sTo, sFrom));
+			}
+			
+			if (status || payerPersonalAcc || codeVO || sTo ) {
+				oBinding = oTable.getBinding();
+				oBinding.aFilters = newFilter;
+				oTable.getModel().refresh(true);
+			} else {
+				var oBinding = oTable.getBinding();
+				if (oBinding) {
+					//oBinding.aSorters = null;
+				    oBinding.aFilters = null;
 				    oTable.getModel().refresh(true);
 				}
 			}
@@ -1635,8 +1661,6 @@ sap.ui.define([
 				newFilter.push(new sap.ui.model.Filter("stmtDate", sap.ui.model.FilterOperator.BT, sTo, sFrom));
 			}
 			if (acc || sTo || currCode ) {
-				//mBindingParams.filters.push(newFilter);
-				//mBindingParams.filter(aFilters);
 				oBinding = oTable.getBinding();
 				oBinding.aFilters = newFilter;
 				oTable.getModel().refresh(true);
@@ -1649,6 +1673,15 @@ sap.ui.define([
 				}
 			}
 			// this._fixedCols();
+		},
+		
+		onAccFilterPP: function (oEvent) {
+			var sSelectedVal = oEvent.getSource().getSelectedItem().getProperty("additionalText")
+			this.getView().byId("CustomFilter-codeVO").setValue(sSelectedVal);
+		},
+		onAccFilter: function (oEvent) {
+			var sSelectedVal = oEvent.getSource().getSelectedItem().getProperty("additionalText")
+			this.getView().byId("CustomFilter-currCode").setValue(sSelectedVal);
 		},
 
 		// beforeRebind: function (oEvent) {
