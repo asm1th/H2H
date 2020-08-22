@@ -141,7 +141,7 @@
 											id="onSend" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:Table id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1" rowSelectionChange="onSelPaymentOrder">
+								<t:Table id="smtable" visibleRowCountMode="Auto" rowActionCount="1" rowSelectionChange="onSelPaymentOrder">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="{path:'status', formatter:'.formatter.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>
@@ -153,10 +153,69 @@
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
-									<t:Column tooltip="Номер документа" width="5rem">
+									<t:Column id="docDate" tooltip="Дата документа" width="7rem" sortProperty="docDate" sorted="true" sortOrder="Descending" filterProperty="docDate" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<t:customData>
+								          <core:CustomData key="p13nData"
+								           value='\{"columnKey": "docDate", "leadingProperty": "docDate", "sortProperty": "docDate", "filterProperty": "docDate", "columnIndex": 0 ,  "sortOrder": "Descending"}'/>
+								         </t:customData>
+										<Label text="Дата документа"/>
+										<t:template>
+											<Text text="{
+											path:'docDate', 
+											type:'sap.ui.model.type.Date'
+											}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Номер документа" width="5rem" sortProperty="docNum" sorted="true" filterProperty="docNum" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<t:customData>
+								          <core:CustomData key="p13nData"
+								           value='\{"columnKey": "docNum", "leadingProperty": "docNum", "sortProperty": "docNum", "filterProperty": "docNum", "columnIndex": 1}'/>
+								         </t:customData>
 										<Label text="Номер документа"/>
 										<t:template>
 											<ObjectIdentifier title="{docNum}" titleActive="true" titlePress="toPaymentOrder"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Наименование плательщика" width="10rem" sortProperty="payerName" filterProperty="payerName" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Наименование плательщика"/>
+										<t:template>
+											<Text text="{payerName}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Номер счёта плательщика" width="10rem" sortProperty="payerPersonalAcc" filterProperty="payerPersonalAcc" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Номер счёта плательщика"/>
+										<t:template>
+											<Text text="{payerPersonalAcc}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Статус" width="10rem" sortProperty="status" filterProperty="status" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Статус"/>
+										<t:template>
+											<Text text="{status}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Сумма документа" width="10rem" sortProperty="docSum" filterProperty="docSum" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Сумма документа"/>
+										<t:template>
+											<Text text="{docSum}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Наименование получателя" width="15rem" sortProperty="payeeName" filterProperty="payeeName" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Наименование получателя"/>
+										<t:template>
+											<Text text="{payeeName}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Номер счёта получателя" width="10rem" sortProperty="payeePersonalAcc" filterProperty="payeePersonalAcc" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Номер счёта получателя"/>
+										<t:template>
+											<Text text="{payeePersonalAcc}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Назначение платежа" width="50rem" sortProperty="purpose" filterProperty="purpose" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Назначение платежа"/>
+										<t:template>
+											<Text text="{purpose}"/>
 										</t:template>
 									</t:Column>
 									<t:footer><Label design="Bold" wrapping="true" text="Всего: {path:'UIData>/PaymentOrderTotal', formatter:'.formatter.toCurrency'}"/>
@@ -227,7 +286,6 @@
 							<!--tableType="AnalyticalTable"-->
 							
 							
-							
 							<HBox class="s_table">
 								<smartTable:SmartTable id="Stmt_SmartTable" entitySet="Statement" smartFilterId="smartFilterBarStmt" useExportToExcel="true"
 									useVariantManagement="true" beforeRebindTable="onBeforeRebindTableStmt"  useTablePersonalisation="true" header="Выписки" showRowCount="true" persistencyKey="SmartTableAnalytical_1"
@@ -276,7 +334,7 @@
 											<t:Column width="7rem" tooltip="Тип выписки">
 												<t:customData>
 													<core:CustomData key="p13nData"
-														value="\{&quot;columnKey&quot;: &quot;stmtType&quot;, &quot;maxLength&quot;: &quot;10&quot;,&quot;columnIndex&quot;:&quot;4&quot;, &quot;leadingProperty&quot;: &quot;stmtType&quot;,&quot;filterProperty&quot;: &quot;stmtType&quot;}"/>
+														value='\{"columnKey": "stmtType", "maxLength": "10","columnIndex":"4", "leadingProperty": "stmtType","filterProperty": "stmtType"}'/>
 												</t:customData>
 												<Label text="Тип выписки"/>
 												<t:template>
@@ -286,7 +344,7 @@
 											<!--<t:Column width="7rem" tooltip="Статус выписки">-->
 											<!--	<t:customData>-->
 											<!--		<core:CustomData key="p13nData"-->
-											<!--			value="\{&quot;columnKey&quot;: &quot;stmtTypeId&quot;, &quot;maxLength&quot;: &quot;10&quot;,&quot;columnIndex&quot;:&quot;5&quot;, &quot;leadingProperty&quot;: &quot;stmtTypeId&quot;,&quot;filterProperty&quot;: &quot;stmtTypeId&quot;}"/>-->
+											<!--			value='\{"columnKey": "stmtTypeId", "maxLength": "10","columnIndex":"5", "leadingProperty": "stmtTypeId","filterProperty": "stmtTypeId"}'/>-->
 											<!--	</t:customData>-->
 											<!--	<Label text="Статус выписки"/>-->
 											<!--	<t:template>-->
@@ -297,7 +355,7 @@
 											<t:Column width="11rem" tooltip="Счет клиента">
 												<t:customData>
 													<core:CustomData key="p13nData"
-														value="\{&quot;columnKey&quot;: &quot;acc&quot;, &quot;maxLength&quot;: &quot;10&quot;,&quot;columnIndex&quot;:&quot;6&quot;, &quot;leadingProperty&quot;: &quot;acc&quot;,&quot;filterProperty&quot;: &quot;acc&quot;}"/>
+														value='\{"columnKey": "acc", "maxLength": "10","columnIndex":"6", "leadingProperty": "acc","filterProperty": "acc"}'/>
 												</t:customData>
 												<Label text="Счет клиента"/>
 												<t:template>

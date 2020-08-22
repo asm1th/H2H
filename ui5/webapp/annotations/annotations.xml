@@ -153,6 +153,14 @@
 								<PropertyPath>vatSum</PropertyPath>
 							</Collection>
 						</PropertyValue>
+						<PropertyValue Property="SortOrder">
+							<Collection>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="docDate"/>
+									<PropertyValue Property="Descending" Bool="true"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
 					</Record>
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
@@ -170,24 +178,36 @@
 						<!--<Record Type="UI.DataField">-->
 						<!--	<PropertyValue Property="Value" Path="docNum"/>-->
 						<!--</Record>-->
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docDate"/>
-							<PropertyValue Property="Label" String="Дата документа"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="docDate"/>-->
+						<!--	<PropertyValue Property="Label" String="Дата документа"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="payerName"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="payerPersonalAcc"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="status"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="docSum"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="payeeName"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="payeePersonalAcc"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="purpose"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankBic"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payeePersonalAcc"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="status"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankName"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docSum"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankCorrespAcc"/>
@@ -199,13 +219,7 @@
 							<PropertyValue Property="Value" Path="payeeKpp"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payeeName"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankBankCity"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payerName"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payerBankName"/>
@@ -223,16 +237,10 @@
 							<PropertyValue Property="Value" Path="payerBankCorrespAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payerPersonalAcc"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="paytKind"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="priority"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="purpose"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="transKind"/>
@@ -929,7 +937,6 @@
 			<Annotations Target="Metadata.StatementType/stmtType">
 				<Annotation Term="Common.Label" String="Тип выписки"/>
 			</Annotations>
-
 			<Annotations Target="Metadata.StatementType/docTime">
 				<Annotation Term="Common.Label" String="Данные актуальны на (время)"/>
 			</Annotations>
@@ -939,7 +946,6 @@
 			<Annotations Target="Metadata.StatementType/creditSum">
 				<Annotation Term="Common.Label" String="Итого оборотов по кредиту"/>
 			</Annotations>
-			
 			<Annotations Target="Metadata.StatementType/outBal">
 				<Annotation Term="Common.Label" String="Исходящий остаток"/>
 			</Annotations>
@@ -958,7 +964,6 @@
 			<Annotations Target="Metadata.StatementType/organization">
 				<Annotation Term="Common.Label" String="Организация"/>
 			</Annotations>
-
 			<Annotations Target="Metadata.StatementItemsDebType/paytKind">
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>
 				<Annotation Term="Common.Label" String="Вид платежа"/>
@@ -975,7 +980,6 @@
 				<Annotation Term="Common.QuickInfo" String="признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
 				<Annotation Term="Common.Label" String="Признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
 			</Annotations>
-			
 			<Annotations Target="Metadata.StatementItemsCredType/DocDate">
 				<Annotation Term="Common.QuickInfo" String="Дата документа"/>
 				<Annotation Term="Common.Label" String="Дата документа"/>

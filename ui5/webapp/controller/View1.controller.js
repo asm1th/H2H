@@ -102,7 +102,7 @@ sap.ui.define([
 			this.byId("onUndoSign").setEnabled(false);
 			this.byId("onSignDialog").setEnabled(false);
 		},
-
+		
 		// remove test after
 		testButton: function (oEvent) {
 			var oModel = this.getOwnerComponent().getModel();
@@ -1033,20 +1033,35 @@ sap.ui.define([
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 
+			//var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
+			//var CAPICOM_CERTIFICATE_FIND_ISSUER_NAME = 2
+			//var certSubjectName = "GPN";
+
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
 					try {
 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
-						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+						if (!oStore) {
+							alert("Create store failed");
+							return;
+						}
+						yield oStore.Open();
+						//yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 						var CertificatesObj = yield oStore.Certificates;
-
+                        
 						// все действующие
-						var CAPICOM_CERTIFICATE_FIND_TIME_VALID = 9;
-						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_TIME_VALID);
+						//var CAPICOM_CERTIFICATE_FIND_TIME_VALID = 9;
+						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_TIME_VALID);
 
+						// все
+						var oCertificates = yield oStore.Certificates;
+
+                        // поиск - не работает
+						//oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, "GPN, OU");
+                        
 						var Count = yield oCertificates.Count;
 						if (Count == 0) {
-							throw ("Certificate not found");
+							throw ("Не установлено ни одного подходящего сертификата электронной подписи для этого пользователя");
 						} else {
 							try {
 								for (var i = 1; i <= Count; i++) {
@@ -1075,7 +1090,6 @@ sap.ui.define([
 					args[0](mySerts);
 				}, resolve, reject);
 			});
-
 		},
 
 		// выбрали подпись в окне выбора
@@ -1572,11 +1586,12 @@ sap.ui.define([
 			
 			if (status) {
 				var newFilter = new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, status);
+				//mBindingParams.sorter = [new sap.ui.model.Sorter("docDate", false),new sap.ui.model.Sorter("docNum", true)];
 				mBindingParams.filters.push(newFilter);
 			} else {
 				var oListBinding = oTable.getBinding();
 				if (oListBinding) {
-					oListBinding.aSorters = null;
+					//oListBinding.aSorters = null;
 				    oListBinding.aFilters = null;
 				    oTable.getModel().refresh(true);
 				}
@@ -1693,6 +1708,56 @@ sap.ui.define([
 			if (mExcelSettings.url) {
 				return;
 			}
+			
+			// https://sapui5.netweaver.ondemand.com/sdk/#/entity/sap.ui.comp.smarttable.SmartTable/sample/sap.ui.comp.sample.smarttable.mtableCustom/code/SmartTable.controller.js
+			
+			// UI5 Client Export
+			// mExcelSettings.fileName = mExcelSettings.fileName + "V2"; // example to modify fileName
+
+			// // Sample customization
+			// if (mExcelSettings.workbook && mExcelSettings.workbook.columns) {
+			// 	mExcelSettings.workbook.columns.some(function (oColumnConfiguration) {
+			// 		// Customize output for Dmbtr column to match the text on the UI, instead of showing the currency
+			// 		if (oColumnConfiguration.property === "Dmbtr") {
+			// 			oColumnConfiguration.unitProperty = "Hwaer"; // Decimal handling
+			// 			oColumnConfiguration.textAlign = "Right";
+			// 			oColumnConfiguration.displayUnit = false;
+			// 			oColumnConfiguration.type = "currency"; // Change type of column
+			// 			oColumnConfiguration.width = 12; // Set desired width
+			// 			return true;
+			// 		}
+			// 	});
+			// }
+
+			// // Add sample context information
+			// if (mExcelSettings.workbook) {
+			// 	mExcelSettings.workbook.context = {
+			// 		application: 'Debug Test Application',
+			// 		version: '1.54',
+			// 		title: 'Some random title',
+			// 		modifiedBy: 'John Doe',
+			// 		metaSheetName: 'Custom metadata',
+			// 		metainfo: [
+			// 			{
+			// 				name: 'Grouped Properties',
+			// 				items: [
+			// 					{ key: 'administrator', value: 'Foo Bar' },
+			// 					{ key: 'user', value: 'John Doe' },
+			// 					{ key: 'server', value: 'server.domain.local' }
+			// 				]
+			// 			},
+			// 			{
+			// 				name: 'Another Group',
+			// 				items: [
+			// 					{ key: 'property', value: 'value' },
+			// 					{ key: 'some', value: 'text' },
+			// 					{ key: 'fu', value: 'bar' }
+			// 				]
+			// 			}
+			// 		]
+			// 	};
+			// }
+			
 			// For UI5 Client Export --> The settings contains sap.ui.export.SpreadSheet relevant settings that be used to modify the output of excel
 			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
 			// mExcelSettings.worker = false;
