@@ -137,11 +137,11 @@
 												<core:Item id="CustomPriceFilterItem1" key="Импортирован" text="Импортирован"/>
 												<core:Item id="CustomPriceFilterItem2" key="Отправлен" text="Отправлен"/>
 												<core:Item id="CustomPriceFilterItem3" key="Подписан" text="Подписан"/>
-												<core:Item id="CustomPriceFilterItem3" key="Исполнен" text="Исполнен"/>
-												<core:Item id="CustomPriceFilterItem4" key="ЭП/АСП неверна" text="ЭП/АСП неверна"/>
-												<core:Item id="CustomPriceFilterItem5" key="Ошибка реквизитов" text="Ошибка реквизитов"/>
-												<core:Item id="CustomPriceFilterItem6" key="Отказан АБС" text="Отказан АБС"/>
-												<core:Item id="CustomPriceFilterItem7" key="Удален" text="Удален"/>
+												<core:Item id="CustomPriceFilterItem4" key="Исполнен" text="Исполнен"/>
+												<core:Item id="CustomPriceFilterItem5" key="ЭП/АСП неверна" text="ЭП/АСП неверна"/>
+												<core:Item id="CustomPriceFilterItem6" key="Ошибка реквизитов" text="Ошибка реквизитов"/>
+												<core:Item id="CustomPriceFilterItem7" key="Отказан АБС" text="Отказан АБС"/>
+												<core:Item id="CustomPriceFilterItem8" key="Удален" text="Удален"/>
 											</ComboBox>
 										</smartFilterBar:customControl>
 									</smartFilterBar:ControlConfiguration>
