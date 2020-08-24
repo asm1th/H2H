@@ -454,11 +454,33 @@ sap.ui.define([
 			var that = this;
 			var oModel = this.getOwnerComponent().getModel();
 
+			//if ( status === "Отправлен" || status === "ЭП/АСП неверна" || status === "Исполнен" || status === "Отказан АБС" || status === "Ошибка реквизитов")
+            
+            var aFilter = [];
+            aFilter.push(new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, oRow.docExtId));
+
+            var orFilter = new sap.ui.model.Filter({
+					filters: [
+					    new sap.ui.model.Filter("status", "EQ", "INVALIDEDS"), 
+					    new sap.ui.model.Filter("status", "EQ", "REQUISITE_ERROR"),
+					    new sap.ui.model.Filter("status", "EQ", "DECLINED_BY_ABS"),
+					    new sap.ui.model.Filter("status", "EQ", "RECALL"),
+					    new sap.ui.model.Filter("status", "EQ", "DECLINED_BY_BANK")
+					    ],
+					and: false
+				});
+            aFilter.push(orFilter);
+
 			oModel.read("/History", {
-				filters: [new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, oRow.docExtId)],
+				filters: aFilter,
 				success: function (data) {
 					//console.log("History", data);
-					that.getView().getModel("UIData").setProperty("/description", data.results[data.results.length - 1].description);
+					if (data.results.length) {
+					    that.getView().getModel("UIData").setProperty("/description", data.results[0].description);	
+					} else {
+						that.getView().getModel("UIData").setProperty("/description", "");	
+					}
+					
 				},
 				error: function (oError) {
 					console.log("error: " + oError);
