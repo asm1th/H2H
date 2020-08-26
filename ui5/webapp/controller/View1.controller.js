@@ -338,13 +338,12 @@ sap.ui.define([
 					var data = oTable.getModel().getProperty(sPath);
 					oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId));
 				});
+				this.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+				this.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
+			} else {
+				this.byId("SmartTable_D").getTable().unbindRows();
+				this.byId("SmartTable_D").getTable().unbindRows();
 			}
-
-			this.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
-			this.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
-
-			//this.byId("Table_D").bindRows("/StatementItemsDeb", null, null, oFilter);
-			//this.byId("Table_C").bindRows("/StatementItemsCred", null, null, oFilter);
 		},
 
 		onChoseStatement: function (oEvent) {
@@ -1139,31 +1138,32 @@ sap.ui.define([
 						console.log("digest: ", data);
 
 						///////////////////////// save digest file for test 
-						// alert("Сохраняем файл digest после подписи");
-						// var filename = "digest";
-						// var blob = new Blob([data], { type: "text/plain" });
+						alert("Режим тестирования подписи. Сохраняем файл digest после подписи");
+						var filename = "digest";
+						var blob = new Blob([data], { type: "text/plain" });
 
-						// if (typeof window.navigator.msSaveBlob !== 'undefined') {
-						// 	window.navigator.msSaveBlob(blob, filename);
-						// } else {
-						// 	var URL = window.URL || window.webkitURL;
-						// 	var downloadUrl = URL.createObjectURL(blob);
+						if (typeof window.navigator.msSaveBlob !== 'undefined') {
+							window.navigator.msSaveBlob(blob, filename);
+						} else {
+							var URL = window.URL || window.webkitURL;
+							var downloadUrl = URL.createObjectURL(blob);
 
-						// 	if (filename) {
-						// 		var a = document.createElement("a");
-						// 		if (typeof a.download === 'undefined') {
-						// 			window.location.href = downloadUrl;
-						// 		} else {
-						// 			a.href = downloadUrl;
-						// 			a.download = filename;
-						// 			document.body.appendChild(a);
-						// 			a.click();
-						// 		}
-						// 	} else {
-						// 		window.location.href = downloadUrl;
-						// 	}
-						// 	setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-						// }
+							if (filename) {
+								var a = document.createElement("a");
+								if (typeof a.download === 'undefined') {
+									window.location.href = downloadUrl;
+								} else {
+									a.href = downloadUrl;
+									a.download = filename;
+									document.body.appendChild(a);
+									a.click();
+								}
+							} else {
+								window.location.href = downloadUrl;
+							}
+							setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+						}
+						//////////////////////////// end save digest file for test 
 
 						/// base64
 						var thenable = that._SignCreate(Thumbprint, dataToSign);
