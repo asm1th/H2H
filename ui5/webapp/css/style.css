@@ -980,3 +980,29 @@ div#__xmlview1--FilterBar {
 .sapMObjectIdentifierTitle .sapMLnk, .sapMObjectIdentifierTitle .sapMText {
     font-size: .75rem;
 }
+.sapUiBody .sapUiTableRowHighlight {
+    width: 4px;
+    position: relative;
+    left: -3px;
+}
+.sapUiBody .sapUiTableRowHighlight.sapUiTableRowHighlightInformation {
+    background-color: #78b1e9;
+}
+.sapUiBody .sapUiTableRowHighlight.sapUiTableRowHighlightWarning {
+    background-color: #f3a058;
+}
+.sapUiBody .sapUiTableRowHighlight.sapUiTableRowHighlightError {
+    background-color: #bf1d1d;
+}
+.sapUiBody .sapUiTableRowHighlight.sapUiTableRowHighlightIndication06 {
+    background-color: #d2d2d2;
+}
+
+
+
+
+
+
+
+
+
