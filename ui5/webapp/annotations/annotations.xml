@@ -526,8 +526,8 @@
 						</Record>
 						<!--<Record Type="UI.DataField">-->
 						<!--	<PropertyValue Property="Value" Path="receiptName"/>-->
-						<!--	<PropertyValue Property="Label" String="Название получателя"/>-->
-						<!--	<Annotation Term="Common.QuickInfo" String="Название получателя"/>-->
+						<!--	<PropertyValue Property="Label" String="Наименование получателя"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Наименование получателя"/>-->
 						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docSum"/>
@@ -759,8 +759,8 @@
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="receiptName"/>
-							<PropertyValue Property="Label" String="Название получателя"/>
-							<Annotation Term="Common.QuickInfo" String="Название получателя"/>
+							<PropertyValue Property="Label" String="Наименование получателя"/>
+							<Annotation Term="Common.QuickInfo" String="Наименование получателя"/>
 						</Record>
 						<!--<Record Type="UI.DataField">-->
 						<!--	<PropertyValue Property="Value" Path="personalName"/>-->
