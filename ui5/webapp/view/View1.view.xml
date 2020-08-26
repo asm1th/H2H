@@ -135,13 +135,17 @@
 										<smartFilterBar:customControl>
 											<ComboBox id="CustomFilter-combobox" change="onSearch">
 												<core:Item id="CustomPriceFilterItem1" key="Импортирован" text="Импортирован"/>
-												<core:Item id="CustomPriceFilterItem2" key="Отправлен" text="Отправлен"/>
-												<core:Item id="CustomPriceFilterItem3" key="Подписан" text="Подписан"/>
-												<core:Item id="CustomPriceFilterItem4" key="Исполнен" text="Исполнен"/>
-												<core:Item id="CustomPriceFilterItem5" key="ЭП/АСП неверна" text="ЭП/АСП неверна"/>
-												<core:Item id="CustomPriceFilterItem6" key="Ошибка реквизитов" text="Ошибка реквизитов"/>
-												<core:Item id="CustomPriceFilterItem7" key="Отказан АБС" text="Отказан АБС"/>
-												<core:Item id="CustomPriceFilterItem8" key="Удален" text="Удален"/>
+												<core:Item id="CustomPriceFilterItem2" key="Подписан" text="Подписан"/>
+												<core:Item id="CustomPriceFilterItem3" key="Подписан I" text="Подписан I"/>
+												<core:Item id="CustomPriceFilterItem4" key="Подписан II" text="Подписан II"/>
+												<core:Item id="CustomPriceFilterItem5" key="Отправлен" text="Отправлен"/>
+												<core:Item id="CustomPriceFilterItem6" key="Доставлен" text="Доставлен"/>
+												<core:Item id="CustomPriceFilterItem7" key="Принят АБС" text="Принят АБС"/>
+												<core:Item id="CustomPriceFilterItem8" key="Исполнен" text="Исполнен"/>
+												<core:Item id="CustomPriceFilterItem9" key="Отказан АБС" text="Отказан АБС"/>
+												<core:Item id="CustomPriceFilterItem10" key="ЭП/АСП неверна" text="ЭП/АСП неверна"/>
+												<core:Item id="CustomPriceFilterItem11" key="Ошибка реквизитов" text="Ошибка реквизитов"/>
+												<core:Item id="CustomPriceFilterItem12" key="Удален" text="Удален"/>
 											</ComboBox>
 										</smartFilterBar:customControl>
 									</smartFilterBar:ControlConfiguration>
@@ -440,7 +444,7 @@
 								<VBox width="50%" class="d_table">
 									<smartTable:SmartTable header="Дебет" width="100%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true"
 										useVariantManagement="true" useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_2"
-										enableAutoBinding="true" showFullScreenButton="true" initialNoDataText="Выберите выписку" class="hostPad1">
+										enableAutoBinding="false" showFullScreenButton="true" initialNoDataText="Выберите выписку" class="hostPad1">
 										<smartTable:customToolbar>
 											<Toolbar>
 												<ToolbarSpacer/>
@@ -479,7 +483,7 @@
 								<VBox width="50%" class="c_table">
 									<smartTable:SmartTable header="Кредит" width="100%" id="SmartTable_C" entitySet="StatementItemsCred" useExportToExcel="true"
 										useVariantManagement="true" useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_3"
-										enableAutoBinding="true" showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
+										enableAutoBinding="false" showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
 										<smartTable:customToolbar>
 											<Toolbar>
 												<ToolbarSpacer/>
