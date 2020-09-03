@@ -341,7 +341,7 @@
 										<Toolbar>
 											<ToolbarSpacer/>
 											<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh_Stmnt" enabled="true"/>
-											<Button icon="sap-icon://upload-to-cloud" tooltip="Загрузить выписки чеорез XML в обалко" class="btn btn-bordered"
+											<Button icon="sap-icon://upload-to-cloud" tooltip="Загрузить выписки через XML в обалко" class="btn btn-bordered"
 												press="OnUploadSttmntDialog"/>
 											<Button icon="sap-icon://history" tooltip="Журнал" class="btn btn-bordered" press="onJournal_Stmnt"/>
 											<Button icon="sap-icon://attachment" tooltip="Приложения" class="btn btn-bordered" press="onAttachment" enabled="fasle"/>

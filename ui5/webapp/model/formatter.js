@@ -52,7 +52,7 @@ sap.ui.define([
 			if (oValue === "Импортирован") {
 				return "Information";
 			} else if (oValue === "Подписан" || oValue === "Подписан I" || oValue === "Подписан II") {
-				return sap.ui.core.IndicationColor.Indication05
+				return sap.ui.core.IndicationColor.Indication03;
 			} else if (oValue === "Удален") {
 				return sap.ui.core.IndicationColor.Indication06;
 			} else if (oValue === "Отправлен") {
@@ -60,7 +60,7 @@ sap.ui.define([
 			} else if (oValue === "Доставлен" ) {
 				return sap.ui.core.IndicationColor.Indication03;
 			} else if ( oValue === "Принят АБС") {
-				return sap.ui.core.IndicationColor.Indication07;
+				return "Success";
 			} else if (oValue === "Исполнен") {
 				return "Success";
 			} else if (oValue === "Отказан АБС" || oValue === "ЭП/АСП неверна" || oValue === "Ошибка реквизитов" ) {

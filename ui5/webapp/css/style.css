@@ -981,7 +981,7 @@ div#__xmlview1--FilterBar {
     font-size: .75rem;
 }
 .sapUiBody .sapUiTableRowHighlight {
-    width: 4px;
+    width: 7px;
     position: relative;
     left: -3px;
 }
