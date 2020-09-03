@@ -49,7 +49,7 @@ sap.ui.define([
 			// <core:Item id="CustomPriceFilterItem11" key="Ошибка реквизитов" text="Ошибка реквизитов"/>
 			// <core:Item id="CustomPriceFilterItem12" key="Удален" text="Удален"/>
 												
-			if (oValue === "Импортирован") {
+			if (oValue === "Импортирован" || oValue === "Создан") {
 				return "Information";
 			} else if (oValue === "Подписан" || oValue === "Подписан I" || oValue === "Подписан II") {
 				return sap.ui.core.IndicationColor.Indication03;
@@ -58,7 +58,7 @@ sap.ui.define([
 			} else if (oValue === "Отправлен") {
 				return "Warning";
 			} else if (oValue === "Доставлен" ) {
-				return sap.ui.core.IndicationColor.Indication03;
+				return "Warning";
 			} else if ( oValue === "Принят АБС") {
 				return "Success";
 			} else if (oValue === "Исполнен") {
