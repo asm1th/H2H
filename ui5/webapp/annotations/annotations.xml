@@ -153,41 +153,61 @@
 								<PropertyPath>vatSum</PropertyPath>
 							</Collection>
 						</PropertyValue>
+						<PropertyValue Property="SortOrder">
+							<Collection>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="docDate"/>
+									<PropertyValue Property="Descending" Bool="true"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
 					</Record>
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
-						<PropertyPath>payeePersonalAcc</PropertyPath>
-						<PropertyPath>payeeBankBic</PropertyPath>
 						<PropertyPath>codeVO</PropertyPath>
 						<PropertyPath>docDate</PropertyPath>
-						<PropertyPath>docNum</PropertyPath>
 						<PropertyPath>status</PropertyPath>
+						<!--<PropertyPath>payeePersonalAcc</PropertyPath>-->
+						<!--<PropertyPath>payeeBankBic</PropertyPath>-->
+						<!--<PropertyPath>docNum</PropertyPath>-->
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docNum"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docDate"/>
-							<PropertyValue Property="Label" String="Дата документа"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="docNum"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="docDate"/>-->
+						<!--	<PropertyValue Property="Label" String="Дата документа"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="payerName"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="payerPersonalAcc"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="status"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="docSum"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="payeeName"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="payeePersonalAcc"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="purpose"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankBic"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payeePersonalAcc"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="status"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankName"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docSum"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankCorrespAcc"/>
@@ -199,13 +219,7 @@
 							<PropertyValue Property="Value" Path="payeeKpp"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payeeName"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payeeBankBankCity"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payerName"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="payerBankName"/>
@@ -223,16 +237,10 @@
 							<PropertyValue Property="Value" Path="payerBankCorrespAcc"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="payerPersonalAcc"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="paytKind"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="priority"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="purpose"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="transKind"/>
@@ -348,52 +356,54 @@
 								<PropertyPath>outBal</PropertyPath>
 								<PropertyPath>enterBal</PropertyPath>
 								<PropertyPath>stmtType</PropertyPath>
-								<PropertyPath>stmtTypeId</PropertyPath>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="SortOrder">
+							<Collection>
+								<Record Type="Common.SortOrderType">
+									<PropertyValue Property="Property" PropertyPath="stmtDate"/>
+									<PropertyValue Property="Descending" Bool="true"/>
+								</Record>
 							</Collection>
 						</PropertyValue>
 					</Record>
 				</Annotation>
 				<Annotation Term="UI.LineItem">
 					<Collection>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="docNum"/>-->
+						<!--	<PropertyValue Property="Label" String="Номер документа"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Номер документа"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="stmtDate"/>-->
+						<!--	<PropertyValue Property="Label" String="Дата выписки"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Дата выписки"/>-->
+						<!--</Record>-->
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="docTime"/>-->
+						<!--	<PropertyValue Property="Label" String="Данные актуальны на (время)"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Данные актуальны на (время)"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docNum"/>
-							<PropertyValue Property="Label" String="Номер документа"/>
-							<Annotation Term="Common.QuickInfo" String="Номер документа"/>
+							<PropertyValue Property="Value" Path="organization"/>
+							<PropertyValue Property="Label" String="Организация"/>
+							<Annotation Term="Common.QuickInfo" String="Организация"/>
 						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="stmtDate"/>
-							<PropertyValue Property="Label" String="Дата выписки"/>
-							<Annotation Term="Common.QuickInfo" String="Дата выписки"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docTime"/>
-							<PropertyValue Property="Label" String="Данные актуальны на (время)"/>
-							<Annotation Term="Common.QuickInfo" String="Данные актуальны на (время)"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="bic"/>
-							<PropertyValue Property="Label" String="БИК банка клиента"/>
-							<Annotation Term="Common.QuickInfo" String="БИК банка клиента"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="acc"/>
-							<PropertyValue Property="Label" String="Счет клиента"/>
-							<Annotation Term="Common.QuickInfo" String="Счет клиента"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="stmtType"/>
-							<PropertyValue Property="Label" String="Тип выписки"/>
-							<Annotation Term="Common.QuickInfo" String="Тип выписки"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="stmtTypeId"/>
-							<PropertyValue Property="Label" String="Статус выписки"/>
-							<Annotation Term="Common.QuickInfo" String="Статус выписки"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="acc"/>-->
+						<!--	<PropertyValue Property="Label" String="Счет клиента"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Счет клиента"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="currCode"/>
 							<PropertyValue Property="Label" String="Код валюты выписки"/>
 							<Annotation Term="Common.QuickInfo" String="Код валюты выписки"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="enterBal"/>
+							<PropertyValue Property="Label" String="Входящий остаток"/>
+							<Annotation Term="Common.QuickInfo" String="Входящий остаток"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="debetSum"/>
@@ -411,17 +421,22 @@
 							<Annotation Term="Common.QuickInfo" String="Исходящий остаток"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="enterBal"/>
-							<PropertyValue Property="Label" String="Входящий остаток"/>
-							<Annotation Term="Common.QuickInfo" String="Входящий остаток"/>
+							<PropertyValue Property="Value" Path="stmtType"/>
+							<PropertyValue Property="Label" String="Тип выписки"/>
+							<Annotation Term="Common.QuickInfo" String="Тип выписки"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="BeginDate"/>
+							<PropertyValue Property="Value" Path="stmtType"/>
+							<PropertyValue Property="Label" String="Тип выписки"/>
+							<Annotation Term="Common.QuickInfo" String="Тип выписки"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="beginDate"/>
 							<PropertyValue Property="Label" String="Дата начала периода выписки"/>
 							<Annotation Term="Common.QuickInfo" String="Дата начала периода выписки"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="EndDate"/>
+							<PropertyValue Property="Value" Path="endDate"/>
 							<PropertyValue Property="Label" String="Дата окончания периода выписки"/>
 							<Annotation Term="Common.QuickInfo" String="Дата окончания периода выписки"/>
 						</Record>
@@ -435,21 +450,17 @@
 							<PropertyValue Property="Label" String="Дата предыдущей операции по счету"/>
 							<Annotation Term="Common.QuickInfo" String="Дата предыдущей операции по счету"/>
 						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="organization"/>
-							<PropertyValue Property="Label" String="Организация"/>
-							<Annotation Term="Common.QuickInfo" String="Организация"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="bic"/>-->
+						<!--	<PropertyValue Property="Label" String="БИК банка клиента"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="БИК банка клиента"/>-->
+						<!--</Record>-->
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.SelectionFields">
 					<Collection>
-						<PropertyPath>docNum</PropertyPath>
 						<PropertyPath>stmtDate</PropertyPath>
-						<PropertyPath>bic</PropertyPath>
 						<PropertyPath>acc</PropertyPath>
-						<PropertyPath>docNum</PropertyPath>
-						<PropertyPath>currCode</PropertyPath>
 					</Collection>
 				</Annotation>
 				<Annotation Term="Common.Label" String="Выписка"/>
@@ -503,15 +514,35 @@
 				<Annotation Term="Common.Label" String="Кредит"/>
 				<Annotation Term="UI.LineItem">
 					<Collection>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docDate"/>
-							<PropertyValue Property="Label" String="Данные актуальны на (дата)"/>
-							<Annotation Term="Common.QuickInfo" String="Данные актуальны на (дата)"/>
-						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="operDate"/>-->
+						<!--	<PropertyValue Property="Label" String="Дата операции"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Дата операции"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docNum"/>
 							<PropertyValue Property="Label" String="Номер документа"/>
 							<Annotation Term="Common.QuickInfo" String="Номер документа"/>
+						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="receiptName"/>-->
+						<!--	<PropertyValue Property="Label" String="Наименование получателя"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Наименование получателя"/>-->
+						<!--</Record>-->
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docSum"/>
+							<PropertyValue Property="Label" String="Сумма документа"/>
+							<Annotation Term="Common.QuickInfo" String="Сумма документа"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="personalName"/>
+							<PropertyValue Property="Label" String="Наименование плательщика"/>
+							<Annotation Term="Common.QuickInfo" String="Наименование плательщика"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="purpose"/>
+							<PropertyValue Property="Label" String="Назначение платежа"/>
+							<Annotation Term="Common.QuickInfo" String="Назначение платежа"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="bank"/>
@@ -522,16 +553,6 @@
 							<PropertyValue Property="Value" Path="corrAcc"/>
 							<PropertyValue Property="Label" String="Счет плательщика"/>
 							<Annotation Term="Common.QuickInfo" String="Счет плательщика"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docSum"/>
-							<PropertyValue Property="Label" String="Сумма документа"/>
-							<Annotation Term="Common.QuickInfo" String="Сумма документа"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="operDate"/>
-							<PropertyValue Property="Label" String="Дата операции"/>
-							<Annotation Term="Common.QuickInfo" String="Дата операции"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="paymentOrder"/>
@@ -609,21 +630,6 @@
 							<Annotation Term="Common.QuickInfo" String="БИК банка плательщика"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="receiptName"/>
-							<PropertyValue Property="Label" String="Название получателя"/>
-							<Annotation Term="Common.QuickInfo" String="Название получателя"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="personalName"/>
-							<PropertyValue Property="Label" String="Наименование организации клиента"/>
-							<Annotation Term="Common.QuickInfo" String="Наименование организации клиента"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="purpose"/>
-							<PropertyValue Property="Label" String="Назначение платежа"/>
-							<Annotation Term="Common.QuickInfo" String="Назначение платежа"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="cbc"/>
 							<PropertyValue Property="Label" String="КБК"/>
 							<Annotation Term="Common.QuickInfo" String="КБК"/>
@@ -678,10 +684,15 @@
 							<PropertyValue Property="Label" String="Уникальный идентификатор"/>
 							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
 						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="ddocDate"/>-->
+						<!--	<PropertyValue Property="Label" String="Дата документа 1"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Дата документа 1"/>-->
+						<!--</Record>-->
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="ddocDate"/>
-							<PropertyValue Property="Label" String="Дата документа 1"/>
-							<Annotation Term="Common.QuickInfo" String="Дата документа 1"/>
+							<PropertyValue Property="Value" Path="docDate"/>
+							<PropertyValue Property="Label" String="Дата платежа"/>
+							<Annotation Term="Common.QuickInfo" String="Дата платежа"/>
 						</Record>
 					</Collection>
 				</Annotation>
@@ -736,15 +747,32 @@
 				<Annotation Term="UI.LineItem">
 					<Collection>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docDate"/>
-							<PropertyValue Property="Label" String="Дата документа"/>
-							<Annotation Term="Common.QuickInfo" String="Дата документа"/>
-						</Record>
-						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="docNum"/>
 							<PropertyValue Property="Label" String="Номер документа"/>
 							<Annotation Term="Common.QuickInfo" String="Номер документа"/>
 						</Record>
+						
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="docSum"/>
+							<PropertyValue Property="Label" String="Сумма документа"/>
+							<Annotation Term="Common.QuickInfo" String="Сумма документа"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="receiptName"/>
+							<PropertyValue Property="Label" String="Наименование получателя"/>
+							<Annotation Term="Common.QuickInfo" String="Наименование получателя"/>
+						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="personalName"/>-->
+						<!--	<PropertyValue Property="Label" String="Наименование плательщика"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Наименование плательщика"/>-->
+						<!--</Record>-->
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="purpose"/>
+							<PropertyValue Property="Label" String="Назначение платежа"/>
+							<Annotation Term="Common.QuickInfo" String="Назначение платежа"/>
+						</Record>
+						
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="bank"/>
 							<PropertyValue Property="Label" String="Банк плательщика/получателя"/>
@@ -754,11 +782,6 @@
 							<PropertyValue Property="Value" Path="corrAcc"/>
 							<PropertyValue Property="Label" String="Счет плательщика"/>
 							<Annotation Term="Common.QuickInfo" String="Счет плательщика"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="docSum"/>
-							<PropertyValue Property="Label" String="Сумма документа"/>
-							<Annotation Term="Common.QuickInfo" String="Сумма документа"/>
 						</Record>
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="operDate"/>
@@ -840,21 +863,7 @@
 							<PropertyValue Property="Label" String="БИК банка плательщика"/>
 							<Annotation Term="Common.QuickInfo" String="БИК банка плательщика"/>
 						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="receiptName"/>
-							<PropertyValue Property="Label" String="Название получателя"/>
-							<Annotation Term="Common.QuickInfo" String="Название получателя"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="personalName"/>
-							<PropertyValue Property="Label" String="Наименование организации клиента"/>
-							<Annotation Term="Common.QuickInfo" String="Наименование организации клиента"/>
-						</Record>
-						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="purpose"/>
-							<PropertyValue Property="Label" String="Назначение платежа"/>
-							<Annotation Term="Common.QuickInfo" String="Назначение платежа"/>
-						</Record>
+						
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="cbc"/>
 							<PropertyValue Property="Label" String="КБК"/>
@@ -911,10 +920,15 @@
 							<Annotation Term="Common.QuickInfo" String="Уникальный идентификатор"/>
 						</Record>
 						<Record Type="UI.DataField">
-							<PropertyValue Property="Value" Path="ddocDate"/>
-							<PropertyValue Property="Label" String="Дата документа 1"/>
-							<Annotation Term="Common.QuickInfo" String="Дата документа 1"/>
+							<PropertyValue Property="Value" Path="docDate"/>
+							<PropertyValue Property="Label" String="Дата платежа"/>
+							<Annotation Term="Common.QuickInfo" String="Дата платежа"/>
 						</Record>
+						<!--<Record Type="UI.DataField">-->
+						<!--	<PropertyValue Property="Value" Path="ddocDate"/>-->
+						<!--	<PropertyValue Property="Label" String="Дата документа 1"/>-->
+						<!--	<Annotation Term="Common.QuickInfo" String="Дата документа 1"/>-->
+						<!--</Record>-->
 					</Collection>
 				</Annotation>
 			</Annotations>
@@ -939,10 +953,33 @@
 			<Annotations Target="Metadata.StatementType/stmtType">
 				<Annotation Term="Common.Label" String="Тип выписки"/>
 			</Annotations>
-			<Annotations Target="Metadata.StatementType/stmtTypeId">
-				<Annotation Term="Common.Label" String="Статус выписки"/>
+			<Annotations Target="Metadata.StatementType/docTime">
+				<Annotation Term="Common.Label" String="Данные актуальны на (время)"/>
 			</Annotations>
-			
+			<Annotations Target="Metadata.StatementType/debetSum">
+				<Annotation Term="Common.Label" String="Итого оборотов по дебету"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/creditSum">
+				<Annotation Term="Common.Label" String="Итого оборотов по кредиту"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/outBal">
+				<Annotation Term="Common.Label" String="Исходящий остаток"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/beginDate">
+				<Annotation Term="Common.Label" String="Дата начала периода выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/endDate">
+				<Annotation Term="Common.Label" String="Дата окончания периода выписки"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/lastMovetDate">
+				<Annotation Term="Common.Label" String="Дата последней операции по счету"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/lastStmtDate">
+				<Annotation Term="Common.Label" String="Дата предыдущей операции по счету"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementType/organization">
+				<Annotation Term="Common.Label" String="Организация"/>
+			</Annotations>
 			<Annotations Target="Metadata.StatementItemsDebType/paytKind">
 				<Annotation Term="Common.QuickInfo" String="Вид платежа"/>
 				<Annotation Term="Common.Label" String="Вид платежа"/>
@@ -958,6 +995,10 @@
 			<Annotations Target="Metadata.StatementItemsCredType/dc">
 				<Annotation Term="Common.QuickInfo" String="признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
 				<Annotation Term="Common.Label" String="Признак дебета/кредита. Если 1-дебет, 2-кредит документа"/>
+			</Annotations>
+			<Annotations Target="Metadata.StatementItemsCredType/DocDate">
+				<Annotation Term="Common.QuickInfo" String="Дата документа"/>
+				<Annotation Term="Common.Label" String="Дата документа"/>
 			</Annotations>
 		</Schema>
 	</edmx:DataServices>

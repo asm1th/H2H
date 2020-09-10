@@ -1,7 +1,8 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified" xmlns:t="sap.ui.table"
 	class="sapUiSizeCompact">
-	<Dialog id="detailDialog" title="Платежное поручение" resizable="true" contentWidth="1024px">
+	<Dialog id="detailDialog" title="Платежное поручение. Статус: {status}" resizable="true" contentWidth="1024px">
 		<content>
+			<!--payerBankSettlementType payeeBankSettlementType nodocs  vatSum {vatRate} {vat}-->
 			<HBox width="100%" class="pad1">
 				<VBox width="20%" class="pad1">
 					<Label text="Номер:"/>
@@ -146,7 +147,7 @@
 			<!-- -->
 			<HBox class="small_inputs" width="100%">
 			    <Label text="101:"/>
-			    <Input id="sm1" value="" editable="false"/>
+			    <Input id="sm1" value="{drawerStatus}" editable="false"/>
 			    <Label text="Вид операции:"/>
 			    <Input id="sm2" value="{transKind}" editable="false"/>
 			    <Label text="Очередность платежа:"/>
@@ -154,61 +155,62 @@
 			    <Label text="Код вида ВО:"/>
 			    <Input id="sm4" value="{codeVO}" editable="false"/>
 			    <Label text="Код валюты ISO:"/>
-			    <Input id="sm5" value="810" editable="false"/> <!--{currCode}-->
+			    <Input id="sm5" value="810" editable="false"/> <!--{paytCode}-->
 			</HBox>
 			<!-- -->	
 			
 			<t:Table
 				selectionMode="None"
 				visibleRowCount="1"
-				class="dialogTable">
+				class="dialogTable"
+				rows="{UIData>/nalogFields}">
 				<t:columns>
-					<t:Column width="15%">
+					<t:Column width="18%">
 						<Label text="КБК" />
 						<t:template>
-							<Text text="{cbc}" wrapping="false" />
+							<Text text="{UIData>cbc}" wrapping="false" />
 						</t:template>
 					</t:Column>
-					<t:Column width="15%">
+					<t:Column width="12%">
 						<Label text="ОКАТО" />
 						<t:template>
-							<Text text="{okato}"/>
+							<Text text="{UIData>okato}"/>
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Осн. пл." />
 						<t:template>
-							<Text text="{paytReason}" />
+							<Text text="{UIData>paytReason}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Налоговый период" />
 						<t:template>
-							<Text text="{taxPeriod}" />
+							<Text text="{UIData>taxPeriod}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Номер нал. документа" />
 						<t:template>
-							<Text text="{depDocNo}" />
+							<Text text="{UIData>depDocNo}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Дата нал. документа" />
 						<t:template>
-							<Text text="{depDocDate}" />
+							<Text text="{UIData>depDocDate}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Тип платежа" />
 						<t:template>
-							<Text text="{taxPaytKind}" />
+							<Text text="{UIData>taxPaytKind}" />
 						</t:template>
 					</t:Column>
 					<t:Column width="15%">
 						<Label text="Код УИН" />
 						<t:template>
-							<Text text="{payeeUip}" />
+							<Text text="{UIData>payeeUip}" />
 						</t:template>
 					</t:Column>
 				</t:columns>
@@ -217,14 +219,13 @@
 			<HBox width="100%" class="TextAreaBlock">
 				<VBox width="50%">
 				    <Label text="Назначение платежа:"/>
-				    <TextArea value="{purpose}" rows="3" width="90%"/>
+				    <TextArea enabled="false" value="{purpose}" rows="3" width="90%"/>
 			    </VBox>
 			    <VBox width="50%">
 			        <Label text="Сообщение из банка:"/>
-			        <TextArea value="" rows="3" width="100%"/>
+			        <TextArea enabled="false" value="{UIData>/description}" rows="3" width="100%"/>
 			    </VBox>
 			</HBox>
-			 
 			
 		</content>
 		<buttons>

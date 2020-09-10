@@ -22,17 +22,6 @@ sap.ui.define([
 			return oCurrencyFormat.format(value, "руб");
 		},
 
-		stmtTypeIdToText: function (value) {
-			switch (value) {
-			case 1:
-				return "Итоговая";
-			case 2:
-				return "Не итоговая";
-			default:
-				return "";
-			}
-		},
-
 		stmtTypeIdToTextStatus: function (value) {
 			switch (value) {
 			case 1:
@@ -56,17 +45,25 @@ sap.ui.define([
 			// 7;Принят АБС;
 			// 8;Исполнен;
 			// 9;Отказан АБС;
-			if (oValue === "Импортирован") {
+			// <core:Item id="CustomPriceFilterItem10" key="ЭП/АСП неверна" text="ЭП/АСП неверна"/>
+			// <core:Item id="CustomPriceFilterItem11" key="Ошибка реквизитов" text="Ошибка реквизитов"/>
+			// <core:Item id="CustomPriceFilterItem12" key="Удален" text="Удален"/>
+												
+			if (oValue === "Импортирован" || oValue === "Создан") {
 				return "Information";
 			} else if (oValue === "Подписан" || oValue === "Подписан I" || oValue === "Подписан II") {
+				return sap.ui.core.IndicationColor.Indication03;
+			} else if (oValue === "Удален") {
+				return sap.ui.core.IndicationColor.Indication06;
+			} else if (oValue === "Отправлен") {
 				return "Warning";
-			} else if (oValue === "Импортирован") {
-				return "Information";
-			} else if (oValue === "Отправлен" || oValue === "Доставлен" || oValue === "Принят АБС" || oValue === "Отправлен") {
+			} else if (oValue === "Доставлен" ) {
 				return "Warning";
+			} else if ( oValue === "Принят АБС") {
+				return "Success";
 			} else if (oValue === "Исполнен") {
 				return "Success";
-			} else if (oValue === "Отказан АБС") {
+			} else if (oValue === "Отказан АБС" || oValue === "ЭП/АСП неверна" || oValue === "Ошибка реквизитов" ) {
 				return "Error";
 			}
 			return "None";

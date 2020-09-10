@@ -2,7 +2,7 @@
 	xmlns:u="sap.ui.unified" xmlns:t="sap.ui.table" class="sapUiSizeCompact">
 	<Dialog id="journalDialog" title="Журнал платежного поручения" resizable="true" contentWidth="1024px">
 		<content>
-			<!--<smartTable:SmartTable id="SmartTableStatements" entitySet="/results" useExportToExcel="true" useVariantManagement="false"-->
+			<!--<smartTable:SmartTable id="Stmt_SmartTable" entitySet="/results" useExportToExcel="true" useVariantManagement="false"-->
 			<!--	useTablePersonalisation="true" header="Выписки" showRowCount="true" enableAutoBinding="false" showFullScreenButton="false">-->
 				<!--<smartTable:customToolbar>-->
 				<!--	<Toolbar>-->
@@ -26,7 +26,9 @@
 					<t:columns>
 					    <t:Column>
 							<Label text="Дата"/>
-							<t:template><Text text="{path: 'timestamp', type: 'sap.ui.model.type.Date'}"/></t:template>
+							<t:template>
+								<Text text="{path: 'timestamp', type: 'sap.ui.model.type.DateTime'}"/>
+							</t:template>
 						</t:Column>
 					    <t:Column>
 							<Label text="Операция"/>

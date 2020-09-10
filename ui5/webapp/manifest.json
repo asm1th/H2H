@@ -87,7 +87,7 @@
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"preload": true,
 				"settings": {
-					"useBatch": true,
+					"useBatch": false,
 					"preload": true,
 					"json": true,
 					"defaultBindingMode": "TwoWay",

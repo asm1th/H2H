@@ -16,18 +16,20 @@
 				</HBox>
 				<HBox class="bankbutton">
 					<!--<Image press="onHomePress" src="./images/rai2.png" height="30px" class="bank-logo"/>-->
-					<MenuButton text="Райффайзенбанк">
+					<MenuButton id="bankButton" text="Райффайзенбанк">
 						<menu>
 							<Menu>
 								<items>
-									<MenuItem text="Газпромбанк" icon="sap-icon://loan" press="onPress">
+									<MenuItem text="Райффайзенбанк" icon="sap-icon://loan" press="onPressBank">
 										<customData>
-											<core:CustomData key="target" value="p1"/>
+											<core:CustomData key="BIK" value="0"/>
 										</customData>
 									</MenuItem>
-									<MenuItem text="Сбербанк" icon="sap-icon://loan" press="onPress"/>
-									<MenuItem text="Райфайзен" icon="sap-icon://loan" press="onPress"/>
-									<MenuItem text="Белгазпромбанк" icon="sap-icon://loan" press="onPress"/>
+									<MenuItem text="Банк 1" icon="sap-icon://loan" press="onPressBank">
+										<customData>
+											<core:CustomData key="BIK" value="042908612"/>
+										</customData>
+									</MenuItem>
 								</items>
 							</Menu>
 						</menu>
@@ -37,27 +39,13 @@
 				<!--<Button icon="sap-icon://nav-back" type="Transparent" press="onNavBack"></Button>-->
 				<ToolbarSpacer/>
 				<!--<Button icon="sap-icon://search" type="Transparent"/>-->
-
 				<Button id="messagePopup" icon="sap-icon://bell" type="Transparent" tooltip="Сообщения" text=" {/messagesLength}"
 					press="handleMessagePopoverPress"/>
-				<!--<Button icon="sap-icon://lab" type="Transparent" press="testButton"/>-->
-				<!--<f:Avatar class="Avatar" displaySize="XS" backgroundColor="Random"/>-->
-				<!--<MenuButton type="Transparent">-->
-				<!--	<menu>-->
-				<!--		<Menu>-->
-				<!--			<items>-->
-				<!--				<MenuItem text="Действие" icon="sap-icon://action-settings"/>-->
-				<!--			</items>-->
-				<!--		</Menu>-->
-				<!--	</menu>-->
-				<!--</MenuButton>-->
 			</tnt:ToolHeader>
 		</tnt:header>
 		<tnt:sideContent>
 			<tnt:SideNavigation id="SideNavigation" selectedKey="page1" itemSelect="onItemSelect">
 				<tnt:NavigationList>
-					<!--<tnt:NavigationListItem text="Рублевые платежи" icon="sap-icon://receipt" enabled="true" key="page1"/>-->
-					<!--<tnt:NavigationListItem text="Банковские выписки" icon="sap-icon://customer-order-entry" enabled="true" key="page2"/>-->
 					<tnt:NavigationListItem icon="sap-icon://building" text="Газпром нефть" key="page0">
 						<tnt:NavigationListItem text="Рублевые платежи" id="subItem2" key="page1"/>
 						<tnt:NavigationListItem text="Выписки" id="PaymentOrderType" key="page2"/>
@@ -90,14 +78,79 @@
 						<VBox fitContainer="true">
 							<!--https://blogs.sap.com/2019/08/13/configuring-filters-area-of-an-analytical-list-page-alp-application/-->
 							<!--basicSearchFieldName="docExtId" enableBasicSearch="true"-->
-							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_0">
+							<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="PaymentOrder" persistencyKey="SmartFilter_0" entityType="PaymentOrderType" liveMode="true" search="onSearch">
+								
 								<!--<smartFilterBar:controlConfiguration>-->
-								<!--	<smartFilterBar:ControlConfiguration key="docExtId">-->
+								<!--	<smartFilterBar:ControlConfiguration key="status" index="1" label="Статус" visibleInAdvancedArea="true" groupId="_BASIC">-->
 								<!--		<smartFilterBar:defaultFilterValues>-->
 								<!--			<smartFilterBar:SelectOption low="23cb2ada-6207-4994-8354-d7f4d78b1f18"></smartFilterBar:SelectOption>-->
 								<!--		</smartFilterBar:defaultFilterValues>-->
 								<!--	</smartFilterBar:ControlConfiguration>-->
 								<!--</smartFilterBar:controlConfiguration>-->
+								
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration key="docDate" label="Дата платежа" index="0" visible="true" 
+										controlType="dateTimePicker" groupId="_BASIC">
+										<smartFilterBar:customControl>
+											<!--<DatePicker-->
+											<!--	placeholder="Выберите дату"-->
+											<!--	change="handleChange"-->
+											<!--	displayFormat="short"-->
+											<!--/>-->
+											<!--minDate="{path:'/dateMinDRS1'}" maxDate="{path:'/dateMaxDRS1'}"-->
+											<DateRangeSelection
+												id="DateRangeSelectionPP"
+												showFooter="true"
+												delimiter= "-"
+												displayFormat="dd.MM.yyyy"
+												maxDate="{UIData>/maxDate}"/>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+								
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration key="payerPersonalAcc" index="1" label="Счет" groupId="_BASIC">
+										<smartFilterBar:customControl>
+											<ComboBox id="CustomFilter-payerPersonalAcc" showSecondaryValues="true" change="onAccFilterPP" items="{ path: '/AccountInfo', length: 500 }">
+												<core:ListItem key="{account}" text="{account}" additionalText="{acccurr}"/>
+											</ComboBox>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+								
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration key="codeVO" index="2" label="Валюта" groupId="_BASIC">
+										<smartFilterBar:customControl>
+											<Input id="CustomFilter-codeVO" editable="fasle"/>
+											<!--<ComboBox id="CustomFilter-codeVO" showSecondaryValues="true" items="{ path: '/AccountInfo', length: 500 }">-->
+											<!--	<core:ListItem key="{account}" text="{acccurr}"/>-->
+											<!--</ComboBox>-->
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+								
+								
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration key="status" index="3" label="Статус" groupId="_BASIC">
+										<smartFilterBar:customControl>
+											<ComboBox id="CustomFilter-combobox" change="onSearch">
+												<core:Item id="CustomPriceFilterItem1" key="Импортирован" text="Импортирован"/>
+												<core:Item id="CustomPriceFilterItem2" key="Подписан" text="Подписан"/>
+												<core:Item id="CustomPriceFilterItem3" key="Подписан I" text="Подписан I"/>
+												<core:Item id="CustomPriceFilterItem4" key="Подписан II" text="Подписан II"/>
+												<core:Item id="CustomPriceFilterItem5" key="Отправлен" text="Отправлен"/>
+												<core:Item id="CustomPriceFilterItem6" key="Доставлен" text="Доставлен"/>
+												<core:Item id="CustomPriceFilterItem7" key="Принят АБС" text="Принят АБС"/>
+												<core:Item id="CustomPriceFilterItem8" key="Исполнен" text="Исполнен"/>
+												<core:Item id="CustomPriceFilterItem9" key="Отказан АБС" text="Отказан АБС"/>
+												<core:Item id="CustomPriceFilterItem10" key="ЭП/АСП неверна" text="ЭП/АСП неверна"/>
+												<core:Item id="CustomPriceFilterItem11" key="Ошибка реквизитов" text="Ошибка реквизитов"/>
+												<core:Item id="CustomPriceFilterItem12" key="Удален" text="Удален"/>
+											</ComboBox>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+								
 								<!-- layout data used to make the table growing but the filter bar fixed -->
 								<smartFilterBar:layoutData>
 									<FlexItemData shrinkFactor="0"/>
@@ -105,19 +158,18 @@
 							</smartFilterBar:SmartFilterBar>
 							<!--tableBindingPath="PayDocRu" smartFilterId="smartFilterBar" tableType="GridTable" tableType="ResponsiveTable" initiallyVisibleFields="docExtId,purpose,docDate,docNum,docSum" -->
 							<!--tableType="ResponsiveTable" demandPopin="false"-->
-							<smartTable:SmartTable id="LineItemsSmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
-								beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения"
-								showRowCount="true" beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_0" enableAutoBinding="true"
-								showFullScreenButton="true" class="sapUiResponsiveContentPadding">
-								<!--beforeRebindTable="onDataReceived"-->
-								<!-- layout data used to make the table growing but the filter bar fixed -->
+							<smartTable:SmartTable id="PP_SmartTable" entitySet="PaymentOrder" smartFilterId="smartFilterBar" useExportToExcel="true"
+								useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true" enableAutoBinding="true" showFullScreenButton="true"
+								beforeExport="onBeforeExport"
+								beforeRebindTable="onBeforeRebindTable" 
+								persistencyKey="SmartTableAnalytical_0" 
+								class="sapUiResponsiveContentPadding">
 								<smartTable:customToolbar>
 									<Toolbar>
 										<ToolbarSpacer/>
-										<!--<ToolbarSeparator/>-->
 										<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh" enabled="true"/>
 										<Button icon="sap-icon://history" tooltip="Журнал" id="onJournal" class="btn btn-bordered" press="onJournal" enabled="true"/>
-										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Ипорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
+										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Импорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
 										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllPP" enabled="true"/>
 										<MenuButton icon="sap-icon://print" class="btn btn-bordered">
 											<menu>
@@ -130,23 +182,89 @@
 										</MenuButton>
 										<!--<Button icon="sap-icon://detail-view" text="ПП xml" tooltip="Просмотр XML" class="btn btn-bordered" press="onShowXml" enabled="true"/>-->
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" id="onSignDialog" enabled="true"/>
-										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" id="onUndoSign" enabled="true"/>
+										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" id="onUndoSign"
+											enabled="true"/>
 										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered btn-warning" press="onSend"
 											id="onSend" enabled="true"/>
 									</Toolbar>
 								</smartTable:customToolbar>
-								<t:Table id="smtable" rowHeight="20" visibleRowCountMode="Auto" rowActionCount="1" rowSelectionChange="onSelPaymentOrder">
+								<t:Table id="smtable" visibleRowCountMode="Auto" rowActionCount="1" rowSelectionChange="onSelPaymentOrder">
 									<t:rowSettingsTemplate>
 										<t:RowSettings highlight="{path:'status', formatter:'.formatter.formatRowHighlight'}"/>
 									</t:rowSettingsTemplate>
 									<t:rowActionTemplate>
 										<t:RowAction>
 											<t:items>
-												<t:RowActionItem type="Navigation" press="onDetailDialog"></t:RowActionItem>
+												<t:RowActionItem type="Navigation" press="onDetailDialog"/>
 												<!--<t:RowActionItem visible="{path:'status', formatter:'.formatter.formatEnableDelPP'}" icon="sap-icon://delete" type="Delete" press="onDeletePP"></t:RowActionItem>-->
 											</t:items>
 										</t:RowAction>
 									</t:rowActionTemplate>
+									<t:Column id="docDate" tooltip="Дата платежа" width="7rem" sortProperty="docDate" sorted="true" sortOrder="Descending" filterProperty="docDate" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<t:customData>
+								          <core:CustomData key="p13nData"
+								           value='\{"columnKey": "docDate", "leadingProperty": "docDate", "sortProperty": "docDate", "filterProperty": "docDate", "columnIndex": 0 ,  "sortOrder": "Descending"}'/>
+								         </t:customData>
+										<Label text="Дата платежа"/>
+										<t:template>
+											<Text text="{
+											path:'docDate', 
+											type:'sap.ui.model.type.Date'
+											}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Номер документа" width="5rem" sortProperty="docNum" sorted="true" filterProperty="docNum" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<t:customData>
+								          <core:CustomData key="p13nData"
+								           value='\{"columnKey": "docNum", "leadingProperty": "docNum", "sortProperty": "docNum", "filterProperty": "docNum", "columnIndex": 1}'/>
+								         </t:customData>
+										<Label text="Номер документа"/>
+										<t:template>
+											<ObjectIdentifier title="{docNum}" titleActive="true" titlePress="toPaymentOrder"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Наименование плательщика" width="10rem" sortProperty="payerName" filterProperty="payerName" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Наименование плательщика"/>
+										<t:template>
+											<Text text="{payerName}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Номер счёта плательщика" width="10rem" sortProperty="payerPersonalAcc" filterProperty="payerPersonalAcc" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Номер счёта плательщика"/>
+										<t:template>
+											<Text text="{payerPersonalAcc}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Статус" width="10rem" sortProperty="status" filterProperty="status" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Статус"/>
+										<t:template>
+											<Text text="{status}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Сумма документа" width="10rem" sortProperty="docSum" filterProperty="docSum" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Сумма документа"/>
+										<t:template>
+											<Text text="{docSum}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Наименование получателя" width="15rem" sortProperty="payeeName" filterProperty="payeeName" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Наименование получателя"/>
+										<t:template>
+											<Text text="{payeeName}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Номер счёта получателя" width="10rem" sortProperty="payeePersonalAcc" filterProperty="payeePersonalAcc" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Номер счёта получателя"/>
+										<t:template>
+											<Text text="{payeePersonalAcc}"/>
+										</t:template>
+									</t:Column>
+									<t:Column tooltip="Назначение платежа" width="50rem" sortProperty="purpose" filterProperty="purpose" showFilterMenuEntry="true" showSortMenuEntry="true">
+										<Label text="Назначение платежа"/>
+										<t:template>
+											<Text text="{purpose}"/>
+										</t:template>
+									</t:Column>
 									<t:footer><Label design="Bold" wrapping="true" text="Всего: {path:'UIData>/PaymentOrderTotal', formatter:'.formatter.toCurrency'}"/>
 									</t:footer>
 								</t:Table>
@@ -158,28 +276,72 @@
 					<!--  -->
 					<ScrollContainer id="page2" horizontal="false" vertical="false" height="100%">
 						<VBox fitContainer="true">
-							<smartFilterBar:SmartFilterBar id="smartFilterBar_1" entitySet="Statement" persistencyKey="SmartFilter_1">
-								<smartFilterBar:layoutData>
-									<FlexItemData shrinkFactor="0"/>
-								</smartFilterBar:layoutData>
+							<smartFilterBar:SmartFilterBar id="smartFilterBarStmt" entitySet="Statement" persistencyKey="SmartFilter_1" liveMode="true">
+								
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration key="stmtDate" label="Дата выписки" index="1" visible="true" 
+										controlType="dateTimePicker" groupId="_BASIC">
+										<smartFilterBar:customControl>
+											<!--<DatePicker-->
+											<!--	placeholder="Выберите дату"-->
+											<!--	change="handleChange"-->
+											<!--	displayFormat="short"-->
+											<!--/>-->
+											<!--minDate="{path:'/dateMinDRS1'}" maxDate="{path:'/dateMaxDRS1'}"-->
+											<DateRangeSelection
+												id="DateRangeSelection"
+												showFooter="true"
+												delimiter= "-"
+												displayFormat="dd.MM.yyyy"
+												maxDate="{UIData>/maxDate}"/>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+								
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration key="acc" index="0" label="Счет" groupId="_BASIC">
+										<smartFilterBar:customControl>
+											<ComboBox id="CustomFilter-acc" showSecondaryValues="true" change="onAccFilter" items="{ path: '/AccountInfo', length: 500 }">
+												<core:ListItem key="{account}" text="{account}" additionalText="{acccurr}"/>
+											</ComboBox>
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+								
+								<smartFilterBar:controlConfiguration>
+									<smartFilterBar:ControlConfiguration key="currCode" index="1" label="Валюта" groupId="_BASIC">
+										<smartFilterBar:customControl>
+											<Input id="CustomFilter-currCode" editable="fasle"/>
+											<!--<ComboBox id="CustomFilter-currCode" showSecondaryValues="true" items="{ path: '/AccountInfo', length: 500 }">-->
+											<!--	<core:ListItem key="{account}" text="{acccurr}"/>-->
+											<!--</ComboBox>-->
+										</smartFilterBar:customControl>
+									</smartFilterBar:ControlConfiguration>
+								</smartFilterBar:controlConfiguration>
+								
 								<!--<smartFilterBar:controlConfiguration>-->
-								<!--	<smartFilterBar:ControlConfiguration key="stmtTypeId" visible="true" index="3">-->
-								<!--		<smartFilterBar:defaultFilterValues>-->
-								<!--			<smartFilterBar:SelectOption low="1"></smartFilterBar:SelectOption>-->
-								<!--		</smartFilterBar:defaultFilterValues>-->
+								<!--	<smartFilterBar:ControlConfiguration key="organisation" index="2" label="Организация" groupId="_BASIC">-->
+								<!--		<smartFilterBar:customControl>-->
+								<!--			<Input/>-->
+											<!--<ComboBox id="CustomFilter-organisation" showSecondaryValues="true" items="{ path: '/AccountInfo', length: 500 }">-->
+											<!--	<core:ListItem key="{organisation}" text="{organisation}"/>-->
+											<!--</ComboBox>-->
+								<!--		</smartFilterBar:customControl>-->
 								<!--	</smartFilterBar:ControlConfiguration>-->
 								<!--</smartFilterBar:controlConfiguration>-->
+								
 							</smartFilterBar:SmartFilterBar>
 							<!--tableType="AnalyticalTable"-->
+							
 							<HBox class="s_table">
-								<smartTable:SmartTable id="SmartTableStatements" entitySet="Statement" smartFilterId="smartFilterBar_1" useExportToExcel="true"
-									useVariantManagement="true" useTablePersonalisation="true" header="Выписки" showRowCount="true" persistencyKey="SmartTableAnalytical_1"
+								<smartTable:SmartTable id="Stmt_SmartTable" entitySet="Statement" smartFilterId="smartFilterBarStmt" useExportToExcel="true"
+									useVariantManagement="true" beforeRebindTable="onBeforeRebindTableStmt"  useTablePersonalisation="true" header="Выписки" showRowCount="true" persistencyKey="SmartTableAnalytical_1"
 									enableAutoBinding="true" showFullScreenButton="true" class="hostPad">
 									<smartTable:customToolbar>
 										<Toolbar>
 											<ToolbarSpacer/>
 											<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh_Stmnt" enabled="true"/>
-											<Button icon="sap-icon://upload-to-cloud" tooltip="Загрузить выписки чеорез XML в обалко" class="btn btn-bordered"
+											<Button icon="sap-icon://upload-to-cloud" tooltip="Загрузить выписки через XML в обалко" class="btn btn-bordered"
 												press="OnUploadSttmntDialog"/>
 											<Button icon="sap-icon://history" tooltip="Журнал" class="btn btn-bordered" press="onJournal_Stmnt"/>
 											<Button icon="sap-icon://attachment" tooltip="Приложения" class="btn btn-bordered" press="onAttachment" enabled="fasle"/>
@@ -190,9 +352,9 @@
 													<Menu>
 														<!--<MenuItem text="1C" icon="sap-icon://save" press="onDownload_V_1C"/>-->
 														<MenuItem text="XML" icon="sap-icon://save" press="onDownload_V_XML"/>
-														<MenuItem text="Печать выписки DOC" icon="sap-icon://doc-attachment" press="onDownload_V_DOC"></MenuItem>
+														<MenuItem text="Печать выписки DOC" icon="sap-icon://doc-attachment" press="onDownload_V_DOC"/>
 														<MenuItem text="Печать всех ПП данной выписки" icon="sap-icon://documents" press="onDownload_V_PP"/>
-														<MenuItem text="Печать выписки PDF" icon="sap-icon://pdf-attachment" press="onDownload_V_PDF" enabled="true"></MenuItem>
+														<MenuItem text="Печать выписки PDF" icon="sap-icon://pdf-attachment" press="onDownload_V_PDF" enabled="true"/>
 														<MenuItem text="Печать мемор. ордеров" icon="sap-icon://document" press="onDownload_V_MO" enabled="fasle"/>
 													</Menu>
 												</menu>
@@ -202,50 +364,78 @@
 										</Toolbar>
 									</smartTable:customToolbar>
 									<!-- visibleRowCountMode="Auto" -->
-									<t:Table id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" rowActionCount="1" rowSelectionChange="onSelStatement">
+									<t:Table id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" rowActionCount="1"
+										rowSelectionChange="onSelStatement">
 										<!--<t:rowSettingsTemplate>-->
 										<!--	<t:RowSettings highlight="None"/>-->
 										<!--</t:rowSettingsTemplate>-->
 										<t:rowActionTemplate>
 											<t:RowAction>
 												<t:items>
-													<t:RowActionItem type="Navigation" press="onChoseStatement"></t:RowActionItem>
+													<t:RowActionItem type="Navigation" press="onChoseStatement"/>
 													<!--<t:RowActionItem icon="sap-icon://delete" type="Delete" press="onDeleteStatement"></t:RowActionItem>-->
 												</t:items>
 											</t:RowAction>
 										</t:rowActionTemplate>
 										<t:columns>
-											<t:Column width="7rem">
+											
+											<t:Column id="stmtDate" tooltip="Дата выписки" width="7rem" sortProperty="stmtDate" sorted="true" sortOrder="Descending" filterProperty="stmtDate" 
+												showFilterMenuEntry="true" showSortMenuEntry="true">
 												<t:customData>
-													<core:CustomData key="p13nData"
-														value='\{"columnKey": "stmtType", "maxLength": "10","columnIndex":"4", "leadingProperty": "stmtType","filterProperty": "stmtType"}'/>
-												</t:customData>
-												<Label text="Тип выписки"/>
+										          <core:CustomData key="p13nData"
+										           value='\{"columnKey": "stmtDate", "leadingProperty": "stmtDate", "sortProperty": "stmtDate", "filterProperty": "stmtDate", "columnIndex": 0 ,  "sortOrder": "Descending"}'/>
+										         </t:customData>
+												<Label text="Дата выписки"/>
 												<t:template>
-													<Text text="{path:'stmtType'}"/>
+													<Text text="{
+													path:'stmtDate', 
+													type:'sap.ui.model.type.Date'
+													}"/>
 												</t:template>
 											</t:Column>
-											<t:Column width="7rem">
+											<t:Column id="docTime" tooltip="Время выписки" width="7rem" sortProperty="docTime" sorted="true" sortOrder="Descending" filterProperty="stmtDate" 
+												showFilterMenuEntry="true" showSortMenuEntry="true">
 												<t:customData>
-													<core:CustomData key="p13nData"
-														value='\{"columnKey": "stmtTypeId", "maxLength": "10","columnIndex":"5", "leadingProperty": "stmtTypeId","filterProperty": "stmtTypeId"}'/>
-												</t:customData>
-												<Label text="Статус выписки"/>
+										          <core:CustomData key="p13nData"
+										           value='\{"columnKey": "docTime", "leadingProperty": "docTime", "sortProperty": "docTime", "filterProperty": "docTime", "columnIndex": 1 ,  "sortOrder": "Descending"}'/>
+										         </t:customData>
+												<Label text="Время выписки"/>
 												<t:template>
-													<ObjectStatus text="{path:'stmtTypeId', formatter:'.formatter.stmtTypeIdToText'}"
-														state="{path:'stmtTypeId', formatter:'.formatter.stmtTypeIdToTextStatus'}"/>
+													<Text text="{path:'docTime'}"/>
 												</t:template>
 											</t:Column>
-											<t:Column width="11rem">
+											<t:Column id="organization" tooltip="Организация" width="15rem" sortProperty="organization" filterProperty="organization" 
+												showFilterMenuEntry="true" showSortMenuEntry="true">
+												<t:customData>
+										          <core:CustomData key="p13nData"
+										           value='\{"columnKey": "organization", "leadingProperty": "organization", "sortProperty": "organization", "filterProperty": "organization", "columnIndex": 2}'/>
+										         </t:customData>
+												<Label text="Организация"/>
+												<t:template>
+													<Text text="{path:'organization'}"/>
+												</t:template>
+											</t:Column>
+											<t:Column width="11rem" tooltip="Счет клиента">
 												<t:customData>
 													<core:CustomData key="p13nData"
-														value='\{"columnKey": "acc", "maxLength": "10","columnIndex":"6", "leadingProperty": "acc","filterProperty": "acc"}'/>
+														value='\{"columnKey": "acc", "maxLength": "10", "columnIndex":"3","leadingProperty": "acc","filterProperty": "acc"}'/>
 												</t:customData>
 												<Label text="Счет клиента"/>
 												<t:template>
 													<Text text="{path:'acc'}"/>
 												</t:template>
 											</t:Column>
+											<t:Column width="7rem" tooltip="Тип выписки">
+												<t:customData>
+													<core:CustomData key="p13nData"
+														value='\{"columnKey": "stmtType", "maxLength": "10","columnIndex": "9", "leadingProperty": "stmtType","filterProperty": "stmtType"}'/>
+												</t:customData>
+												<Label text="Тип выписки"/>
+												<t:template>
+													<Text text="{path:'stmtType'}"/>
+												</t:template>
+											</t:Column>
+											
 										</t:columns>
 									</t:Table>
 								</smartTable:SmartTable>
@@ -254,7 +444,7 @@
 								<VBox width="50%" class="d_table">
 									<smartTable:SmartTable header="Дебет" width="100%" id="SmartTable_D" entitySet="StatementItemsDeb" useExportToExcel="true"
 										useVariantManagement="true" useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_2"
-										enableAutoBinding="true" showFullScreenButton="true" initialNoDataText="Выберите выписку" class="hostPad1">
+										enableAutoBinding="false" showFullScreenButton="true" initialNoDataText="Выберите выписку" class="hostPad1">
 										<smartTable:customToolbar>
 											<Toolbar>
 												<ToolbarSpacer/>
@@ -268,17 +458,32 @@
 											<t:rowActionTemplate>
 												<t:RowAction>
 													<t:items>
-														<t:RowActionItem type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>
+														<t:RowActionItem type="Navigation" press="onChoseCreditDebit"/>
 													</t:items>
 												</t:RowAction>
 											</t:rowActionTemplate>
+											<t:columns>
+												<t:Column id="operDate_D" tooltip="Дата операции" width="7rem" sortProperty="operDate" sorted="true" sortOrder="Descending" filterProperty="operDate" 
+													showFilterMenuEntry="true" showSortMenuEntry="true">
+													<t:customData>
+											          <core:CustomData key="p13nData"
+											           value='\{"columnKey": "operDate", "leadingProperty": "operDate", "sortProperty": "operDate", "filterProperty": "operDate", "columnIndex": 0 ,  "sortOrder": "Descending"}'/>
+											         </t:customData>
+													<Label text="Дата операции"/>
+													<t:template>
+														<Text text="{
+														path:'operDate'
+														}"/>
+													</t:template>
+												</t:Column>
+											</t:columns>
 										</t:Table>
 									</smartTable:SmartTable>
 								</VBox>
 								<VBox width="50%" class="c_table">
 									<smartTable:SmartTable header="Кредит" width="100%" id="SmartTable_C" entitySet="StatementItemsCred" useExportToExcel="true"
 										useVariantManagement="true" useTablePersonalisation="true" showRowCount="true" persistencyKey="SmartTableAnalytical_3"
-										enableAutoBinding="true" showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
+										enableAutoBinding="false" showFullScreenButton="true" class="hostPad1" initialNoDataText="Выберите выписку">
 										<smartTable:customToolbar>
 											<Toolbar>
 												<ToolbarSpacer/>
@@ -292,35 +497,53 @@
 											<t:rowActionTemplate>
 												<t:RowAction>
 													<t:items>
-														<t:RowActionItem type="Navigation" press="onChoseCreditDebit"></t:RowActionItem>
+														<t:RowActionItem type="Navigation" press="onChoseCreditDebit"/>
 													</t:items>
 												</t:RowAction>
 											</t:rowActionTemplate>
+											<t:columns>
+												<t:Column id="docDate_C" tooltip="Дата операции" width="7rem" sortProperty="operDate" sorted="true" sortOrder="Descending" filterProperty="operDate" 
+													showFilterMenuEntry="true" showSortMenuEntry="true">
+													<t:customData>
+											          <core:CustomData key="p13nData"
+											           value='\{"columnKey": "operDate", "leadingProperty": "operDate", "sortProperty": "operDate", "filterProperty": "operDate", "columnIndex": 0 ,  "sortOrder": "Descending"}'/>
+											         </t:customData>
+													<Label text="Дата операции"/>
+													<t:template>
+														<Text text="{
+														path:'operDate'
+														}"/>
+													</t:template>
+												</t:Column>
+											</t:columns>
 										</t:Table>
 									</smartTable:SmartTable>
 								</VBox>
 							</HBox>
 						</VBox>
 					</ScrollContainer>
-					
-					<!-- Все света -->
+					<!-- Все СЧЕТА ПП -->
 					<ScrollContainer id="all" horizontal="false" vertical="false" height="100%">
-						<VBox fitContainer="true"> 
-							<smartFilterBar:SmartFilterBar id="smartFilterBar_2" entitySet="PaymentOrder" persistencyKey="SmartFilter_2"> 
+						<VBox fitContainer="true">
+							<smartFilterBar:SmartFilterBar id="smartFilterBar_2" entitySet="PaymentOrder" persistencyKey="SmartFilter_2">
 								<smartFilterBar:layoutData>
 									<FlexItemData shrinkFactor="0"/>
 								</smartFilterBar:layoutData>
-							</smartFilterBar:SmartFilterBar> 
-							<smartTable:SmartTable id="LineItemsSmartTable_1" entitySet="PaymentOrder" smartFilterId="smartFilterBar_2" useExportToExcel="true"
-								 beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения"
-								showRowCount="true" beforeRebindTable="onDataReceived" persistencyKey="SmartTableAnalytical_0" enableAutoBinding="true"
-								showFullScreenButton="true" class="sapUiResponsiveContentPadding"> 
+							</smartFilterBar:SmartFilterBar>
+							<smartTable:SmartTable id="PP_SmartTable_1" entitySet="PaymentOrder" smartFilterId="smartFilterBar_2" useExportToExcel="true"
+								useVariantManagement="true" useTablePersonalisation="true" header="Платежные поручения" showRowCount="true"
+								beforeExport="onBeforeExport" 
+								beforeRebindTable="onBeforeRebindTable" 
+								persistencyKey="SmartTableAnalytical_0" 
+								enableAutoBinding="true" 
+								showFullScreenButton="true"
+								class="sapUiResponsiveContentPadding">
 								<smartTable:customToolbar>
 									<Toolbar>
-										<ToolbarSpacer/> 
+										<ToolbarSpacer/>
 										<Button icon="sap-icon://refresh" tooltip="Обновить" class="btn btn-bordered" press="onRefresh" enabled="true"/>
 										<Button icon="sap-icon://history" tooltip="Журнал" id="onJournal_2" class="btn btn-bordered" press="onJournal" enabled="true"/>
-										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Ипорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
+										<Button icon="sap-icon://upload-to-cloud" text="ПП" tooltip="Импорт ПП из текстового файла" class="btn btn-bordered" press="OnUploadDialog"/>
 										<Button icon="sap-icon://delete" tooltip="Удалить несколько" class="btn btn-bordered" press="onDeleteAllPP" enabled="true"/>
 										<MenuButton icon="sap-icon://print" class="btn btn-bordered">
 											<menu>
@@ -330,7 +553,7 @@
 													<MenuItem text="PDF" icon="sap-icon://save" press="onDownload_PDF" enabled="false"/>
 												</Menu>
 											</menu>
-										</MenuButton> 
+										</MenuButton>
 										<Button icon="sap-icon://signature" type="Accept" text="ЭЦП" class="btn btn-bordered" press="onSignDialog" enabled="true"/>
 										<Button icon="sap-icon://undo" text="Снять ЭЦП" type="Reject" tooltip="Снять ЭЦП" class="bbb" press="onUndoSign" id="onUndoSign_2"/>
 										<Button icon="sap-icon://paper-plane" type="Accept" text="Отправить" tooltip="Отправить" class="btn btn-bordered btn-warning" press="onSend"
@@ -344,7 +567,7 @@
 									<t:rowActionTemplate>
 										<t:RowAction>
 											<t:items>
-												<t:RowActionItem type="Navigation" press="onDetailDialog"></t:RowActionItem>
+												<t:RowActionItem type="Navigation" press="onDetailDialog"/>
 												<!--<t:RowActionItem visible="{path:'status', formatter:'.formatter.formatEnableDelPP'}" icon="sap-icon://delete" type="Delete" press="onDeletePP"></t:RowActionItem>-->
 											</t:items>
 										</t:RowAction>
@@ -355,7 +578,6 @@
 							</smartTable:SmartTable>
 						</VBox>
 					</ScrollContainer>
-					
 				</pages>
 			</NavContainer>
 		</tnt:mainContents>

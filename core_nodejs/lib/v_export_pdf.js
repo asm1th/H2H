@@ -104,27 +104,39 @@ router.get('/', function (req, res, next) {
 		var sql_debCred = 'Select * From "RaiffeisenBank.TStatementItems" Where "RESPONSEID" IN (' + idString + ')';
 
 		var print = {}; //data
-		req.db.exec(sql_stmnt, function (err, rows) {
+		req.db.exec(sql_stmnt, function (err, rowsHead) {
 			if (err) {
 				console.log(err);
 				return next(err);
 			}
-			if (rows.length > 0) {
-				print = rows[0];
-
+			if (rowsHead.length > 0) {
+				var Head = rowsHead[0];
+				//date format
+				Head.stmtDate = (Head.stmtDate) ? Head.stmtDate.replace(/-/g, ".") : "----"
+				Head.beginDate = (Head.beginDate) ? Head.beginDate.replace(/-/g, ".") : "----"
+				Head.endDate = (Head.endDate) ? Head.endDate.replace(/-/g, ".") : "----"
+				Head.lastMovetDate = (Head.lastMovetDate) ? Head.lastMovetDate.replace(/-/g, ".") : "----"
+				Head.lastStmtDate = (Head.lastStmtDate) ? Head.lastStmtDate.replace(/-/g, ".") : "----"
+				
+				print = Head;
+				//console.log('print Head', print);
+				
 				req.db.exec(sql_debCred, function (err, rows) {
 					if (err) {
 						console.log(err);
 						return next(err);
 					}
 					if (rows.length > 0) {
-						// rows.forEach(function (row) {
-						// 	if (row.DC == "1") {
-						// 		row.isDebit = true;
-						// 	} else if (row.DC == "2") {
-						// 		row.isCredit = true;
-						// 	}
-						// });
+						rows.forEach(function (row) {
+							// 	if (row.DC == "1") {
+							// 		row.isDebit = true;
+							// 	} else if (row.DC == "2") {
+							// 		row.isCredit = true;
+							// 	}
+							//date format
+							row.DOCDATE = (row.DOCDATE) ? row.DOCDATE.replace(/-/g, ".") : "----"
+							row.OPERDATE = (row.OPERDATE) ? row.OPERDATE.replace(/-/g, ".") : "----"
+						});
 						print.docs = rows;
 						//console.log('print all ', print);
 					}

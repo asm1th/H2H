@@ -43,7 +43,8 @@ sap.ui.define([
 			this.getView().setModel(oModel);
 
 			var UIData = {
-				PaymentOrderTotal: 0
+				PaymentOrderTotal: 0,
+				maxDate: new Date()
 			};
 			var uiModel = new JSONModel(UIData)
 			this.getView().setModel(uiModel, "UIData");
@@ -101,7 +102,7 @@ sap.ui.define([
 			this.byId("onUndoSign").setEnabled(false);
 			this.byId("onSignDialog").setEnabled(false);
 		},
-
+		
 		// remove test after
 		testButton: function (oEvent) {
 			var oModel = this.getOwnerComponent().getModel();
@@ -125,7 +126,7 @@ sap.ui.define([
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var sPath = ctx.getPath();
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var data = oTable.getModel().getProperty(sPath);
 			this._delStmnt(data);
@@ -146,7 +147,7 @@ sap.ui.define([
 		},
 
 		onDeleteAllStatement: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -166,7 +167,7 @@ sap.ui.define([
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var sPath = ctx.getPath();
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var data = oTable.getModel().getProperty(sPath);
 			if (data.status != "Подписан") {
@@ -188,7 +189,7 @@ sap.ui.define([
 		},
 
 		onDeleteAllPP: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -236,7 +237,7 @@ sap.ui.define([
 			mParams.success = function () {
 				oModel.remove(Path, {
 					success: function (data) {
-						var oSmartTable = that.byId("LineItemsSmartTable");
+						var oSmartTable = that.byId("PP_SmartTable");
 						oSmartTable.rebindTable();
 						MessageToast.show("Запись удалена");
 					},
@@ -269,12 +270,12 @@ sap.ui.define([
 		},
 
 		onRefresh: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			oSmartTable.rebindTable();
 		},
 
 		onRefresh_Stmnt: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			oSmartTable.rebindTable();
 
 			var oSmartTable = this.byId("SmartTable_D");
@@ -288,7 +289,7 @@ sap.ui.define([
 			if (!this.journalDialog) {
 				this.journalDialog = sap.ui.xmlfragment("journalDialog", "h2h.ui5.view.journalDialog", this);
 			}
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -324,7 +325,7 @@ sap.ui.define([
 		},
 
 		onSelStatement: function () {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -337,13 +338,12 @@ sap.ui.define([
 					var data = oTable.getModel().getProperty(sPath);
 					oFilter.push(new sap.ui.model.Filter("responseId", sap.ui.model.FilterOperator.EQ, data.responseId));
 				});
+				this.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
+				this.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
+			} else {
+				this.byId("SmartTable_D").getTable().unbindRows();
+				this.byId("SmartTable_D").getTable().unbindRows();
 			}
-
-			this.byId("SmartTable_D").getTable().bindRows("/StatementItemsDeb", null, null, oFilter);
-			this.byId("SmartTable_C").getTable().bindRows("/StatementItemsCred", null, null, oFilter);
-
-			//this.byId("Table_D").bindRows("/StatementItemsDeb", null, null, oFilter);
-			//this.byId("Table_C").bindRows("/StatementItemsCred", null, null, oFilter);
 		},
 
 		onChoseStatement: function (oEvent) {
@@ -400,40 +400,6 @@ sap.ui.define([
 			MessageToast.show(evt.getSource().getId() + " Pressed");
 		},
 
-		//////////////////
-		// фикс размер колонок по заголовкам table
-		onDataReceived: function () {
-			// var oSmartTable = this.byId("LineItemsSmartTable");
-			// var oTable = oSmartTable.getTable();
-			// var oTpc = new sap.ui.table.TablePointerExtension(oTable);
-			// var aColumns = oTable.getColumns();
-			// for (var i = 0; i < aColumns.length; i++) {
-			//   oTpc.doAutoResizeColumn(i);
-			// }
-			// 			var oSmartTable = this.byId("LineItemsSmartTable");
-			// 			var i = 0;
-			// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
-			// 				oLine.setWidth("100%");
-			// 				oLine.getParent().autoResizeColumn(i);
-			// 				i++;
-			// 			});
-			//oSmartTable.getTable().rerender();
-			//oSmartTable.getTable().scrollLeft();
-		},
-
-		//////////////////
-		// экспорт таблицы
-		onBeforeExport: function (oEvent) {
-			var mExcelSettings = oEvent.getParameter("exportSettings");
-			// GW export
-			if (mExcelSettings.url) {
-				return;
-			}
-			// For UI5 Client Export --> The settings contains sap.ui.export.SpreadSheet relevant settings that be used to modify the output of excel
-			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
-			mExcelSettings.worker = false;
-		},
-
 		///////////////////////
 		// окно подробностей
 		onDetailDialog: function (oEvent) {
@@ -445,10 +411,80 @@ sap.ui.define([
 			var src = oEvent.getSource();
 			var ctx = src.getBindingContext();
 			var path = ctx.getPath();
+			var oObject = ctx.getObject();
 			this.detailDialog.setBindingContext(ctx);
+			this._loadDetailDialogData(oObject);
 
 			// =================
 			this.detailDialog.open();
+		},
+
+		toPaymentOrder: function (oEvent) {
+			var oView = this.getView();
+			if (!this.detailDialog) {
+				this.detailDialog = sap.ui.xmlfragment("detailDialog", "h2h.ui5.view.detailDialog", this).addStyleClass("sapUiSizeCompact");
+				oView.addDependent(this.detailDialog);
+			}
+
+			var src = oEvent.getSource();
+			var rowBindingContext = src.getBindingContext();
+			var oObject = rowBindingContext.getObject();
+
+			this._loadDetailDialogData(oObject);
+			this.detailDialog.setBindingContext(rowBindingContext);
+			this.detailDialog.open();
+		},
+
+		_loadDetailDialogData: function (oRow) {
+			// load nalogFields
+			var nalogFields = [{
+				cbc: oRow.cbc,
+				okato: oRow.okato,
+				paytReason: oRow.paytReason,
+				taxPeriod: oRow.taxPeriod,
+				depDocNo: oRow.depDocNo,
+				depDocDate: oRow.depDocDate,
+				taxPaytKind: oRow.taxPaytKind,
+				payeeUip: oRow.payeeUip
+			}];
+			this.getView().getModel("UIData").setProperty("/nalogFields", nalogFields);
+
+			// load LastMessage from History
+			var that = this;
+			var oModel = this.getOwnerComponent().getModel();
+
+			//if ( status === "Отправлен" || status === "ЭП/АСП неверна" || status === "Исполнен" || status === "Отказан АБС" || status === "Ошибка реквизитов")
+            
+            var aFilter = [];
+            aFilter.push(new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, oRow.docExtId));
+
+            var orFilter = new sap.ui.model.Filter({
+					filters: [
+					    new sap.ui.model.Filter("status", "EQ", "INVALIDEDS"), 
+					    new sap.ui.model.Filter("status", "EQ", "REQUISITE_ERROR"),
+					    new sap.ui.model.Filter("status", "EQ", "DECLINED_BY_ABS"),
+					    new sap.ui.model.Filter("status", "EQ", "RECALL"),
+					    new sap.ui.model.Filter("status", "EQ", "DECLINED_BY_BANK")
+					    ],
+					and: false
+				});
+            aFilter.push(orFilter);
+
+			oModel.read("/History", {
+				filters: aFilter,
+				success: function (data) {
+					//console.log("History", data);
+					if (data.results.length) {
+					    that.getView().getModel("UIData").setProperty("/description", data.results[0].description);	
+					} else {
+						that.getView().getModel("UIData").setProperty("/description", "");	
+					}
+					
+				},
+				error: function (oError) {
+					console.log("error: " + oError);
+				}
+			});
 		},
 
 		detailDialogSave: function (oEvent) {
@@ -516,7 +552,7 @@ sap.ui.define([
 		//////////////////
 		// просмотр платежки загружаемой в банк
 		onShowXml: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			//var oTable = oSmartTable.getTable();
 			//var iIndex = oTable.getSelectedIndices();
 			var docExtId = this._getDocExtId();
@@ -583,7 +619,7 @@ sap.ui.define([
 
 		// выделение ПП и проверка на статус
 		onSelPaymentOrder: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
@@ -672,7 +708,7 @@ sap.ui.define([
 					});
 					var mParams = {};
 					mParams.success = function () {
-						var oSmartTable = that.byId("LineItemsSmartTable");
+						var oSmartTable = that.byId("PP_SmartTable");
 						oSmartTable.rebindTable();
 						that.addDialog.close();
 						that.addDialog.setBusy(false);
@@ -758,7 +794,7 @@ sap.ui.define([
 					});
 					var mParams = {};
 					mParams.success = function () {
-						var oSmartTable = that.byId("SmartTableStatements");
+						var oSmartTable = that.byId("Stmt_SmartTable");
 						oSmartTable.rebindTable();
 						that.addDialogStmnt.close();
 						that.addDialogStmnt.setBusy(false);
@@ -913,7 +949,7 @@ sap.ui.define([
 			var mParams = {};
 			var that = this;
 			mParams.success = function () {
-				var oSmartTable = that.byId("LineItemsSmartTable");
+				var oSmartTable = that.byId("PP_SmartTable");
 				oSmartTable.rebindTable();
 				MessageToast.show("Подпись снята");
 				that.undoSignDialog.close();
@@ -1018,20 +1054,35 @@ sap.ui.define([
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 
+			//var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
+			//var CAPICOM_CERTIFICATE_FIND_ISSUER_NAME = 2
+			//var certSubjectName = "GPN";
+
 			return new Promise(function (resolve, reject) {
 				window.cadesplugin.async_spawn(function* (args) {
 					try {
 						var oStore = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.Store");
-						yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+						if (!oStore) {
+							alert("Create store failed");
+							return;
+						}
+						yield oStore.Open();
+						//yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 						var CertificatesObj = yield oStore.Certificates;
-
+                        
 						// все действующие
-						var CAPICOM_CERTIFICATE_FIND_TIME_VALID = 9;
-						var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_TIME_VALID);
+						//var CAPICOM_CERTIFICATE_FIND_TIME_VALID = 9;
+						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_TIME_VALID);
 
+						// все
+						var oCertificates = yield oStore.Certificates;
+
+                        // поиск - не работает
+						//oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, "GPN, OU");
+                        
 						var Count = yield oCertificates.Count;
 						if (Count == 0) {
-							throw ("Certificate not found");
+							throw ("Не установлено ни одного подходящего сертификата электронной подписи для этого пользователя");
 						} else {
 							try {
 								for (var i = 1; i <= Count; i++) {
@@ -1060,7 +1111,6 @@ sap.ui.define([
 					args[0](mySerts);
 				}, resolve, reject);
 			});
-
 		},
 
 		// выбрали подпись в окне выбора
@@ -1088,40 +1138,41 @@ sap.ui.define([
 						console.log("digest: ", data);
 
 						///////////////////////// save digest file for test 
-						// alert("Сохраняем файл digest после подписи");
-						// var filename = "digest";
-						// var blob = new Blob([data], { type: "text/plain" });
+						alert("Режим тестирования подписи. Сохраняем файл digest после подписи");
+						var filename = "digest";
+						var blob = new Blob([data], { type: "text/plain" });
 
-						// if (typeof window.navigator.msSaveBlob !== 'undefined') {
-						// 	window.navigator.msSaveBlob(blob, filename);
-						// } else {
-						// 	var URL = window.URL || window.webkitURL;
-						// 	var downloadUrl = URL.createObjectURL(blob);
+						if (typeof window.navigator.msSaveBlob !== 'undefined') {
+							window.navigator.msSaveBlob(blob, filename);
+						} else {
+							var URL = window.URL || window.webkitURL;
+							var downloadUrl = URL.createObjectURL(blob);
 
-						// 	if (filename) {
-						// 		var a = document.createElement("a");
-						// 		if (typeof a.download === 'undefined') {
-						// 			window.location.href = downloadUrl;
-						// 		} else {
-						// 			a.href = downloadUrl;
-						// 			a.download = filename;
-						// 			document.body.appendChild(a);
-						// 			a.click();
-						// 		}
-						// 	} else {
-						// 		window.location.href = downloadUrl;
-						// 	}
-						// 	setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-						// }
-						
+							if (filename) {
+								var a = document.createElement("a");
+								if (typeof a.download === 'undefined') {
+									window.location.href = downloadUrl;
+								} else {
+									a.href = downloadUrl;
+									a.download = filename;
+									document.body.appendChild(a);
+									a.click();
+								}
+							} else {
+								window.location.href = downloadUrl;
+							}
+							setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+						}
+						//////////////////////////// end save digest file for test 
+
 						/// base64
 						var thenable = that._SignCreate(Thumbprint, dataToSign);
-						
+
 						// обработка ошибки
 						thenable.then(
 							function (result) {
 								//MessageBox.success("Платежное поручение подписано");
-								console.log("Sign",result);
+								console.log("Sign", result);
 								that._sendSign(result, objSign);
 							},
 							function (result) {
@@ -1137,9 +1188,9 @@ sap.ui.define([
 			});
 		},
 
-		// функция получения DocExtId из таблицы LineItemsSmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
+		// функция получения DocExtId из таблицы PP_SmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
 		_getDocExtId: function () {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var docExtId = [];
@@ -1175,7 +1226,7 @@ sap.ui.define([
 				var oModel = that.getOwnerComponent().getModel();
 				var mParams = {};
 				mParams.success = function () {
-					var oSmartTable = that.byId("LineItemsSmartTable");
+					var oSmartTable = that.byId("PP_SmartTable");
 					oSmartTable.rebindTable();
 					that.signDialog.close();
 					MessageToast.show("ПП подписана");
@@ -1196,9 +1247,9 @@ sap.ui.define([
 			var CAPICOM_MY_STORE = "My";
 			var CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED = 2;
 			var CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME = 1;
-			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; 	// Возвращает сертификаты соответствующие указанному хэшу SHA1.
+			var CAPICOM_CERTIFICATE_FIND_SHA1_HASH = 0; // Возвращает сертификаты соответствующие указанному хэшу SHA1.
 			/// для подписания 
-			var CADESCOM_PKCS7_TYPE = 0xffff;				// требуемый тип подписи
+			var CADESCOM_PKCS7_TYPE = 0xffff; // требуемый тип подписи
 			var CADESCOM_BASE64_TO_BINARY = 1;
 			//var CADESCOM_HASH_ALGORITHM_CP_GOST_3411_2012_256 = 101; // Хеш Алгоритм ГОСТ Р 34.11-2012.
 
@@ -1220,7 +1271,7 @@ sap.ui.define([
 						// подписант
 						var oSigner = yield window.cadesplugin.CreateObjectAsync("CAdESCOM.CPSigner");
 						yield oSigner.propset_Certificate(oCertificate);
-						
+
 						// обязательная подготовка в бинари 
 						var binaryDataToSign = btoa(unescape(encodeURIComponent(dataToSign)));
 						// подпись
@@ -1241,7 +1292,7 @@ sap.ui.define([
 
 		// скачать загруженное ПП в том же формате
 		onDownload_1C: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var requestId = [];
@@ -1298,7 +1349,7 @@ sap.ui.define([
 
 		// скачать ПП для печати DOC
 		onDownload_DOC: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var docExtIdsAr = this._getDocExtId();
 
 			//post
@@ -1337,7 +1388,7 @@ sap.ui.define([
 
 		// скачать ПП для печати PDF
 		onDownload_PDF: function (oEvent) {
-			var oSmartTable = this.byId("LineItemsSmartTable");
+			var oSmartTable = this.byId("PP_SmartTable");
 			var docExtIdsAr = this._getDocExtId();
 
 			var data = 'docExtIds=' + docExtIdsAr.join() + '&type=PDF';
@@ -1374,7 +1425,7 @@ sap.ui.define([
 		},
 
 		onDownload_V_DOC: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var responseIdsAr = [];
@@ -1407,7 +1458,7 @@ sap.ui.define([
 		},
 
 		onDownload_V_PP: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var responseIdsAr = [];
@@ -1440,7 +1491,7 @@ sap.ui.define([
 		},
 
 		onDownload_V_PDF: function (oEvent) {
-			var oSmartTable = this.byId("SmartTableStatements");
+			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var responseIdsAr = [];
@@ -1516,7 +1567,256 @@ sap.ui.define([
 			} else {
 				MessageToast.show("Выделите хотя бы одну ПП в таблице дебета");
 			}
-		}
+		},
+
+		onPressBank: function (oEvent) {
+			// Поменять на правильный банк - не платильщика а правильной организации (сейчас его нет в сете)
+			var src = oEvent.getSource();
+			var selectedBIK = src.getCustomData("BIK")[0].mProperties.value;
+
+			var filters = [];
+			if (selectedBIK != "0") {
+				filters.push(new sap.ui.model.Filter("payeeBankBic", sap.ui.model.FilterOperator.EQ, selectedBIK));
+			} else {
+				filters = [];
+			}
+
+			var oSmartTable = this.byId("PP_SmartTable");
+			var oTable = oSmartTable.getTable();
+			if (oTable.bindRows) {
+				oTable.getBinding("rows").filter(filters);
+
+				this.byId("bankButton").setText(src.getText());
+			}
+			//oSmartTable.rebindTable();
+		},
+
+		onSearch: function () {
+			// var aFilters = this.getView().byId("smartFilterBar").getFilters();
+			// var oSmartTable = this.byId("PP_SmartTable");
+			// var oTable = oSmartTable.getTable();
+			// oTable.getBinding("rows").filter(aFilters);
+		},
+
+		onBeforeRebindTable: function (oEvent) {
+			var mBindingParams = oEvent.getParameter("bindingParams");
+			var oSmtFilter = this.getView().byId("smartFilterBar");
+			var oSmartTable = this.byId("PP_SmartTable");
+			var oTable = oSmartTable.getTable();
+			
+			var status = oSmtFilter.getControlByKey("status").getSelectedKey();
+			var payerPersonalAcc = oSmtFilter.getControlByKey("payerPersonalAcc").getSelectedKey();
+			var codeVO = oSmtFilter.getControlByKey("codeVO").getSelectedKey();
+			
+			var docDate = oSmtFilter.getControlByKey("docDate");
+			var sTo = docDate.getProperty("dateValue");
+			if (sTo) {
+				sTo.setDate(sTo.getDate() + 1);
+				sTo = sTo.toISOString();
+			} else {
+				sTo = null;
+			}
+			var sFrom = docDate.getProperty("secondDateValue") ? docDate.getProperty("secondDateValue").toISOString() : null;
+			
+			var newFilter = [];
+			if (status) {
+				newFilter.push(new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, status));
+			} 
+			if (payerPersonalAcc) {
+				newFilter.push(new sap.ui.model.Filter("payerPersonalAcc", sap.ui.model.FilterOperator.EQ, payerPersonalAcc));
+			} 
+			if (codeVO) {
+				newFilter.push(new sap.ui.model.Filter("codeVO", sap.ui.model.FilterOperator.EQ, codeVO));
+			}
+			if (sTo && sFrom) {
+				newFilter.push(new sap.ui.model.Filter("docDate", sap.ui.model.FilterOperator.BT, sTo, sFrom));
+			}
+			
+			if (status || payerPersonalAcc || codeVO || sTo ) {
+				oBinding = oTable.getBinding();
+				oBinding.aFilters = newFilter;
+				oTable.getModel().refresh(true);
+			} else {
+				var oBinding = oTable.getBinding();
+				if (oBinding) {
+					//oBinding.aSorters = null;
+				    oBinding.aFilters = null;
+				    oTable.getModel().refresh(true);
+				}
+			}
+			// this._fixedCols();
+		},
 		
+		onBeforeRebindTableStmt: function (oEvent) {
+			var mBindingParams = oEvent.getParameter("bindingParams");
+			var oSmartTable = this.byId("Stmt_SmartTable");
+			var oTable = oSmartTable.getTable();
+			var oSmtFilter = this.getView().byId("smartFilterBarStmt");
+			
+			var acc = oSmtFilter.getControlByKey("acc").getSelectedKey();
+			var currCode = oSmtFilter.getControlByKey("currCode").getSelectedKey();
+			//var organisation = oSmtFilter.getControlByKey("organisation").getSelectedKey();
+			
+			var stmtDate = oSmtFilter.getControlByKey("stmtDate");
+			var sTo = stmtDate.getProperty("dateValue");
+			if (sTo) {
+				sTo.setDate(sTo.getDate() + 1);
+				sTo = sTo.toISOString();
+			} else {
+				sTo = null;
+			}
+			var sFrom = stmtDate.getProperty("secondDateValue") ? stmtDate.getProperty("secondDateValue").toISOString() : null;
+			
+			var newFilter = [];
+			if (acc) {
+				newFilter.push(new sap.ui.model.Filter("acc", sap.ui.model.FilterOperator.EQ, acc));
+			} 
+			if (currCode) {
+				//newFilter.push(new sap.ui.model.Filter("currCode", sap.ui.model.FilterOperator.EQ, currCode));
+				// в фильтре подставлен аккаунт так кк для каждого счета своя валюта
+				newFilter.push(new sap.ui.model.Filter("acc", sap.ui.model.FilterOperator.EQ, currCode));
+			} 
+// 			if (organisation) {
+// 				newFilter.push(new sap.ui.model.Filter("organisation", "Contains", organisation));
+// 			} 
+			if (sTo && sFrom) {
+				newFilter.push(new sap.ui.model.Filter("stmtDate", sap.ui.model.FilterOperator.BT, sTo, sFrom));
+			}
+			if (acc || sTo || currCode ) {
+				oBinding = oTable.getBinding();
+				oBinding.aFilters = newFilter;
+				oTable.getModel().refresh(true);
+			} else {
+				var oBinding = oTable.getBinding();
+				if (oBinding) {
+					oBinding.aSorters = null;
+				    oBinding.aFilters = null;
+				    oTable.getModel().refresh(true);
+				}
+			}
+			// this._fixedCols();
+		},
+		
+		onAccFilterPP: function (oEvent) {
+			var sSelectedVal = oEvent.getSource().getSelectedItem().getProperty("additionalText")
+			this.getView().byId("CustomFilter-codeVO").setValue(sSelectedVal);
+		},
+		onAccFilter: function (oEvent) {
+			var sSelectedVal = oEvent.getSource().getSelectedItem().getProperty("additionalText")
+			this.getView().byId("CustomFilter-currCode").setValue(sSelectedVal);
+		},
+
+		// beforeRebind: function (oEvent) {
+		// 	var aFilters = oEvent.mParameters.bindingParams.filters,
+		// 		aSorters = oEvent.mParameters.bindingParams.sorter,
+		// 		sQuarter = this.getView().getModel("FilterModel").getProperty("/Quarter"),
+		// 		oQuarterFilter;
+
+		// 	if (sQuarter) {
+		// 		oQuarterFilter = new sap.ui.model.Filter({
+		// 			filters: [new sap.ui.model.Filter("ValidFr", "LE", sQuarter), new sap.ui.model.Filter("ValidTo", "GE", sQuarter)],
+		// 			and: true
+		// 		});
+		// 		if (aFilters.length === 0) {
+		// 			aFilters.push(oQuarterFilter);
+		// 		} else if (aFilters.length === 1) {
+		// 			if (aFilters[0].bAnd) {
+		// 				aFilters[0].aFilters.push(oQuarterFilter);
+		// 			} else {
+		// 				var oTempFilter = new sap.ui.model.Filter({
+		// 					filters: [aFilters[0], oQuarterFilter],
+		// 					and: true
+		// 				});
+		// 				aFilters[0] = oTempFilter;
+		// 			}
+		// 		}
+		// 	}
+		// },
+
+		// фикс размер колонок по заголовкам table
+		//_fixedCols: function () {
+		// var oSmartTable = this.byId("PP_SmartTable");
+		// var oTable = oSmartTable.getTable();
+		// var oTpc = new sap.ui.table.TablePointerExtension(oTable);
+		// var aColumns = oTable.getColumns();
+		// for (var i = 0; i < aColumns.length; i++) {
+		//   oTpc.doAutoResizeColumn(i);
+		// }
+		// 			var oSmartTable = this.byId("PP_SmartTable");
+		// 			var i = 0;
+		// 			oSmartTable.getTable().getColumns().forEach(function (oLine) {
+		// 				oLine.setWidth("100%");
+		// 				oLine.getParent().autoResizeColumn(i);
+		// 				i++;
+		// 			});
+		//oSmartTable.getTable().rerender();
+		//oSmartTable.getTable().scrollLeft();
+		//},
+
+		//////////////////
+		// экспорт таблицы
+		// настройки https://sapui5.hana.ondemand.com/#/api/sap.ui.export.Spreadsheet%23constructor
+		// 
+		onBeforeExport: function (oEvent) {
+			var mExcelSettings = oEvent.getParameter("exportSettings");
+			// GW export
+			if (mExcelSettings.url) {
+				return;
+			}
+			
+			// https://sapui5.netweaver.ondemand.com/sdk/#/entity/sap.ui.comp.smarttable.SmartTable/sample/sap.ui.comp.sample.smarttable.mtableCustom/code/SmartTable.controller.js
+			
+			// UI5 Client Export
+			// mExcelSettings.fileName = mExcelSettings.fileName + "V2"; // example to modify fileName
+
+			// // Sample customization
+			// if (mExcelSettings.workbook && mExcelSettings.workbook.columns) {
+			// 	mExcelSettings.workbook.columns.some(function (oColumnConfiguration) {
+			// 		// Customize output for Dmbtr column to match the text on the UI, instead of showing the currency
+			// 		if (oColumnConfiguration.property === "Dmbtr") {
+			// 			oColumnConfiguration.unitProperty = "Hwaer"; // Decimal handling
+			// 			oColumnConfiguration.textAlign = "Right";
+			// 			oColumnConfiguration.displayUnit = false;
+			// 			oColumnConfiguration.type = "currency"; // Change type of column
+			// 			oColumnConfiguration.width = 12; // Set desired width
+			// 			return true;
+			// 		}
+			// 	});
+			// }
+
+			// // Add sample context information
+			// if (mExcelSettings.workbook) {
+			// 	mExcelSettings.workbook.context = {
+			// 		application: 'Debug Test Application',
+			// 		version: '1.54',
+			// 		title: 'Some random title',
+			// 		modifiedBy: 'John Doe',
+			// 		metaSheetName: 'Custom metadata',
+			// 		metainfo: [
+			// 			{
+			// 				name: 'Grouped Properties',
+			// 				items: [
+			// 					{ key: 'administrator', value: 'Foo Bar' },
+			// 					{ key: 'user', value: 'John Doe' },
+			// 					{ key: 'server', value: 'server.domain.local' }
+			// 				]
+			// 			},
+			// 			{
+			// 				name: 'Another Group',
+			// 				items: [
+			// 					{ key: 'property', value: 'value' },
+			// 					{ key: 'some', value: 'text' },
+			// 					{ key: 'fu', value: 'bar' }
+			// 				]
+			// 			}
+			// 		]
+			// 	};
+			// }
+			
+			// For UI5 Client Export --> The settings contains sap.ui.export.SpreadSheet relevant settings that be used to modify the output of excel
+			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
+			// mExcelSettings.worker = false;
+		},
+
 	});
 });

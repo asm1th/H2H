@@ -28,13 +28,13 @@
 .sapMDialogSection .FormTitle{
     border-top: 1px solid #ccc;
     font-size: 1rem;
-    padding: 0.5rem 2rem;
+    padding: 0.1rem 2rem;
     width: 100%;
     color: #333;
 }
 .sapUiFormM:not(.sapUiFormEdit) .sapUiFormResGridCont>div {
     padding-top: 0.1rem;
-    padding-bottom: 0.1rem;
+    padding-bottom: 0;
     font-size: 1px;
 }
 .sapUiFormLblColon .sapUiFormElementLbl>.sapMLabel {
@@ -79,7 +79,7 @@
 
 
 .small_inputs {
-    padding: 1rem 2rem 1rem 2rem;
+    padding: .5rem 2rem;
 }
 .small_inputs .sapMLabel {
     padding-right: 0.3em;
@@ -958,7 +958,13 @@ div#__xmlview1--FilterBar {
     color: red;
 }
 
+.sapMInputBaseDisabled{
+	opacity: .9;
+}
 
+.sapUiFormResGrid>div{
+	padding: 0rem 0.75rem;
+}
 
 .sapUiTableRowWithAction {
     position: absolute;
@@ -970,3 +976,33 @@ div#__xmlview1--FilterBar {
 .d_table .sapUiTableRowWithAction {
     right: 10px;
 }
+
+.sapMObjectIdentifierTitle .sapMLnk, .sapMObjectIdentifierTitle .sapMText {
+    font-size: .75rem;
+}
+.sapUiBody .sapUiTableRowHighlight {
+    width: 7px;
+    position: relative;
+    left: -3px;
+}
+.sapUiBody .sapUiTableRowHighlight.sapUiTableRowHighlightInformation {
+    background-color: #78b1e9;
+}
+.sapUiBody .sapUiTableRowHighlight.sapUiTableRowHighlightWarning {
+    background-color: #f3a058;
+}
+.sapUiBody .sapUiTableRowHighlight.sapUiTableRowHighlightError {
+    background-color: #bf1d1d;
+}
+.sapUiBody .sapUiTableRowHighlight.sapUiTableRowHighlightIndication06 {
+    background-color: #d2d2d2;
+}
+
+
+
+
+
+
+
+
+
