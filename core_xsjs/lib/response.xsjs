@@ -41,6 +41,14 @@ var status = json_response.root.statusStateCode;
 var msg = json_response.root.message;
 var cnt = 0;
 
+if(msg == ''){
+	switch (status) {
+		case 'DELIVERED':			msg = 'Доставлен'; break;
+		case 'ACCEPTED':			msg = 'Принят АБС'; break;
+		case 'IMPLEMENTED':			msg = 'Исполнен'; break;
+	}
+}
+
 pStmt = conn.prepareStatement("Select Count(*) FROM \"RaiffeisenBank.TAccDoc\" Where \"DOCEXTID\"='" + docExtId + "'");
 var rs = pStmt.executeQuery();
 while (rs.next()) {

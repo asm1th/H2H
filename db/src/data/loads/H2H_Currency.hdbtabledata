@@ -2,17 +2,17 @@
     "format_version": 1,
     "imports": [
         {
-            "target_table": "H2H.TBank",
+            "target_table": "H2H.TCurrency",
             "source_data": {
                 "data_type": "CSV",
-                "file_name": "H2H_Bank.csv",
+                "file_name": "H2H_Currency.csv",
                 "has_header": true,
                 "type_config" : { 
 		        	"delimiter" : ";" 
 		        } 
             },
             "import_settings": {
-                "import_columns": ["ID","NAME","DESCRIPDION"]
+                "import_columns": ["ID","NAME"]
             }
     	}
     ]

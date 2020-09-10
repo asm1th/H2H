@@ -28,6 +28,7 @@ context RaiffeisenBank {
     entity THistory {
             @Comment : 'Идентификатор документа в УС (в оффлайн клиенте)'
         key DOCEXTID    : t_uuid;
+        @DefaultAggregation: #MIN
         key TIMESTAMP   : UTCTimestamp;
             ACTION      : t_str;
             STATUS      : t_str_15;
@@ -287,7 +288,7 @@ context RaiffeisenBank {
             ENTERBAL   : t_sum;
 			
 			@Comment : 'Тип выписки'
-			STMTTYPE : String(10);
+			STMTTYPE : Integer;
 
             @Comment : 'Номер документа'
             DOCNUM  	: t_str_6;
@@ -655,7 +656,8 @@ context RaiffeisenBank {
             LASTSTMTDATE		as lastStmtDate,
             ENTERBAL    		as enterBal,
             DOCNUM      		as docNum,
-            _STYPE.ID			as stmtTypeId,
+            //STMTTYPE			as stmtType
+            //_STYPE.ID			as stmtTypeId,
             _STYPE.NAME			as stmtType
         };
 
@@ -765,4 +767,12 @@ context RaiffeisenBank {
         	STATUS      as status,
         	DESCRIPTION as description
         };
+    
+    define view AccountInfo as 
+    	Select from H2H.AccountMapping{
+    		ACCOUNT			as account,
+    		ORGANIZATION	as organisation,
+    		ACCCURR			as acccurr,	
+    		BANKNAME		as bank
+	};
 };

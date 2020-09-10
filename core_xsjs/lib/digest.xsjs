@@ -1,10 +1,16 @@
+$.import("xsjs", "dbf");
+var xml2js = $.require('xml2js');
+var dbf = $.xsjs.dbf;
+
 var errMsg = '';
 var docExtId = $.request.parameters.get("docExtId");
 var conn = $.db.getConnection();
 var sql = "Select \"REQUESTID\",\"DOCEXTID\",\"XMLNS\",\"VERSION\",\"PURPOSE\",TO_VARCHAR (TO_DATE(\"DOCDATE\"), 'DD.MM.YYYY'),\"DOCNUM\",\"DOCSUM\",\"VATSUM\",\"VATRATE\",\"VAT\",";
 sql += "\"TRANSKIND\",\"PAYTKIND\",\"PAYTCODE\",\"PRIORITY\",\"CODEVO\",\"NODOCS\",\"PAYERINN\",\"PAYERKPP\",\"PAYERPERSONALACC\",\"PAYERNAME\",";
 sql += "\"PAYERBANKBIC\",\"PAYERBANKCORRESPACC\",\"PAYERBANKNAME\",\"PAYERBANKBANKCITY\",\"PAYERBANKSETTLEMENTTYPE\",\"PAYEEINN\",\"PAYEEKPP\",";
-sql += "\"PAYEEPERSONALACC\",\"PAYEENAME\",\"PAYEEBANKBIC\",\"PAYEEBANKCORRESPACC\",\"PAYEEBANKNAME\",\"PAYEEBANKBANKCITY\",\"PAYEEBANKSETTLEMENTTYPE\" ";
+sql += "\"PAYEEPERSONALACC\",\"PAYEEUIP\",\"PAYEENAME\",\"PAYEEBANKBIC\",\"PAYEEBANKCORRESPACC\",\"PAYEEBANKNAME\",\"PAYEEBANKBANKCITY\",\"PAYEEBANKSETTLEMENTTYPE\",";
+sql += "\"CBC\",\"OKATO\",\"PAYTREASON\",\"TAXPERIOD\",\"DEPDOCNO\",\"DEPDOCDATE\",\"TAXPAYTKIND\" ";
+
 sql += "From \"RaiffeisenBank.Extract\" Where \"DOCEXTID\" = " + docExtId;
 
 var pStmt = conn.prepareStatement(sql);
@@ -20,6 +26,7 @@ while (rs.next()) {
 	raif.Payer.Bank = {};
 	raif.Payee = {};
 	raif.Payee.Bank = {};
+	raif.DepInfo = {};
 	
 	raif.Request.requestId			= rs.getString(1);
 	raif.PayDocRu.docExtId			= rs.getString(2);
@@ -59,12 +66,20 @@ while (rs.next()) {
 	raif.Payee.inn					= rs.getString(27);
 	raif.Payee.kpp					= rs.getString(28);
 	raif.Payee.personalAcc			= rs.getString(29);
-	raif.Payee.Name 				= rs.getString(30);
-	raif.Payee.Bank.bic 			= rs.getString(31);
-	raif.Payee.Bank.correspAcc		= rs.getString(32);
-	raif.Payee.Bank.Name			= rs.getString(33);
-	raif.Payee.Bank.BankCity		= rs.getString(34);
-	raif.Payee.Bank.SettlementType	= rs.getString(35);
+	raif.Payee.uip					= rs.getString(30);
+	raif.Payee.Name 				= rs.getString(31);
+	raif.Payee.Bank.bic 			= rs.getString(32);
+	raif.Payee.Bank.correspAcc		= rs.getString(33);
+	raif.Payee.Bank.Name			= rs.getString(34);
+	raif.Payee.Bank.BankCity		= rs.getString(35);
+	raif.Payee.Bank.SettlementType	= rs.getString(36);
+	raif.DepInfo.cbc				= rs.getString(37);
+	raif.DepInfo.okato				= rs.getString(38);
+	raif.DepInfo.paytReason 		= rs.getString(39);
+	raif.DepInfo.taxPeriod			= rs.getString(40);
+	raif.DepInfo.docNo				= rs.getString(41);
+	raif.DepInfo.docDate			= rs.getString(42);
+	raif.DepInfo.taxPaytKind		= rs.getString(43);
 }
 if (errMsg == '') {
 	var digestBody = '[Платежное поручение]\n';	
@@ -83,7 +98,7 @@ if (errMsg == '') {
 	digestBody += 'Населенный пункт банка получателя=' + raif.Payee.Bank.BankCity + '\n';
 	digestBody += 'Тип населенного пункта банка получателя=' + raif.Payee.Bank.SettlementType + '\n';
 	digestBody += 'КПП получателя (103)=' + raif.Payee.kpp + '\n';
-	digestBody += 'Уникальный идентификатор платежа=\n';
+	digestBody += dbf.digest_string('Уникальный идентификатор платежа=', raif.Payee.uip);
 	digestBody += 'Название плательщика=' + raif.Payer.Name + '\n';
 	digestBody += 'ИНН плательщика=' + raif.Payer.inn + '\n';
 	digestBody += 'Банк плательщика=' + raif.Payer.Bank.Name + '\n';
@@ -100,20 +115,69 @@ if (errMsg == '') {
 	digestBody += 'Вид платежа=' + raif.AccDoc.paytKind + '\n';
 	digestBody += 'Код вида платежа=\n';
 	digestBody += 'Вид операции=' + raif.AccDoc.transKind + '\n';
-	digestBody += 'КБК=\n';
-	digestBody += 'ОКАТО=\n';
-	digestBody += 'Основание платежа=\n';
+	
+	digestBody += dbf.digest_string('КБК=', raif.DepInfo.cbc);
+	digestBody += dbf.digest_string('ОКАТО=', raif.DepInfo.okato);
+	digestBody += dbf.digest_string('Основание платежа=', raif.DepInfo.paytReason);
+	
 	digestBody += 'Очередность платежа=' + raif.AccDoc.priority + '\n';
 	digestBody += 'Код вида валютной операции=' + raif.AccDoc.codeVO + '\n';
 	digestBody += 'Документы не требуются (0 - нет, 1 - да)=' + raif.AccDoc.nodocs + '\n';
-	digestBody += 'Налоговый период (день)=\n';
-	digestBody += 'Налоговый период (месяц)=\n';
-	digestBody += 'Налоговый период (год)=\n';
-	digestBody += 'Дата налогового документа (день)=\n';
-	digestBody += 'Дата налогового документа (месяц)=\n';
-	digestBody += 'Дата налогового документа (год)=\n';
+	
+	if(raif.DepInfo.taxPeriod != null){
+		var taxPeriod = raif.DepInfo.taxPeriod.split('.',3);
+		taxPeriod.forEach(function(field, i){ 
+			switch (i) {
+				case 0:
+					digestBody += 'Налоговый период (день)=' + field + '\n'; break;
+				case 1:
+					digestBody += 'Налоговый период (месяц)=' + field + '\n'; break;
+				case 2:
+					digestBody += 'Налоговый период (год)=' + field + '\n'; break;
+			}
+		});
+		switch (taxPeriod.length) {
+			case 1: 
+				digestBody += 'Налоговый период (месяц)=\n';
+				digestBody += 'Налоговый период (год)=\n';
+				break;
+			case 2:
+				digestBody += 'Налоговый период (год)=\n'; break;
+		}
+	}else{
+		digestBody += 'Налоговый период (день)=\n'; 
+		digestBody += 'Налоговый период (месяц)=\n';
+		digestBody += 'Налоговый период (год)=\n';
+	}
+	
+	if(raif.DepInfo.docDate != null){
+		var docDate = raif.DepInfo.docDate.split('.',3);
+		docDate.forEach(function(field, i){ 
+			switch (i) {
+				case 0:
+					digestBody += 'Дата налогового документа (день)=' + field + '\n'; break;
+				case 1:
+					digestBody += 'Дата налогового документа (месяц)=' + field + '\n'; break;
+				case 2:
+					digestBody += 'Дата налогового документа (год)=' + field + '\n'; break;
+			}
+		});
+		switch (docDate.length) {
+			case 1: 
+				digestBody += 'Дата налогового документа (месяц)=\n';
+				digestBody += 'Дата налогового документа (год)=\n';
+				break;
+			case 2:
+				digestBody += 'Дата налогового документа (год)=\n'; break;
+		}
+	}else{
+		digestBody += 'Дата налогового документа (день)=\n';
+		digestBody += 'Дата налогового документа (месяц)=\n';
+		digestBody += 'Дата налогового документа (год)=\n';
+	}
+
 	digestBody += 'Тип налогового платежа=\n';
-	digestBody += 'Номер налогового документа=\n';
+	digestBody += dbf.digest_string('Номер налогового документа=', raif.DepInfo.docNo);
 	digestBody += 'Номер паспорта сделки=\n';
 }
 

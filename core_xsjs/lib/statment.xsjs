@@ -7,4 +7,14 @@ var content = dbf.binToString(array);
 var decodedString = decodeURIComponent(escape(content));
 var fileBody = json.root.fileBody;
 
-createStatment(param, docType, fileName, fileType, fileSize, fileBody, decodedString);
+try {
+	dbf.createStatment($.db.getConnection(), json.root.docType, json.root.fileName, json.root.fileType, json.root.fileSize, fileBody, decodedString);
+	$.response.contentType = "text/plain";
+	$.response.setBody('SUCCESS');
+	$.response.status = $.net.http.OK;
+} catch (err) {
+	$.response.contentType = "text/plain";
+	$.response.setBody('ERROR');
+	$.response.status = $.net.http.BAD_REQUEST;
+}
+

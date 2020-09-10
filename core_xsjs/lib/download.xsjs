@@ -1,4 +1,8 @@
 // https://upqqof26vorhny0l-h2h-core-xsjs.cfapps.eu10.hana.ondemand.com/download.xsjs?docExtId=%2706296e2b-6b0e-5759-683a-eb5d7b214989%27
+
+$.import("xsjs", "dbf");
+var dbf = $.xsjs.dbf;
+
 var errMessage = [];
 var xml = '';
 
@@ -13,29 +17,29 @@ function addValue(xmlField, xmlValue, xmlTag) {
 	return '';
 }
 
-function getSettlementType(conn, bic) {
-	var pStmt = conn.prepareStatement("Select \"FILIAL\" From \"H2H.BicInformation\" Where \"BIC\" = '" + bic + "'");
-	rs = null;
-	rs = pStmt.executeQuery();
-	while (rs.next()) {
-		return rs.getInt(1).toString();
-	}
-	pStmt.close();
-}
+// function getSettlementType(conn, bic) {
+// 	var pStmt = conn.prepareStatement("Select \"FILIAL\" From \"H2H.BicInformation\" Where \"BIC\" = '" + bic + "'");
+// 	rs = null;
+// 	rs = pStmt.executeQuery();
+// 	while (rs.next()) {
+// 		return rs.getInt(1).toString();
+// 	}
+// 	pStmt.close();
+// }
 
-function historyAdd(conn, docExtId, action, status, description){
-	var now = new Date();
-	sql = 'INSERT INTO "RaiffeisenBank.THistory" (DOCEXTID,TIMESTAMP,ACTION,STATUS,DESCRIPTION) VALUES(?,?,?,?,?)';
-	var pStmt = conn.prepareStatement(sql);
-	pStmt.setString(1,docExtId);
-	pStmt.setTimestamp(2,now);
-	pStmt.setString(3,action);
-	pStmt.setString(4,status);
-	pStmt.setString(5,description);
-	pStmt.execute();
-	conn.commit();
-	pStmt.close();
-}
+// function historyAdd(conn, docExtId, action, status, description){
+// 	var now = new Date();
+// 	sql = 'INSERT INTO "RaiffeisenBank.THistory" (DOCEXTID,TIMESTAMP,ACTION,STATUS,DESCRIPTION) VALUES(?,?,?,?,?)';
+// 	var pStmt = conn.prepareStatement(sql);
+// 	pStmt.setString(1,docExtId);
+// 	pStmt.setTimestamp(2,now);
+// 	pStmt.setString(3,action);
+// 	pStmt.setString(4,status);
+// 	pStmt.setString(5,description);
+// 	pStmt.execute();
+// 	conn.commit();
+// 	pStmt.close();
+// }
 
 var docExtId = $.request.parameters.get("docExtId");
 var conn = $.db.getConnection();
@@ -138,7 +142,7 @@ if (errMessage.length == 0) {
 	xml += '<BankCity>' + raif.Payer.Bank.BankCity + '</BankCity>';
 	xml += '<SettlementType>' + raif.Payer.Bank.SettlementType + '</SettlementType>';
 	xml += '</Bank>';
-	addValue('Filial', getSettlementType(conn, raif.Payer.Bank.bic), true);
+	addValue('Filial', dbf.getSettlementType(conn, raif.Payer.Bank.bic), true);
 	xml += '</Payer>';
 	xml += '<Payee ';
 	addValue('inn', raif.Payee.inn, false);
@@ -216,7 +220,6 @@ if (errMessage.length == 0) {
 	username = "sb-73118041-35ca-43e2-b768-70b63e1055d4!b31593|it-rt-h2hin!b16077";
 	password = "ox2aALqZ9HWZuG9YZ02GRfnlTLk=";
 	url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/TestService";
-	// url = "https://h2hin.it-cpi001-rt.cfapps.eu10.hana.ondemand.com/http/SendPaymentOrder";
 	auth = 'Basic ' + jsb64.base64encode(username + ':' + password);
 
 	var data = {
@@ -238,7 +241,6 @@ if (errMessage.length == 0) {
 	var options = {
 		method: 'POST',
 		body: data,
-		//formData: formData,
 		json: true,
 		uri: url,
 		headers: {
@@ -247,7 +249,7 @@ if (errMessage.length == 0) {
 			'docExtId': docExtId
 		}
 	};
-
+/*
 	request(options, function (error, response, body) {
 		console.log('body : ', body);
 	});
@@ -257,8 +259,9 @@ if (errMessage.length == 0) {
     	pStmt.execute();
     	conn.commit();
     	pStmt.close();
-    	
-    	historyAdd(conn, docExtId, 'Sending', 'success', 'Отправлен в банк');
+    	*/
+    	docExtId = docExtId.replace(new RegExp("'",'g'),"");
+    	dbf.historyAdd(conn, docExtId, 'Отправлен', 'SUCCESS', 'Отправлен в банк');
 
 	$.response.status = $.net.http.OK;
 	$.response.contentType = "application/xml";

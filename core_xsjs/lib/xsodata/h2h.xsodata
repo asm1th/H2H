@@ -21,6 +21,7 @@ service {
 	"RaiffeisenBank.StatementItemsDeb"		as "StatementItemsDeb"	key ("responseId", "extId");
 	"RaiffeisenBank.History"				as "History"			key ("docExtId");
 	"RaiffeisenBank.Response"				as "Response"			key ("docExtId") create using "xsjs:dbf.xsjslib::response";
+	"RaiffeisenBank.AccountInfo"			as "AccountInfo"		key ("account");
 	
 																										
 	association "PaymentOrder_Files"	principal  "PaymentOrder"("requestId") 		multiplicity "1" dependent "Files"("requestId")						multiplicity "1";

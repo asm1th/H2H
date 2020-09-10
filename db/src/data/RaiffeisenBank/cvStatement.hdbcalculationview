@@ -99,13 +99,6 @@
       <descriptions defaultDescription="stmtType"/>
       <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="stmtType"/>
     </attribute>
-  
-    <attribute id="stmtTypeId" order="23" displayAttribute="false" attributeHierarchyActive="false">
-      <descriptions defaultDescription="stmtTypeId"/>
-  
-      <keyMapping columnObjectName="RaiffeisenBank.Statement" columnName="stmtTypeId"/>
-  
-    </attribute>
   </attributes>
   <calculatedAttributes/>
   <baseMeasures/>

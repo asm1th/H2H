@@ -5,6 +5,8 @@ context H2H {
 		key ID		: Integer;
 		@Comment : 'Наименование банка'
 			NAME	: String(255);
+		@Comment : 'Имя банка'
+			DESCRIPDION : String(255);
 	};
 	
 	@Comment : 'Справочник типа документа'
@@ -44,16 +46,27 @@ context H2H {
 		@Comment : 'Огразиция'
 		key ORGANIZATIONID		: Integer; 
 		@Comment : 'Счет плательщика'
-			ACCOUNT				: String(20);
+		key ACCOUNT				: String(20);
 		 @Comment : 'ИНН (до 12)'
             INN                : String(12);
 		@Comment : 'Тип подписи'
 			SIGNTYPEID			: Integer;
+		@Comment : 'Валюта'
+			CURRENCYID			: Integer;
 		_BANK					: association[1] to TBank			on _BANK.ID = BANKID;
 		_DOCUMENTTYPE			: association[1] to TDocumentType	on _DOCUMENTTYPE.ID = DOCUMENTTYPEID;
 		_ORGANIZATION			: association[1] to TOrganization	on _ORGANIZATION.ID = ORGANIZATIONID;
 		_SIGNTYPE				: association[1] to TSignType		on _SIGNTYPE.ID = SIGNTYPEID;
+		_CURR					: association[1] to TCurrency		on _CURR.ID = CURRENCYID;
 	};
+	
+	@Comment : 'Таблица валют'
+	entity TCurrency{
+		@Comment : 'Порядковый номер'
+		key ID		: Integer;
+		@Comment : 'Наименование валюты'
+			NAME	: String(255);	
+	}
 	
 	@Comment : 'Таблица БИК-ов'
 	entity TBICInformation{
@@ -128,12 +141,14 @@ context H2H {
 	
 	define view AccountMapping as Select from TAccountMapping{
 		_BANK.NAME			as BANK,
+		_BANK.DESCRIPDION	as BANKNAME,
 		INN					as INN,
 		_DOCUMENTTYPE.NAME	as DOCUMENTTYPE,
 		_ORGANIZATION.NAME	as ORGANIZATION,
 		ACCOUNT,
 		_SIGNTYPE.SIGNORDER	as SIGNORDER,
 		_SIGNTYPE.NAME		as NAME,
-		_SIGNTYPE.STATUS	as STATUS
+		_SIGNTYPE.STATUS	as STATUS,
+		_CURR.NAME			as ACCCURR
 	};
 }

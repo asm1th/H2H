@@ -41,7 +41,7 @@ BANKID;DOCUMENTTYPEID;FORMATVERSION;ENTITYNAME;FIELDTYPE;FIELDDESTINATION;FILDSO
 1;1;"0.1";"Payee";"Str";"PAYEEKPP";"ПолучательКПП";"";
 1;1;"0.1";"Payee";"Str";"PAYEEPERSONALACC";"ПолучательРасчСчет";"";
 1;1;"0.1";"Payee";"Str";"PAYEEPERSONALACC";"ПолучательСчет";"";
-1;1;"0.1";"Payee";"Str";"PAYEEUIP";"";"X";
+1;1;"0.1";"Payee";"Str";"PAYEEUIP";"Код";"X";
 1;1;"0.1";"Payee";"Str";"PAYEENAME";"Получатель";"X";
 1;1;"0.1";"Payee";"Str";"PAYEEBANKBIC";"ПолучательБИК";"X";
 1;1;"0.1";"Payee";"Str";"PAYEEBANKCORRESPACC";"ПолучательКорсчет";"";
