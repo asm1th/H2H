@@ -55,7 +55,7 @@ sap.ui.define([
 				return sap.ui.core.IndicationColor.Indication03;
 			} else if (oValue === "Удален") {
 				return sap.ui.core.IndicationColor.Indication06;
-			} else if (oValue === "Отправлен") {
+			} else if (oValue === "Отправлен"  || oValue === "Частично исполнен") {
 				return "Warning";
 			} else if (oValue === "Доставлен" ) {
 				return "Warning";
