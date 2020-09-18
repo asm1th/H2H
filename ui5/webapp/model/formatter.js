@@ -60,7 +60,7 @@ sap.ui.define([
 			} else if (oValue === "Доставлен" ) {
 				return "Warning";
 			} else if ( oValue === "Принят АБС") {
-				return "Success";
+				return "Warning";
 			} else if (oValue === "Исполнен") {
 				return "Success";
 			} else if (oValue === "Отказан АБС" || oValue === "ЭП/АСП неверна" || oValue === "Ошибка реквизитов" ) {
