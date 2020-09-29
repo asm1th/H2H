@@ -102,7 +102,7 @@ sap.ui.define([
 			this.byId("onUndoSign").setEnabled(false);
 			this.byId("onSignDialog").setEnabled(false);
 		},
-		
+
 		// remove test after
 		testButton: function (oEvent) {
 			var oModel = this.getOwnerComponent().getModel();
@@ -170,22 +170,18 @@ sap.ui.define([
 			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var data = oTable.getModel().getProperty(sPath);
-			if (data.status != "Подписан") {
+			if (this.formatEnableDelPP(data.status)) {
 				this._delPP(data);
 			}
 		},
 
 		formatEnableDelPP: function (oValue) {
-			if (oValue === "Исполнен") {
-				return false;
-			} else if (oValue === "Подписан") {
-				return false;
-			} else if (oValue === "Импортирован") {
+			if (oValue === "Импортирован" || oValue === "Создан" || oValue === "Подписан" || oValue === "Подписан I" || oValue ===
+				"Подписан II") {
 				return true;
-			} else if (oValue === "Отправлен") {
-				return true;
+			} else {
+				return false;
 			}
-			return true;
 		},
 
 		onDeleteAllPP: function (oEvent) {
@@ -201,7 +197,7 @@ sap.ui.define([
 					var Context = oTable.getContextByIndex(item);
 					sPath = Context.sPath;
 					var data = oTable.getModel().getProperty(sPath);
-					if (data.status != "Подписан") {
+					if (that.formatEnableDelPP(data.status)) {
 						that._delPP(data);
 					} else {
 						nodeletePP = true;
@@ -209,7 +205,7 @@ sap.ui.define([
 				});
 			}
 			if (nodeletePP) {
-				MessageBox.show("Одно или более ПП невозможно удалить, так как имеет статус Исполнено или Подписано.");
+				MessageBox.show("Одно или более ПП невозможно удалить");
 			}
 		},
 
@@ -454,32 +450,32 @@ sap.ui.define([
 			var oModel = this.getOwnerComponent().getModel();
 
 			//if ( status === "Отправлен" || status === "ЭП/АСП неверна" || status === "Исполнен" || status === "Отказан АБС" || status === "Ошибка реквизитов")
-            
-            var aFilter = [];
-            aFilter.push(new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, oRow.docExtId));
 
-            var orFilter = new sap.ui.model.Filter({
-					filters: [
-					    new sap.ui.model.Filter("status", "EQ", "INVALIDEDS"), 
-					    new sap.ui.model.Filter("status", "EQ", "REQUISITE_ERROR"),
-					    new sap.ui.model.Filter("status", "EQ", "DECLINED_BY_ABS"),
-					    new sap.ui.model.Filter("status", "EQ", "RECALL"),
-					    new sap.ui.model.Filter("status", "EQ", "DECLINED_BY_BANK")
-					    ],
-					and: false
-				});
-            aFilter.push(orFilter);
+			var aFilter = [];
+			aFilter.push(new sap.ui.model.Filter("docExtId", sap.ui.model.FilterOperator.EQ, oRow.docExtId));
+
+			var orFilter = new sap.ui.model.Filter({
+				filters: [
+					new sap.ui.model.Filter("status", "EQ", "INVALIDEDS"),
+					new sap.ui.model.Filter("status", "EQ", "REQUISITE_ERROR"),
+					new sap.ui.model.Filter("status", "EQ", "DECLINED_BY_ABS"),
+					new sap.ui.model.Filter("status", "EQ", "RECALL"),
+					new sap.ui.model.Filter("status", "EQ", "DECLINED_BY_BANK")
+				],
+				and: false
+			});
+			aFilter.push(orFilter);
 
 			oModel.read("/History", {
 				filters: aFilter,
 				success: function (data) {
 					//console.log("History", data);
 					if (data.results.length) {
-					    that.getView().getModel("UIData").setProperty("/description", data.results[0].description);	
+						that.getView().getModel("UIData").setProperty("/description", data.results[0].description);
 					} else {
-						that.getView().getModel("UIData").setProperty("/description", "");	
+						that.getView().getModel("UIData").setProperty("/description", "");
 					}
-					
+
 				},
 				error: function (oError) {
 					console.log("error: " + oError);
@@ -608,7 +604,7 @@ sap.ui.define([
 						}
 					);
 					//MessageBox.alert(XMLeditor);
-					console.log("XML: ", data);
+					//console.log("XML: ", data);
 				},
 				error: function (oError) {
 					MessageBox.error(oError.responseText);
@@ -623,10 +619,12 @@ sap.ui.define([
 			var oTable = oSmartTable.getTable();
 			var iIndex = oTable.getSelectedIndices();
 			var sPath;
+			var that = this;
 			if (iIndex.length > 0) {
 				var StatusEnableButton = true; //все ПП подписаны
 				var StatusSignEnableButton = true; //все ПП подписаны
 				var PaymentOrderTotal = 0;
+				var StatusDelEnableButton = true;
 
 				iIndex.forEach(function (item, i) {
 					var Context = oTable.getContextByIndex(item);
@@ -634,6 +632,8 @@ sap.ui.define([
 					var obj = Context.getObject();
 					PaymentOrderTotal = PaymentOrderTotal + parseFloat(obj.docSum);
 					var data = oTable.getModel().getProperty(sPath);
+					StatusDelEnableButton = that.formatEnableDelPP(data.status);
+
 					if (data.status === "Подписан") {} else {
 						StatusEnableButton = false; // хоть одна ПП не подписана
 					}
@@ -645,10 +645,12 @@ sap.ui.define([
 				this.byId("onSend").setEnabled(StatusEnableButton);
 				this.byId("onUndoSign").setEnabled(StatusEnableButton);
 				this.byId("onSignDialog").setEnabled(StatusSignEnableButton);
+				this.byId("onDeleteAllPP").setEnabled(StatusDelEnableButton);
 			} else {
 				this.byId("onSend").setEnabled(false);
 				this.byId("onUndoSign").setEnabled(false);
 				this.byId("onSignDialog").setEnabled(false);
+				this.byId("onDeleteAllPP").setEnabled(false);
 				this.getView().getModel("UIData").setProperty("/PaymentOrderTotal", 0);
 			}
 		},
@@ -918,7 +920,7 @@ sap.ui.define([
 			thenable.then(
 				function (result) {
 					mySerts = result;
-					console.log(result);
+					//console.log(result);
 
 					result.forEach(function (item, i) {
 						var SubjectName = item.SubjectName.split('=');
@@ -936,7 +938,7 @@ sap.ui.define([
 					that.undoSignDialog.open();
 				},
 				function (result) {
-					console.log(result);
+					//console.log(result);
 				});
 		},
 
@@ -987,7 +989,7 @@ sap.ui.define([
 			oModel.read("/History", {
 				filters: oFilter,
 				success: function (data) {
-					console.log(data);
+					//console.log(data);
 					var oModel = new JSONModel(data.results);
 					that.journalDialog.setModel(oModel);
 					that.journalDialog.open();
@@ -1023,7 +1025,7 @@ sap.ui.define([
 			thenable.then(
 				function (result) {
 					mySerts = result;
-					console.log(result);
+					//console.log(result);
 
 					result.forEach(function (item, i) {
 						var SubjectName = item.SubjectName.split('=');
@@ -1069,7 +1071,7 @@ sap.ui.define([
 						yield oStore.Open();
 						//yield oStore.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 						var CertificatesObj = yield oStore.Certificates;
-                        
+
 						// все действующие
 						//var CAPICOM_CERTIFICATE_FIND_TIME_VALID = 9;
 						//var oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_TIME_VALID);
@@ -1077,9 +1079,9 @@ sap.ui.define([
 						// все
 						var oCertificates = yield oStore.Certificates;
 
-                        // поиск - не работает
+						// поиск - не работает
 						//oCertificates = yield CertificatesObj.Find(CAPICOM_CERTIFICATE_FIND_SUBJECT_NAME, "GPN, OU");
-                        
+
 						var Count = yield oCertificates.Count;
 						if (Count == 0) {
 							throw ("Не установлено ни одного подходящего сертификата электронной подписи для этого пользователя");
@@ -1135,36 +1137,10 @@ sap.ui.define([
 					//dataType: "text/plain",
 					success: function (data) {
 						dataToSign = data;
-						console.log("digest: ", data);
-
-						///////////////////////// save digest file for test 
-						alert("Режим тестирования подписи. Сохраняем файл digest после подписи");
-						var filename = "digest";
-						var blob = new Blob([data], { type: "text/plain" });
-
-						if (typeof window.navigator.msSaveBlob !== 'undefined') {
-							window.navigator.msSaveBlob(blob, filename);
-						} else {
-							var URL = window.URL || window.webkitURL;
-							var downloadUrl = URL.createObjectURL(blob);
-
-							if (filename) {
-								var a = document.createElement("a");
-								if (typeof a.download === 'undefined') {
-									window.location.href = downloadUrl;
-								} else {
-									a.href = downloadUrl;
-									a.download = filename;
-									document.body.appendChild(a);
-									a.click();
-								}
-							} else {
-								window.location.href = downloadUrl;
-							}
-							setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-						}
-						//////////////////////////// end save digest file for test 
-
+						
+						// test send to bank
+						// that._saveDigestForTest(data);
+						
 						/// base64
 						var thenable = that._SignCreate(Thumbprint, dataToSign);
 
@@ -1186,6 +1162,41 @@ sap.ui.define([
 					}
 				});
 			});
+		},
+		
+		/////////////////////// save digest file for test 
+		_saveDigestForTest: function (data) {
+			//console.log("digest: ", data);
+			alert("Режим тестирования подписи. Сохраняем файл digest после подписи");
+			var filename = "digest";
+			var blob = new Blob([data], {
+				type: "text/plain"
+			});
+
+			if (typeof window.navigator.msSaveBlob !== 'undefined') {
+				window.navigator.msSaveBlob(blob, filename);
+			} else {
+				var URL = window.URL || window.webkitURL;
+				var downloadUrl = URL.createObjectURL(blob);
+
+				if (filename) {
+					var a = document.createElement("a");
+					if (typeof a.download === 'undefined') {
+						window.location.href = downloadUrl;
+					} else {
+						a.href = downloadUrl;
+						a.download = filename;
+						document.body.appendChild(a);
+						a.click();
+					}
+				} else {
+					window.location.href = downloadUrl;
+				}
+				setTimeout(function () {
+					URL.revokeObjectURL(downloadUrl);
+				}, 100); // cleanup
+			}
+			////////////////////////// end save digest file for test 	
 		},
 
 		// функция получения DocExtId из таблицы PP_SmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
@@ -1603,11 +1614,11 @@ sap.ui.define([
 			var oSmtFilter = this.getView().byId("smartFilterBar");
 			var oSmartTable = this.byId("PP_SmartTable");
 			var oTable = oSmartTable.getTable();
-			
+
 			var status = oSmtFilter.getControlByKey("status").getSelectedKey();
 			var payerPersonalAcc = oSmtFilter.getControlByKey("payerPersonalAcc").getSelectedKey();
 			var codeVO = oSmtFilter.getControlByKey("codeVO").getSelectedKey();
-			
+
 			var docDate = oSmtFilter.getControlByKey("docDate");
 			var sTo = docDate.getProperty("dateValue");
 			if (sTo) {
@@ -1617,22 +1628,22 @@ sap.ui.define([
 				sTo = null;
 			}
 			var sFrom = docDate.getProperty("secondDateValue") ? docDate.getProperty("secondDateValue").toISOString() : null;
-			
+
 			var newFilter = [];
 			if (status) {
 				newFilter.push(new sap.ui.model.Filter("status", sap.ui.model.FilterOperator.EQ, status));
-			} 
+			}
 			if (payerPersonalAcc) {
 				newFilter.push(new sap.ui.model.Filter("payerPersonalAcc", sap.ui.model.FilterOperator.EQ, payerPersonalAcc));
-			} 
+			}
 			if (codeVO) {
 				newFilter.push(new sap.ui.model.Filter("codeVO", sap.ui.model.FilterOperator.EQ, codeVO));
 			}
 			if (sTo && sFrom) {
 				newFilter.push(new sap.ui.model.Filter("docDate", sap.ui.model.FilterOperator.BT, sTo, sFrom));
 			}
-			
-			if (status || payerPersonalAcc || codeVO || sTo ) {
+
+			if (status || payerPersonalAcc || codeVO || sTo) {
 				oBinding = oTable.getBinding();
 				oBinding.aFilters = newFilter;
 				oTable.getModel().refresh(true);
@@ -1640,23 +1651,23 @@ sap.ui.define([
 				var oBinding = oTable.getBinding();
 				if (oBinding) {
 					//oBinding.aSorters = null;
-				    oBinding.aFilters = null;
-				    oTable.getModel().refresh(true);
+					oBinding.aFilters = null;
+					oTable.getModel().refresh(true);
 				}
 			}
 			// this._fixedCols();
 		},
-		
+
 		onBeforeRebindTableStmt: function (oEvent) {
 			var mBindingParams = oEvent.getParameter("bindingParams");
 			var oSmartTable = this.byId("Stmt_SmartTable");
 			var oTable = oSmartTable.getTable();
 			var oSmtFilter = this.getView().byId("smartFilterBarStmt");
-			
+
 			var acc = oSmtFilter.getControlByKey("acc").getSelectedKey();
 			var currCode = oSmtFilter.getControlByKey("currCode").getSelectedKey();
 			//var organisation = oSmtFilter.getControlByKey("organisation").getSelectedKey();
-			
+
 			var stmtDate = oSmtFilter.getControlByKey("stmtDate");
 			var sTo = stmtDate.getProperty("dateValue");
 			if (sTo) {
@@ -1666,23 +1677,23 @@ sap.ui.define([
 				sTo = null;
 			}
 			var sFrom = stmtDate.getProperty("secondDateValue") ? stmtDate.getProperty("secondDateValue").toISOString() : null;
-			
+
 			var newFilter = [];
 			if (acc) {
 				newFilter.push(new sap.ui.model.Filter("acc", sap.ui.model.FilterOperator.EQ, acc));
-			} 
+			}
 			if (currCode) {
 				//newFilter.push(new sap.ui.model.Filter("currCode", sap.ui.model.FilterOperator.EQ, currCode));
 				// в фильтре подставлен аккаунт так кк для каждого счета своя валюта
 				newFilter.push(new sap.ui.model.Filter("acc", sap.ui.model.FilterOperator.EQ, currCode));
-			} 
-// 			if (organisation) {
-// 				newFilter.push(new sap.ui.model.Filter("organisation", "Contains", organisation));
-// 			} 
+			}
+			// 			if (organisation) {
+			// 				newFilter.push(new sap.ui.model.Filter("organisation", "Contains", organisation));
+			// 			} 
 			if (sTo && sFrom) {
 				newFilter.push(new sap.ui.model.Filter("stmtDate", sap.ui.model.FilterOperator.BT, sTo, sFrom));
 			}
-			if (acc || sTo || currCode ) {
+			if (acc || sTo || currCode) {
 				oBinding = oTable.getBinding();
 				oBinding.aFilters = newFilter;
 				oTable.getModel().refresh(true);
@@ -1690,13 +1701,13 @@ sap.ui.define([
 				var oBinding = oTable.getBinding();
 				if (oBinding) {
 					oBinding.aSorters = null;
-				    oBinding.aFilters = null;
-				    oTable.getModel().refresh(true);
+					oBinding.aFilters = null;
+					oTable.getModel().refresh(true);
 				}
 			}
 			// this._fixedCols();
 		},
-		
+
 		onAccFilterPP: function (oEvent) {
 			var sSelectedVal = oEvent.getSource().getSelectedItem().getProperty("additionalText")
 			this.getView().byId("CustomFilter-codeVO").setValue(sSelectedVal);
@@ -1763,9 +1774,9 @@ sap.ui.define([
 			if (mExcelSettings.url) {
 				return;
 			}
-			
+
 			// https://sapui5.netweaver.ondemand.com/sdk/#/entity/sap.ui.comp.smarttable.SmartTable/sample/sap.ui.comp.sample.smarttable.mtableCustom/code/SmartTable.controller.js
-			
+
 			// UI5 Client Export
 			// mExcelSettings.fileName = mExcelSettings.fileName + "V2"; // example to modify fileName
 
@@ -1812,7 +1823,7 @@ sap.ui.define([
 			// 		]
 			// 	};
 			// }
-			
+
 			// For UI5 Client Export --> The settings contains sap.ui.export.SpreadSheet relevant settings that be used to modify the output of excel
 			// Disable Worker as Mockserver is used in Demokit sample --> Do not use this for real applications!
 			// mExcelSettings.worker = false;
