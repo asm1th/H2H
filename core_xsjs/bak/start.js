@@ -48,7 +48,7 @@ app.get('/', function (req, res, next) {
 
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
-	console.log('myapp listening on port ' + port);
+	//console.log('myapp listening on port ' + port);
 });
 
 // НАСТРОЙКА АВОРИЗАЦИИ ТУТ ================

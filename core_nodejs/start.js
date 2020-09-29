@@ -17,11 +17,11 @@ var services = xsenv.getServices({
 // var logging = require('@sap/logging');
 // var appContext = logging.createAppContext();
 
-//automatic conect to HANA hdbext.middleware
+// automatic conect to HANA hdbext.middleware
 // hdbext.middleware will connect to SAP HANA automatically on each access to the specified path ( /) in this case. Afterwards the connection is available in req.db. This is the client object of the hdbInformation published on non-SAP site driver. The connection is closed automatically at the end of the request.
 var hdbext = require('@sap/hdbext');
 app.use('/', hdbext.middleware(services.hana));
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.get('/node', function (req, res, next) {
 	req.db.exec('SELECT CURRENT_UTCTIMESTAMP FROM DUMMY', function (err, rows) {
 		if (err) {
@@ -31,16 +31,10 @@ app.get('/node', function (req, res, next) {
 	});
 });
 
-// ============= POST method route example
-// app.post('/', function (req, res) {
-//   res.send('POST request to the homepage');
-// });
-// =============
-
 var port = process.env.PORT || 3000;
 //process.setMaxListeners(0);
 app.listen(port, function () {
-	console.log('myapp listening on port ' + port);
+	//console.log('myapp listening on port ' + port);
 });
 
 // НАСТРОЙКА АВОРИЗАЦИИ ТУТ ================
