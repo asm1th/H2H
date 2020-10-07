@@ -1,41 +1,99 @@
 /*eslint no-console: 0*/
 "use strict";
 
-var express = require('express');
-var path = require('path');
-var app = express();
+const https = require("https");
+const port = process.env.PORT || 3100;
+const server = require("http").createServer();
+const express = require("express");
+
+const path = require('path');
 
 // BD
-var xsenv = require('@sap/xsenv');
-var services = xsenv.getServices({
+const xsenv = require('@sap/xsenv');
+const passport = require("passport");
+const xssec = require("@sap/xssec");
+const hdbext = require('@sap/hdbext');
+
+xsenv.loadEnv();
+
+https.globalAgent.options.ca = xsenv.loadCertificates();
+global.__base = __dirname + "/";
+global.__uaa = process.env.UAA_SERVICE_NAME;
+
+//logging
+let logging = require("@sap/logging");
+let appContext = logging.createAppContext();
+
+//Initialize Express App for XS UAA and HDBEXT Middleware
+var app = express();
+
+//Build a JWT Strategy from the bound UAA resource
+passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
+	uaa: {
+		tag: "xsuaa"
+	}
+}).uaa));
+
+//Add XS Logging to Express
+app.use(logging.middleware({
+	appContext: appContext,
+	logNetwork: true
+}));
+
+//Add Passport JWT processing
+app.use(passport.initialize());
+
+var hanaOptions = xsenv.getServices({
 	hana: {
 		tag: "hana"
 	}
 });
+//hanaOptions.hana.pooling = true;
 
-// TRACER
-// var logging = require('@sap/logging');
-// var appContext = logging.createAppContext();
+//Add Passport for Authentication via JWT + HANA DB connection as Middleware in Expess
+app.use(
+	'/',
+	hdbext.middleware(hanaOptions.hana),
+	passport.authenticate("JWT", {
+		session: false
+	})
+);
+//old code
+//app.use('/', hdbext.middleware(services.hana));
 
-// automatic conect to HANA hdbext.middleware
-// hdbext.middleware will connect to SAP HANA automatically on each access to the specified path ( /) in this case. Afterwards the connection is available in req.db. This is the client object of the hdbInformation published on non-SAP site driver. The connection is closed automatically at the end of the request.
-var hdbext = require('@sap/hdbext');
-app.use('/', hdbext.middleware(services.hana));
+// USE???
+//Setup Additional Node.js Routes
+//require("./router")(app, server);
 
+// test addres - get database connection
 app.get('/node', function (req, res, next) {
 	req.db.exec('SELECT CURRENT_UTCTIMESTAMP FROM DUMMY', function (err, rows) {
 		if (err) {
 			return next(err);
 		}
-		res.send('111 Current HANA time (UTC): ' + rows[0].CURRENT_UTCTIMESTAMP);
+		res.send('Current HANA time (UTC): ' + rows[0].CURRENT_UTCTIMESTAMP);
 	});
 });
 
-var port = process.env.PORT || 3000;
+
 //process.setMaxListeners(0);
 app.listen(port, function () {
-	//console.log('myapp listening on port ' + port);
+	console.log('myapp listening on port ' + port);
 });
+
+
+// //Setup Additional Node.js Routes
+// require("./router")(app, server);
+
+// //Start the Server
+// server.on("request", app);
+// server.listen(port, function () {
+// 	console.info(`HTTP Server: ${server.address().port}`);
+// });
+
+
+
+
 
 // НАСТРОЙКА АВОРИЗАЦИИ ТУТ ================
 // https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.04/en-US/1c16bb3a51b247c796064b215c01823d.html
