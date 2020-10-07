@@ -291,7 +291,7 @@
 										</Toolbar>
 									</smartTable:customToolbar>
 									<t:Table id="smtable_1" rowHeight="20" selectionMode="Single" visibleRowCountMode="Auto" rowActionCount="1"
-										rowSelectionChange="onSelStatement">
+										rowSelectionChange="onSelStatement" cellClick="onClickTableItem">
 										<t:rowActionTemplate>
 											<t:RowAction>
 												<t:items>

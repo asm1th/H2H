@@ -341,6 +341,20 @@ sap.ui.define([
 				this.byId("SmartTable_D").getTable().unbindRows();
 			}
 		},
+		
+		onClickTableItem: function (oEvent) {
+			var Parameters = oEvent.getParameters();
+			var rowBindingContext = Parameters.rowBindingContext;
+			var rowIndex = Parameters.rowIndex;
+			var oTable = oEvent.getSource();
+			if (rowBindingContext) {
+				oTable.setSelectedIndex(rowIndex);
+				var sItemPath = Parameters.rowBindingContext.sPath;
+				this.onSelStatement();
+			} else {
+				oTable.clearSelection();
+			}
+		},
 
 		onChoseStatement: function (oEvent) {
 			//debugger;
@@ -1165,39 +1179,37 @@ sap.ui.define([
 		},
 		
 		/////////////////////// save digest file for test 
-		_saveDigestForTest: function (data) {
-			//console.log("digest: ", data);
-			alert("Режим тестирования подписи. Сохраняем файл digest после подписи");
-			var filename = "digest";
-			var blob = new Blob([data], {
-				type: "text/plain"
-			});
+		// _saveDigestForTest: function (data) {
+		// 	//console.log("digest: ", data);
+		// 	alert("Режим тестирования подписи. Сохраняем файл digest после подписи");
+		// 	var filename = "digest";
+		// 	var blob = new Blob([data], {
+		// 		type: "text/plain"
+		// 	});
 
-			if (typeof window.navigator.msSaveBlob !== 'undefined') {
-				window.navigator.msSaveBlob(blob, filename);
-			} else {
-				var URL = window.URL || window.webkitURL;
-				var downloadUrl = URL.createObjectURL(blob);
+		// 	if (typeof window.navigator.msSaveBlob !== 'undefined') {
+		// 		window.navigator.msSaveBlob(blob, filename);
+		// 	} else {
+		// 		var URL = window.URL || window.webkitURL;
+		// 		var downloadUrl = URL.createObjectURL(blob);
 
-				if (filename) {
-					var a = document.createElement("a");
-					if (typeof a.download === 'undefined') {
-						window.location.href = downloadUrl;
-					} else {
-						a.href = downloadUrl;
-						a.download = filename;
-						document.body.appendChild(a);
-						a.click();
-					}
-				} else {
-					window.location.href = downloadUrl;
-				}
-				setTimeout(function () {
-					URL.revokeObjectURL(downloadUrl);
-				}, 100); // cleanup
-			}
-			////////////////////////// end save digest file for test 	
-		},
+		// 		if (filename) {
+		// 			var a = document.createElement("a");
+		// 			document.body.appendChild(a);
+		// 			a.style = "display: none";
+		// 			a.href = downloadUrl;
+		// 			a.download = filename;
+		// 			a.click();
+		// 			window.URL.revokeObjectURL(downloadUrl);
+		// 		} else {
+		// 			window.location.href = downloadUrl;
+		// 		}
+		// 		setTimeout(function () {
+		// 			URL.revokeObjectURL(downloadUrl);
+		// 		}, 100); // cleanup
+		// 	}
+		// 	////////////////////////// end save digest file for test 	
+		// },
 
 		// функция получения DocExtId из таблицы PP_SmartTable - скорее всего не нужна так как нашел в аннотациях возможность указать RequestAtLeast обязательно загружаемые строки = docExtId
 		_getDocExtId: function () {
