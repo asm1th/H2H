@@ -249,7 +249,7 @@ if (errMessage.length == 0) {
 			'docExtId': docExtId
 		}
 	};
-/*
+
 	request(options, function (error, response, body) {
 		console.log('body : ', body);
 	});
@@ -259,7 +259,7 @@ if (errMessage.length == 0) {
     	pStmt.execute();
     	conn.commit();
     	pStmt.close();
-    	*/
+ 
     	docExtId = docExtId.replace(new RegExp("'",'g'),"");
     	dbf.historyAdd(conn, docExtId, 'Отправлен', 'SUCCESS', 'Отправлен в банк');
 

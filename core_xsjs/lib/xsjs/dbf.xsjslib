@@ -794,8 +794,8 @@ function updateAccDoc(param){
 	var pStmt = param.connection.prepareStatement("select * from \"" + after + "\"");
 	var rs = pStmt.executeQuery();
 	while (rs.next()) {
-		docExtId	= 		rs.getString(2);
-    	piority 	=		rs.getInt(15);
+		docExtId	= 		rs.getString(1);
+    	piority 	=		rs.getInt(12);
 	}
 	pStmt.close();
 // TODO: Добавить проверку на существование строки
