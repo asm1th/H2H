@@ -36,7 +36,7 @@ var port  = process.env.PORT || 3000;
 //process.setMaxListeners(0);
 
 var options = {
-	anonymous : true, // remove to authenticate calls
+	//anonymous : true, // remove to authenticate calls
 	auditLog : { logToConsole: true }, // change to auditlog service for productive scenarios
 	// redirectUrl : "/index.xsjs"
 	redirectUrl : "/xsodata/h2h.xsodata/$metadata"
@@ -51,7 +51,12 @@ try {
 
 // configure UAA
 try {
-	options = Object.assign(options, xsenv.getServices({ uaa: {tag: "xsuaa"} }));
+	options = Object.assign(options, xsenv.getServices(
+		{ uaa: {
+			tag: "xsuaa"
+			//name: "UAA-service"
+		} 
+	}));
 	console.log("[auth service OK]");
 } catch (err) {
 	console.log("[WARN]", err.message);

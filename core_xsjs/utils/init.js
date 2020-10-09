@@ -17,7 +17,8 @@ module.exports = {
 		
 		passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
 			uaa: {
-				tag: "xsuaa"
+				//tag: "xsuaa"
+				name: "UAA-service"
 			}
 		}).uaa));
 		//app.use(logging.expressMiddleware(appContext));
@@ -43,7 +44,7 @@ module.exports = {
 		var xsjs = require("@sap/xsjs");
 		var xsenv = require("@sap/xsenv");
 		var options = {
-			anonymous : true, // remove to authenticate calls
+			//anonymous : true, // remove to authenticate calls
 			//redirectUrl: "/index.xsjs",
 			redirectUrl : "/xsodata/h2h.xsodata/$metadata",
 			auditLog : { logToConsole: true }
@@ -83,7 +84,8 @@ module.exports = {
 		try {
 			options = Object.assign(options, xsenv.getServices({
 				uaa: {
-					tag: "xsuaa"
+					//tag: "xsuaa"
+					name: "UAA-service"
 				}
 			}));
 		} catch (err) {

@@ -1,5 +1,5 @@
 {
-	"welcomeFile": "/webapp/index.html",
+	"welcomeFile": "/ui5/webapp/index.html",
 	"authenticationMethod": "route",
 	"routes": [{
 		"source": "(.*)(.xsjs)",
@@ -12,8 +12,7 @@
 	},{
 		"source": "node(.*)",
 		"destination": "core-nodejs-backend",
-		
-		"csrfProtection": true,
+		"csrfProtection": true
 		"authenticationType": "xsuaa"
 	}]
 }

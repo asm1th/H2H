@@ -16,9 +16,9 @@ const hdbext = require('@sap/hdbext');
 
 xsenv.loadEnv();
 
-https.globalAgent.options.ca = xsenv.loadCertificates();
-global.__base = __dirname + "/";
-global.__uaa = process.env.UAA_SERVICE_NAME;
+// https.globalAgent.options.ca = xsenv.loadCertificates();
+// global.__base = __dirname + "/";
+// global.__uaa = process.env.UAA_SERVICE_NAME;
 
 //logging
 let logging = require("@sap/logging");
@@ -30,7 +30,8 @@ var app = express();
 //Build a JWT Strategy from the bound UAA resource
 passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
 	uaa: {
-		tag: "xsuaa"
+		//tag: "xsuaa"
+		 name: "UAA-service"
 	}
 }).uaa));
 

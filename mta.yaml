@@ -57,6 +57,8 @@ modules:
           url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
           forwardAuthToken: true
       - name: UAA-service
+    properties:
+      TENANT_HOST_PATTERN: "^(.*)host-to-host.cfapps.eu10.hana.ondemand.com"
 resources:
   - name: hdi_db
     properties:
@@ -68,12 +70,12 @@ resources:
     type: com.sap.xs.uaa-space
     parameters:
       config-path: xs-security.json
-  - name: uaa_H2H
-    parameters:
-      path: ./xs-security.json
-      service-plan: application
-      service: xsuaa
-    type: org.cloudfoundry.managed-service
+#  - name: uaa_H2H
+#    parameters:
+#      path: ./xs-security.json
+#      service-plan: application
+#      service: xsuaa
+#    type: org.cloudfoundry.managed-service
   - name: dest_H2H
     parameters:
       service-plan: lite

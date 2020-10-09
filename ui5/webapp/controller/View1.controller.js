@@ -176,8 +176,7 @@ sap.ui.define([
 		},
 
 		formatEnableDelPP: function (oValue) {
-			if (oValue === "Импортирован" || oValue === "Создан" || oValue === "Подписан" || oValue === "Подписан I" || oValue ===
-				"Подписан II") {
+			if (oValue === "Импортирован" || oValue === "Создан") {
 				return true;
 			} else {
 				return false;
@@ -530,8 +529,8 @@ sap.ui.define([
 						transKind: data.transKind,
 						paytKind: data.paytKind,
 						paytCode: data.paytCode,
-						codeVO: data.codeVO,
-						nodocs: data.nodocs
+						codeVO:  "810", //data.codeVO,
+						nodocs:  data.nodocs ? parseInt(data.nodocs) : 0
 					};
 					//oModel.update(accPath + "/priority", obj.priority, {
 					oModel.update(accPath, oEntity, {
