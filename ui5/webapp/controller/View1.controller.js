@@ -176,8 +176,7 @@ sap.ui.define([
 		},
 
 		formatEnableDelPP: function (oValue) {
-			if (oValue === "Импортирован" || oValue === "Создан" || oValue === "Подписан" || oValue === "Подписан I" || oValue ===
-				"Подписан II") {
+			if (oValue === "Импортирован" || oValue === "Создан") {
 				return true;
 			} else {
 				return false;
@@ -307,7 +306,7 @@ sap.ui.define([
 			oModel.read("/History", {
 				filters: oFilter,
 				success: function (data) {
-					console.log("History", data);
+					//console.log("History", data);
 					var oModel = new JSONModel(data.results);
 					that.journalDialog.setModel(oModel);
 					that.journalDialog.open();
@@ -514,7 +513,7 @@ sap.ui.define([
 
 			oModel.read(accPath, {
 				success: function (data) {
-					console.log(data);
+					//console.log(data);
 					var oEntity = {
 						// new
 						priority: parseInt(obj.priority),
@@ -530,13 +529,13 @@ sap.ui.define([
 						transKind: data.transKind,
 						paytKind: data.paytKind,
 						paytCode: data.paytCode,
-						codeVO: data.codeVO,
-						nodocs: data.nodocs
+						codeVO:  "810", //data.codeVO,
+						nodocs:  data.nodocs ? parseInt(data.nodocs) : 0
 					};
 					//oModel.update(accPath + "/priority", obj.priority, {
 					oModel.update(accPath, oEntity, {
 						success: function (data) {
-							console.log(data);
+							//console.log(data);
 							MessageToast.show("Изменения сохранены");
 							that.detailDialog.close();
 						},
@@ -1162,7 +1161,7 @@ sap.ui.define([
 						thenable.then(
 							function (result) {
 								//MessageBox.success("Платежное поручение подписано");
-								console.log("Sign", result);
+								//console.log("Sign", result);
 								that._sendSign(result, objSign);
 							},
 							function (result) {

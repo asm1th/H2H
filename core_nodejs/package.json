@@ -1,10 +1,10 @@
 {
   "dependencies": {
-  	"express": "^4.16.2",
-    "@sap/xsenv": "^2.0.0",
-    "@sap/hdbext": "^6.0.0",
-    "@sap/logging": "^4.0.2",
-    "body-parser": "~1.15.2",
+  	"express": "^4.17",
+    "@sap/xsenv": "^2.2",
+    "@sap/hdbext": "^6.2",
+    "@sap/logging": "~5.2",
+    "body-parser": "~1.19",
     "xml2js": "^0.4.23",
     "docx": "^5.0.1",
     "pizzip": "^3.0.6",
@@ -12,7 +12,11 @@
     "morgan": "^1.9.0",
     "number-to-words-ru": "2.0.1",
     "ejs": "^3.0.1",
-    "html-pdf": "^2.2.0"
+    "html-pdf": "^2.2.0",
+    
+    "@sap/xssec": "^2.2",
+    "passport": "~0.4.0",
+    "async": "latest"
   },
   "files": [],
   "main": "start.js",
