@@ -69,7 +69,7 @@ resources:
   - name: UAA-service
     type: com.sap.xs.uaa-space
     parameters:
-      config-path: xs-security.json
+      config-path: ./xs-security.json
 #  - name: uaa_H2H
 #    parameters:
 #      path: ./xs-security.json

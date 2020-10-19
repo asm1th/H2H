@@ -16,9 +16,9 @@ const hdbext = require('@sap/hdbext');
 
 xsenv.loadEnv();
 
-// https.globalAgent.options.ca = xsenv.loadCertificates();
-// global.__base = __dirname + "/";
-// global.__uaa = process.env.UAA_SERVICE_NAME;
+https.globalAgent.options.ca = xsenv.loadCertificates();
+global.__base = __dirname + "/";
+global.__uaa = process.env.UAA_SERVICE_NAME;
 
 //logging
 let logging = require("@sap/logging");
@@ -31,7 +31,7 @@ var app = express();
 passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
 	uaa: {
 		//tag: "xsuaa"
-		 name: "UAA-service"
+		name: "UAA-service"
 	}
 }).uaa));
 

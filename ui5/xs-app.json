@@ -3,16 +3,22 @@
 	"authenticationMethod": "route",
 	"routes": [{
 		"source": "(.*)(.xsjs)",
+		"destination": "core-xsjs-backend",
 		"csrfProtection": false,
-		"destination": "core-xsjs-backend"
+		"authenticationType": "xsuaa"
 	},{
 		"source": "(.*)(.xsodata)",
+		"destination": "core-xsjs-backend",
 		"csrfProtection": false,
-		"destination": "core-xsjs-backend"
+		"authenticationType": "xsuaa"
 	},{
 		"source": "node(.*)",
 		"destination": "core-nodejs-backend",
 		"csrfProtection": true,
+		"authenticationType": "xsuaa"
+	},{
+		"source": "/(.*)",
+		"localDir": "webapp",
 		"authenticationType": "xsuaa"
 	}]
 }

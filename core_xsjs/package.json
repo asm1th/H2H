@@ -12,6 +12,7 @@
   },
   "description": "xsodata service",
   "devDependencies": {
+  	"@sap/xsjs-test": "^3.1.2"
   },
   "files": [],
   "main": "server.js",
