@@ -3,15 +3,15 @@
 	"authenticationMethod": "none",
 	"routes": [{
 		"source": "(.*)(.xsjs)",
-		"csrfProtection": false,
-		"destination": "h2h-xsjs"
+		"csrfProtection": true,
+		"destination": "core-xsjs-backend"
 	},{
 		"source": "(.*)(.xsodata)",
-		"csrfProtection": false,
-		"destination": "h2h-xsjs"
+		"csrfProtection": true,
+		"destination": "core-xsjs-backend"
 	},{
 		"source": "node(.*)",
-		"csrfProtection": false,
-		"destination": "h2h-nodejs"
+		"csrfProtection": true,
+		"destination": "core-nodejs-backend"
 	}]
 }
