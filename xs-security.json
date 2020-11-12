@@ -1,17 +1,17 @@
 {
   "xsappname": "H2H",
-  "tenant-mode": "shared",
   "description": "Security profile of called application",
+  "tenant-mode": "shared",
   "scopes": [
     {
       "name": "uaa.user",
-      "description": "UAA"
+      "description": "UAA2"
     }
   ],
   "role-templates": [
     {
       "name": "Token_Exchange",
-      "description": "UAA",
+      "description": "UAA1",
       "scope-references": [
         "uaa.user"
       ]

@@ -1,6 +1,9 @@
 {
 	"welcomeFile": "/webapp/index.html",
-	"authenticationMethod": "none",
+	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/logout"
+     },
 	"routes": [{
 		"source": "(.*)(.xsjs)",
 		"csrfProtection": true,
@@ -13,5 +16,10 @@
 		"source": "node(.*)",
 		"csrfProtection": true,
 		"destination": "core-nodejs-backend"
+	},{
+		"source": "^/ui5/(.*)$",
+		"target": "$1",
+		"localDir": "webapp",
+		"authenticationType": "xsuaa"  
 	}]
 }
