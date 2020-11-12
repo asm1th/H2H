@@ -4,14 +4,14 @@
 	"routes": [{
 		"source": "(.*)(.xsjs)",
 		"csrfProtection": false,
-		"destination": "core-xsjs-backend"
+		"destination": "h2h-xsjs"
 	},{
 		"source": "(.*)(.xsodata)",
 		"csrfProtection": false,
-		"destination": "core-xsjs-backend"
+		"destination": "h2h-xsjs"
 	},{
 		"source": "node(.*)",
 		"csrfProtection": false,
-		"destination": "core-nodejs-backend"
+		"destination": "h2h-nodejs"
 	}]
 }
