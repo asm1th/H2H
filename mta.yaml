@@ -1,8 +1,25 @@
 ID: H2H
 _schema-version: '2.1'
 description: Host-to-Host
+parameters:
+   deploy_mode: html5-repo
 version: 0.0.1
 modules:
+  - name: testroutes-approuter
+    type: approuter.nodejs
+    path: testroutes-approuter
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: H2H_html5_repo_runtime
+
+  - name: H2H_ui_deployer
+    type: com.sap.html5.application-content
+    path: H2H_ui_deployer
+    requires:
+     - name: H2H_html5_repo_host
+
   - name: db
     type: hdb
     path: db
@@ -70,14 +87,25 @@ resources:
     type: com.sap.xs.uaa-space
     parameters:
       config-path: xs-security.json
-  - name: uaa_H2H
-    parameters:
-      path: ./xs-security.json
-      service-plan: application
-      service: xsuaa
-    type: org.cloudfoundry.managed-service
+  #- name: uaa_H2H
+  #  parameters:
+  #    path: ./xs-security.json
+  #    service-plan: application
+  #    service: xsuaa
+  #  type: org.cloudfoundry.managed-service
   - name: dest_H2H
     parameters:
       service-plan: lite
       service: destination
+    type: org.cloudfoundry.managed-service
+  - name: H2H_html5_repo_runtime
+    parameters:
+      service-plan: app-runtime
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+
+  - name: H2H_html5_repo_host
+    parameters:
+      service-plan: app-host
+      service: html5-apps-repo
     type: org.cloudfoundry.managed-service
