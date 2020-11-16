@@ -23,6 +23,11 @@ modules:
     path: db
     requires:
       - name: hdi_db
+    build-parameters:
+      builder: custom  
+      commands:
+         - npm install --production  
+      supported-platforms: []
   - name: core_xsjs
     type: nodejs
     path: core_xsjs
@@ -72,6 +77,9 @@ modules:
       - name: UAA-service
       - name: H2H_html5_repo_runtime
       - name: H2H_html5_repo_host
+    build-parameters:
+      supported-platforms: []
+      build-result: dist
     properties:
       TENANT_HOST_PATTERN: '^(.*)host-to-host.cfapps.eu10.hana.ondemand.com'
 resources:
