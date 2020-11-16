@@ -1,5 +1,5 @@
 ID: H2H
-_schema-version: '2.1'
+_schema-version: '3.1'
 description: Host-to-Host
 parameters:
   deploy_mode: html5-repo
@@ -80,6 +80,7 @@ modules:
     build-parameters:
       supported-platforms: []
       build-result: dist
+      builder: npm
     properties:
       TENANT_HOST_PATTERN: '^(.*)host-to-host.cfapps.eu10.hana.ondemand.com'
 resources:
@@ -92,7 +93,7 @@ resources:
   - name: UAA-service
     type: com.sap.xs.uaa-space
     parameters:
-      config-path: xs-security.json
+      path: ./xs-security.json
   - name: dest_H2H
     parameters:
       service-plan: lite

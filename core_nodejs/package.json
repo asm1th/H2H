@@ -1,30 +1,27 @@
 {
-  "dependencies": {
-  	"express": "^4.16.2",
-    "@sap/xsenv": "^2.0.0",
-    "@sap/hdbext": "^6.0.0",
-    "@sap/logging": "^4.0.2",
-    "body-parser": "~1.15.2",
-    "xml2js": "^0.4.23",
-    "docx": "^5.0.1",
-    "pizzip": "^3.0.6",
-    "docxtemplater": "^3.16.9",
-    "morgan": "^1.9.0",
-    "number-to-words-ru": "2.0.1",
-    "ejs": "^3.0.1",
-    "html-pdf": "^2.2.0"
-  },
-  "files": [],
-  "main": "start.js",
-  "description": "Node print service",
-  "name": "core_nodejs",
-  "scripts": {
-    "test": "node node_modules/jest/bin/jest --config jest.json",
-    "test-coverage": "node node_modules/jest/bin/jest --coverage --config jest.json",
-    "start": "node start.js"
-  },
-  "engines": {
-    "node": "^10.18.1"
-  },
-  "version": "1.0.0"
+	"dependencies": {
+		"express": "^4.16.2",
+		"@sap/xsenv": "^2.0.0",
+		"@sap/hdbext": "^6.0.0",
+		"@sap/logging": "^4.0.2",
+		"body-parser": "~1.15.2",
+		"xml2js": "^0.4.23",
+		"docx": "^5.0.1",
+		"pizzip": "^3.0.6",
+		"docxtemplater": "^3.16.9",
+		"morgan": "^1.9.0",
+		"number-to-words-ru": "2.0.1",
+		"ejs": "^3.0.1"
+	},
+	"files": [],
+	"main": "start.js",
+	"description": "Node print service",
+	"name": "core_nodejs",
+	"scripts": {
+		"start": "node start.js"
+	},
+	"engines": {
+		"node": "^10.0.0 || ^12.0.0"
+	},
+	"version": "1.0.0"
 }
