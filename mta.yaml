@@ -2,7 +2,7 @@ ID: H2H
 _schema-version: '2.1'
 description: Host-to-Host
 parameters:
-   deploy_mode: html5-repo
+  deploy_mode: html5-repo
 version: 0.0.1
 modules:
   - name: testroutes-approuter
@@ -13,13 +13,11 @@ modules:
       memory: 256M
     requires:
       - name: H2H_html5_repo_runtime
-
   - name: H2H_ui_deployer
     type: com.sap.html5.application-content
     path: H2H_ui_deployer
     requires:
-     - name: H2H_html5_repo_host
-
+      - name: H2H_html5_repo_host
   - name: db
     type: hdb
     path: db
@@ -58,8 +56,6 @@ modules:
       disk-quota: 256M
       memory: 256M
       app-name: host-to-host
-    build-parameters:
-      builder: grunt
     requires:
       - name: core_xsjs_api
         group: destinations
@@ -74,8 +70,10 @@ modules:
           url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
           forwardAuthToken: true
       - name: UAA-service
+      - name: H2H_html5_repo_runtime
+      - name: H2H_html5_repo_host
     properties:
-      TENANT_HOST_PATTERN: "^(.*)host-to-host.cfapps.eu10.hana.ondemand.com"
+      TENANT_HOST_PATTERN: '^(.*)host-to-host.cfapps.eu10.hana.ondemand.com'
 resources:
   - name: hdi_db
     properties:
@@ -87,12 +85,6 @@ resources:
     type: com.sap.xs.uaa-space
     parameters:
       config-path: xs-security.json
-  #- name: uaa_H2H
-  #  parameters:
-  #    path: ./xs-security.json
-  #    service-plan: application
-  #    service: xsuaa
-  #  type: org.cloudfoundry.managed-service
   - name: dest_H2H
     parameters:
       service-plan: lite
@@ -103,7 +95,6 @@ resources:
       service-plan: app-runtime
       service: html5-apps-repo
     type: org.cloudfoundry.managed-service
-
   - name: H2H_html5_repo_host
     parameters:
       service-plan: app-host
