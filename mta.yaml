@@ -57,6 +57,8 @@ modules:
           url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
           forwardAuthToken: true
       - name: UAA-service
+    properties:
+      TENANT_HOST_PATTERN: "^(.*)host-to-host.cfapps.eu10.hana.ondemand.com"
 resources:
   - name: hdi_db
     properties:
