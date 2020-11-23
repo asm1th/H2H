@@ -1,6 +1,5 @@
 ui5
 core_nodejs
 core_xsjs
-H2H_ui_deployer
-testroutes-approuter
 db
+ui_deployer

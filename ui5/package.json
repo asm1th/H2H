@@ -1,14 +1,17 @@
 {
-	"name": "ui5",
-	"version": "0.0.1",
-	"description": "",
-	"engines": {
-		"node": "^10.0.0 || ^12.0.0"
-	},
-	"dependencies": {
-		"@sap/approuter": "8.5.5"
-	},
-	"scripts": {
-		"start": "node index.js"
-	}
+  "name": "html5module",
+  "version": "0.0.1",
+  "description": "",
+  "devDependencies": {
+    "@ui5/cli": "1.13.0",
+    "@sap/ui5-builder-webide-extension": "1.0.x"
+  },
+  "scripts": {
+    "build": "ui5 build --clean-dest --include-task=generateManifestBundle generateCachebusterInfo"
+  },
+  "ui5": {
+    "dependencies": [
+      "@sap/ui5-builder-webide-extension"
+    ]
+  }
 }
