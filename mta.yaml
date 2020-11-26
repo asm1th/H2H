@@ -32,8 +32,6 @@ modules:
           name: HTML5Module
           target-path: resources/
           
-          
-      
   - name: HTML5Module
     type: html5
     path: ui5
@@ -64,7 +62,6 @@ modules:
       build-result: dist
     properties:
       TENANT_HOST_PATTERN: '^(.*)host-to-host.cfapps.eu10.hana.ondemand.com'
-      
       
   - name: db
     type: hdb
@@ -102,7 +99,6 @@ modules:
       - name: html5_uaa
     parameters:
       app-name: h2h-nodejs
-
 
 resources:
   - name: html5_repo_host
