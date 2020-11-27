@@ -91,6 +91,8 @@ function makePdf(Data, req, res, next) {
 	});
 };
 
+// здесь проверить req .getHeaders найти x-test'
+
 router.get('/', function (req, res, next) {
 	var ids = req.query.responseIds.split(","); //get
 

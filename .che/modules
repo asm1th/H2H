@@ -1,5 +1,6 @@
 ui5
+router
 core_nodejs
+html5_deployer
 core_xsjs
 db
-ui_deployer
