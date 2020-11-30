@@ -1,1 +1,1 @@
-{"type":"com.sap.content.module","builders":{"default":"sap.nodejs","configs":{}},"runners":{"configs":{}},"attributes":{"sap.watt.common.setting":["{\"content-module\":{\"service\":\"html5-apps-repo\"}}"]},"description":"H2H_ui_deployer","mixinTypes":["mtamodule"]}
+{"type":"com.sap.html5.application-content","builders":{"default":"sap.nodejs","configs":{}},"runners":{"configs":{}},"attributes":{"sap.watt.common.setting":["{\"content-module\":{\"service\":\"html5-apps-repo\"}}"]},"description":"H2H_ui_deployer","mixinTypes":["mtamodule"]}

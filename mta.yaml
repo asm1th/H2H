@@ -3,7 +3,7 @@ _schema-version: '2.1'
 parameters:
   deploy_mode: html5-repo
 description: Host-to-Host
-version: 1.0.0
+version: 1.0.2
 modules:
 
   - name: html5_app_router
@@ -98,8 +98,6 @@ modules:
     requires:
       - name: hdi_db
       - name: html5_uaa
-    parameters:
-      app-name: h2h-xsjs
       
   - name: core_nodejs
     type: nodejs
@@ -111,8 +109,6 @@ modules:
     requires:
       - name: hdi_db
       - name: html5_uaa
-    parameters:
-      app-name: h2h-nodejs
 
 resources:
   - name: html5_repo_host

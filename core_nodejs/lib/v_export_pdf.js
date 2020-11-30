@@ -3,7 +3,7 @@ var router = express.Router();
 
 //var fs = require("fs");
 let ejs = require("ejs");
-let pdf = require("html-pdf");
+//let pdf = require("html-pdf");
 let path = require("path");
 
 function _getDocSumPropis(Data) {
@@ -61,32 +61,16 @@ function makePdf(Data, req, res, next) {
 					"height": "20mm",
 				},
 			};
-			// pdf.create(data, options).toStream((err, stream) => {
-			// 	if (err) {
-			// 		return res.end(err.stack);
-			// 	} else {
-			// 		res.setHeader('Content-type', 'application/pdf');
-			// 		res.setHeader('Content-disposition', 'attachment; filename=export-from-html.pdf'); // Remove this if you don't want direct download
-			// 		res.setHeader('Content-Length', '' + stream.length);
-			// 		stream.pipe(res);
-			// 	}
-			// });
-			
-		    pdf.create(data, options).toBuffer(function (err, buffer) {
-				//console.log('This is a buffer:', Buffer.isBuffer(buffer));
-				res.setHeader('Content-type', 'application/pdf');
-				res.setHeader('Content-disposition', 'attachment; filename=export-from-html.pdf');
-				var fileBase64String = buffer.toString('base64');
-				res.end(fileBase64String, 'base64');
-			});
 
-			// pdf.create(html_string).toStream((err, stream) => {
-			//   if (err) return res.end(err.stack);
-			//   res.setHeader('Content-type', 'application/pdf');
-			//   res.setHeader('Content-disposition', 'attachment; filename=export-from-html.pdf'); // Remove this if you don't want direct download
-			//   res.setHeader('Content-Length', ''+stream.length);
-			//   stream.pipe(res);
+		// временно отключил модуль для билда - с модулем html-pdf не билдится 
+		 //   pdf.create(data, options).toBuffer(function (err, buffer) {
+			// 	//console.log('This is a buffer:', Buffer.isBuffer(buffer));
+			// 	res.setHeader('Content-type', 'application/pdf');
+			// 	res.setHeader('Content-disposition', 'attachment; filename=export-from-html.pdf');
+			// 	var fileBase64String = buffer.toString('base64');
+			// 	res.end(fileBase64String, 'base64');
 			// });
+
 		}
 	});
 };

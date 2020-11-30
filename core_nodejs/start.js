@@ -42,10 +42,10 @@ app.listen(port, function () {
 
 // настройка node.js
 var bodyParser = require('body-parser');	// body-parser: -- анализирует часть тела входящего запроса HTTP и облегчает извлечение из него различных частей. Например, мы можно читать POST-параметры.
-var logger = require('morgan'); 			// средство логгирования запросов HTTP для node.
+//var logger = require('morgan'); 			// средство логгирования запросов HTTP для node.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ========================== TEST
