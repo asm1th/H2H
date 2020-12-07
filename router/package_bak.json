@@ -8,6 +8,6 @@
 		"@sap/approuter": "6.8.0"
 	},
 	"scripts": {
-		"start": "node index.js"
+		"start": "node node_modules/@sap/approuter/approuter.js"
 	}
 }

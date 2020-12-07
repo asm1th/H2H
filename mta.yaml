@@ -16,6 +16,24 @@ modules:
       - name: html5_repo_runtime
       - name: html5_destination
       - name: html5_uaa
+      
+###
+      - name: core_xsjs_api
+        group: destinations
+        properties:
+          name: core-xsjs-backend
+          url: 'https://h2h-xsjs.cfapps.eu10.hana.ondemand.com/'
+          forwardAuthToken: true
+      - name: core_nodejs_api
+        group: destinations
+        properties:
+          name: core-nodejs-backend
+          url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
+          forwardAuthToken: true
+    properties:
+      TENANT_HOST_PATTERN: '^(.*)-host-to-host.cfapps.eu10.hana.ondemand.com'
+      
+###
     
   - name: html5_deployer
     type: com.sap.html5.application-content
@@ -107,11 +125,13 @@ resources:
       service-plan: app-runtime
       service: html5-apps-repo
     type: org.cloudfoundry.managed-service
+    
   - name: html5_destination
     type: org.cloudfoundry.managed-service
     parameters:
       service-plan: lite
       service: destination
+      
   - name: html5_uaa
     parameters:
       path: ./xs-security.json
@@ -119,11 +139,9 @@ resources:
       service: xsuaa
     type: org.cloudfoundry.managed-service
 
-
   - name: hdi_db
     properties:
       hdi-container-name: '${service-name}'
     type: com.sap.xs.hdi-container
     parameters:
       service-name: hana-hdi
-

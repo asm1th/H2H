@@ -1,5 +1,5 @@
 {
-	"welcomeFile": "/index.html",
+	"welcomeFile": "/webapp/index.html",
 	"authenticationMethod": "route",
 	"logout": {
 		"logoutEndpoint": "/do/logout"
@@ -17,7 +17,7 @@
 		"csrfProtection": true,
 		"destination": "core-nodejs-backend"
 	},{
-		"source": "^(.*)$",
+		"source": "^/ui5/(.*)$",
 		"target": "$1",
 		"service": "html5-apps-repo-rt",
 		"authenticationType": "xsuaa"  
