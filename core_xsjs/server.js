@@ -6,7 +6,7 @@ var port  = process.env.PORT || 3000;
 //process.setMaxListeners(0);
 
 var options = {
-	anonymous : true, // remove to authenticate calls
+	//anonymous : true, // remove to authenticate calls
 	auditLog : { logToConsole: true }, // change to auditlog service for productive scenarios
 	// redirectUrl : "/index.xsjs"
 	redirectUrl : "/xsodata/h2h.xsodata/$metadata"

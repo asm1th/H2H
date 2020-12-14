@@ -3,7 +3,7 @@ _schema-version: '2.1'
 parameters:
   deploy_mode: html5-repo
 description: Host-to-Host
-version: 1.0.9
+version: 1.0.13
 modules:
 
   - name: html5_app_router
@@ -12,27 +12,29 @@ modules:
     parameters:
       disk-quota: 256M
       memory: 256M
+    # routes:
+    #   - route: <application URL>
+      
     requires:
       - name: html5_repo_runtime
       - name: html5_destination
       - name: html5_uaa
       
 ###
-      - name: core_xsjs_api
-        group: destinations
-        properties:
-          name: core-xsjs-backend
-          url: 'https://h2h-xsjs.cfapps.eu10.hana.ondemand.com/'
-          forwardAuthToken: true
-      - name: core_nodejs_api
-        group: destinations
-        properties:
-          name: core-nodejs-backend
-          url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
-          forwardAuthToken: true
-    properties:
-      TENANT_HOST_PATTERN: '^(.*)-host-to-host.cfapps.eu10.hana.ondemand.com'
-      
+    #   - name: core_xsjs_api
+    #     group: destinations
+    #     properties:
+    #       name: core-xsjs-backend
+    #       url: 'https://h2h-xsjs.cfapps.eu10.hana.ondemand.com/'
+    #       forwardAuthToken: true
+    #   - name: core_nodejs_api
+    #     group: destinations
+    #     properties:
+    #       name: core-nodejs-backend
+    #       url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
+    #       forwardAuthToken: true
+    # properties:
+    #   TENANT_HOST_PATTERN: '^(.*)-host-to-host.cfapps.eu10.hana.ondemand.com'
 ###
     
   - name: html5_deployer
@@ -75,8 +77,8 @@ modules:
         - npm run build
       supported-platforms: []
       build-result: dist
-    properties:
-      TENANT_HOST_PATTERN: '^(.*)host-to-host.cfapps.eu10.hana.ondemand.com'
+    # properties:
+    #   TENANT_HOST_PATTERN: '^(.*)host-to-host.cfapps.eu10.hana.ondemand.com'
       
   - name: db
     type: hdb
