@@ -27,7 +27,7 @@ app.get('/node', function (req, res, next) {
 		if (err) {
 			return next(err);
 		}
-		res.send('111 Current HANA time (UTC): ' + rows[0].CURRENT_UTCTIMESTAMP);
+		res.send('Current HANA time (UTC): ' + rows[0].CURRENT_UTCTIMESTAMP);
 	});
 });
 

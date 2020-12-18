@@ -1,7 +1,7 @@
 {
-  "xsappname": "H2Hxsappname1",
-  "description": "Security profile of called application",
+  "xsappname": "H2H",
   "tenant-mode": "dedicated",
+  "description": "Security profile of called application",
   "scopes": [
     {
       "name": "uaa.user",

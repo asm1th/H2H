@@ -6,20 +6,19 @@
      },
 	"routes": [{
 		"source": "(.*)(.xsjs)",
-		"csrfProtection": true,
-		"destination": "core-xsjs-backend"
+		"destination": "core-xsjs-backend",
+		"authenticationType": "xsuaa"
 	},{
 		"source": "(.*)(.xsodata)",
-		"csrfProtection": true,
-		"destination": "core-xsjs-backend"
+		"destination": "core-xsjs-backend",
+		"authenticationType": "xsuaa"
 	},{
 		"source": "node(.*)",
-		"csrfProtection": true,
 		"destination": "core-nodejs-backend"
 	},{
 		"source": "^(.*)$",
 		"target": "$1",
 		"service": "html5-apps-repo-rt",
-		"authenticationType": "xsuaa"  
+		"authenticationType": "xsuaa"
 	}]
 }

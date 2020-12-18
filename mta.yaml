@@ -3,7 +3,7 @@ _schema-version: '2.1'
 parameters:
   deploy_mode: html5-repo
 description: Host-to-Host
-version: 1.0.13
+version: 1.0.23
 modules:
 
   - name: html5_app_router
@@ -19,24 +19,14 @@ modules:
       - name: html5_repo_runtime
       - name: html5_destination
       - name: html5_uaa
-      
+      ####
+      - name: core_xsjs_api
+        group: destinations
+        properties:
+          name: core-xsjs-backend
+          url: '~{url}'
+          forwardAuthToken: true
 ###
-    #   - name: core_xsjs_api
-    #     group: destinations
-    #     properties:
-    #       name: core-xsjs-backend
-    #       url: 'https://h2h-xsjs.cfapps.eu10.hana.ondemand.com/'
-    #       forwardAuthToken: true
-    #   - name: core_nodejs_api
-    #     group: destinations
-    #     properties:
-    #       name: core-nodejs-backend
-    #       url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
-    #       forwardAuthToken: true
-    # properties:
-    #   TENANT_HOST_PATTERN: '^(.*)-host-to-host.cfapps.eu10.hana.ondemand.com'
-###
-    
   - name: html5_deployer
     type: com.sap.html5.application-content
     path: html5_deployer
@@ -55,21 +45,25 @@ modules:
     parameters:
       disk-quota: 256M
       memory: 256M
-      app-name: host-to-host
+      #app-name: host-to-host
     requires:
+    
       - name: core_xsjs_api
         group: destinations
         properties:
           name: core-xsjs-backend
-          #url: 'https://h2h-xsjs.cfapps.eu10.hana.ondemand.com/',
+          url: '~{url}'
           forwardAuthToken: true
+          
       - name: core_nodejs_api
         group: destinations
         properties:
           name: core-nodejs-backend
-          #url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/',
+          #url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
+          #url: '~{url}'
           forwardAuthToken: true
       - name: html5_uaa
+      
     build-parameters:
       builder: custom
       commands:
@@ -140,6 +134,7 @@ resources:
       service-plan: application
       service: xsuaa
     type: org.cloudfoundry.managed-service
+    #type: com.sap.xs.uaa-space
 
   - name: hdi_db
     properties:
