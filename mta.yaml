@@ -3,7 +3,7 @@ _schema-version: '2.1'
 parameters:
   deploy_mode: html5-repo
 description: Host-to-Host
-version: 1.0.23
+version: 1.0.24
 modules:
 
   - name: html5_app_router
@@ -19,11 +19,17 @@ modules:
       - name: html5_repo_runtime
       - name: html5_destination
       - name: html5_uaa
-      ####
+
       - name: core_xsjs_api
         group: destinations
         properties:
           name: core-xsjs-backend
+          url: '~{url}'
+          forwardAuthToken: true
+      - name: core_nodejs_api
+        group: destinations
+        properties:
+          name: core-nodejs-backend
           url: '~{url}'
           forwardAuthToken: true
 ###
@@ -59,8 +65,7 @@ modules:
         group: destinations
         properties:
           name: core-nodejs-backend
-          #url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
-          #url: '~{url}'
+          url: '~{url}'
           forwardAuthToken: true
       - name: html5_uaa
       

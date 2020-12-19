@@ -4,6 +4,8 @@
 		"@sap/xsenv": "^2.0.0",
 		"@sap/hdbext": "^6.0.0",
 		"@sap/logging": "^4.0.2",
+		"@sap/xssec": "2.1.16",
+		"passport": "0.4.1",
 		"body-parser": "~1.15.2",
 		"docx": "^5.0.1",
 		"pizzip": "^3.0.6",

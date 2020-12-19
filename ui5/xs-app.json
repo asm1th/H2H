@@ -14,7 +14,8 @@
 		"authenticationType": "xsuaa"
 	},{
 		"source": "node(.*)",
-		"destination": "core-nodejs-backend"
+		"destination": "core-nodejs-backend",
+		"authenticationType": "xsuaa"
 	},{
 		"source": "^(.*)$",
 		"target": "$1",
