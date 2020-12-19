@@ -1,42 +1,42 @@
 /*eslint no-console: 0, no-unused-vars: 0*/
 "use strict";
 module.exports = {
-	initExpress: function () {
-		var xsenv = require("@sap/xsenv");
-		var passport = require("passport");
-		var xssec = require("@sap/xssec");
-		var hdbext = require("@sap/hdbext");
-		var express = require("express");
+	// initExpress: function () {
+	// 	var xsenv = require("@sap/xsenv");
+	// 	var passport = require("passport");
+	// 	var xssec = require("@sap/xssec");
+	// 	var hdbext = require("@sap/hdbext");
+	// 	var express = require("express");
 
-		//logging
-		var logging = require("@sap/logging");
-		var appContext = logging.createAppContext();
+	// 	//logging
+	// 	var logging = require("@sap/logging");
+	// 	var appContext = logging.createAppContext();
 
-		//Initialize Express App for XS UAA and HDBEXT Middleware
-		var app = express();
+	// 	//Initialize Express App for XS UAA and HDBEXT Middleware
+	// 	var app = express();
 		
-		passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
-			uaa: {
-				tag: "xsuaa"
-			}
-		}).uaa));
-		//app.use(logging.expressMiddleware(appContext));
-		//app.use(passport.initialize());
-		var hanaOptions = xsenv.getServices({
-			hana: {
-				tag: "hana"
-			}
-		});
+	// 	passport.use("JWT", new xssec.JWTStrategy(xsenv.getServices({
+	// 		uaa: {
+	// 			tag: "xsuaa"
+	// 		}
+	// 	}).uaa));
+	// 	//app.use(logging.expressMiddleware(appContext));
+	// 	//app.use(passport.initialize());
+	// 	var hanaOptions = xsenv.getServices({
+	// 		hana: {
+	// 			tag: "hana"
+	// 		}
+	// 	});
 		
-		app.use('/', hdbext.middleware(hanaOptions.hana));
-		// app.use(
-		// 	// passport.authenticate("JWT", {
-		// 	// 	session: false
-		// 	// }),
-		// 	hdbext.middleware(hanaOptions.hana)
-		// );
-		return app;
-	},
+	// 	app.use('/', hdbext.middleware(hanaOptions.hana));
+	// 	// app.use(
+	// 	// 	// passport.authenticate("JWT", {
+	// 	// 	// 	session: false
+	// 	// 	// }),
+	// 	// 	hdbext.middleware(hanaOptions.hana)
+	// 	// );
+	// 	return app;
+	// },
 
 	initXSJS: function (app) {
 		//	process.env.XS_APP_LOG_LEVEL='debug';
