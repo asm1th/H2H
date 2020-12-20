@@ -3,7 +3,7 @@ _schema-version: '2.1'
 parameters:
   deploy_mode: html5-repo
 description: Host-to-Host
-version: 1.0.24
+version: 1.0.27
 modules:
 
   - name: html5_app_router
@@ -110,9 +110,12 @@ modules:
         properties:
           url: '${default-url}'
           #url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
+    properties:
+      UAA_SERVICE_NAME: html5_uaa
     requires:
       - name: hdi_db
       - name: html5_uaa
+      
 
 resources:
   - name: html5_repo_host

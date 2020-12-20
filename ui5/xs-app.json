@@ -7,14 +7,17 @@
 	"routes": [{
 		"source": "(.*)(.xsjs)",
 		"destination": "core-xsjs-backend",
+		"csrfProtection": true,
 		"authenticationType": "xsuaa"
 	},{
 		"source": "(.*)(.xsodata)",
 		"destination": "core-xsjs-backend",
+		"csrfProtection": true,
 		"authenticationType": "xsuaa"
 	},{
 		"source": "node(.*)",
 		"destination": "core-nodejs-backend",
+		"csrfProtection": true,
 		"authenticationType": "xsuaa"
 	},{
 		"source": "^(.*)$",

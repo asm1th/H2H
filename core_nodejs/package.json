@@ -11,7 +11,10 @@
 		"pizzip": "^3.0.6",
 		"docxtemplater": "^3.16.9",
 		"number-to-words-ru": "2.0.1",
-		"ejs": "^3.0.1"
+		"ejs": "^3.0.1",
+		
+		"csurf": "^1.11.0",
+		"cookie-parser": "1.4.5"
 	},
 	"files": [],
 	"main": "start.js",

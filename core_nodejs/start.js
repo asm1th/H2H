@@ -7,16 +7,24 @@ const {JWTStrategy} = require('@sap/xssec');
 const path = require('path');
 const xsenv = require('@sap/xsenv');
 
+var cookieParser = require('cookie-parser')
+var csrf = require('csurf');
+var csrfProtection = csrf({ cookie: true })
+
 // Init app
 const app = express();
+
+app.use(cookieParser())
 
 // Load Credentiols
 xsenv.loadEnv();
 
 // Public endpoint
-app.get('/', function (_req, res) {
-	res.send('Hello');
+app.get('/', csrfProtection, function (req, res) {
+	//res.send('Hello');
+	res.render('send', { csrfToken: req.csrfToken() })
 });
+
 
 // logging
 var logging = require('@sap/logging');
@@ -32,10 +40,10 @@ passport.use(new JWTStrategy(xsenv.getServices({xsuaa: {tag: "xsuaa"}}).xsuaa));
 app.use(passport.initialize());
 //app.use(passport.authenticate("JWT", {session: false}));
 
-app.get('/user', function (req, res) {
-	//res.json(req.user);
-	res.send(req.user);
-});
+// app.get('/user', function (req, res) {
+// 	//res.json(req.user);
+// 	res.send(req.user);
+// });
 // app.get('/checkScope', function (req, res) {
 // 	res.send(req.authInfo.checkScope(req.headers.scope));
 // });
@@ -102,19 +110,19 @@ app.use('/node/v_export_pdf', require('./lib/v_export_pdf'));
 // ========================== 
 // LAST SECTION IN FILE errors not found - должна находиться только в конце файла
 // catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-// 	var err = new Error('Not Found');
-// 	err.status = 404;
-// 	next(err);
-// });
+app.use(function (req, res, next) {
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
+});
 
-// // error handler
-// app.use(function (err, req, res, next) {
-// 	// set locals, only providing error in development
-// 	res.locals.message = err.message;
-// 	res.locals.error = req.app.get('env') === 'development' ? err : {};
+// error handler
+app.use(function (err, req, res, next) {
+	// set locals, only providing error in development
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-// 	// render the error page
-// 	res.status(err.status || 500);
-// 	res.json(err.message);
-// });
+	// render the error page
+	res.status(err.status || 500);
+	res.json(err.message);
+});

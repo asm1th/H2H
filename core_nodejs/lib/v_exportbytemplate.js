@@ -77,76 +77,81 @@ function _getDocSumPropis(Data) {
 };
 
 router.get('/', function (req, res, next) {
-	// var responseId = "f6197de1-8c6a-e165-8370-22714fa32d66,6c0fc4e3-b305-b801-3bec-5ac501fac6f1"
-	// https://host-to-host.cfapps.eu10.hana.ondemand.com/node/exportbytemplate?docExtIds=01b00858-57c0-81ac-6f69-1a2f94e20d86,89625293-3a4f-8437-75e5-079f8003c5e3
-	// var ids = req.body.docExtIds.split(","); //post
-	var ids = req.query.responseIds.split(","); //get
-	var type = req.query.type; // DOC / PDF
-
-	if (ids.length > 0) {
-		var idString = '';
-		ids.forEach(function (id) {
-			idString += "'" + id + "',";
-		});
-		idString = idString.substring(0, idString.length - 1);
-		var sql_stmnt = 'Select * From "cvStatement" Where "responseId" IN (' + idString + ')';
-		var sql_debCred = 'Select * From "RaiffeisenBank.TStatementItems" Where "RESPONSEID" IN (' + idString + ')';
-		
-		//var sqlPPCred = 'Select * From "RaiffeisenBank.StatementItemsCred" Where "extId" IN (' + idString + ')';
-		//var sqlPPDeb = 'Select * From "RaiffeisenBank.StatementItemsDeb" Where "extId" IN (' + idString + ')';
-		
-		var print = {};
-		req.db.exec(sql_stmnt, function (err, rowsHead) {
-			if (err) {
-				console.log(err);
-				return next(err);
-			}
-			if (rowsHead.length > 0) {
-				var Head = rowsHead[0];
-				//date format
-				Head.stmtDate = (Head.stmtDate) ? Head.stmtDate.replace(/-/g, ".") : "----"
-				Head.beginDate = (Head.beginDate) ? Head.beginDate.replace(/-/g, ".") : "----"
-				Head.endDate = (Head.endDate) ? Head.endDate.replace(/-/g, ".") : "----"
-				Head.lastMovetDate = (Head.lastMovetDate) ? Head.lastMovetDate.replace(/-/g, ".") : "----"
-				Head.lastStmtDate = (Head.lastStmtDate) ? Head.lastStmtDate.replace(/-/g, ".") : "----"
-				
-				print = Head;
-				//console.log('print Head ', print);
-				
-				req.db.exec(sql_debCred, function (err, rows) {
-					if (err) {console.log(err);return next(err);}
-					if (rows.length > 0) {
-						rows.forEach(function (row) {
-							if (row.DC == "1") {
-								row.isDebit = true;
-							} else if (row.DC == "2") {
-								row.isCredit = true;
-							}
-							//date format
-							row.DOCDATE = (row.DOCDATE) ? row.DOCDATE.replace(/-/g, ".") : "----"
-							row.OPERDATE = (row.OPERDATE) ? row.OPERDATE.replace(/-/g, ".") : "----"
-						});
-						print.docs = rows;
-						//console.log('print all ', print);
-					}
-					if (type == "DOC") {
-						var buffer = makeDocPdf(print);
-						
-						res.set('Content-Disposition', 'attachment; filename="Statement.docx"');
-						res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
-						var fileBase64String = buffer.toString('base64');
-						res.end(fileBase64String, 'base64');
-					}
-				});
-			} else {
-				res.send('Нет данных в БД');
-			}
-		});
+	
+	if (req.headers.x_my_ext != "passed") {
+		res.status(401);
+		res.json("401");
 	} else {
-		res.send('needed docExtId parametr in url');
-	};
+		// var responseId = "f6197de1-8c6a-e165-8370-22714fa32d66,6c0fc4e3-b305-b801-3bec-5ac501fac6f1"
+		// https://host-to-host.cfapps.eu10.hana.ondemand.com/node/exportbytemplate?docExtIds=01b00858-57c0-81ac-6f69-1a2f94e20d86,89625293-3a4f-8437-75e5-079f8003c5e3
+		// var ids = req.body.docExtIds.split(","); //post
+		var ids = req.query.responseIds.split(","); //get
+		var type = req.query.type; // DOC / PDF
+	
+		if (ids.length > 0) {
+			var idString = '';
+			ids.forEach(function (id) {
+				idString += "'" + id + "',";
+			});
+			idString = idString.substring(0, idString.length - 1);
+			var sql_stmnt = 'Select * From "cvStatement" Where "responseId" IN (' + idString + ')';
+			var sql_debCred = 'Select * From "RaiffeisenBank.TStatementItems" Where "RESPONSEID" IN (' + idString + ')';
+			
+			//var sqlPPCred = 'Select * From "RaiffeisenBank.StatementItemsCred" Where "extId" IN (' + idString + ')';
+			//var sqlPPDeb = 'Select * From "RaiffeisenBank.StatementItemsDeb" Where "extId" IN (' + idString + ')';
+			
+			var print = {};
+			req.db.exec(sql_stmnt, function (err, rowsHead) {
+				if (err) {
+					console.log(err);
+					return next(err);
+				}
+				if (rowsHead.length > 0) {
+					var Head = rowsHead[0];
+					//date format
+					Head.stmtDate = (Head.stmtDate) ? Head.stmtDate.replace(/-/g, ".") : "----"
+					Head.beginDate = (Head.beginDate) ? Head.beginDate.replace(/-/g, ".") : "----"
+					Head.endDate = (Head.endDate) ? Head.endDate.replace(/-/g, ".") : "----"
+					Head.lastMovetDate = (Head.lastMovetDate) ? Head.lastMovetDate.replace(/-/g, ".") : "----"
+					Head.lastStmtDate = (Head.lastStmtDate) ? Head.lastStmtDate.replace(/-/g, ".") : "----"
+					
+					print = Head;
+					//console.log('print Head ', print);
+					
+					req.db.exec(sql_debCred, function (err, rows) {
+						if (err) {console.log(err);return next(err);}
+						if (rows.length > 0) {
+							rows.forEach(function (row) {
+								if (row.DC == "1") {
+									row.isDebit = true;
+								} else if (row.DC == "2") {
+									row.isCredit = true;
+								}
+								//date format
+								row.DOCDATE = (row.DOCDATE) ? row.DOCDATE.replace(/-/g, ".") : "----"
+								row.OPERDATE = (row.OPERDATE) ? row.OPERDATE.replace(/-/g, ".") : "----"
+							});
+							print.docs = rows;
+							//console.log('print all ', print);
+						}
+						if (type == "DOC") {
+							var buffer = makeDocPdf(print);
+							
+							res.set('Content-Disposition', 'attachment; filename="Statement.docx"');
+							res.set('Content-Type', 'vnd.openxmlformats-officedocument.wordprocessingml.document');
+							var fileBase64String = buffer.toString('base64');
+							res.end(fileBase64String, 'base64');
+						}
+					});
+				} else {
+					res.send('Нет данных в БД');
+				}
+			});
+		} else {
+			res.send('needed docExtId parametr in url');
+		};
+	}
 
-	//res.send('respond with a resource');
 });
 
 module.exports = router;

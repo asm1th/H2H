@@ -4,8 +4,7 @@ var approuter = require('@sap/approuter');
 var ar = approuter();
 
 ar.beforeRequestHandler.use('/', function myMiddleware(req, res, next) {
-  res.setHeader('x-test', "test");
-  res.setHeader('x-my-ext', 'passed');
+  res.setHeader('x_my_ext', 'passed');
   next();
 });
 
