@@ -15,7 +15,8 @@
 		"csrfProtection": true,
 		"authenticationType": "xsuaa"
 	},{
-		"source": "node(.*)",
+		"source": "node/(.*)$",
+    	"target": "/h2hui5/$1",
 		"destination": "core-nodejs-backend",
 		"csrfProtection": true,
 		"authenticationType": "xsuaa"
