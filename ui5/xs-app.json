@@ -1,18 +1,29 @@
 {
-	"welcomeFile": "/ui5/webapp/index.html",
+	"welcomeFile": "/index.html",
 	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/do/logout"
+     },
 	"routes": [{
 		"source": "(.*)(.xsjs)",
-		"csrfProtection": false,
-		"destination": "core-xsjs-backend"
+		"destination": "core-xsjs-backend",
+		"csrfProtection": true,
+		"authenticationType": "xsuaa"
 	},{
 		"source": "(.*)(.xsodata)",
-		"csrfProtection": false,
-		"destination": "core-xsjs-backend"
+		"destination": "core-xsjs-backend",
+		"csrfProtection": true,
+		"authenticationType": "xsuaa"
 	},{
-		"source": "node(.*)",
+		"source": "node/(.*)$",
+    	"target": "/h2hui5/$1",
 		"destination": "core-nodejs-backend",
 		"csrfProtection": true,
+		"authenticationType": "xsuaa"
+	},{
+		"source": "^(.*)$",
+		"target": "$1",
+		"service": "html5-apps-repo-rt",
 		"authenticationType": "xsuaa"
 	}]
 }

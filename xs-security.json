@@ -1,6 +1,6 @@
 {
   "xsappname": "H2H",
-  "tenant-mode": "shared",
+  "tenant-mode": "dedicated",
   "description": "Security profile of called application",
   "scopes": [
     {

@@ -1381,7 +1381,7 @@ sap.ui.define([
 
 			//var dataSend = 'docExtIds=' + docExtIdsAr.join() + '&type=DOC';
 			//window.location = '/node/pp_exportbytemplate?' + dataSend;
-			var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdsAr.join() + '&type=DOC&debcred=0';
+			var uri = '../node/pp_exportbytemplate?docExtIds=' + docExtIdsAr.join() + '&type=DOC&debcred=0';
 			var link = document.createElement("a");
 			link.download = "PaymentOrder.docx";
 			link.href = uri;
@@ -1459,7 +1459,7 @@ sap.ui.define([
 					responseIdsAr.push(obj.responseId);
 				});
 
-				var url = '/node/v_exportbytemplate';
+				var url = '../node/v_exportbytemplate';
 				this.byId("toolPage").setBusy(true);
 				var that = this;
 				$.ajax({
@@ -1468,7 +1468,7 @@ sap.ui.define([
 					data: 'responseIds=' + responseIdsAr.join() + '&type=DOC',
 					//dataType: "text/plain",
 					success: function (data) {
-						window.location = '/node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
+						window.location = '../node/v_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
 						that.byId("toolPage").setBusy(false);
 					},
 					error: function (oError) {
@@ -1492,7 +1492,7 @@ sap.ui.define([
 					responseIdsAr.push(obj.responseId);
 				});
 
-				var url = '/node/vpp_exportbytemplate';
+				var url = '../node/vpp_exportbytemplate';
 				this.byId("toolPage").setBusy(true);
 				var that = this;
 				$.ajax({
@@ -1501,7 +1501,7 @@ sap.ui.define([
 					data: 'responseIds=' + responseIdsAr.join() + '&type=DOC',
 					//dataType: "text/plain",
 					success: function (data) {
-						window.location = '/node/vpp_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
+						window.location = '../node/vpp_exportbytemplate?responseIds=' + responseIdsAr.join() + '&type=DOC';
 						that.byId("toolPage").setBusy(false);
 					},
 					error: function (oError) {
@@ -1525,7 +1525,7 @@ sap.ui.define([
 					responseIdsAr.push(obj.responseId);
 				});
 
-				var url = '/node/v_export_pdf';
+				var url = '../node/v_export_pdf';
 				this.byId("toolPage").setBusy(true);
 				var that = this;
 				$.ajax({
@@ -1534,7 +1534,7 @@ sap.ui.define([
 					data: 'responseIds=' + responseIdsAr.join() + '',
 					//dataType: "text/plain",
 					success: function (data) {
-						window.location = '/node/v_export_pdf?responseIds=' + responseIdsAr.join() + '';
+						window.location = '../node/v_export_pdf?responseIds=' + responseIdsAr.join() + '';
 						that.byId("toolPage").setBusy(false);
 					},
 					error: function (oError) {
@@ -1560,7 +1560,7 @@ sap.ui.define([
 					var obj = Context.getObject();
 					docExtIdAr.push(obj.extId);
 				});
-				var uri = '/node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC&debcred=Cred';
+				var uri = '../node/pp_exportbytemplate?docExtIds=' + docExtIdAr.join() + '&type=DOC&debcred=Cred';
 				var link = document.createElement("a");
 				link.download = 'PaymentOrder_credit.docx';
 				link.href = uri;

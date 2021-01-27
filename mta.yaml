@@ -1,13 +1,95 @@
 ID: H2H
 _schema-version: '2.1'
+parameters:
+  deploy_mode: html5-repo
 description: Host-to-Host
-version: 0.0.1
+version: 1.0.27
 modules:
+
+  - name: html5_app_router
+    type: approuter.nodejs
+    path: router
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    # routes:
+    #   - route: <application URL>
+      
+    requires:
+      - name: html5_repo_runtime
+      - name: html5_destination
+      - name: html5_uaa
+
+      - name: core_xsjs_api
+        group: destinations
+        properties:
+          name: core-xsjs-backend
+          url: '~{url}'
+          forwardAuthToken: true
+      - name: core_nodejs_api
+        group: destinations
+        properties:
+          name: core-nodejs-backend
+          url: '~{url}'
+          forwardAuthToken: true
+###
+  - name: html5_deployer
+    type: com.sap.html5.application-content
+    path: html5_deployer
+    requires:
+     - name: html5_repo_host
+    build-parameters:
+       requires:
+        - name: HTML5Module
+          artifacts:
+            - './*'
+          target-path: resources/ui5
+        
+  - name: HTML5Module
+    type: html5
+    path: ui5
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+      #app-name: host-to-host
+    requires:
+    
+      - name: core_xsjs_api
+        group: destinations
+        properties:
+          name: core-xsjs-backend
+          url: '~{url}'
+          forwardAuthToken: true
+          
+      - name: core_nodejs_api
+        group: destinations
+        properties:
+          name: core-nodejs-backend
+          url: '~{url}'
+          forwardAuthToken: true
+      - name: html5_uaa
+      
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+    # properties:
+    #   TENANT_HOST_PATTERN: '^(.*)host-to-host.cfapps.eu10.hana.ondemand.com'
+      
   - name: db
     type: hdb
     path: db
     requires:
       - name: hdi_db
+    build-parameters:
+      builder: custom  
+      commands:
+         - npm install --production  
+      supported-platforms: []
+      
   - name: core_xsjs
     type: nodejs
     path: core_xsjs
@@ -15,12 +97,11 @@ modules:
       - name: core_xsjs_api
         properties:
           url: '${default-url}'
+          #url: 'https://h2h-xsjs.cfapps.eu10.hana.ondemand.com/'
     requires:
       - name: hdi_db
-      - name: db
-      - name: UAA-service
-    parameters:
-      app-name: h2h-xsjs
+      - name: html5_uaa
+      
   - name: core_nodejs
     type: nodejs
     path: core_nodejs
@@ -28,56 +109,44 @@ modules:
       - name: core_nodejs_api
         properties:
           url: '${default-url}'
+          #url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
+    properties:
+      UAA_SERVICE_NAME: html5_uaa
     requires:
       - name: hdi_db
-      - name: db
-      - name: UAA-service
-    parameters:
-      app-name: h2h-nodejs
-  - name: ui5
-    type: html5
-    path: ui5
-    parameters:
-      disk-quota: 256M
-      memory: 256M
-      app-name: host-to-host
-    build-parameters:
-      builder: grunt
-    requires:
-      - name: core_xsjs_api
-        group: destinations
-        properties:
-          name: core-xsjs-backend
-          url: 'https://h2h-xsjs.cfapps.eu10.hana.ondemand.com/'
-          forwardAuthToken: true
-      - name: core_nodejs_api
-        group: destinations
-        properties:
-          name: core-nodejs-backend
-          url: 'https://h2h-nodejs.cfapps.eu10.hana.ondemand.com/'
-          forwardAuthToken: true
-      - name: UAA-service
-    properties:
-      TENANT_HOST_PATTERN: "^(.*)host-to-host.cfapps.eu10.hana.ondemand.com"
+      - name: html5_uaa
+      
+
 resources:
+  - name: html5_repo_host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+
+  - name: html5_repo_runtime
+    parameters:
+      service-plan: app-runtime
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+    
+  - name: html5_destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service-plan: lite
+      service: destination
+      
+  - name: html5_uaa
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+    #type: com.sap.xs.uaa-space
+
   - name: hdi_db
     properties:
       hdi-container-name: '${service-name}'
     type: com.sap.xs.hdi-container
     parameters:
       service-name: hana-hdi
-  - name: UAA-service
-    type: com.sap.xs.uaa-space
-    parameters:
-      config-path: xs-security.json
-#  - name: uaa_H2H
-#    parameters:
-#      path: ./xs-security.json
-#      service-plan: application
-#      service: xsuaa
-#    type: org.cloudfoundry.managed-service
-  - name: dest_H2H
-    parameters:
-      service-plan: lite
-      service: destination
-    type: org.cloudfoundry.managed-service
